@@ -1,4 +1,4 @@
-package de.tinf15b4.kino24.web;
+package de.tinf15b4.kino.web;
 
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-public class Kino24WebApplication {
+public class KinoWebApplication {
 	@Bean
 	public EmbeddedServletContainerFactory servletContainer() {
 		JettyEmbeddedServletContainerFactory jetty = new JettyEmbeddedServletContainerFactory();
@@ -31,6 +31,6 @@ public class Kino24WebApplication {
 	}
 
 	public static void main(String[] args) {
-		SpringApplication.run(Kino24WebApplication.class, args);
+		SpringApplication.run(KinoWebApplication.class, args);
 	}
 }

@@ -1,4 +1,4 @@
-package de.tinf15b4.kino24.web;
+package de.tinf15b4.kino.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
