@@ -17,8 +17,7 @@ public class KinoWebApplication {
 	@Bean
 	public EmbeddedServletContainerFactory servletContainer() {
 		JettyEmbeddedServletContainerFactory jetty = new JettyEmbeddedServletContainerFactory();
-		jetty.addServerCustomizers((JettyServerCustomizer) server -> jettyEnableInherit(server));
-
+		jetty.addServerCustomizers(this::jettyEnableInherit);
 		return jetty;
 	}
 
