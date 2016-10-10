@@ -17,14 +17,14 @@ public class KinoWebApplication {
 	@Bean
 	public EmbeddedServletContainerFactory servletContainer() {
 		JettyEmbeddedServletContainerFactory jetty = new JettyEmbeddedServletContainerFactory();
-		jetty.addServerCustomizers(this::jettyEnableInherit);
+		jetty.addServerCustomizers((JettyServerCustomizer) server -> jettyEnableInherit(server));
 		return jetty;
 	}
 
 	private static void jettyEnableInherit(Server server) {
-		for (Connector c: server.getConnectors()) {
-			if (c instanceof  ServerConnector) {
-				((ServerConnector)c).setInheritChannel(true);
+		for (Connector c : server.getConnectors()) {
+			if (c instanceof ServerConnector) {
+				((ServerConnector) c).setInheritChannel(true);
 			}
 		}
 	}
