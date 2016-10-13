@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class HelloWorldController {
-    @RequestMapping("/greet")
-    public String greet(Model model) {
-        model.addAttribute("name", "Universe");
-        return "greet";
-    }
+	@RequestMapping("/greet")
+	public String greet(Model model) {
+		model.addAttribute("name", "World");
+		return "greet";
+	}
 }
