@@ -32,7 +32,7 @@ In this section definitions and explanations of acronyms and abbreviations are l
 | [SmartCinema Website](http://kino.tinf15b4.de) | 10/20/2016 |
 | [SmartCinema Blog](http://smartcinemaproject.wordpress.com) | 10/20/2016 |
 | [SmartCinema Git](https://github.com/tinf15b4-kino/kino-web) | 10/20/2016 |
-| [Overall Use Case Diagram (OUCD)](https://github.com/tinf15b4-kino/kino-web/blob/90db2ad4eae9a1117c959e90de76e43687e8da81/documents/uml.png)| 10/24/2016 |
+| [Overall Use Case Diagram (OUCD)](https://github.com/tinf15b4-kino/kino-web/blob/master/documents/uml.png)| 10/24/2016 |
 
 
 ### 1.5 Overview
