@@ -26,9 +26,16 @@ repositories {
 }
 
 dependencies {
+	compile('com.vaadin:vaadin-spring-boot-starter:1.0.2')
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-jetty")
     compile('org.springframework.boot:spring-boot-devtools')
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "com.vaadin:vaadin-bom:7.7.3"
+	}
 }
