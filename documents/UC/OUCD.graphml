@@ -300,7 +300,7 @@
       <data key="d4"/>
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="145.0" x="751.84375" y="500.0"/>
+          <y:Geometry height="50.0" width="145.0" x="751.84375" y="260.0"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="108.05078125" x="18.474609375" y="15.036865234375">manage Favorites<y:LabelModel>
@@ -336,7 +336,7 @@
       <data key="d4"/>
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="145.0" x="751.84375" y="580.0"/>
+          <y:Geometry height="50.0" width="145.0" x="751.84375" y="500.0"/>
           <y:Fill color="#FFFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="135.5234375" x="4.73828125" y="15.036865234375">get Movie Suggestions<y:LabelModel>
@@ -372,7 +372,7 @@
       <data key="d4"/>
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="145.0" x="926.84375" y="580.0"/>
+          <y:Geometry height="50.0" width="145.0" x="839.34375" y="580.0"/>
           <y:Fill color="#FFFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="76.26806640625" x="34.365966796875" y="7.07373046875">get Railway
@@ -700,24 +700,6 @@ Google-Account<y:LabelModel>
       <data key="d4"/>
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="145.0" x="751.84375" y="260.0"/>
-          <y:Fill color="#FFCC00" transparent="false"/>
-          <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="102.26171875" x="21.369140625" y="15.036865234375">filter Information*<y:LabelModel>
-              <y:SmartNodeLabelModel distance="4.0"/>
-            </y:LabelModel>
-            <y:ModelParameter>
-              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
-            </y:ModelParameter>
-          </y:NodeLabel>
-          <y:Shape type="ellipse"/>
-        </y:ShapeNode>
-      </data>
-    </node>
-    <node id="n37">
-      <data key="d4"/>
-      <data key="d6">
-        <y:ShapeNode>
           <y:Geometry height="50.0" width="145.0" x="264.33826707138735" y="954.7838541666667"/>
           <y:Fill color="#FF6600" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
@@ -733,7 +715,7 @@ next Semester<y:LabelModel>
         </y:ShapeNode>
       </data>
     </node>
-    <node id="n38">
+    <node id="n37">
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
@@ -754,7 +736,7 @@ next Semester<y:LabelModel>
         </y:UMLClassNode>
       </data>
     </node>
-    <node id="n39">
+    <node id="n38">
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
@@ -775,7 +757,7 @@ next Semester<y:LabelModel>
         </y:UMLClassNode>
       </data>
     </node>
-    <node id="n40">
+    <node id="n39">
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
@@ -796,7 +778,7 @@ next Semester<y:LabelModel>
         </y:UMLClassNode>
       </data>
     </node>
-    <node id="n41">
+    <node id="n40">
       <data key="d4"/>
       <data key="d6">
         <y:ShapeNode>
