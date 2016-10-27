@@ -18,7 +18,7 @@ This software specification applies to the whole "SmartCinema" application. Apar
 ### 1.3 Definitions, Acronyms and Abbreviations
 In this section definitions and explanations of acronyms and abbreviations are listed to help the reader to understand these.
 
-- **tbd** To be done
+- **tbd** To be determined
 - **Android** This is a mobile operating system developed by Google for primarily use on smartphones and tablets
 - **MVC** Model View Controller, a software design pattern for implementing user interfaces on computers
 - **UC** Use Case
@@ -147,7 +147,7 @@ We will use the following languages, which will also be well supported in the fu
 For organizing the development process we will use Scrum and JIRA. Version control is being done using [git][git] on [github][GitHub].
 
 #### 3.6.3 architectural and design constraints
-The architecture of our application will be based on the Spring MVC framework.
+The architecture of our application will be based on the Spring MVC framework. Our database will be based on MySQL.
 
 #### 3.6.4 Purchased components
 The only purchased component is the server we are using (and strictly speaking it's not purchased but rather rented).
