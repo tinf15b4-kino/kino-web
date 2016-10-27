@@ -69,26 +69,29 @@ There will be certain ways to filter the list of movies and cinemas. Available f
 - schedule
 - prices
 
-#### 3.1.6 Sorting
+#### 3.1.6 Overall search
+The Overall search function will search the whole website without restrictions to categories likes films, cinemas etc.
+
+#### 3.1.7 Sorting
 Information can be sorted by following criteria:
 - name
 - prices
 - distance
 - schedule (date and time)
 
-#### 3.1.7 Reminders
+#### 3.1.8 Reminders
 To use reminders, users have to be logged in. Users can set a reminder for movies. At the beginning of a new cinema week (traditionally thursday) users will receive an email or push notification that links to our user interface with preset filters (assuming the movie is actually shown that week).
 
-#### 3.1.8 Locations
+#### 3.1.9 Locations
 By retrieving the users current location we can filter the cinemas based on their distance. In case the user does not permit our application to retrieve his location, there will be a way to enter his current position manually. There will also be a way to enter the maximum distance a user is willing to drive to the cinema. Location and maximum distance will be saved in the users account if available. 
 
-#### 3.1.9 Database
+#### 3.1.10 Database
 We will save user accounts and all information associated with them in our database. All information about current movies, cinemas, schedules and prices will also be stored there.
 
-#### 3.1.10 Receive data
+#### 3.1.11 Receive data
 Using a script we will update the information about movies, cinemas, schedule and prices daily. Those information will be stored in the database.
 
-#### 3.1.11 Server (MVC layer)
+#### 3.1.12 Server (MVC layer)
 The server will dynamically generate the web interface as well as provide an API for the Android app. 
 
 ### 3.2 Usability
