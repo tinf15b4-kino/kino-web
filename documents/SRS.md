@@ -32,7 +32,6 @@ In this section definitions and explanations of acronyms and abbreviations are l
 | [SmartCinema Website](http://kino.tinf15b4.de) | 10/20/2016 |
 | [SmartCinema Blog](http://smartcinemaproject.wordpress.com) | 10/20/2016 |
 | [SmartCinema Git](https://github.com/tinf15b4-kino/kino-web) | 10/20/2016 |
-| [Overall Use Case Diagram (OUCD)](https://github.com/tinf15b4-kino/kino-web/blob/master/documents/uml.png)| 10/24/2016 |
 
 
 ### 1.5 Overview
@@ -43,6 +42,8 @@ the technical realisation of this project.
 The aim of our application is to gather all information about all movie theaters in one easily accessible place.
 Where can I watch my desired movie? When do I have to get there? How did other people think about it?
 All those questions will be answered by our product. Get all those information on a website or check it out in our mobile app for Android.
+
+![Overall use case diagram][oucd]
 
 ## 3. Specific Requirements
 ### 3.1 Functionality
@@ -201,3 +202,4 @@ You can find any internal linked sources in the chapter References (go to the to
 [blog]: https://smartcinemaproject.wordpress.com/
 [git]: https://git-scm.com/
 [github]: https://github.com/
+[oucd]: https://github.com/tinf15b4-kino/kino-web/blob/master/documents/UC/OUCD.png
