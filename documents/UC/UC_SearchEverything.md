@@ -1,4 +1,4 @@
-#Use-Case-Specification: Search everything
+#Use-Case Specification: Search everything
 ##Table of Contents
 tbd    
 
@@ -36,6 +36,6 @@ After submitting the search pattern, the result view should only show entries th
 
 <!-- Link definitions -->
 [SRS]: https://github.com/tinf15b4-kino/kino-web/blob/master/documents/SRS.md
-[flow]: [https://github.com/tinf15b4-kino/kino-web/blob/master/documents/UC/UC_SearchEverything.png
+[flow]: https://github.com/tinf15b4-kino/kino-web/blob/master/documents/UC/UC_SearchEverything.png
 
  
