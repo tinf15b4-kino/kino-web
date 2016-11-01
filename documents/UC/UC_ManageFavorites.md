@@ -5,7 +5,7 @@ tbd
 ### 1. Manage Favorites
 #### 1.1 Brief Description
 The manage favorites function allows the users of smartCinema to mark their favorite cinemas.
-This cinemas will be shwon in a special-tab so the user can easily look up, which movies are shown in this cinema without seraching for them.
+Marked cinemas will be shwon in a special-tab so the user can easily look up, which movies are shown in this cinema without seraching for them.
 
 
 ### 2.Flow of Events
@@ -25,7 +25,7 @@ This cinemas will be shwon in a special-tab so the user can easily look up, whic
 
 ### 4. Preconditions
 #### 4.1 Register 
-To use the manage favorites function you have to create an account with the smartCinema web application.
+To use the manage favorites function you have to create an account for the smartCinema web application.
 Since you are registerd and logged-in in your account, it is possible to mark cinemas as a favorite and get the possiblity, to view and manage all of them in a special tab.
 
 
@@ -34,7 +34,7 @@ Since you are registerd and logged-in in your account, it is possible to mark ci
 If a cinema got marked as a favorite, this cinema should be shown in the favorite cinemas-tab and the cinema should get an indication, that it is a favorite. Furthermore the option to mark this cinema as a favorite will be swaped to an option which allows the user to remove the favorite mark.
 
 #### 5.2 remove a favorite
-If the favorite mark gets removed, this cinema shouldn't be shown in the favorite cinemas-tab anymore and the indication should be vanish. Furthermore the option to remove the favorite mark will be swapped to an option which allows the user to mark that ciname as a favorite (start value).  
+If the favorite mark of a cinema gets removed, this cinema shouldn't be shown in the favorite cinemas-tab anymore and the indication should be vanish. Furthermore the option to remove the favorite mark will be swapped to an option which allows the user to mark that ciname as a favorite (start value).  
 
 
 ### 6. Extension Points
