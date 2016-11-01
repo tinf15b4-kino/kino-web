@@ -11,10 +11,11 @@ This cinemas will be shwon in a special-tab so the user can easily look up, whic
 ### 2.Flow of Events
 ####2.1 Add new favorite
 ![Add new favorite flow][Add_flow]
-####2.1 Remove a favorite
+
+####2.2 Remove a favorite
 ![Remove a favorite flow][Remove_flow]
 
-#### 2.2 Alternative Flows
+#### 2.3 Alternative Flows
 (n/a)
 
 
@@ -30,10 +31,10 @@ Since you are registerd and logged-in in your account, it is possible to mark ci
 
 ### 5. Postconditions
 #### 5.1 Add new favorite
-If a cinema got marked as a favorite, this cinema should be shown in the favorite cinemas-tab and the cinema shpuld get an indication, that it is a favorite.
+If a cinema got marked as a favorite, this cinema should be shown in the favorite cinemas-tab and the cinema should get an indication, that it is a favorite. Furthermore the option to mark this cinema as a favorite will be swaped to an option which allows the user to remove the favorite mark.
 
 #### 5.2 remove a favorite
-If the favorite mark gets removed, this cinema shouldn't be shown in the favorite cinemas-tab anymore and the indication should be vanish.
+If the favorite mark gets removed, this cinema shouldn't be shown in the favorite cinemas-tab anymore and the indication should be vanish. Furthermore the option to remove the favorite mark will be swapped to an option which allows the user to mark that ciname as a favorite (start value).  
 
 
 ### 6. Extension Points
