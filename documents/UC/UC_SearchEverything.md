@@ -2,7 +2,7 @@
 ##Table of Contents
 tbd    
 
-### 1. Use-Case Name
+### 1. Search everything
 #### 1.1 Brief Description
 The search-everything function will search the whole website without restrictions to categories likes films, cinemas etc.
 The user can enter any text and everything that matsches the given input will be displayed in the view.
