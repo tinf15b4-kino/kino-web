@@ -9,8 +9,10 @@ This cinemas will be shwon in a special-tab so the user can easily look up, whic
 
 
 ### 2.Flow of Events
-####2.1 Basic Flow
-![flow for manage favorites][flow]
+####2.1 Add new favorite
+![Add new favorite flow][Add_flow]
+####2.1 Remove a favorite
+![Remove a favorite flow][Remove_flow]
 
 #### 2.2 Alternative Flows
 (n/a)
@@ -39,6 +41,7 @@ If the favorite mark gets removed, this cinema shouldn't be shown in the favorit
 
 <!-- Link definitions -->
 [SRS]: https://github.com/tinf15b4-kino/kino-web/blob/master/documents/SRS.md
-[flow]: [https://github.com/tinf15b4-kino/kino-web/blob/master/documents/UC/UC_SearchEverything.png
+[Add_flow]: https://github.com/tinf15b4-kino/kino-web/blob/master/documents/UC/manage%20favorites/activity%20diagram%20-%20add%20new%20favorite%20cinema.svg
+[Remove_flow]: https://github.com/tinf15b4-kino/kino-web/blob/master/documents/UC/manage%20favorites/activity%20diagram%20-%20remove%20favorite%20from%20favorite%20list.svg
 
  
