@@ -59,7 +59,8 @@ Inside the application (both web and android app), users can see a list of all m
 The rating system requires the user to log in. Users can write reviews and rate cinemas and movies with zero to five stars. All other users can see those ratings and reviews to decide whether they want to see this movie in the given cinema. Users can comment on other ratings.
 
 #### 3.1.4 Favorites
-To use favorites, users have to be logged in. Movies and cinemas marked as favorites will be shown preferably and can be filtered in the view. 
+
+see: [Use Case: Manage Favorites](https://github.com/tinf15b4-kino/kino-web/blob/master/documents/UC/UC_ManageFavorites.md)
 
 #### 3.1.5 Filter
 There will be certain ways to filter the list of movies and cinemas. Available filters are: 
@@ -71,7 +72,7 @@ There will be certain ways to filter the list of movies and cinemas. Available f
 - prices
 
 #### 3.1.6 Overall search
-The Overall search function will search the whole website without restrictions to categories likes films, cinemas etc.
+see: [Use Case: Search Everything](https://github.com/tinf15b4-kino/kino-web/blob/master/documents/UC/UC_SearchEverything.md)
 
 #### 3.1.7 Sorting
 Information can be sorted by following criteria:
