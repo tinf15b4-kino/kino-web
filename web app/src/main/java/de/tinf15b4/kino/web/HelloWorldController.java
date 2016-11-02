@@ -9,6 +9,6 @@ public class HelloWorldController {
 	@RequestMapping("/greet")
 	public String greet(Model model) {		
 		model.addAttribute("name", "World");
-		return "greet";
+		return "greet"; 
 	}
 }
