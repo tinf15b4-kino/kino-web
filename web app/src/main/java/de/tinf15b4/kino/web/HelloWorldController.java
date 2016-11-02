@@ -11,4 +11,6 @@ public class HelloWorldController {
 		model.addAttribute("name", "World");
 		return "greet";
 	}
+
+	//test
 }
