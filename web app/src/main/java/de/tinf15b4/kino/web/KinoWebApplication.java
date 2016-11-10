@@ -24,7 +24,7 @@ public class KinoWebApplication {
 	private static void jettyEnableInherit(Server server) {
 		for (Connector c : server.getConnectors()) {
 			if (c instanceof ServerConnector) {
-				((ServerConnector) c).setInheritChannel(true);
+				((ServerConnector) c).setInheritChannel(true);  
 			}
 		}
 	}
