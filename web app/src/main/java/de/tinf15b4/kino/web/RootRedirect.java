@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class RootRedirect {
     @RequestMapping("/")
     public String rootPath() {
-        return "redirect:/greet";
+		return "redirect:/start";
     }
 }
