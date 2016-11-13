@@ -32,6 +32,7 @@ public class MyVaadinUi extends UI {
 		GridLayout grid = new GridLayout(2, 3);
 		setContent(grid);
 		setSizeFull();
+		grid.setSizeFull();
 
 		// Header
 		grid.addComponent(createHeader(), 0, 0, 1, 0);
@@ -47,6 +48,9 @@ public class MyVaadinUi extends UI {
 		// Footer
 		grid.addComponent(createFooter(), 0, 2, 1, 2);
 		
+		grid.setColumnExpandRatio(1, 1);
+		grid.setRowExpandRatio(1, 1);
+
 		Navigator nav = new Navigator(this, panel);
 		nav.addProvider(viewProvider);
 
@@ -54,9 +58,9 @@ public class MyVaadinUi extends UI {
 
 	private Component createHeader() {
 		HorizontalLayout header = new HorizontalLayout();
-		header.setSizeFull();
 		header.setSpacing(true);
 		header.setMargin(true);
+		header.setWidth("100%");
 
 		Image logo = new Image("Logo");
 		header.addComponent(logo);
@@ -65,9 +69,11 @@ public class MyVaadinUi extends UI {
 		Button login = new Button("Login", e -> loginUser());
 		header.addComponent(login);
 
-		header.setComponentAlignment(logo, Alignment.MIDDLE_RIGHT);
+		header.setComponentAlignment(logo, Alignment.MIDDLE_LEFT);
 		header.setComponentAlignment(register, Alignment.MIDDLE_RIGHT);
 		header.setComponentAlignment(login, Alignment.MIDDLE_RIGHT);
+
+		header.setExpandRatio(logo, 1);
 
 		return header;
 	}
@@ -76,9 +82,10 @@ public class MyVaadinUi extends UI {
 		HorizontalLayout footer = new HorizontalLayout();
 		footer.setSpacing(true);
 		footer.setMargin(true);
-		footer.setSizeFull();
+		footer.setWidth("100%");
 
 		Label copyright = new Label("Copyright &copy; 2016 smartCinema", ContentMode.HTML);
+		copyright.setSizeUndefined();
 		footer.addComponent(copyright);
 		Button impressum = new Button("Impressum", e -> getUI().getNavigator().navigateTo("impressum"));
 		footer.addComponent(impressum);
@@ -89,14 +96,16 @@ public class MyVaadinUi extends UI {
 		footer.setComponentAlignment(impressum, Alignment.MIDDLE_LEFT);
 		footer.setComponentAlignment(datenschutz, Alignment.MIDDLE_LEFT);
 
+		footer.setExpandRatio(datenschutz, 1);
+
 		return footer;
 	}
 
 	private Component createNavigator() {
 		VerticalLayout navigator = new VerticalLayout();
-		navigator.setSizeFull();
 		navigator.setSpacing(true);
 		navigator.setMargin(true);
+		navigator.setSizeUndefined();
 
 		navigator.addComponent(new Button("Filme"));
 		navigator.addComponent(new Button("Kinos"));
