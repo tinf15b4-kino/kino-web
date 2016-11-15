@@ -40,6 +40,10 @@ UI Mockup / after:
 
 ![Favorite cinema removed mockup][Removed_from_list_mockup]
 
+Feature-File:
+
+[Link to the Feature-File](https://github.com/tinf15b4-kino/kino-web/blob/TESB416-89/web%20app/src/test/resources/cucumber/manageFavorites.feature)
+
 #### 2.1/3 Basic Flow: Show favorite cinemas
 
 UI Mockups:
