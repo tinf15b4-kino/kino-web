@@ -13,7 +13,7 @@ public class StartView extends VerticalLayout implements View {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		System.out.println("Entered View: default");
+		// TODO
 	}
 
 }

@@ -3,3 +3,8 @@
 .smartCinema {
 	@include valo;	
 }
+
+.navigatorButton.v-button {
+	width: 100%;	
+	text-align: left;
+}
