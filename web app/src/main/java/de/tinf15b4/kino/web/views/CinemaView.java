@@ -1,9 +1,8 @@
-package de.tinf15b4.kino.web;
+package de.tinf15b4.kino.web.views;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import de.tinf15b4.kino.data.Cinema;

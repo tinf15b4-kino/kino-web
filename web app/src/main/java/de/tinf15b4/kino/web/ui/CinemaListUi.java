@@ -1,4 +1,4 @@
-package de.tinf15b4.kino.web;
+package de.tinf15b4.kino.web.ui;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.Navigator;
@@ -7,6 +7,8 @@ import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import de.tinf15b4.kino.web.views.CinemaListView;
+import de.tinf15b4.kino.web.views.FavoriteListView;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @SpringUI(path = "/crudui")

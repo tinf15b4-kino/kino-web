@@ -1,4 +1,4 @@
-package de.tinf15b4.kino.web;
+package de.tinf15b4.kino.web.ui;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.VaadinRequest;

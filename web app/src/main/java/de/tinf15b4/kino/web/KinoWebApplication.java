@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableAspectJAutoProxy(proxyTargetClass=true)
 @Scope(proxyMode=ScopedProxyMode.TARGET_CLASS) // to make @Transactional work in vaadin views
-@ComponentScan({ "de.tinf15b4.kino.data", "de.tinf15b4.kino.web" })
+@ComponentScan({ "de.tinf15b4.kino.data", "de.tinf15b4.kino.web", "de.tinf15b4.kino.views", "de.tinf15b4.kino.web.ui" })
 @EnableJpaRepositories(basePackages = "de.tinf15b4.kino.data")
 @EntityScan(basePackages = "de.tinf15b4.kino.data")
 @EnableTransactionManagement
