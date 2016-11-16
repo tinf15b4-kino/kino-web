@@ -7,11 +7,9 @@ import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import de.tinf15b4.kino.data.Cinema;
-import de.tinf15b4.kino.data.CinemaRepository;
 import de.tinf15b4.kino.data.Favorite;
-import de.tinf15b4.kino.data.FavoriteRepository;
+import de.tinf15b4.kino.web.controllers.FavoriteListController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -20,13 +18,10 @@ import java.util.List;
 public class FavoriteListView extends VerticalLayout implements View {
     public static final String VIEW_NAME = "favourites";
 
-    @Autowired
-    private FavoriteRepository repo;
-
-    @Autowired
-    private CinemaRepository cineRepo;
-
     private VerticalLayout content;
+
+    @Autowired
+    private FavoriteListController controller;
 
     @PostConstruct
     private void init() {
@@ -55,11 +50,10 @@ public class FavoriteListView extends VerticalLayout implements View {
     }
 
     @Override
-    @Transactional
     public void enter(ViewChangeListener.ViewChangeEvent event) {
         content.removeAllComponents();
 
-        List<Favorite> l = repo.findAll();
+        List<Favorite> l = controller.getAllFavesForCurrentUser();
         if (l.isEmpty()) {
             content.addComponent(new Label("No Favorite Cinemas yet :("));
         } else {
@@ -69,13 +63,11 @@ public class FavoriteListView extends VerticalLayout implements View {
         }
     }
 
-    @Transactional
     private void removeFromFavorites(long cinemaId, HorizontalLayout row) {
-        List<Favorite> existing = repo.findByCinemaId(cinemaId);
-        if (!existing.isEmpty()) {
+        if (controller.isCinemaFavorite(cinemaId)) {
             // remove favorite entry
-            String cinemaName = existing.get(0).getCinema().getName();
-            repo.delete(existing);
+            String cinemaName = controller.getFave(cinemaId).getCinema().getName();
+            controller.unmarkFavorite(cinemaId);
 
             row.removeAllComponents();
 
@@ -96,12 +88,9 @@ public class FavoriteListView extends VerticalLayout implements View {
         }
     }
 
-    @Transactional
     private void undoRemove(long cinemaId, HorizontalLayout row) {
-        Cinema c = cineRepo.findOne(cinemaId);
+        controller.markFavorite(cinemaId);
 
-        repo.save(new Favorite(c));
-
-        content.replaceComponent(row, buildListEntry(c));
+        content.replaceComponent(row, buildListEntry(controller.getFave(cinemaId).getCinema()));
     }
 }
