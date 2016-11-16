@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.Navigator;
+import com.vaadin.server.ClassResource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.spring.annotation.SpringUI;
@@ -64,11 +65,12 @@ public class MyVaadinUi extends UI {
 	private Component createHeader() {
 		HorizontalLayout header = new HorizontalLayout();
 		header.setSpacing(true);
-		header.setMargin(true);
+		header.setMargin(false);
 		header.setWidth("100%");
+		header.addStyleName("headerbackground");
 
-		// TODO Add logo
-		Image logo = new Image("Logo");
+		Image logo = new Image(null, new ClassResource("/images/logo.png"));
+
 		header.addComponent(logo);
 		Button register = new Button(Views.REGISTER.getReadableName(), e -> navigateTo(Views.REGISTER));
 		header.addComponent(register);
