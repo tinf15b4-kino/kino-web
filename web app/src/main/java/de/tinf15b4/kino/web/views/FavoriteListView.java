@@ -18,7 +18,7 @@ import java.util.List;
 
 @SpringView(name = FavoriteListView.VIEW_NAME)
 public class FavoriteListView extends VerticalLayout implements View {
-    public static final String VIEW_NAME = "favorites";
+    public static final String VIEW_NAME = "favourites";
 
     @Autowired
     private FavoriteRepository repo;

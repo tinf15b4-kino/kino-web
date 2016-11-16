@@ -16,7 +16,7 @@ import javax.annotation.PostConstruct;
 
 @SpringView(name = CinemaListView.VIEW_NAME)
 public class CinemaListView extends VerticalLayout implements View {
-    public static final String VIEW_NAME = "";
+    public static final String VIEW_NAME = "cinemas";
 
     @Autowired
     private CinemaRepository repo;

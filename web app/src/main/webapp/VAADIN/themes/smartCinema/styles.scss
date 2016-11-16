@@ -1,0 +1,14 @@
+@import "../valo/valo";
+
+.smartCinema {
+	@include valo;	
+}
+
+.navigatorButton.v-button {
+	width: 100%;	
+	text-align: left;
+}
+
+.headerbackground {
+	background-color:blue;
+}
