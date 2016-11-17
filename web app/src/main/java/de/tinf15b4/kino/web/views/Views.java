@@ -11,7 +11,7 @@ public enum Views {
 	CINEMAS("cinemas", "Kinos", true, FontAwesome.VIDEO_CAMERA),
 	FAVOURITES("favourites", "Favoriten", true, FontAwesome.HEART),
 	NEWMOVIES("new", "Neu im Kino", true, FontAwesome.EXCLAMATION_CIRCLE),
-	COMINGSOON("coming_soon", "Demn‰chst", true, FontAwesome.HISTORY),
+	COMINGSOON("coming_soon", "Demn√§chst", true, FontAwesome.HISTORY),
 	REGISTER("register", "Registieren",	false, null),
 	LOGIN("login", "Anmelden", false, null),
 	ACCOUNT("account", "Mein Konto", false, null),
