@@ -6,6 +6,7 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.ClassResource;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
@@ -46,8 +47,12 @@ public class MyVaadinUi extends UI {
 		grid.addComponent(createNavigator(), 0, 1);
 
 		// Main area
+		HorizontalLayout layout = new HorizontalLayout();
+		layout.setSizeFull();
+		layout.setMargin(true);
 		Panel panel = new Panel();
-		grid.addComponent(panel, 1, 1);
+		layout.addComponent(panel);
+		grid.addComponent(layout, 1, 1);
 		panel.setSizeFull();
 
 		// Footer
@@ -65,7 +70,7 @@ public class MyVaadinUi extends UI {
 	private Component createHeader() {
 		HorizontalLayout header = new HorizontalLayout();
 		header.setSpacing(true);
-		header.setMargin(false);
+		header.setMargin(new MarginInfo(false, true));
 		header.setWidth("100%");
 		header.addStyleName("headerbackground");
 
@@ -88,7 +93,7 @@ public class MyVaadinUi extends UI {
 
 	private Component createFooter() {
 		VerticalLayout footer = new VerticalLayout();
-		footer.setMargin(true);
+		footer.setMargin(new MarginInfo(false, true));
 		footer.setWidth("100%");
 
 		// First row in the footer
@@ -141,6 +146,7 @@ public class MyVaadinUi extends UI {
 				// Setting 100% width here will not work as Vaadin does not know
 				// how big the navigator will be.
 				button.addStyleName("navigatorButton");
+				button.setIcon(view.getIcon());
 				navigator.addComponent(button);
 			}
 		}
