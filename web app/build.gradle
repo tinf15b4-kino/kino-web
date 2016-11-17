@@ -19,6 +19,18 @@ project.ext {
     junitVersion = '4.12'
 }
 
+sourceSets {
+     main {
+      java {
+       srcDir 'src/main/java'
+      }
+	  resources {
+	   srcDir 'src/main/resources'
+	   srcDir 'src/main/webapp'
+	  }
+     }
+    }
+
 jar {
 	baseName = 'tinf15b4-kino-web'
 	version = '0.0.1-SNAPSHOT'
