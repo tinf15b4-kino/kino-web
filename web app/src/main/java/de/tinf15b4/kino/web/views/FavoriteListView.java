@@ -36,8 +36,7 @@ public class FavoriteListView extends VerticalLayout implements View {
     private Component buildListEntry(Cinema c) {
         HorizontalLayout pav = new HorizontalLayout();
         pav.setWidth(100, Unit.PERCENTAGE);
-        Link l = new Link(c.getName(), new ExternalResource(
-                "#!" + CinemaView.VIEW_NAME + "/" + c.getId()));
+        Link l = new Link(c.getName(), new ExternalResource("#!" + CinemaView.VIEW_NAME + "/" + c.getId()));
         pav.addComponent(l);
         pav.setComponentAlignment(l, Alignment.MIDDLE_LEFT);
 

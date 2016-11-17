@@ -10,6 +10,8 @@ public interface FavoriteListController {
     Favorite getFave(long cinemaId);
 
     boolean isCinemaFavorite(long cinemaId);
+
     void markFavorite(long cinemaId);
+
     void unmarkFavorite(long cinemaId);
 }

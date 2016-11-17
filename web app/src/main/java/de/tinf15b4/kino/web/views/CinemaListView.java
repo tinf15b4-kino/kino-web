@@ -29,9 +29,7 @@ public class CinemaListView extends VerticalLayout implements View {
 
         for (Cinema c : repo.findAll()) {
             Panel p = new Panel();
-            Link l = new Link(c.getName(), new ExternalResource(
-                "#!" + CinemaView.VIEW_NAME + "/" + c.getId()
-            ));
+            Link l = new Link(c.getName(), new ExternalResource("#!" + CinemaView.VIEW_NAME + "/" + c.getId()));
             p.setContent(l);
 
             this.addComponent(p);

@@ -33,7 +33,7 @@ public class CinemaView extends VerticalLayout implements View {
         this.setSpacing(true);
 
         this.removeAllComponents();
-        if (event.getParameters() != null){
+        if (event.getParameters() != null) {
             String idStr = event.getParameters();
             long id = Long.parseLong(idStr);
 
@@ -61,7 +61,7 @@ public class CinemaView extends VerticalLayout implements View {
             // create button
             Button favBtn = new Button();
             favBtn.setCaption("Mark as favorite"); // TODO: Deutsch
-            favBtn.addClickListener(e->markAsFavorite(id));
+            favBtn.addClickListener(e -> markAsFavorite(id));
 
             return favBtn;
         } else {

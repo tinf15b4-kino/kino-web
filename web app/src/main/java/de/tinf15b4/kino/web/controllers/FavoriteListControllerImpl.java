@@ -10,8 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-/* FIXME: This is not really a controller, more like a random collection
-          of service functions that are used by the favorite list view
+/*
+ * FIXME: This is not really a controller, more like a random collection of
+ * service functions that are used by the favorite list view
  */
 public class FavoriteListControllerImpl implements FavoriteListController {
     @Autowired
@@ -19,8 +20,6 @@ public class FavoriteListControllerImpl implements FavoriteListController {
 
     @Autowired
     private CinemaRepository cineRepo;
-
-
 
     @Override
     @Transactional
