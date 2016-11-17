@@ -1,7 +1,5 @@
 package de.tinf15b4.kino.web.ui;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.ClassResource;
@@ -10,20 +8,9 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Image;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Notification.Type;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
-
+import com.vaadin.ui.*;
 import de.tinf15b4.kino.web.views.Views;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @SuppressWarnings("serial")
 @Theme("smartCinema")
@@ -155,8 +142,7 @@ public class MyVaadinUi extends UI {
 	}
 
 	private void navigateTo(Views view) {
-		// TODO implement views
-		// this.getNavigator().navigateTo(view.getViewId());
-		Notification.show(String.format("Navigate to view: %s", view.getViewId()), Type.TRAY_NOTIFICATION);
+		// TODO implement all views
+		this.getNavigator().navigateTo(view.getViewId());
 	}
 }
