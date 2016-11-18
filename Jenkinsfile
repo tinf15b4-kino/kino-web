@@ -1,5 +1,7 @@
 node {
     try {
+        properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')), pipelineTriggers([])])
+
         stage 'Clean workspace'
         deleteDir()
 
@@ -28,6 +30,7 @@ node {
         throw e
     } finally {
         // Success or failure, always send notifications
+        stage 'Notify Slack'
         notifyBuild(currentBuild.result)
     }
 }
