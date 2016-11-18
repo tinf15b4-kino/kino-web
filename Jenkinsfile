@@ -1,4 +1,7 @@
 node {
+  stage 'Clean workspace'
+  deleteDir()
+
   // Mark the code checkout 'stage'....
   stage 'Checkout'
 
