@@ -32,4 +32,20 @@ public class Cinema {
     }
 
     private String name;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setAddress(String street, String number,
+                           String zipCode, String city)
+    {
+        this.setAddress(String.format("%s %s\n%s %s", street, number, zipCode, city));
+    }
+
+    private String address;
 }
