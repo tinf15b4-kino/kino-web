@@ -1,13 +1,15 @@
 package de.tinf15b4.kino.data;
 
-import com.github.javafaker.Address;
-import com.github.javafaker.Faker;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Random;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.Locale;
+import com.github.javafaker.Address;
+import com.github.javafaker.Faker;
 
 @Service
 public class FakeDataInitializer implements DataInitializer {
@@ -25,6 +27,11 @@ public class FakeDataInitializer implements DataInitializer {
 
     @Autowired
     private UserRepository userRepo;
+
+    @Autowired
+    private RatedCinemaRepository ratedCinemaRepo;
+
+    Random rnd = new Random();
 
     @Override
     @Transactional
@@ -82,5 +89,24 @@ public class FakeDataInitializer implements DataInitializer {
             u.setPassword(faker.beer().name());
             userRepo.save(u);
         }
+        
+
+        // Some fake Cinema Ratings
+        for (Cinema c : cineRepo.findAll()) {
+            // Add random 0..3 ratings
+            long quantity = (long) rnd.nextInt(4);
+
+            for (long j = 0; j < quantity; j++) {
+                RatedCinema rc = new RatedCinema();
+                u = userRepo.getOne((long) rnd.nextInt((int) userRepo.count()) + 1L);
+                rc.setId(new RatedCinemaId(u, c));
+                rc.setRating(rnd.nextInt(6));
+                rc.setDescription(faker.shakespeare().kingRichardIIIQuote());
+                rc.setTime(faker.date().between(new Date(), new Date(new Date().getTime() + 1000L * 3600 * 24 * 7)));
+
+                ratedCinemaRepo.save(rc);
+            }
+        }
+
     }
 }
