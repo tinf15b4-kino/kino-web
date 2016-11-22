@@ -1,5 +1,9 @@
 package de.tinf15b4.kino.web.ui;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.ClassResource;
@@ -8,9 +12,19 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Panel;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.VerticalLayout;
+
+import de.tinf15b4.kino.data.users.UserLoginBean;
 import de.tinf15b4.kino.web.views.Views;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @SuppressWarnings("serial")
 @Theme("smartCinema")
@@ -20,9 +34,21 @@ public class MyVaadinUi extends UI {
     @Autowired
     private SpringViewProvider viewProvider;
 
+    @Autowired
+    private UserLoginBean userLoginBean;
+
+    private HorizontalLayout header;
+
+    private GridLayout grid;
+
+    @PostConstruct
+    public void postInit() {
+        userLoginBean.setUi(this);
+    }
+
     @Override
     protected void init(VaadinRequest request) {
-        GridLayout grid = new GridLayout(2, 3);
+        grid = new GridLayout(2, 3);
         setContent(grid);
         setSizeFull();
         grid.setSizeFull();
@@ -55,27 +81,39 @@ public class MyVaadinUi extends UI {
     }
 
     private Component createHeader() {
-        HorizontalLayout header = new HorizontalLayout();
+        header = new HorizontalLayout();
         header.setSpacing(true);
         header.setMargin(new MarginInfo(false, true));
         header.setWidth("100%");
         header.addStyleName("headerbackground");
 
         Image logo = new Image(null, new ClassResource("/images/logo.png"));
-
         header.addComponent(logo);
-        Button register = new Button(Views.REGISTER.getReadableName(), e -> navigateTo(Views.REGISTER));
-        header.addComponent(register);
-        Button login = new Button(Views.LOGIN.getReadableName(), e -> navigateTo(Views.LOGIN));
-        header.addComponent(login);
-
         header.setComponentAlignment(logo, Alignment.MIDDLE_LEFT);
-        header.setComponentAlignment(register, Alignment.MIDDLE_RIGHT);
-        header.setComponentAlignment(login, Alignment.MIDDLE_RIGHT);
+
+        if (userLoginBean.isUserLoggedIn()) {
+            Button user = new Button(userLoginBean.getCurrentUser().getName(), e -> userClicked());
+            header.addComponent(user);
+            Button logout = new Button("Abmelden", e -> userLoginBean.logout());
+            header.addComponent(logout);
+            header.setComponentAlignment(user, Alignment.MIDDLE_RIGHT);
+            header.setComponentAlignment(logout, Alignment.MIDDLE_RIGHT);
+        } else {
+            Button register = new Button(Views.REGISTER.getReadableName(), e -> navigateTo(Views.REGISTER));
+            header.addComponent(register);
+            Button login = new Button(Views.LOGIN.getReadableName(), e -> navigateTo(Views.LOGIN));
+            header.addComponent(login);
+            header.setComponentAlignment(register, Alignment.MIDDLE_RIGHT);
+            header.setComponentAlignment(login, Alignment.MIDDLE_RIGHT);
+        }
 
         header.setExpandRatio(logo, 1);
 
         return header;
+    }
+
+    private void userClicked() {
+        // TODO Do stuff, probably navigate to account details
     }
 
     private Component createFooter() {
@@ -144,5 +182,10 @@ public class MyVaadinUi extends UI {
     private void navigateTo(Views view) {
         // TODO implement all views
         this.getNavigator().navigateTo(view.getViewId());
+    }
+
+    public void update() {
+        grid.removeComponent(header);
+        grid.addComponent(createHeader(), 0, 0, 1, 0);
     }
 }

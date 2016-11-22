@@ -13,10 +13,18 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.jetty.JettyEmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.jetty.JettyServerCustomizer;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import de.tinf15b4.kino.data.Cinema;
+import de.tinf15b4.kino.data.CinemaRepository;
 
 @SpringBootApplication
 @Configuration
@@ -27,7 +35,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EntityScan(basePackages = "de.tinf15b4.kino.data")
 @EnableTransactionManagement
 @EnableScheduling
-@ComponentScan({ "de.tinf15b4.kino.data", "de.tinf15b4.kino.web", "de.tinf15b4.kino.web.*" })
+@ComponentScan({ "de.tinf15b4.kino.data", "de.tinf15b4.kino.data.*", "de.tinf15b4.kino.web", "de.tinf15b4.kino.web.*" })
 public class KinoWebApplication {
     private static final Logger log = LoggerFactory.getLogger(KinoWebApplication.class);
 
