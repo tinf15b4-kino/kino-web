@@ -35,7 +35,7 @@ public class LoginView extends GridLayout implements View {
         setColumnExpandRatio(1, 1);
         setRowExpandRatio(3, 1);
 
-        Label username = new Label("Benutzername:");
+        Label username = new Label("Benutzername oder Email:");
         username.setSizeUndefined();
         TextField usernameInput = new TextField();
 
@@ -47,7 +47,7 @@ public class LoginView extends GridLayout implements View {
         PasswordField passwordInput = new PasswordField();
         addComponent(password, 0, 1);
         addComponent(passwordInput, 1, 1);
-        
+
         wrongInput = new Label("Benutzername oder Passwort falsch. Bitte erneut eingeben");
         wrongInput.setVisible(false);
         addComponent(wrongInput, 1, 2);
@@ -58,7 +58,7 @@ public class LoginView extends GridLayout implements View {
 
     private void tryLogin(String username, String password) {
         if (userLoginBean.login(username, password)) {
-            // TODO Show success
+            getUI().getNavigator().navigateTo(Views.DEFAULT.getViewId());
         } else {
             wrongInput.setVisible(true);
         }
@@ -66,7 +66,6 @@ public class LoginView extends GridLayout implements View {
 
     @Override
     public void enter(ViewChangeEvent event) {
-        // TODO
     }
 
 }

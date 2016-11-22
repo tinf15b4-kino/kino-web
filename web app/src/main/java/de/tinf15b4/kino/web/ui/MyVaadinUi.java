@@ -92,8 +92,7 @@ public class MyVaadinUi extends UI {
         header.setComponentAlignment(logo, Alignment.MIDDLE_LEFT);
 
         if (userLoginBean.isUserLoggedIn()) {
-            //TODO Implement account view
-            Button user = new Button(userLoginBean.getUser(), e -> userClicked());
+            Button user = new Button(userLoginBean.getCurrentUser().getName(), e -> userClicked());
             header.addComponent(user);
             Button logout = new Button("Abmelden", e -> userLoginBean.logout());
             header.addComponent(logout);
