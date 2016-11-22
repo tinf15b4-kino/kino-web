@@ -14,6 +14,7 @@ import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 
 import de.tinf15b4.kino.data.users.UserLoginBean;
+import de.tinf15b4.kino.web.util.EnterKeyListener;
 
 @SpringView(name = LoginView.VIEW_NAME)
 public class LoginView extends GridLayout implements View {
@@ -51,6 +52,15 @@ public class LoginView extends GridLayout implements View {
         wrongInput = new Label("Benutzername oder Passwort falsch. Bitte erneut eingeben");
         wrongInput.setVisible(false);
         addComponent(wrongInput, 1, 2);
+
+        EnterKeyListener listener = new EnterKeyListener() {
+
+            @Override
+            public void onEnterKeyPressed() {
+                tryLogin(usernameInput.getValue(), passwordInput.getValue());
+            }
+        };
+        listener.installOn(passwordInput);
 
         Button login = new Button("Anmelden", e -> tryLogin(usernameInput.getValue(), passwordInput.getValue()));
         addComponent(login, 0, 3, 1, 3);
