@@ -93,7 +93,7 @@
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="50.0" width="145.0" x="287.0" y="180.0"/>
-          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:Fill color="#FF6600" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="97.9326171875" x="23.53369140625" y="15.036865234375">register Account<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
@@ -129,7 +129,7 @@
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="50.0" width="145.0" x="462.0" y="340.0"/>
-          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:Fill color="#FF6600" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="75.54443359375" x="34.727783203125" y="15.036865234375">edit Account<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
@@ -147,7 +147,7 @@
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="50.0" width="145.0" x="462.0" y="180.0"/>
-          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:Fill color="#FF6600" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="90.00439453125" x="27.497802734375" y="15.036865234375">delete Account<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
@@ -182,10 +182,10 @@
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="28.0" width="204.5" x="717.84375" y="122.0"/>
-          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:Geometry height="28.0" width="95.69630484988454" x="717.84375" y="122.0"/>
+          <y:Fill color="#FF6600" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="left" autoSizePolicy="node_width" borderDistance="0.0" bottomInset="0" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="18.92626953125" horizontalTextPosition="center" iconTextGap="4" leftInset="10" modelName="custom" rightInset="0" textColor="#000000" topInset="3" verticalTextPosition="bottom" visible="true" width="204.5" x="0.0" y="3.0">Android app / Web Application<y:LabelModel>
+          <y:NodeLabel alignment="left" autoSizePolicy="node_width" borderDistance="0.0" bottomInset="0" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="18.92626953125" horizontalTextPosition="center" iconTextGap="4" leftInset="10" modelName="custom" rightInset="0" textColor="#000000" topInset="3" verticalTextPosition="bottom" visible="true" width="95.69630484988454" x="0.0" y="3.0">Android app<y:LabelModel>
               <y:SmartNodeLabelModel distance="0.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -274,10 +274,10 @@
     <node id="n14">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="30.0" width="1097.6391654693484" x="38.06482758620689" y="844.9309895833331"/>
+          <y:Geometry height="50.0" width="1097.6391654693484" x="38.06482758620689" y="844.930989583333"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
-          <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" hasText="false" height="4.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="4.0" x="546.8195827346742" y="13.0">
+          <y:NodeLabel alignment="left" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" hasText="false" height="4.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="4.0" x="546.8195827346742" y="23.0">
             <y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
@@ -285,7 +285,8 @@
               <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
             </y:ModelParameter>
           </y:NodeLabel>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="349.4921875" x="374.0734889846742" y="5.6494140625">* Information about Cinemas, Movies, Genres, Schedules, Prices<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="763.0234375" x="167.3078639846742" y="8.298828125">* Information about Cinemas, Movies, Genres, Schedules, Prices
+** Until the database is filled with real data by using the Data Retrieval Script we will use a temporary In-Memory-Database filled with fake data.<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -448,7 +449,7 @@ Connections<y:LabelModel>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="50.0" width="145.0" x="462.0" y="541.875"/>
-          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:Fill color="#FF6600" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="121.05078125" x="11.974609375" y="15.036865234375">retrieve Information*<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
@@ -485,9 +486,9 @@ application<y:LabelModel>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="50.0" width="145.0" x="374.5" y="701.875"/>
-          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:Fill color="#FFCC00" color2="#FF6600" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="82.05078125" x="31.474609375" y="15.036865234375">manage Data<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="92.1689453125" x="26.41552734375" y="15.036865234375">manage Data**<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -503,7 +504,7 @@ application<y:LabelModel>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="50.0" width="145.0" x="287.0" y="541.875"/>
-          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:Fill color="#FF6600" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="75.5380859375" x="34.73095703125" y="15.036865234375">fill Database<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
@@ -623,7 +624,7 @@ Android App<y:LabelModel>
       <data key="d4"/>
       <data key="d6">
         <y:UMLClassNode>
-          <y:Geometry height="126.3515624999998" width="593.8249594813614" x="38.06482758620689" y="904.9309895833333"/>
+          <y:Geometry height="126.3515624999998" width="593.8249594813614" x="38.06482758620689" y="924.930989583333"/>
           <y:Fill hasColor="false" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="left" autoSizePolicy="node_width" borderDistance="0.0" bottomInset="0" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="18.92626953125" horizontalTextPosition="center" iconTextGap="4" leftInset="10" modelName="custom" rightInset="0" textColor="#000000" topInset="3" verticalTextPosition="bottom" visible="true" width="593.8249594813614" x="0.0" y="3.0">Legend<y:LabelModel>
@@ -644,7 +645,7 @@ Android App<y:LabelModel>
       <data key="d4"/>
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="145.0" x="80.31743175287357" y="954.7838541666667"/>
+          <y:Geometry height="50.0" width="145.0" x="80.31743175287357" y="974.7838541666665"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="112.3798828125" x="16.31005859375" y="7.07373046875">in Scope
@@ -663,7 +664,7 @@ done by Christmas<y:LabelModel>
       <data key="d4"/>
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="145.0" x="448.3591023899012" y="954.7838541666667"/>
+          <y:Geometry height="50.0" width="145.0" x="448.3591023899012" y="974.7838541666665"/>
           <y:Fill color="#FFFFFF" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="76.2744140625" x="34.36279296875" y="15.036865234375">not in Scope<y:LabelModel>
@@ -700,7 +701,7 @@ Google-Account<y:LabelModel>
       <data key="d4"/>
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="50.0" width="145.0" x="264.33826707138735" y="954.7838541666667"/>
+          <y:Geometry height="50.0" width="145.0" x="264.33826707138735" y="974.7838541666665"/>
           <y:Fill color="#FF6600" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="35.8525390625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="87.814453125" x="28.5927734375" y="7.07373046875">in Scope
@@ -794,6 +795,27 @@ next Semester<y:LabelModel>
           </y:NodeLabel>
           <y:Shape type="ellipse"/>
         </y:ShapeNode>
+      </data>
+    </node>
+    <node id="n41">
+      <data key="d4"/>
+      <data key="d6">
+        <y:UMLClassNode>
+          <y:Geometry height="28.0" width="123.59468822170913" x="813.5400548498845" y="122.00000000000001"/>
+          <y:Fill color="#FFCC00" transparent="false"/>
+          <y:BorderStyle color="#000000" type="line" width="1.0"/>
+          <y:NodeLabel alignment="left" autoSizePolicy="node_width" borderDistance="0.0" bottomInset="0" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="18.92626953125" horizontalTextPosition="center" iconTextGap="4" leftInset="10" modelName="custom" rightInset="0" textColor="#000000" topInset="3" verticalTextPosition="bottom" visible="true" width="123.59468822170913" x="0.0" y="3.0">Web Application<y:LabelModel>
+              <y:SmartNodeLabelModel distance="0.0"/>
+            </y:LabelModel>
+            <y:ModelParameter>
+              <y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="-0.03703090122767855" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/>
+            </y:ModelParameter>
+          </y:NodeLabel>
+          <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="false">
+            <y:AttributeLabel/>
+            <y:MethodLabel/>
+          </y:UML>
+        </y:UMLClassNode>
       </data>
     </node>
     <edge id="e0" source="n26" target="n23">
