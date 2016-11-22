@@ -9,23 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 @Entity
-// @IdClass(RatedCinemaId.class)
 public class RatedCinema {
     
-    // // FIXME: This should not have its own id
-    // @Id
-    // @GeneratedValue
-    // private long id;
-    //
-    // @Id
-    // @ManyToOne
-    // private User user;
-    //
-    // @Id
-    // private String cinema;
-    // @ManyToOne
-    // private Cinema cinema;
-
     @EmbeddedId
     private RatedCinemaId id;
 
@@ -33,32 +18,26 @@ public class RatedCinema {
     private String description;
     private Date time;
 
-    public RatedCinemaId getId() {
-        return id;
-    }
-
-    public void setId(RatedCinemaId id) {
-        this.id = id;
-    }
-
     public RatedCinema() {
-
     }
-
-    // public RatedCinema(User user, String cinema, int rating, String
-    // description, Date time) {
-    // this.user = user;
-    // this.cinema = cinema;
-    // this.rating = rating;
-    // this.description = description;
-    // this.time = time;
-    // }
 
     public RatedCinema(RatedCinemaId id, int rating, String description, Date time) {
         this.id = id;
         this.rating = rating;
         this.description = description;
         this.time = time;
+    }
+
+    public RatedCinema(User user, Cinema cinema, int rating, String description, Date time) {
+        this(new RatedCinemaId(user, cinema), rating, description, time);
+    }
+
+    public RatedCinemaId getId() {
+        return id;
+    }
+
+    public void setId(RatedCinemaId id) {
+        this.id = id;
     }
 
     public Date getTime() {

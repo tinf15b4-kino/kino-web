@@ -8,5 +8,8 @@ import org.springframework.data.repository.query.Param;
 
 public interface RatedCinemaRepository extends JpaRepository<RatedCinema, Long> {
     @Query("SELECT rc FROM RatedCinema rc WHERE rc.id.cinema = :cinema ORDER BY rc.time ASC")
-    List<RatedCinema> findRatings(@Param("cinema") Cinema cinema);
+    List<RatedCinema> findRatingsByCinema(@Param("cinema") Cinema cinema);
+
+    @Query("SELECT rc FROM RatedCinema rc WHERE rc.id.user = :user ORDER BY rc.time ASC")
+    List<RatedCinema> findRatingsByUser(@Param("user") User user);
 }

@@ -31,6 +31,9 @@ public class FakeDataInitializer implements DataInitializer {
     @Autowired
     private RatedCinemaRepository ratedCinemaRepo;
 
+    @Autowired
+    private RatedMovieRepository ratedMovieRepo;
+
     Random rnd = new Random();
 
     @Override
@@ -53,7 +56,11 @@ public class FakeDataInitializer implements DataInitializer {
             Cinema c = new Cinema();
             c.setName(faker.company().name());
             Address a = faker.address();
-            c.setAddress(a.streetName(), a.streetAddressNumber(), a.zipCode(), a.city());
+            c.setStreet(a.streetName());
+            c.setHnr(a.streetAddressNumber());
+            c.setPostcode(a.zipCode());
+            c.setCity(a.cityName());
+            c.setCountry(a.country());
 
             cineRepo.save(c);
 
@@ -105,6 +112,23 @@ public class FakeDataInitializer implements DataInitializer {
                 rc.setTime(faker.date().between(new Date(), new Date(new Date().getTime() + 1000L * 3600 * 24 * 7)));
 
                 ratedCinemaRepo.save(rc);
+            }
+        }
+
+        // Some fake Movie Ratings
+        for (Movie m : movieRepo.findAll()) {
+            // Add random 0..3 ratings
+            long quantity = (long) rnd.nextInt(4);
+
+            for (long j = 0; j < quantity; j++) {
+                RatedMovie rm = new RatedMovie();
+                u = userRepo.getOne((long) rnd.nextInt((int) userRepo.count()) + 1L);
+                rm.setId(new RatedMovieId(u, m));
+                rm.setRating(rnd.nextInt(6));
+                rm.setDescription(faker.shakespeare().kingRichardIIIQuote());
+                rm.setTime(faker.date().between(new Date(), new Date(new Date().getTime() + 1000L * 3600 * 24 * 7)));
+
+                ratedMovieRepo.save(rm);
             }
         }
 

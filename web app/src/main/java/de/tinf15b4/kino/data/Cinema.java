@@ -7,45 +7,85 @@ import javax.persistence.Id;
 
 @Entity
 public class Cinema {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    private String name;
+    private String street;
+    private String hnr;
+    private String postcode;
+    private String city;
+    private String country;
+
     public Cinema() {
-        setName("");
+
     }
 
-    public Cinema(String name) {
-        setName(name);
+    public Cinema(String name, String street, String hnr, String postcode, String city, String country) {
+        this.name = name;
+        this.street = street;
+        this.hnr = hnr;
+        this.postcode = postcode;
+        this.city = city;
+        this.country = country;
+    }
+
+    public String getAddress() {
+        return String.format("%s %s\n%s %s, %S", street, hnr, postcode, city, country);
     }
 
     public long getId() {
         return id;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
 
-    private String name;
-
-    public String getAddress() {
-        return address;
+    public String getStreet() {
+        return street;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setStreet(String street) {
+        this.street = street;
     }
 
-    public void setAddress(String street, String number,
-                           String zipCode, String city)
-    {
-        this.setAddress(String.format("%s %s\n%s %s", street, number, zipCode, city));
+    public String getHnr() {
+        return hnr;
     }
 
-    private String address;
+    public void setHnr(String hnr) {
+        this.hnr = hnr;
+    }
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+
 }

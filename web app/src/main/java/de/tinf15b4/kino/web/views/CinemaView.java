@@ -77,7 +77,7 @@ public class CinemaView extends VerticalLayout implements View {
             ratings.setSpacing(true);
             ratings.setSizeFull();
 
-            for (RatedCinema rc : ratedCinemaRepo.findRatings(c)) {
+            for (RatedCinema rc : ratedCinemaRepo.findRatingsByCinema(c)) {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMANY);
                 ratings.addComponent(new Label(rc.getUser().getName()));
                 ratings.addComponent(new Label(rc.getRating() + ""));
@@ -85,7 +85,7 @@ public class CinemaView extends VerticalLayout implements View {
                 ratings.addComponent(new Label(rc.getDescription()));
             }
 
-            this.addComponent(new Panel(ratings));
+            this.addComponent(new Panel("Ratings", ratings));
 
             GridLayout movies = new GridLayout(3, 1);
             movies.setMargin(true);
@@ -101,7 +101,7 @@ public class CinemaView extends VerticalLayout implements View {
                 movies.addComponent(new Label(pricef.format(p.getPrice()/100.0)));
             }
 
-            this.addComponent(new Panel(movies));
+            this.addComponent(new Panel("Movies", movies));
         }
     }
 
