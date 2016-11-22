@@ -1,5 +1,6 @@
 package de.tinf15b4.kino.web;
 
+import de.tinf15b4.kino.data.DataInitializer;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -54,13 +55,9 @@ public class KinoWebApplication {
     }
 
     @Bean
-    public CommandLineRunner loadData(CinemaRepository repository) {
+    public CommandLineRunner loadData(DataInitializer initializer) {
         return (args) -> {
-            // DEBUG CODE: Add some cinemas to the in-memory database
-
-            // save a couple of customers
-            repository.save(new Cinema("Demo Cinema"));
-            repository.save(new Cinema("Dummy Cinema #2"));
+            initializer.initialize();
         };
     }
 
