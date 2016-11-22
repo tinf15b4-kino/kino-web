@@ -1,18 +1,38 @@
 package de.tinf15b4.kino.web.views;
 
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.ExternalResource;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Link;
+import com.vaadin.ui.MenuBar;
+import com.vaadin.ui.Panel;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
+
 import de.tinf15b4.kino.data.Cinema;
 import de.tinf15b4.kino.data.CinemaRepository;
 import de.tinf15b4.kino.data.Favorite;
 import de.tinf15b4.kino.data.FavoriteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
+import de.tinf15b4.kino.data.Playlist;
+import de.tinf15b4.kino.data.PlaylistRepository;
+import de.tinf15b4.kino.data.RatedCinema;
+import de.tinf15b4.kino.data.RatedCinemaRepository;
 
 @SpringView(name = CinemaView.VIEW_NAME)
 public class CinemaView extends VerticalLayout implements View {
@@ -23,6 +43,12 @@ public class CinemaView extends VerticalLayout implements View {
 
     @Autowired
     private FavoriteRepository favRepo;
+
+    @Autowired
+    private PlaylistRepository playlistRepo;
+
+    @Autowired
+    private RatedCinemaRepository ratedCinemaRepo;
 
     private HorizontalLayout favButtonContainer = new HorizontalLayout();
 
@@ -42,7 +68,40 @@ public class CinemaView extends VerticalLayout implements View {
             this.addComponent(new Label(c.getName()));
 
             this.addComponent(favButtonContainer);
+
+            this.addComponent(new Label(c.getAddress(), ContentMode.PREFORMATTED));
             replaceFavoriteButton(c);
+
+            GridLayout ratings = new GridLayout(4, 1);
+            ratings.setMargin(true);
+            ratings.setSpacing(true);
+            ratings.setSizeFull();
+
+            for (RatedCinema rc : ratedCinemaRepo.findRatingsByCinema(c)) {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMANY);
+                ratings.addComponent(new Label(rc.getUser().getName()));
+                ratings.addComponent(new Label(rc.getRating() + ""));
+                ratings.addComponent(new Label(sdf.format(rc.getTime())));
+                ratings.addComponent(new Label(rc.getDescription()));
+            }
+
+            this.addComponent(new Panel("Ratings", ratings));
+
+            GridLayout movies = new GridLayout(3, 1);
+            movies.setMargin(true);
+            movies.setSpacing(true);
+            movies.setSizeFull();
+
+            for (Playlist p : playlistRepo.findForCinema(c, new Date(), new Date(new Date().getTime() + 1000L*3600*24*7))) {
+                SimpleDateFormat sdf = new SimpleDateFormat("E HH:mm", Locale.GERMANY);
+                NumberFormat pricef = NumberFormat.getCurrencyInstance(Locale.GERMANY);
+                movies.addComponent(new Label(sdf.format(p.getTime())));
+                movies.addComponent(new Link(p.getMovie().getName(),
+                        new ExternalResource("#!" + MovieView.VIEW_NAME + "/" + p.getMovie().getId())));
+                movies.addComponent(new Label(pricef.format(p.getPrice()/100.0)));
+            }
+
+            this.addComponent(new Panel("Movies", movies));
         }
     }
 
