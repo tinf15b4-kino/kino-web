@@ -1,14 +1,19 @@
 package de.tinf15b4.kino.data;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Favorite {
     public Favorite() {
     }
 
-    public Favorite(Cinema c) {
-        setCinema(c);
+    public Favorite(User user, Cinema cinema) {
+        this.cinema = cinema;
+        this.user = user;
     }
 
     @Id
@@ -25,4 +30,16 @@ public class Favorite {
     public void setCinema(Cinema cinema) {
         this.cinema = cinema;
     }
+
+    @ManyToOne
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
 }

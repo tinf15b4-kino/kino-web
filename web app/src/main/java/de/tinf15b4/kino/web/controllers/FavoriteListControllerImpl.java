@@ -1,13 +1,15 @@
 package de.tinf15b4.kino.web.controllers;
 
-import de.tinf15b4.kino.data.CinemaRepository;
-import de.tinf15b4.kino.data.Favorite;
-import de.tinf15b4.kino.data.FavoriteRepository;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import de.tinf15b4.kino.data.CinemaRepository;
+import de.tinf15b4.kino.data.Favorite;
+import de.tinf15b4.kino.data.FavoriteRepository;
+import de.tinf15b4.kino.data.users.UserLoginBean;
 
 @Service
 /*
@@ -20,6 +22,9 @@ public class FavoriteListControllerImpl implements FavoriteListController {
 
     @Autowired
     private CinemaRepository cineRepo;
+
+    @Autowired
+    private UserLoginBean userBean;
 
     @Override
     @Transactional
@@ -44,7 +49,7 @@ public class FavoriteListControllerImpl implements FavoriteListController {
     @Transactional
     public void markFavorite(long cinemaId) {
         if (!isCinemaFavorite(cinemaId)) {
-            Favorite f = new Favorite(cineRepo.findOne(cinemaId));
+            Favorite f = new Favorite(userBean.getCurrentUser(), cineRepo.findOne(cinemaId));
             faveRepo.save(f);
         }
     }
