@@ -8,18 +8,16 @@ public interface FavoriteService {
 
     List<Favorite> getAllFavoritesForUser(User u);
 
-    Favorite getFavorite(long cinemaId);
+    Favorite findFavorite(long cinemaId, User u);
 
-    boolean isCinemaFavorite(long cinemaId);
+    boolean isCinemaFavorite(long cinemaId, User u);
 
     void markFavorite(long cinemaId, User u);
 
-    void unmarkFavorite(long cinemaId);
+    void unmarkFavorite(long cinemaId, User u);
 
     void save(Favorite f);
 
-    List<Favorite> findByCinemaId(long id);
-
-    void delete(List<Favorite> f);
+    void delete(Favorite f);
 
 }

@@ -83,10 +83,10 @@ public class FavoriteListView extends VerticalLayout implements View {
     }
 
     private void removeFromFavorites(long cinemaId, HorizontalLayout row) {
-        if (favoriteService.isCinemaFavorite(cinemaId)) {
+        if (favoriteService.isCinemaFavorite(cinemaId, userBean.getCurrentUser())) {
             // remove favorite entry
-            String cinemaName = favoriteService.getFavorite(cinemaId).getCinema().getName();
-            favoriteService.unmarkFavorite(cinemaId);
+            String cinemaName = favoriteService.findFavorite(cinemaId, userBean.getCurrentUser()).getCinema().getName();
+            favoriteService.unmarkFavorite(cinemaId, userBean.getCurrentUser());
 
             row.removeAllComponents();
 
@@ -109,6 +109,7 @@ public class FavoriteListView extends VerticalLayout implements View {
 
     private void undoRemove(long cinemaId, HorizontalLayout row) {
         favoriteService.markFavorite(cinemaId, userBean.getCurrentUser());
-        content.replaceComponent(row, buildListEntry(favoriteService.getFavorite(cinemaId).getCinema()));
+        content.replaceComponent(row,
+                buildListEntry(favoriteService.findFavorite(cinemaId, userBean.getCurrentUser()).getCinema()));
     }
 }

@@ -19,33 +19,35 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     @Override
     public List<Favorite> getAllFavoritesForUser(User u) {
-        return favoriteRepository.findAll(); // FIXME what about the current
-                                             // user?
+        return favoriteRepository.findByUserId(u.getId());
     }
 
     @Override
-    public Favorite getFavorite(long cinemaId) {
-        return favoriteRepository.findByCinemaId(cinemaId).get(0);
+    public Favorite findFavorite(long cinemaId, User u) {
+        return favoriteRepository.findFavorite(cinemaId, u.getId());
     }
 
     @Override
-    public boolean isCinemaFavorite(long cinemaId) {
-        List<Favorite> faves = favoriteRepository.findByCinemaId(cinemaId);
-        return !faves.isEmpty();
+    public boolean isCinemaFavorite(long cinemaId, User u) {
+        if (u == null)
+            return false;
+        return findFavorite(cinemaId, u) != null;
     }
 
     @Override
     public void markFavorite(long cinemaId, User u) {
-        if (!isCinemaFavorite(cinemaId)) {
+        if (!isCinemaFavorite(cinemaId, u)) {
             Favorite f = new Favorite(u, cinemaRepository.findOne(cinemaId));
             favoriteRepository.save(f);
         }
     }
 
     @Override
-    public void unmarkFavorite(long cinemaId) {
-        List<Favorite> faves = favoriteRepository.findByCinemaId(cinemaId);
-        faves.forEach(fav -> favoriteRepository.delete(fav));
+    public void unmarkFavorite(long cinemaId, User u) {
+        if (isCinemaFavorite(cinemaId, u)) {
+            Favorite fav = findFavorite(cinemaId, u);
+            favoriteRepository.delete(fav);
+        }
     }
 
     @Override
@@ -54,12 +56,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     }
 
     @Override
-    public List<Favorite> findByCinemaId(long id) {
-        return favoriteRepository.findByCinemaId(id);
-    }
-
-    @Override
-    public void delete(List<Favorite> f) {
+    public void delete(Favorite f) {
         favoriteRepository.delete(f);
     }
 
