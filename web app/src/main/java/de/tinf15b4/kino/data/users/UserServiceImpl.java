@@ -1,7 +1,6 @@
 package de.tinf15b4.kino.data.users;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,19 +23,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByName(String username) {
-        Optional<User> userOptional = userRepository.findAll().stream().filter(u -> u.getName().equals(username))
-                .findFirst();
-        if (userOptional.isPresent())
-            return userOptional.get();
-        return null;
+        return userRepository.findByName(username);
     }
 
     @Override
     public User findByEmail(String email) {
-        Optional<User> userOptional = userRepository.findAll().stream().filter(u -> u.getEmail().equals(email))
-                .findFirst();
-        if (userOptional.isPresent())
-            return userOptional.get();
-        return null;
+        return userRepository.findByEmail(email);
     }
 }

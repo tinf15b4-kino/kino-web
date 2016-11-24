@@ -23,7 +23,7 @@ import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.cinemas.CinemaService;
 import de.tinf15b4.kino.data.favorites.Favorite;
 import de.tinf15b4.kino.data.favorites.FavoriteService;
-import de.tinf15b4.kino.data.users.UserLoginBean;
+import de.tinf15b4.kino.data.users.UserBean;
 
 @SpringView(name = CinemaListView.VIEW_NAME)
 public class CinemaListView extends VerticalLayout implements View {
@@ -36,7 +36,7 @@ public class CinemaListView extends VerticalLayout implements View {
     private FavoriteService favoriteService;
 
     @Autowired
-    private UserLoginBean userBean;
+    private UserBean userBean;
 
     private HorizontalLayout favButtonContainer = new HorizontalLayout();
 

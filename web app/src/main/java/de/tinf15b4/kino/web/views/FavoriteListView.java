@@ -24,7 +24,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.favorites.Favorite;
 import de.tinf15b4.kino.data.favorites.FavoriteService;
-import de.tinf15b4.kino.data.users.UserLoginBean;
+import de.tinf15b4.kino.data.users.UserBean;
 
 @SpringView(name = FavoriteListView.VIEW_NAME)
 public class FavoriteListView extends VerticalLayout implements View {
@@ -36,12 +36,12 @@ public class FavoriteListView extends VerticalLayout implements View {
     private FavoriteService favoriteService;
 
     @Autowired
-    private UserLoginBean userLoginBean;
+    private UserBean userBean;
 
     @PostConstruct
     private void init() {
-        if (userLoginBean.isUserLoggedIn()) {
-            List<Favorite> l = favoriteService.getAllFavoritesForUser(userLoginBean.getCurrentUser());
+        if (userBean.isUserLoggedIn()) {
+            List<Favorite> l = favoriteService.getAllFavoritesForUser(userBean.getCurrentUser());
 
             this.addComponent(new Label("Favorite Cinemas"));
 
@@ -108,7 +108,7 @@ public class FavoriteListView extends VerticalLayout implements View {
     }
 
     private void undoRemove(long cinemaId, HorizontalLayout row) {
-        favoriteService.markFavorite(cinemaId, userLoginBean.getCurrentUser());
+        favoriteService.markFavorite(cinemaId, userBean.getCurrentUser());
         content.replaceComponent(row, buildListEntry(favoriteService.getFavorite(cinemaId).getCinema()));
     }
 }

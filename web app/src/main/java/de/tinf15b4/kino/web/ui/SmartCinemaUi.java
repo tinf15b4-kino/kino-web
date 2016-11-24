@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.ClassResource;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -23,8 +24,11 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-import de.tinf15b4.kino.data.users.UserLoginBean;
-import de.tinf15b4.kino.web.views.Views;
+import de.tinf15b4.kino.data.users.UserBean;
+import de.tinf15b4.kino.web.views.CinemaListView;
+import de.tinf15b4.kino.web.views.FavoriteListView;
+import de.tinf15b4.kino.web.views.LoginView;
+import de.tinf15b4.kino.web.views.MovieListView;
 
 @SuppressWarnings("serial")
 @Theme("smartCinema")
@@ -35,7 +39,7 @@ public class SmartCinemaUi extends UI {
     private SpringViewProvider viewProvider;
 
     @Autowired
-    private UserLoginBean userLoginBean;
+    private UserBean userBean;
 
     private HorizontalLayout header;
 
@@ -43,7 +47,7 @@ public class SmartCinemaUi extends UI {
 
     @PostConstruct
     public void postInit() {
-        userLoginBean.setUi(this);
+        userBean.setUi(this);
     }
 
     @Override
@@ -93,22 +97,21 @@ public class SmartCinemaUi extends UI {
         header.addComponent(logo);
         header.setComponentAlignment(logo, Alignment.MIDDLE_LEFT);
 
-        if (userLoginBean.isUserLoggedIn()) {
-            Button user = new Button(userLoginBean.getCurrentUser().getName(), e -> userClicked());
+        if (userBean.isUserLoggedIn()) {
+            Button user = new Button(userBean.getCurrentUser().getName(), e -> userClicked());
             header.addComponent(user);
-            Button logout = new Button("Abmelden", e -> userLoginBean.logout());
+            Button logout = new Button("Abmelden", e -> userBean.logout());
             header.addComponent(logout);
             header.setComponentAlignment(user, Alignment.MIDDLE_RIGHT);
             header.setComponentAlignment(logout, Alignment.MIDDLE_RIGHT);
         } else {
-            Button register = new Button(Views.REGISTER.getReadableName(), e -> navigateTo(Views.REGISTER));
+            Button register = new Button("Registrieren", e -> navigateTo("register"));
             header.addComponent(register);
-            Button login = new Button(Views.LOGIN.getReadableName(), e -> navigateTo(Views.LOGIN));
+            Button login = new Button("Anmelden", e -> navigateTo(LoginView.VIEW_NAME));
             header.addComponent(login);
             header.setComponentAlignment(register, Alignment.MIDDLE_RIGHT);
             header.setComponentAlignment(login, Alignment.MIDDLE_RIGHT);
         }
-
         header.setExpandRatio(logo, 1);
 
         return header;
@@ -130,9 +133,9 @@ public class SmartCinemaUi extends UI {
         row1.setSpacing(true);
         row1.setSizeFull();
 
-        Button account = new Button(Views.ACCOUNT.getReadableName(), e -> navigateTo(Views.ACCOUNT));
+        Button account = new Button("Mein Konto", e -> navigateTo("account"));
         row1.addComponent(account);
-        Button contact = new Button(Views.CONTACT.getReadableName(), e -> navigateTo(Views.CONTACT));
+        Button contact = new Button("Kontakt", e -> navigateTo("contact"));
         row1.addComponent(contact);
 
         row1.setComponentAlignment(account, Alignment.MIDDLE_LEFT);
@@ -148,9 +151,9 @@ public class SmartCinemaUi extends UI {
         copyright.addStyleName("copyrightText");
         copyright.setSizeUndefined();
         row2.addComponent(copyright);
-        Button impressum = new Button(Views.IMPRESSUM.getReadableName(), e -> navigateTo(Views.IMPRESSUM));
+        Button impressum = new Button("Impressum", e -> navigateTo("impressum"));
         row2.addComponent(impressum);
-        Button datenschutz = new Button(Views.DATASECURITY.getReadableName(), e -> navigateTo(Views.DATASECURITY));
+        Button datenschutz = new Button("Datenschutz", e -> navigateTo("data_security"));
         row2.addComponent(datenschutz);
 
         row2.setComponentAlignment(copyright, Alignment.MIDDLE_LEFT);
@@ -170,23 +173,27 @@ public class SmartCinemaUi extends UI {
         navigator.setMargin(true);
         navigator.setSizeUndefined();
 
-        for (Views view : Views.values()) {
-            if (view.isInNavigator()) {
-                Button button = new Button(view.getReadableName(), e -> navigateTo(view));
-                // Setting 100% width here will not work as Vaadin does not know
-                // how big the navigator will be.
-                button.addStyleName("navigatorButton");
-                button.setIcon(view.getIcon());
-                navigator.addComponent(button);
-            }
-        }
+        navigator.addComponent(createViewButton("Filme", MovieListView.VIEW_NAME, FontAwesome.PLAY_CIRCLE_O));
+        navigator.addComponent(createViewButton("Kinos", CinemaListView.VIEW_NAME, FontAwesome.VIDEO_CAMERA));
+        navigator.addComponent(createViewButton("Favoriten", FavoriteListView.VIEW_NAME, FontAwesome.HEART));
+        navigator.addComponent(createViewButton("Neu im Kino", "new", FontAwesome.EXCLAMATION_CIRCLE));
+        navigator.addComponent(createViewButton("Demnächst", "coming_soon", FontAwesome.HISTORY));
 
         return navigator;
     }
 
-    private void navigateTo(Views view) {
+    private Component createViewButton(String readableName, String viewId, FontAwesome icon) {
+        Button button = new Button(readableName, e -> navigateTo(viewId));
+        // Setting 100% width here will not work as Vaadin does not know
+        // how big the navigator will be.
+        button.addStyleName("navigatorButton");
+        button.setIcon(icon);
+        return button;
+    }
+
+    private void navigateTo(String viewId) {
         // TODO implement all views
-        this.getNavigator().navigateTo(view.getViewId());
+        this.getNavigator().navigateTo(viewId);
     }
 
     public void update() {

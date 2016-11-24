@@ -8,16 +8,16 @@ import de.tinf15b4.kino.web.ui.SmartCinemaUi;
 
 @Component
 @SessionScope
-public class UserLoginBean {
+public class UserBean {
 
     @Autowired
     private UserService userService;
 
     private SmartCinemaUi ui;
-    private User user;
+    private User currentUser;
 
     public boolean isUserLoggedIn() {
-        return user != null;
+        return currentUser != null;
     }
 
     public boolean login(String nameOrMail, String password) {
@@ -28,7 +28,7 @@ public class UserLoginBean {
         }
         if (user != null && user.getPassword().equals(password)) {
             // login successful
-            this.user = user;
+            this.currentUser = user;
             ui.update();
             return true;
         } else {
@@ -38,19 +38,19 @@ public class UserLoginBean {
     }
 
     public boolean logout() {
-        if (user == null) {
+        if (currentUser == null) {
             // Nobody is logged in. This should never happen as there should be
             // no option to hit logout in this case
             throw new NoUserLoggedInException("There is no user logged in. Logout failed");
         } else {
-            user = null;
+            currentUser = null;
             ui.update();
             return true;
         }
     }
 
     public User getCurrentUser() {
-        return user;
+        return currentUser;
     }
 
     public void setUi(SmartCinemaUi ui) {

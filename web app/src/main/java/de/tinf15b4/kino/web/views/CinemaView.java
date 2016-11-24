@@ -33,7 +33,7 @@ import de.tinf15b4.kino.data.playlists.Playlist;
 import de.tinf15b4.kino.data.playlists.PlaylistService;
 import de.tinf15b4.kino.data.ratedcinemas.RatedCinema;
 import de.tinf15b4.kino.data.ratedcinemas.RatedCinemaService;
-import de.tinf15b4.kino.data.users.UserLoginBean;
+import de.tinf15b4.kino.data.users.UserBean;
 
 @SpringView(name = CinemaView.VIEW_NAME)
 public class CinemaView extends VerticalLayout implements View {
@@ -43,7 +43,7 @@ public class CinemaView extends VerticalLayout implements View {
     private CinemaService cinemaService;
 
     @Autowired
-    private UserLoginBean userBean;
+    private UserBean userBean;
 
     @Autowired
     private FavoriteService favoriteService;
