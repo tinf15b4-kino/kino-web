@@ -110,7 +110,7 @@ public class FakeDataInitializer implements DataInitializer {
                 u = userRepo.getOne((long) rnd.nextInt((int) userRepo.count()) + 1L);
                 rc.setId(new RatedCinemaId(u, c));
                 rc.setRating(rnd.nextInt(6));
-                rc.setDescription(faker.shakespeare().kingRichardIIIQuote());
+                rc.setDescription(faker.chuckNorris().fact());
                 rc.setTime(faker.date().between(new Date(), new Date(new Date().getTime() + 1000L * 3600 * 24 * 7)));
 
                 ratedCinemaRepo.save(rc);
@@ -127,7 +127,7 @@ public class FakeDataInitializer implements DataInitializer {
                 u = userRepo.getOne((long) rnd.nextInt((int) userRepo.count()) + 1L);
                 rm.setId(new RatedMovieId(u, m));
                 rm.setRating(rnd.nextInt(6));
-                rm.setDescription(faker.shakespeare().kingRichardIIIQuote());
+                rm.setDescription(faker.chuckNorris().fact());
                 rm.setTime(faker.date().between(new Date(), new Date(new Date().getTime() + 1000L * 3600 * 24 * 7)));
 
                 ratedMovieRepo.save(rm);
