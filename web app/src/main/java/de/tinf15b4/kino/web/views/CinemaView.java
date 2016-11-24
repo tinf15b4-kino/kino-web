@@ -21,6 +21,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.MenuBar;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -33,6 +34,7 @@ import de.tinf15b4.kino.data.Playlist;
 import de.tinf15b4.kino.data.PlaylistRepository;
 import de.tinf15b4.kino.data.RatedCinema;
 import de.tinf15b4.kino.data.RatedCinemaRepository;
+import de.tinf15b4.kino.data.users.UserLoginBean;
 
 @SpringView(name = CinemaView.VIEW_NAME)
 public class CinemaView extends VerticalLayout implements View {
@@ -40,6 +42,9 @@ public class CinemaView extends VerticalLayout implements View {
 
     @Autowired
     private CinemaRepository repo;
+
+    @Autowired
+    private UserLoginBean userBean;
 
     @Autowired
     private FavoriteRepository favRepo;
@@ -66,6 +71,8 @@ public class CinemaView extends VerticalLayout implements View {
             Cinema c = repo.getOne(id);
 
             this.addComponent(new Label(c.getName()));
+
+            // this.addComponent(c.getImage());
 
             this.addComponent(favButtonContainer);
 
@@ -135,15 +142,20 @@ public class CinemaView extends VerticalLayout implements View {
 
     @Transactional
     private void markAsFavorite(long id) {
-        List<Favorite> existing = favRepo.findByCinemaId(id);
-        if (existing.isEmpty()) {
-            Cinema c = repo.findOne(id);
+        if (userBean.isUserLoggedIn()) {
 
-            // create new favorite entry
-            favRepo.save(new Favorite(c));
+            List<Favorite> existing = favRepo.findByCinemaId(id);
+            if (existing.isEmpty()) {
+                Cinema c = repo.findOne(id);
 
-            // replace button
-            replaceFavoriteButton(c);
+                // create new favorite entry
+                favRepo.save(new Favorite(userBean.getCurrentUser(), c));
+
+                // replace button
+                replaceFavoriteButton(c);
+            }
+        } else {
+            Notification.show("Melde dich an, um diese Fuktion zu nutzen!", "", Notification.Type.HUMANIZED_MESSAGE);
         }
     }
 

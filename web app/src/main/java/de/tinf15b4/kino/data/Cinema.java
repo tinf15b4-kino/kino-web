@@ -18,18 +18,20 @@ public class Cinema {
     private String postcode;
     private String city;
     private String country;
+    private byte[] image;
 
     public Cinema() {
 
     }
 
-    public Cinema(String name, String street, String hnr, String postcode, String city, String country) {
+    public Cinema(String name, String street, String hnr, String postcode, String city, String country, byte[] image) {
         this.name = name;
         this.street = street;
         this.hnr = hnr;
         this.postcode = postcode;
         this.city = city;
         this.country = country;
+        this.image = image;
     }
 
     public String getAddress() {
@@ -85,6 +87,14 @@ public class Cinema {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
 

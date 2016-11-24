@@ -86,8 +86,10 @@ public class MyVaadinUi extends UI {
         header.setMargin(new MarginInfo(false, true));
         header.setWidth("100%");
         header.addStyleName("headerbackground");
+        header.setHeight("60px");
 
         Image logo = new Image(null, new ClassResource("/images/logo.png"));
+        logo.setHeight("50px");
         header.addComponent(logo);
         header.setComponentAlignment(logo, Alignment.MIDDLE_LEFT);
 
@@ -120,6 +122,8 @@ public class MyVaadinUi extends UI {
         VerticalLayout footer = new VerticalLayout();
         footer.setMargin(new MarginInfo(false, true));
         footer.setWidth("100%");
+        footer.addStyleName("footerbackground");
+        footer.setHeight("100px");
 
         // First row in the footer
         HorizontalLayout row1 = new HorizontalLayout();
@@ -141,6 +145,7 @@ public class MyVaadinUi extends UI {
         row2.setSizeFull();
 
         Label copyright = new Label("Copyright &copy; 2016 smartCinema", ContentMode.HTML);
+        copyright.addStyleName("copyrightText");
         copyright.setSizeUndefined();
         row2.addComponent(copyright);
         Button impressum = new Button(Views.IMPRESSUM.getReadableName(), e -> navigateTo(Views.IMPRESSUM));

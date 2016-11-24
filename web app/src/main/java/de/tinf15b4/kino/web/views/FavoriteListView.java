@@ -1,18 +1,30 @@
 package de.tinf15b4.kino.web.views;
 
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Link;
+import com.vaadin.ui.Panel;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
+
 import de.tinf15b4.kino.data.Cinema;
 import de.tinf15b4.kino.data.Favorite;
+import de.tinf15b4.kino.data.users.UserLoginBean;
 import de.tinf15b4.kino.web.controllers.FavoriteListController;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.annotation.PostConstruct;
-import java.util.List;
 
 @SpringView(name = FavoriteListView.VIEW_NAME)
 public class FavoriteListView extends VerticalLayout implements View {
@@ -23,16 +35,33 @@ public class FavoriteListView extends VerticalLayout implements View {
     @Autowired
     private FavoriteListController controller;
 
+    @Autowired
+    private UserLoginBean userBean;
+
     @PostConstruct
     private void init() {
-        this.addComponent(new Label("Favorite Cinemas"));
+        if (userBean.isUserLoggedIn()) {
+            List<Favorite> l = controller.getAllFavesForCurrentUser();
 
-        content = new VerticalLayout();
-        content.setMargin(true);
-        content.setSpacing(true);
-        this.addComponent(new Panel(content));
+            this.addComponent(new Label("Favorite Cinemas"));
+
+            content = new VerticalLayout();
+            content.setMargin(true);
+            content.setSpacing(true);
+            this.addComponent(new Panel(content));
+
+            if (l.isEmpty()) {
+                content.addComponent(new Label("No Favorite Cinemas yet :("));
+            } else {
+                for (Favorite f : l) {
+                    content.addComponent(buildListEntry(f.getCinema()));
+                }
+            }
+        } else {
+            this.addComponent(new Label("Sie müssen sich Anmelden"));
+        }
     }
-
+    
     private Component buildListEntry(Cinema c) {
         HorizontalLayout pav = new HorizontalLayout();
         pav.setWidth(100, Unit.PERCENTAGE);
@@ -50,16 +79,7 @@ public class FavoriteListView extends VerticalLayout implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-        content.removeAllComponents();
 
-        List<Favorite> l = controller.getAllFavesForCurrentUser();
-        if (l.isEmpty()) {
-            content.addComponent(new Label("No Favorite Cinemas yet :("));
-        } else {
-            for (Favorite f : l) {
-                content.addComponent(buildListEntry(f.getCinema()));
-            }
-        }
     }
 
     private void removeFromFavorites(long cinemaId, HorizontalLayout row) {
