@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -18,28 +17,27 @@ import com.vaadin.ui.Link;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 
-import de.tinf15b4.kino.data.Movie;
-import de.tinf15b4.kino.data.MovieRepository;
-import de.tinf15b4.kino.data.Playlist;
-import de.tinf15b4.kino.data.PlaylistRepository;
-import de.tinf15b4.kino.data.RatedMovie;
-import de.tinf15b4.kino.data.RatedMovieRepository;
+import de.tinf15b4.kino.data.movies.Movie;
+import de.tinf15b4.kino.data.movies.MovieService;
+import de.tinf15b4.kino.data.playlists.Playlist;
+import de.tinf15b4.kino.data.playlists.PlaylistService;
+import de.tinf15b4.kino.data.ratedmovies.RatedMovie;
+import de.tinf15b4.kino.data.ratedmovies.RatedMovieService;
 
 @SpringView(name = MovieView.VIEW_NAME)
 public class MovieView extends VerticalLayout implements View {
     public static final String VIEW_NAME = "movie";
 
     @Autowired
-    private MovieRepository repo;
+    private MovieService movieService;
 
     @Autowired
-    private PlaylistRepository playlistRepo;
+    private PlaylistService playlistService;
 
     @Autowired
-    private RatedMovieRepository ratedMovieRepo;
+    private RatedMovieService ratedMovieService;
 
     @Override
-    @Transactional
     public void enter(ViewChangeListener.ViewChangeEvent event) {
         this.setMargin(true);
         this.setSpacing(true);
@@ -49,7 +47,7 @@ public class MovieView extends VerticalLayout implements View {
             String idStr = event.getParameters();
             long id = Long.parseLong(idStr);
 
-            Movie m = repo.getOne(id);
+            Movie m = movieService.findOne(id);
 
             this.addComponent(new Label(m.getName()));
             this.addComponent(new Label("Länge: " + m.getLengthMinutes() + " Minuten"));
@@ -60,7 +58,7 @@ public class MovieView extends VerticalLayout implements View {
             ratings.setSpacing(true);
             ratings.setSizeFull();
 
-            for (RatedMovie rm : ratedMovieRepo.findRatingsByMovie(m)) {
+            for (RatedMovie rm : ratedMovieService.findRatingsByMovie(m)) {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMANY);
                 ratings.addComponent(new Label(rm.getUser().getName()));
                 ratings.addComponent(new Label(rm.getRating() + ""));
@@ -75,7 +73,8 @@ public class MovieView extends VerticalLayout implements View {
             playtimes.setSpacing(true);
             playtimes.setSizeFull();
 
-            for (Playlist p : playlistRepo.findForMovie(m, new Date(), new Date(new Date().getTime() + 1000L*3600*24*7))) {
+            for (Playlist p : playlistService.findForMovie(m, new Date(),
+                    new Date(new Date().getTime() + 1000L * 3600 * 24 * 7))) {
                 SimpleDateFormat sdf = new SimpleDateFormat("E HH:mm", Locale.GERMANY);
                 NumberFormat pricef = NumberFormat.getCurrencyInstance(Locale.GERMANY);
                 playtimes.addComponent(new Label(sdf.format(p.getTime())));

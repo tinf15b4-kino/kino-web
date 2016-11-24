@@ -1,4 +1,4 @@
-package de.tinf15b4.kino.data;
+package de.tinf15b4.kino.data.users;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -6,7 +6,8 @@ import javax.persistence.Id;
 
 @Entity
 public class User {
-    // TODO: Make name or email a primary key, or at least enforce their uniqueness
+    // TODO: Make name or email a primary key, or at least enforce their
+    // uniqueness
     @Id
     @GeneratedValue
     private long id;
@@ -15,7 +16,8 @@ public class User {
     private String email;
     private String favLocation; // TODO: Numeric Zip Code?
 
-    // FIXME: PLAIN TEXT PASSWORD STORAGE OMG PLEASE KILL ME WHAT AM I DOING WITH MY LIFE
+    // FIXME: PLAIN TEXT PASSWORD STORAGE OMG PLEASE KILL ME WHAT AM I DOING
+    // WITH MY LIFE
     private String password;
 
     public long getId() {

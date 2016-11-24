@@ -5,7 +5,6 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -20,10 +19,10 @@ import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
-import de.tinf15b4.kino.data.Cinema;
-import de.tinf15b4.kino.data.CinemaRepository;
-import de.tinf15b4.kino.data.Favorite;
-import de.tinf15b4.kino.data.FavoriteRepository;
+import de.tinf15b4.kino.data.cinemas.Cinema;
+import de.tinf15b4.kino.data.cinemas.CinemaService;
+import de.tinf15b4.kino.data.favorites.Favorite;
+import de.tinf15b4.kino.data.favorites.FavoriteService;
 import de.tinf15b4.kino.data.users.UserLoginBean;
 
 @SpringView(name = CinemaListView.VIEW_NAME)
@@ -31,10 +30,10 @@ public class CinemaListView extends VerticalLayout implements View {
     public static final String VIEW_NAME = "cinemas";
 
     @Autowired
-    private CinemaRepository repo;
+    private CinemaService cinemaService;
 
     @Autowired
-    private FavoriteRepository favRepo;
+    private FavoriteService favoriteService;
 
     @Autowired
     private UserLoginBean userBean;
@@ -42,12 +41,11 @@ public class CinemaListView extends VerticalLayout implements View {
     private HorizontalLayout favButtonContainer = new HorizontalLayout();
 
     @PostConstruct
-    @Transactional
     public void init() {
         this.setMargin(true);
         this.setSpacing(true);
 
-        for (Cinema c : repo.findAll()) {
+        for (Cinema c : cinemaService.findAll()) {
             HorizontalLayout pav = new HorizontalLayout();
             pav.setWidth(100, Unit.PERCENTAGE);
 
@@ -73,7 +71,7 @@ public class CinemaListView extends VerticalLayout implements View {
 
             long id = c.getId();
 
-            List<Favorite> existing = favRepo.findByCinemaId(id);
+            List<Favorite> existing = favoriteService.findByCinemaId(id);
             if (existing.isEmpty()) {
                 // create button
                 Button favBtn = new Button();
@@ -95,29 +93,27 @@ public class CinemaListView extends VerticalLayout implements View {
         }
     }
 
-    @Transactional
     private void markAsFavorite(long id) {
-        List<Favorite> existing = favRepo.findByCinemaId(id);
+        List<Favorite> existing = favoriteService.findByCinemaId(id);
         if (existing.isEmpty()) {
-            Cinema c = repo.findOne(id);
+            Cinema c = cinemaService.findOne(id);
 
             // create new favorite entry
-            favRepo.save(new Favorite(userBean.getCurrentUser(), c));
+            favoriteService.save(new Favorite(userBean.getCurrentUser(), c));
 
             // replace button
             replaceFavoriteButton(c);
         }
     }
 
-    @Transactional
     private void unmarkFavorite(long id) {
-        List<Favorite> existing = favRepo.findByCinemaId(id);
+        List<Favorite> existing = favoriteService.findByCinemaId(id);
         if (!existing.isEmpty()) {
             // remove favorite entry
-            favRepo.delete(existing);
+            favoriteService.delete(existing);
 
             // replace button
-            replaceFavoriteButton(repo.findOne(id));
+            replaceFavoriteButton(cinemaService.findOne(id));
         }
     }
 

@@ -4,16 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.annotation.ApplicationScope;
+import org.springframework.stereotype.Service;
 
-import de.tinf15b4.kino.data.User;
-import de.tinf15b4.kino.data.UserRepository;
-
-@Transactional
-@Component
-@ApplicationScope
+@Service
 public class UserServiceImpl implements UserService {
 
     @Autowired

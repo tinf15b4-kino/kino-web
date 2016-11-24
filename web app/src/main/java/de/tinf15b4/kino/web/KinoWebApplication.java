@@ -13,25 +13,17 @@ import org.springframework.boot.context.embedded.jetty.JettyServerCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import de.tinf15b4.kino.data.DataInitializer;
+import de.tinf15b4.kino.data.initializer.DataInitializer;
 
 @SpringBootApplication
 @Configuration
-@EnableAspectJAutoProxy(proxyTargetClass = true)
-@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS) // to make @Transactional work
-                                                 // in vaadin views
-@EnableJpaRepositories(basePackages = "de.tinf15b4.kino.data")
-@EntityScan(basePackages = "de.tinf15b4.kino.data")
-@EnableTransactionManagement
+@EnableJpaRepositories(basePackages = "de.tinf15b4.kino.data.*")
+@EntityScan(basePackages = "de.tinf15b4.kino.data.*")
 @EnableScheduling
-@ComponentScan({ "de.tinf15b4.kino.data", "de.tinf15b4.kino.data.*", "de.tinf15b4.kino.web", "de.tinf15b4.kino.web.*" })
+@ComponentScan({ "de.tinf15b4.kino.data.*", "de.tinf15b4.kino.web", "de.tinf15b4.kino.web.*" })
 public class KinoWebApplication {
 
     @Bean

@@ -1,4 +1,4 @@
-package de.tinf15b4.kino.data;
+package de.tinf15b4.kino.data.initializer;
 
 import java.util.Date;
 import java.util.Locale;
@@ -6,38 +6,53 @@ import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.github.javafaker.Address;
 import com.github.javafaker.Faker;
 
+import de.tinf15b4.kino.data.cinemas.Cinema;
+import de.tinf15b4.kino.data.cinemas.CinemaService;
+import de.tinf15b4.kino.data.favorites.Favorite;
+import de.tinf15b4.kino.data.favorites.FavoriteService;
+import de.tinf15b4.kino.data.movies.Movie;
+import de.tinf15b4.kino.data.movies.MovieService;
+import de.tinf15b4.kino.data.playlists.Playlist;
+import de.tinf15b4.kino.data.playlists.PlaylistService;
+import de.tinf15b4.kino.data.ratedcinemas.RatedCinema;
+import de.tinf15b4.kino.data.ratedcinemas.RatedCinemaId;
+import de.tinf15b4.kino.data.ratedcinemas.RatedCinemaService;
+import de.tinf15b4.kino.data.ratedmovies.RatedMovie;
+import de.tinf15b4.kino.data.ratedmovies.RatedMovieId;
+import de.tinf15b4.kino.data.ratedmovies.RatedMovieService;
+import de.tinf15b4.kino.data.users.User;
+import de.tinf15b4.kino.data.users.UserRepository;
+
 @Service
 public class FakeDataInitializer implements DataInitializer {
     @Autowired
-    private CinemaRepository cineRepo;
+    private CinemaService cinemaService;
 
     @Autowired
-    private FavoriteRepository faveRepo;
+    private FavoriteService favoriteService;
 
     @Autowired
-    private MovieRepository movieRepo;
+    private MovieService movieService;
 
     @Autowired
-    private PlaylistRepository playlistRepo;
+    private PlaylistService playlistService;
 
     @Autowired
     private UserRepository userRepo;
 
     @Autowired
-    private RatedCinemaRepository ratedCinemaRepo;
+    private RatedCinemaService ratedCinemaService;
 
     @Autowired
-    private RatedMovieRepository ratedMovieRepo;
+    private RatedMovieService ratedMovieService;
 
     Random rnd = new Random();
 
     @Override
-    @Transactional
     public void initialize() {
         Faker faker = new Faker(new Locale("de"));
 
@@ -48,7 +63,7 @@ public class FakeDataInitializer implements DataInitializer {
             m.setDescription(faker.shakespeare().kingRichardIIIQuote());
             m.setLengthMinutes(faker.number().numberBetween(20, 240));
 
-            movieRepo.save(m);
+            movieService.save(m);
         }
 
         // One fake user that is guaranteed to exist, for debugging
@@ -79,29 +94,27 @@ public class FakeDataInitializer implements DataInitializer {
             c.setCountry(a.country());
             // c.setImage(ImageIO.read(this.getClass().getResource("/images/defaultCinema.png")).);
 
-            cineRepo.save(c);
+            cinemaService.save(c);
 
             // Cinema 3,5,7 are favorites
             if (i == 3 || i == 5 || i == 7) {
-                faveRepo.save(new Favorite(userRepo.getOne(1l), c));
+                favoriteService.save(new Favorite(userRepo.getOne(1l), c));
             }
 
             // Now make them show some movies during the next week
             for (int j = 0; j < 20; ++j) {
                 Playlist p = new Playlist();
                 p.setCinema(c);
-                p.setMovie(movieRepo.findOne(faker.number().numberBetween(1L, 10)));
+                p.setMovie(movieService.findOne(faker.number().numberBetween(1L, 10)));
                 p.setPrice(faker.number().numberBetween(250, 1739));
-                p.setTime(faker.date().between(new Date(), new Date(new Date().getTime() + 1000L*3600*24*7)));
+                p.setTime(faker.date().between(new Date(), new Date(new Date().getTime() + 1000L * 3600 * 24 * 7)));
 
-                playlistRepo.save(p);
+                playlistService.save(p);
             }
         }
 
-        
-
         // Some fake Cinema Ratings
-        for (Cinema c : cineRepo.findAll()) {
+        for (Cinema c : cinemaService.findAll()) {
             // Add random 0..3 ratings
             long quantity = (long) rnd.nextInt(4);
 
@@ -113,12 +126,12 @@ public class FakeDataInitializer implements DataInitializer {
                 rc.setDescription(faker.chuckNorris().fact());
                 rc.setTime(faker.date().between(new Date(), new Date(new Date().getTime() + 1000L * 3600 * 24 * 7)));
 
-                ratedCinemaRepo.save(rc);
+                ratedCinemaService.save(rc);
             }
         }
 
         // Some fake Movie Ratings
-        for (Movie m : movieRepo.findAll()) {
+        for (Movie m : movieService.findAll()) {
             // Add random 0..3 ratings
             long quantity = (long) rnd.nextInt(4);
 
@@ -130,7 +143,7 @@ public class FakeDataInitializer implements DataInitializer {
                 rm.setDescription(faker.chuckNorris().fact());
                 rm.setTime(faker.date().between(new Date(), new Date(new Date().getTime() + 1000L * 3600 * 24 * 7)));
 
-                ratedMovieRepo.save(rm);
+                ratedMovieService.save(rm);
             }
         }
 

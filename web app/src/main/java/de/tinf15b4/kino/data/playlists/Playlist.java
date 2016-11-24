@@ -1,15 +1,19 @@
-package de.tinf15b4.kino.data;
+package de.tinf15b4.kino.data.playlists;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+
+import de.tinf15b4.kino.data.cinemas.Cinema;
+import de.tinf15b4.kino.data.movies.Movie;
+
 import java.util.Date;
 
 @Entity
 public class Playlist {
 
-    //FIXME: This should not have its own id
+    // FIXME: This should not have its own id
     @Id
     @GeneratedValue
     private long id;

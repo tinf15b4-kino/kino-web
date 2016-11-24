@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 
-import de.tinf15b4.kino.data.User;
 import de.tinf15b4.kino.web.ui.SmartCinemaUi;
 
 @Component

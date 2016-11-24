@@ -1,4 +1,4 @@
-package de.tinf15b4.kino.data;
+package de.tinf15b4.kino.data.movies;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

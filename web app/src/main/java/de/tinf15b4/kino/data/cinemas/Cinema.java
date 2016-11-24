@@ -1,4 +1,4 @@
-package de.tinf15b4.kino.data;
+package de.tinf15b4.kino.data.cinemas;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -45,6 +45,7 @@ public class Cinema {
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -96,6 +97,5 @@ public class Cinema {
     public void setImage(byte[] image) {
         this.image = image;
     }
-
 
 }

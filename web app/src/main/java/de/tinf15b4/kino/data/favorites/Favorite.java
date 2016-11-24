@@ -1,10 +1,13 @@
-package de.tinf15b4.kino.data;
+package de.tinf15b4.kino.data.favorites;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+
+import de.tinf15b4.kino.data.cinemas.Cinema;
+import de.tinf15b4.kino.data.users.User;
 
 @Entity
 public class Favorite {
