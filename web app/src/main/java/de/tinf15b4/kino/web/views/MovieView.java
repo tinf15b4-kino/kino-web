@@ -8,7 +8,7 @@ import java.util.Locale;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.GridLayout;
@@ -38,7 +38,7 @@ public class MovieView extends VerticalLayout implements View {
     private RatedMovieService ratedMovieService;
 
     @Override
-    public void enter(ViewChangeListener.ViewChangeEvent event) {
+    public void enter(ViewChangeEvent event) {
         this.setMargin(true);
         this.setSpacing(true);
 

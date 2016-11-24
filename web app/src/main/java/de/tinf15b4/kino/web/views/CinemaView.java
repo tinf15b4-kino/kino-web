@@ -3,40 +3,35 @@ package de.tinf15b4.kino.web.views;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
-import com.vaadin.ui.MenuBar;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.ValoTheme;
 
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.cinemas.CinemaService;
-import de.tinf15b4.kino.data.favorites.Favorite;
 import de.tinf15b4.kino.data.favorites.FavoriteService;
 import de.tinf15b4.kino.data.playlists.Playlist;
 import de.tinf15b4.kino.data.playlists.PlaylistService;
 import de.tinf15b4.kino.data.ratedcinemas.RatedCinema;
 import de.tinf15b4.kino.data.ratedcinemas.RatedCinemaService;
 import de.tinf15b4.kino.data.users.UserBean;
+import de.tinf15b4.kino.web.util.CinemaFavoriteUtils;
+import de.tinf15b4.kino.web.util.ToggleFavoriteListener;
 
 @SpringView(name = CinemaView.VIEW_NAME)
-public class CinemaView extends VerticalLayout implements View {
+public class CinemaView extends VerticalLayout implements View, ToggleFavoriteListener {
     public static final String VIEW_NAME = "cinema";
 
     @Autowired
@@ -54,10 +49,11 @@ public class CinemaView extends VerticalLayout implements View {
     @Autowired
     private RatedCinemaService ratedCinemaService;
 
-    private HorizontalLayout favButtonContainer = new HorizontalLayout();
+    private Component favoriteButton;
+    private Cinema c;
 
     @Override
-    public void enter(ViewChangeListener.ViewChangeEvent event) {
+    public void enter(ViewChangeEvent event) {
         this.setMargin(true);
         this.setSpacing(true);
 
@@ -65,17 +61,16 @@ public class CinemaView extends VerticalLayout implements View {
         if (event.getParameters() != null) {
             String idStr = event.getParameters();
             long id = Long.parseLong(idStr);
-
-            Cinema c = cinemaService.findOne(id);
+            c = cinemaService.findOne(id);
 
             this.addComponent(new Label(c.getName()));
 
             // this.addComponent(c.getImage());
 
-            this.addComponent(favButtonContainer);
+            favoriteButton = CinemaFavoriteUtils.createFavoriteButton(c, favoriteService, userBean, this);
+            this.addComponent(favoriteButton);
 
             this.addComponent(new Label(c.getAddress(), ContentMode.PREFORMATTED));
-            replaceFavoriteButton(c);
 
             GridLayout ratings = new GridLayout(4, 1);
             ratings.setMargin(true);
@@ -104,67 +99,26 @@ public class CinemaView extends VerticalLayout implements View {
                 movies.addComponent(new Label(sdf.format(p.getTime())));
                 movies.addComponent(new Link(p.getMovie().getName(),
                         new ExternalResource("#!" + MovieView.VIEW_NAME + "/" + p.getMovie().getId())));
-                movies.addComponent(new Label(pricef.format(p.getPrice()/100.0)));
+                movies.addComponent(new Label(pricef.format(p.getPrice() / 100.0)));
             }
 
             this.addComponent(new Panel("Movies", movies));
         }
     }
 
-    private void replaceFavoriteButton(Cinema c) {
-        favButtonContainer.removeAllComponents();
-        favButtonContainer.addComponent(createFavoriteButton(c));
+    private void replaceFavoriteButton() {
+        int index = this.getComponentIndex(favoriteButton);
+        this.removeComponent(favoriteButton);
+        this.addComponent(CinemaFavoriteUtils.createFavoriteButton(c, favoriteService, userBean, this), index);
     }
 
-    private Component createFavoriteButton(Cinema c) {
-        // TODO: Check for login
-
-        long id = c.getId();
-
-        List<Favorite> existing = favoriteService.findByCinemaId(id);
-        if (existing.isEmpty()) {
-            // create button
-            Button favBtn = new Button();
-            favBtn.setCaption("Mark as favorite"); // TODO: Deutsch
-            favBtn.addClickListener(e -> markAsFavorite(id));
-
-            return favBtn;
-        } else {
-            MenuBar unfavMenu = new MenuBar();
-            unfavMenu.setStyleName(ValoTheme.MENUBAR_BORDERLESS);
-            MenuBar.MenuItem menu = unfavMenu.addItem("Marked as favorite", null);
-            menu.addItem("Remove from favorites", i -> unmarkFavorite(id));
-
-            return unfavMenu;
-        }
+    @Override
+    public void favoriteRemoved() {
+        replaceFavoriteButton();
     }
 
-    private void markAsFavorite(long id) {
-        if (userBean.isUserLoggedIn()) {
-
-            List<Favorite> existing = favoriteService.findByCinemaId(id);
-            if (existing.isEmpty()) {
-                Cinema c = cinemaService.findOne(id);
-
-                // create new favorite entry
-                favoriteService.save(new Favorite(userBean.getCurrentUser(), c));
-
-                // replace button
-                replaceFavoriteButton(c);
-            }
-        } else {
-            Notification.show("Melde dich an, um diese Fuktion zu nutzen!", "", Notification.Type.HUMANIZED_MESSAGE);
-        }
-    }
-
-    private void unmarkFavorite(long id) {
-        List<Favorite> existing = favoriteService.findByCinemaId(id);
-        if (!existing.isEmpty()) {
-            // remove favorite entry
-            favoriteService.delete(existing);
-
-            // replace button
-            replaceFavoriteButton(cinemaService.findOne(id));
-        }
+    @Override
+    public void favoriteAdded() {
+        replaceFavoriteButton();
     }
 }
