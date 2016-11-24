@@ -28,8 +28,8 @@ import de.tinf15b4.kino.web.views.Views;
 
 @SuppressWarnings("serial")
 @Theme("smartCinema")
-@SpringUI(path = "/start")
-public class MyVaadinUi extends UI {
+@SpringUI(path = "/")
+public class SmartCinemaUi extends UI {
 
     @Autowired
     private SpringViewProvider viewProvider;

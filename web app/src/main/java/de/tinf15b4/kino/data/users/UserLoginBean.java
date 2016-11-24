@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 
 import de.tinf15b4.kino.data.User;
-import de.tinf15b4.kino.web.ui.MyVaadinUi;
+import de.tinf15b4.kino.web.ui.SmartCinemaUi;
 
 @Component
 @SessionScope
@@ -14,7 +14,7 @@ public class UserLoginBean {
     @Autowired
     private UserService userService;
 
-    private MyVaadinUi ui;
+    private SmartCinemaUi ui;
     private User user;
 
     public boolean isUserLoggedIn() {
@@ -54,7 +54,7 @@ public class UserLoginBean {
         return user;
     }
 
-    public void setUi(MyVaadinUi ui) {
+    public void setUi(SmartCinemaUi ui) {
         this.ui = ui;
     }
 
