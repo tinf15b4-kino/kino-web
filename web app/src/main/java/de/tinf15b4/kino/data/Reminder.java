@@ -67,10 +67,10 @@ class ReminderId implements Serializable {
     public boolean equals(Object o) {
         if (this == o)
             return true;
-        if (!(o instanceof RatedMovieId))
+        if (!(o instanceof ReminderId))
             return false;
 
-        RatedMovieId that = (RatedMovieId) o;
+        ReminderId that = (ReminderId) o;
         return user.getId() == that.getUser().getId() && movie.getId() == that.getMovie().getId();
     }
 
