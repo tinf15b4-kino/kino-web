@@ -13,14 +13,14 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 
-import de.tinf15b4.kino.data.users.UserLoginBean;
+import de.tinf15b4.kino.data.users.UserBean;
 import de.tinf15b4.kino.web.util.EnterKeyListener;
 
 @SpringView(name = LoginView.VIEW_NAME)
 public class LoginView extends GridLayout implements View {
 
     @Autowired
-    UserLoginBean userLoginBean;
+    UserBean userBean;
 
     public static final String VIEW_NAME = "login";
     private Label wrongInput;
@@ -67,8 +67,8 @@ public class LoginView extends GridLayout implements View {
     }
 
     private void tryLogin(String username, String password) {
-        if (userLoginBean.login(username, password)) {
-            getUI().getNavigator().navigateTo(Views.DEFAULT.getViewId());
+        if (userBean.login(username, password)) {
+            getUI().getNavigator().navigateTo("");
         } else {
             wrongInput.setVisible(true);
         }
