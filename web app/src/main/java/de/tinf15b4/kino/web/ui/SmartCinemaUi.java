@@ -5,6 +5,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.Title;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.ClassResource;
 import com.vaadin.server.FontAwesome;
@@ -33,6 +34,7 @@ import de.tinf15b4.kino.web.views.MovieListView;
 @SuppressWarnings("serial")
 @Theme("smartCinema")
 @SpringUI(path = "/")
+@Title("smartCinema")
 public class SmartCinemaUi extends UI {
 
     @Autowired
