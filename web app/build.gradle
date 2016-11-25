@@ -35,6 +35,12 @@ jar {
 	baseName = 'tinf15b4-kino-web'
 	version = '0.0.1-SNAPSHOT'
 }
+
+test {
+	systemProperty "kinotest.driver", System.getProperty("kinotest.driver")
+	systemProperty "kinotest.seleniumHub", System.getProperty("kinotest.seleniumHub")
+}
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -55,6 +61,8 @@ dependencies {
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('info.cukes:cucumber-java:' + cucumberVersion)
     testCompile('info.cukes:cucumber-junit:' + cucumberVersion)
+	testCompile('info.cukes:cucumber-spring:' + cucumberVersion)
+	testCompile('org.seleniumhq.selenium:selenium-java:3.0.1')
     testCompile('junit:junit:' + junitVersion)
 }
 
