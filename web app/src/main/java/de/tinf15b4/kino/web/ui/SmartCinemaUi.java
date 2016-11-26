@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
+import com.vaadin.event.ShortcutAction;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.ClassResource;
 import com.vaadin.server.FontAwesome;
@@ -22,6 +23,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
@@ -30,6 +32,7 @@ import de.tinf15b4.kino.web.views.CinemaListView;
 import de.tinf15b4.kino.web.views.FavoriteListView;
 import de.tinf15b4.kino.web.views.LoginView;
 import de.tinf15b4.kino.web.views.MovieListView;
+import de.tinf15b4.kino.web.views.SearchResultsView;
 
 @SuppressWarnings("serial")
 @Theme("smartCinema")
@@ -99,6 +102,21 @@ public class SmartCinemaUi extends UI {
         header.addComponent(logo);
         header.setComponentAlignment(logo, Alignment.MIDDLE_LEFT);
 
+        HorizontalLayout search = new HorizontalLayout();
+        TextField searchField = new TextField();
+        searchField.setWidth("20em");
+        searchField.setInputPrompt("Suche nach Kinos und Filmen");
+        searchField.addStyleName("kino-search-box");
+        Button searchButton = new Button("\uD83D\uDD0E");
+        searchButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+        search.addComponent(searchField);
+        search.addComponent(searchButton);
+        searchButton.addClickListener(e -> getNavigator().navigateTo(
+                SearchResultsView.VIEW_NAME + "/" + searchField.getValue()));
+
+        header.addComponent(search);
+        header.setComponentAlignment(search, Alignment.MIDDLE_CENTER);
+
         if (userBean.isUserLoggedIn()) {
             Button user = new Button(userBean.getCurrentUser().getName(), e -> userClicked());
             header.addComponent(user);
@@ -114,7 +132,7 @@ public class SmartCinemaUi extends UI {
             header.setComponentAlignment(register, Alignment.MIDDLE_RIGHT);
             header.setComponentAlignment(login, Alignment.MIDDLE_RIGHT);
         }
-        header.setExpandRatio(logo, 1);
+        header.setExpandRatio(search, 1);
 
         return header;
     }
