@@ -11,6 +11,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
@@ -19,15 +20,19 @@ import cucumber.api.java.After;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import de.tinf15b4.kino.data.users.User;
 import de.tinf15b4.kino.web.KinoWebApplication;
 
-@ContextConfiguration
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = KinoWebApplication.class)
+@ContextConfiguration(classes = SpringTestConfig.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = {KinoWebApplication.class})
 public class BrowserStepDefinitions {
     private WebDriver driver = null;
 
     @Value("${local.server.port}")
     private int port;
+
+    @Autowired
+    private SpringTestConfig testConfig;
 
     public BrowserStepDefinitions() throws Exception {
         // These properties can be set on the gradle command line, e.g.
@@ -63,7 +68,15 @@ public class BrowserStepDefinitions {
 
     @Given("^I am not logged in$")
     public void iAmNotLoggedIn() throws Throwable {
-        // FIXME! Fake the login bean
+        testConfig.setFakeUser(null);
+    }
+
+    @Given("^I am logged in as (.*)$")
+    public void iAmLoggedIn(String username) throws Throwable {
+        User mockUser = new User();
+        mockUser.setName(username);
+
+        testConfig.setFakeUser(mockUser);
     }
 
     @When("^I open the start page$")
