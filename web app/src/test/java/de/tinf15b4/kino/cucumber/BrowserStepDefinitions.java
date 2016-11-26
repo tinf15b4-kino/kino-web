@@ -34,8 +34,12 @@ public class BrowserStepDefinitions {
         // ./gradlew test -Dkinotest.driver=chrome
         // Default is Firefox because it is the only one that just works(TM) for me,
         // the Jenkins setup uses a headless firefox installation.
-        String drvstr = System.getProperty("kinotest.driver", "firefox");
+        String drvstr = System.getProperty("kinotest.driver");
         String remote = System.getProperty("kinotest.seleniumHub");
+
+        if (drvstr == null || drvstr.isEmpty())
+            drvstr = "firefox";
+
         switch (drvstr) {
             case "firefox":
                 driver = new FirefoxDriver();
