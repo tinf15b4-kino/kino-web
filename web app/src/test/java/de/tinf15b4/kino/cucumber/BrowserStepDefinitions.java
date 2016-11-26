@@ -2,10 +2,16 @@ package de.tinf15b4.kino.cucumber;
 
 import java.net.InetAddress;
 import java.net.URL;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.hamcrest.collection.IsEmptyCollection;
+import org.hamcrest.core.StringEndsWith;
+import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
@@ -20,6 +26,10 @@ import cucumber.api.java.After;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import de.tinf15b4.kino.data.cinemas.Cinema;
+import de.tinf15b4.kino.data.cinemas.CinemaRepository;
+import de.tinf15b4.kino.data.movies.Movie;
+import de.tinf15b4.kino.data.movies.MovieRepository;
 import de.tinf15b4.kino.data.users.User;
 import de.tinf15b4.kino.web.KinoWebApplication;
 
@@ -33,6 +43,12 @@ public class BrowserStepDefinitions {
 
     @Autowired
     private SpringTestConfig testConfig;
+
+    @Autowired
+    private MovieRepository movieRepo;
+
+    @Autowired
+    private CinemaRepository cinemaRepo;
 
     public BrowserStepDefinitions() throws Exception {
         // These properties can be set on the gradle command line, e.g.
@@ -79,9 +95,36 @@ public class BrowserStepDefinitions {
         testConfig.setFakeUser(mockUser);
     }
 
+    @Given("^the movies$")
+    public void withMovies(List<Movie> table) throws Throwable {
+        for (Movie m: table)
+            movieRepo.save(m);
+    }
+
+    @Given("^the cinemas")
+    public void withCinemas(List<Cinema> table) throws Throwable {
+        for (Cinema m: table)
+            cinemaRepo.save(m);
+    }
+
+    @When("^I search for (.*)$")
+    public void iSearchFor(String term) throws Throwable {
+        WebElement searchBox = driver.findElement(By.className("kino-search-box"));
+        searchBox.sendKeys(term);
+        searchBox.sendKeys(Keys.ENTER);
+    }
+
+    @Then("^the link (.*) should redirect to (.*)$")
+    public void linkShouldRedirect(String linkLabel, String urlTail) throws Throwable {
+        WebElement link = driver.findElement(By.linkText(linkLabel));
+        link.click();
+
+        Assert.assertThat(driver.getCurrentUrl(), StringEndsWith.endsWith(urlTail));
+    }
+
     @When("^I open the start page$")
     public void iOpenTheStartPage() throws Throwable {
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 
         // Do not use localhost but the real hostname, since the real hostname
         // even works when the selenium node is in a docker container
@@ -104,8 +147,18 @@ public class BrowserStepDefinitions {
         driver.findElement(By.xpath("//*[contains(@class, 'v-button') and contains(text(), '"+text+"')]"));
     }
 
+    @Then("^I should not see a link labeled (.*)$")
+    public void iShouldNotSeeALinkLabeled(String text) throws Throwable {
+        //FIXME: This is actually shit because it will break when the text contains funny characters
+        List<WebElement> els =  driver.findElements(By.xpath(
+                "//*[contains(@class, 'v-link') and contains(text(), '"+text+"')]"));
+        Assert.assertThat(els, IsEmptyCollection.empty());
+    }
+
     @After
     public void teardown() {
         driver.quit();
+        movieRepo.deleteAll();
+        cinemaRepo.deleteAll();
     }
 }
