@@ -16,7 +16,7 @@ public class CinemaFavoriteUtils {
 
     public static Component createFavoriteButton(Cinema c, FavoriteService favoriteService, UserBean userBean,
             ToggleFavoriteListener listener) {
-        if (!userBean.isUserLoggedIn() || !favoriteService.isCinemaFavorite(c.getId(), userBean.getCurrentUser())) {
+        if (!userBean.isUserLoggedIn() || !favoriteService.isCinemaFavorite(userBean.getCurrentUser(), c)) {
             // create button
             Button favBtn = new Button();
             favBtn.setCaption("Zu Favoriten hinzufügen");
@@ -36,7 +36,7 @@ public class CinemaFavoriteUtils {
         if (!userBean.isUserLoggedIn()) {
             Notification.show("Melden sie sich an, um diese Funktion nutzen zu können.", Type.WARNING_MESSAGE);
         }
-        if (!favoriteService.isCinemaFavorite(c.getId(), userBean.getCurrentUser())) {
+        if (!favoriteService.isCinemaFavorite(userBean.getCurrentUser(), c)) {
             // create new favorite entry
             favoriteService.save(new Favorite(userBean.getCurrentUser(), c));
             listener.favoriteAdded();
@@ -45,7 +45,7 @@ public class CinemaFavoriteUtils {
 
     public static void unmarkFavorite(Cinema c, FavoriteService favoriteService, ToggleFavoriteListener listener,
             UserBean userBean) {
-        Favorite fav = favoriteService.findFavorite(c.getId(), userBean.getCurrentUser());
+        Favorite fav = favoriteService.findFavorite(userBean.getCurrentUser(), c);
         if (fav != null) {
             // remove favorite entry
             favoriteService.delete(fav);
