@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.ExternalResource;
-import com.vaadin.server.Resource;
 import com.vaadin.server.StreamResource;
 import com.vaadin.server.StreamResource.StreamSource;
 import com.vaadin.spring.annotation.SpringView;
@@ -48,18 +47,18 @@ public class MovieListView extends VerticalLayout implements View{
 
             StreamResource imageResource = new StreamResource(streamSource, "");
 
-            Image image = new Image(null, (Resource) imageResource);
+            Image image = new Image(null, imageResource);
 
             image.setHeight("100px");
             row.addComponent(image);
-
 
             Link l = new Link(m.getName(), new ExternalResource("#!" + MovieView.VIEW_NAME + "/" + m.getId()));
 
             row.addComponent(l);
             row.setComponentAlignment(l, Alignment.MIDDLE_LEFT);
 
-
+            row.setExpandRatio(l, 1f);
+            row.setSpacing(true);
             this.addComponent(row);
         }
     }

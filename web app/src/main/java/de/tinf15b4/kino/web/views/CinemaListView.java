@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.ExternalResource;
-import com.vaadin.server.Resource;
 import com.vaadin.server.StreamResource;
 import com.vaadin.server.StreamResource.StreamSource;
 import com.vaadin.spring.annotation.SpringView;
@@ -59,7 +58,7 @@ public class CinemaListView extends VerticalLayout implements View, ToggleFavori
 
             StreamResource imageResource = new StreamResource(streamSource, "");
 
-            Image image = new Image(null, (Resource) imageResource);
+            Image image = new Image(null, imageResource);
 
             image.setHeight("100px");
             row.addComponent(image);
@@ -71,7 +70,8 @@ public class CinemaListView extends VerticalLayout implements View, ToggleFavori
             Component button = CinemaFavoriteUtils.createFavoriteButton(c, favoriteService, userBean, this);
             row.addComponent(button);
             row.setComponentAlignment(button, Alignment.MIDDLE_RIGHT);
-
+            row.setExpandRatio(button, 1f);
+            row.setSpacing(true);
             this.addComponent(row);
         }
     }

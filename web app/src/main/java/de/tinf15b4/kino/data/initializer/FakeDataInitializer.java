@@ -137,12 +137,6 @@ public class FakeDataInitializer implements DataInitializer {
                 imageInByte = baos.toByteArray();
                 baos.close();
 
-                // convert byte array back to BufferedImage
-                ByteArrayInputStream in = new ByteArrayInputStream(imageInByte);
-                BufferedImage bImageFromConvert = ImageIO.read(in);
-
-                ImageIO.write(bImageFromConvert, "jpg", new File("src/main/resources/images/defaultCinema.jpg"));
-
                 c.setImage(imageInByte);
             } catch (IOException e) {
                 System.out.println(e.getMessage());
