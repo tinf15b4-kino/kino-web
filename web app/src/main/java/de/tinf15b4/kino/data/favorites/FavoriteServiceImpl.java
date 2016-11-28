@@ -19,12 +19,12 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     @Override
     public List<Favorite> getAllFavoritesForUser(User u) {
-        return favoriteRepository.findByUserId(u.getId());
+        return favoriteRepository.findByUser(u);
     }
 
     @Override
     public Favorite findFavorite(long cinemaId, User u) {
-        return favoriteRepository.findFavorite(cinemaId, u.getId());
+        return favoriteRepository.findFavorite(cinemaRepository.findOne(cinemaId), u);
     }
 
     @Override
