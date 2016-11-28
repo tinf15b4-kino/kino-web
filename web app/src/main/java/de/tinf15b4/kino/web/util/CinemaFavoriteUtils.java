@@ -19,14 +19,14 @@ public class CinemaFavoriteUtils {
         if (!userBean.isUserLoggedIn() || !favoriteService.isCinemaFavorite(c.getId(), userBean.getCurrentUser())) {
             // create button
             Button favBtn = new Button();
-            favBtn.setCaption("Mark as favorite");
+            favBtn.setCaption("Zu Favoriten hinzufügen");
             favBtn.addClickListener(e -> markAsFavorite(c, favoriteService, userBean, listener));
             return favBtn;
         } else {
             MenuBar unfavMenu = new MenuBar();
             unfavMenu.setStyleName(ValoTheme.MENUBAR_BORDERLESS);
-            MenuBar.MenuItem menu = unfavMenu.addItem("Marked as favorite", null);
-            menu.addItem("Remove from favorites", i -> unmarkFavorite(c, favoriteService, listener, userBean));
+            MenuBar.MenuItem menu = unfavMenu.addItem("Zu Favoriten hinzugefügt", null);
+            menu.addItem("Aus Favoriten entfernen", i -> unmarkFavorite(c, favoriteService, listener, userBean));
             return unfavMenu;
         }
     }

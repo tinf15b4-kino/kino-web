@@ -66,7 +66,7 @@ public class MovieView extends VerticalLayout implements View {
                 ratings.addComponent(new Label(rm.getDescription()));
             }
 
-            this.addComponent(new Panel("Ratings", ratings));
+            this.addComponent(new Panel("Bewertungen", ratings));
 
             GridLayout playtimes = new GridLayout(3, 1);
             playtimes.setMargin(true);
@@ -83,7 +83,7 @@ public class MovieView extends VerticalLayout implements View {
                 playtimes.addComponent(new Label(pricef.format(p.getPrice()/100.0)));
             }
 
-            this.addComponent(new Panel("Playtimes", playtimes));
+            this.addComponent(new Panel("Spielplan", playtimes));
         }
     }
 }

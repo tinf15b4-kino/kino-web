@@ -43,7 +43,7 @@ public class FavoriteListView extends VerticalLayout implements View {
         if (userBean.isUserLoggedIn()) {
             List<Favorite> l = favoriteService.getAllFavoritesForUser(userBean.getCurrentUser());
 
-            this.addComponent(new Label("Favorite Cinemas"));
+            this.addComponent(new Label("Favoritisierte Kinos"));
 
             content = new VerticalLayout();
             content.setMargin(true);
@@ -51,14 +51,14 @@ public class FavoriteListView extends VerticalLayout implements View {
             this.addComponent(new Panel(content));
 
             if (l.isEmpty()) {
-                content.addComponent(new Label("No Favorite Cinemas yet :("));
+                content.addComponent(new Label("Bisher wurden noch keine Kinos zu den Favoriten hinzugefügt. :("));
             } else {
                 for (Favorite f : l) {
                     content.addComponent(buildListEntry(f.getCinema()));
                 }
             }
         } else {
-            this.addComponent(new Label("Sie müssen sich Anmelden"));
+            this.addComponent(new Label("Sie müssen sich Anmelden!"));
         }
     }
 
@@ -69,7 +69,7 @@ public class FavoriteListView extends VerticalLayout implements View {
         pav.addComponent(l);
         pav.setComponentAlignment(l, Alignment.MIDDLE_LEFT);
 
-        Button removeBtn = new Button("Remove");
+        Button removeBtn = new Button("Entfernen");
         removeBtn.addClickListener(e -> removeFromFavorites(c.getId(), pav));
         pav.addComponent(removeBtn);
         pav.setComponentAlignment(removeBtn, Alignment.MIDDLE_RIGHT);
@@ -92,11 +92,11 @@ public class FavoriteListView extends VerticalLayout implements View {
 
             GridLayout g = new GridLayout(2, 1);
 
-            Label l = new Label(String.format("Favorite Cinema \"%s\" has been removed", cinemaName));
+            Label l = new Label(String.format("Das Kino \"%s\" wurde aus den Favorien entfernt.", cinemaName));
             g.addComponent(l, 0, 0);
             g.setComponentAlignment(l, Alignment.MIDDLE_LEFT);
 
-            Button undo = new Button("Undo");
+            Button undo = new Button("rückgängig machen");
             undo.setStyleName(ValoTheme.BUTTON_LINK);
             undo.addClickListener(e -> undoRemove(cinemaId, row));
             g.addComponent(undo, 1, 0);
