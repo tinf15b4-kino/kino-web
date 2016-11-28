@@ -1,8 +1,15 @@
 package de.tinf15b4.kino.data.initializer;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,6 +70,30 @@ public class FakeDataInitializer implements DataInitializer {
             m.setDescription(faker.shakespeare().kingRichardIIIQuote());
             m.setLengthMinutes(faker.number().numberBetween(20, 240));
 
+            // Picture
+            try {
+
+                byte[] imageInByte;
+                BufferedImage originalImage = ImageIO.read(new File("src/main/resources/images/defaultMovie.jpg"));
+
+                // convert BufferedImage to byte array
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ImageIO.write(originalImage, "jpg", baos);
+                baos.flush();
+                imageInByte = baos.toByteArray();
+                baos.close();
+
+                // convert byte array back to BufferedImage
+                ByteArrayInputStream in = new ByteArrayInputStream(imageInByte);
+                BufferedImage bImageFromConvert = ImageIO.read(in);
+
+                ImageIO.write(bImageFromConvert, "jpg", new File("src/main/resources/images/defaultMovie.jpg"));
+
+                m.setCover(imageInByte);
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
+
             movieService.save(m);
         }
 
@@ -92,7 +123,30 @@ public class FakeDataInitializer implements DataInitializer {
             c.setPostcode(a.zipCode());
             c.setCity(a.cityName());
             c.setCountry(a.country());
-            // c.setImage(ImageIO.read(this.getClass().getResource("/images/defaultCinema.png")).);
+
+            // Picture
+            try {
+
+                byte[] imageInByte;
+                BufferedImage originalImage = ImageIO.read(new File("src/main/resources/images/defaultCinema.jpg"));
+
+                // convert BufferedImage to byte array
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ImageIO.write(originalImage, "jpg", baos);
+                baos.flush();
+                imageInByte = baos.toByteArray();
+                baos.close();
+
+                // convert byte array back to BufferedImage
+                ByteArrayInputStream in = new ByteArrayInputStream(imageInByte);
+                BufferedImage bImageFromConvert = ImageIO.read(in);
+
+                ImageIO.write(bImageFromConvert, "jpg", new File("src/main/resources/images/defaultCinema.jpg"));
+
+                c.setImage(imageInByte);
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
 
             cinemaService.save(c);
 
