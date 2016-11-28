@@ -5,6 +5,9 @@ import java.net.URL;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.github.bonigarcia.wdm.ChromeDriverManager;
+import io.github.bonigarcia.wdm.FirefoxDriverManager;
+import io.github.bonigarcia.wdm.InternetExplorerDriverManager;
 import org.hamcrest.collection.IsEmptyCollection;
 import org.hamcrest.core.StringEndsWith;
 import org.junit.Assert;
@@ -63,12 +66,15 @@ public class BrowserStepDefinitions {
 
         switch (drvstr) {
             case "firefox":
+                FirefoxDriverManager.getInstance().setup();
                 driver = new FirefoxDriver();
                 break;
             case "chrome":
+                ChromeDriverManager.getInstance().setup();
                 driver = new ChromeDriver();
                 break;
             case "explorer":
+                InternetExplorerDriverManager.getInstance().setup();
                 driver = new InternetExplorerDriver();
                 break;
             case "remote":

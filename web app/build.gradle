@@ -1,22 +1,17 @@
 buildscript {
-	ext {
-		springBootVersion = '1.4.1.RELEASE'
-	}
 	repositories {
 		mavenCentral()
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 	}
 }
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
-apply plugin: 'spring-boot'
 
 project.ext {
     cucumberVersion = '1.2.5'
     junitVersion = '4.12'
+    springBootVersion = '1.4.2.RELEASE'
+    seleniumVersion = '3.0.1'
 }
 
 sourceSets {
@@ -49,25 +44,18 @@ repositories {
 }
 
 dependencies {
-	compile('com.vaadin:vaadin-spring-boot-starter:1.0.2')
-    compile("org.springframework.boot:spring-boot-starter-web")
-    compile("org.springframework.boot:spring-boot-starter-jetty")
-    compile('org.springframework.boot:spring-boot-devtools')
-	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-	compile('org.springframework.boot:spring-boot-starter-data-rest')
-	compile('com.h2database:h2')
+	compile('com.vaadin:vaadin-spring-boot-starter:1.1.1')
+    compile('org.springframework.boot:spring-boot-starter-web:'+springBootVersion)
+    compile('org.springframework.boot:spring-boot-starter-jetty:'+springBootVersion)
+    compile('org.springframework.boot:spring-boot-devtools:'+springBootVersion)
+	compile('org.springframework.boot:spring-boot-starter-data-jpa:'+springBootVersion)
+	compile('com.h2database:h2:1.4.+')
 	compile('com.github.javafaker:javafaker:0.10')
-	testCompile('org.springframework.boot:spring-boot-starter-test')
+	testCompile('org.seleniumhq.selenium:selenium-java:'+seleniumVersion)
+	testCompile('org.springframework.boot:spring-boot-starter-test:'+springBootVersion)
 	testCompile('info.cukes:cucumber-java:' + cucumberVersion)
     testCompile('info.cukes:cucumber-junit:' + cucumberVersion)
 	testCompile('info.cukes:cucumber-spring:' + cucumberVersion)
-	testCompile('org.seleniumhq.selenium:selenium-java:3.0.1')
-    testCompile('junit:junit:' + junitVersion)
-}
-
-dependencyManagement {
-	imports {
-		mavenBom "com.vaadin:vaadin-bom:7.7.3"
-	}
+	testCompile('junit:junit:' + junitVersion)
+    testCompile('io.github.bonigarcia:webdrivermanager:1.5.+')
 }
