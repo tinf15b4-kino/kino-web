@@ -27,6 +27,8 @@
 ![MVC][mvc]
 
 ##3. Architectural Goals and Constraints 
+We decided to use the [Spring MVC](https://spring.io/).
+The following picuture gives a shor overview of Spring MVC processing sequence.
 ![spring][spring]
 Quelle: http://terasolunaorg.github.io/guideline/1.0.1.RELEASE/en/Overview/SpringMVCOverview.html
 
