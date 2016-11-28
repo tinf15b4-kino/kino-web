@@ -1,61 +1,72 @@
 buildscript {
-	repositories {
-		mavenCentral()
-	}
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.2.RELEASE")
+    }
 }
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
 
 project.ext {
     cucumberVersion = '1.2.5'
-    junitVersion = '4.12'
-    springBootVersion = '1.4.2.RELEASE'
     seleniumVersion = '3.0.1'
 }
 
-sourceSets {
-     main {
-      java {
-       srcDir 'src/main/java'
-      }
-	  resources {
-	   srcDir 'src/main/resources'
-	   srcDir 'src/main/webapp'
-	  }
-     }
-    }
-
 jar {
-	baseName = 'tinf15b4-kino-web'
-	version = '0.0.1-SNAPSHOT'
+    baseName = 'tinf15b4-kino-web'
+    version = '0.0.1-SNAPSHOT'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+        resources {
+            srcDir 'src/main/resources'
+            srcDir 'src/main/webapp'
+        }
+    }
+}
+
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        if (details.requested.group == 'org.seleniumhq.selenium') {
+            //HACK: Force Selenium 3 down spring boot's throat
+            details.useVersion seleniumVersion
+        }
+    }
 }
 
 test {
-	systemProperty "kinotest.driver", System.getProperty("kinotest.driver")
-	systemProperty "kinotest.seleniumHub", System.getProperty("kinotest.seleniumHub")
+    systemProperty "kinotest.driver", System.getProperty("kinotest.driver")
+    systemProperty "kinotest.seleniumHub", System.getProperty("kinotest.seleniumHub")
 }
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	compile('com.vaadin:vaadin-spring-boot-starter:1.1.1')
-    compile('org.springframework.boot:spring-boot-starter-web:'+springBootVersion)
-    compile('org.springframework.boot:spring-boot-starter-jetty:'+springBootVersion)
-    compile('org.springframework.boot:spring-boot-devtools:'+springBootVersion)
-	compile('org.springframework.boot:spring-boot-starter-data-jpa:'+springBootVersion)
-	compile('com.h2database:h2:1.4.+')
-	compile('com.github.javafaker:javafaker:0.10')
-	testCompile('org.seleniumhq.selenium:selenium-java:'+seleniumVersion)
-	testCompile('org.springframework.boot:spring-boot-starter-test:'+springBootVersion)
-	testCompile('info.cukes:cucumber-java:' + cucumberVersion)
+    compile('com.vaadin:vaadin-spring-boot-starter:1.1.1')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-jetty')
+    compile('org.springframework.boot:spring-boot-devtools')
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('com.h2database:h2')
+    compile('com.github.javafaker:javafaker:0.10')
+    testCompile('org.seleniumhq.selenium:selenium-java')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('info.cukes:cucumber-java:' + cucumberVersion)
     testCompile('info.cukes:cucumber-junit:' + cucumberVersion)
-	testCompile('info.cukes:cucumber-spring:' + cucumberVersion)
-	testCompile('junit:junit:' + junitVersion)
+    testCompile('info.cukes:cucumber-spring:' + cucumberVersion)
+    testCompile('junit:junit')
     testCompile('io.github.bonigarcia:webdrivermanager:1.5.+')
 }
