@@ -72,20 +72,22 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
 
             this.addComponent(new Label(c.getAddress(), ContentMode.PREFORMATTED));
 
-            GridLayout ratings = new GridLayout(4, 1);
-            ratings.setMargin(true);
-            ratings.setSpacing(true);
-            ratings.setSizeFull();
+            if (ratedCinemaService.findRatingsByCinema(c).size() > 0) {
+                GridLayout ratings = new GridLayout(4, 1);
+                ratings.setMargin(true);
+                ratings.setSpacing(true);
+                ratings.setSizeFull();
 
-            for (RatedCinema rc : ratedCinemaService.findRatingsByCinema(c)) {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMANY);
-                ratings.addComponent(new Label(rc.getUser().getName()));
-                ratings.addComponent(new Label(rc.getRating() + ""));
-                ratings.addComponent(new Label(sdf.format(rc.getTime())));
-                ratings.addComponent(new Label(rc.getDescription()));
+                for (RatedCinema rc : ratedCinemaService.findRatingsByCinema(c)) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMANY);
+                    ratings.addComponent(new Label(rc.getUser().getName()));
+                    ratings.addComponent(new Label(rc.getRating() + ""));
+                    ratings.addComponent(new Label(sdf.format(rc.getTime())));
+                    ratings.addComponent(new Label(rc.getDescription()));
+                }
+
+                this.addComponent(new Panel("Bewertungen", ratings));
             }
-
-            this.addComponent(new Panel("Bewertungen", ratings));
 
             GridLayout movies = new GridLayout(3, 1);
             movies.setMargin(true);

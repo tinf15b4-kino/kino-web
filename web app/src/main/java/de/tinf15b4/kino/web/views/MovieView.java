@@ -53,20 +53,22 @@ public class MovieView extends VerticalLayout implements View {
             this.addComponent(new Label("Länge: " + m.getLengthMinutes() + " Minuten"));
             this.addComponent(new Label(m.getDescription()));
 
-            GridLayout ratings = new GridLayout(4, 1);
-            ratings.setMargin(true);
-            ratings.setSpacing(true);
-            ratings.setSizeFull();
+            if (ratedMovieService.findRatingsByMovie(m).size() > 0) {
+                GridLayout ratings = new GridLayout(4, 1);
+                ratings.setMargin(true);
+                ratings.setSpacing(true);
+                ratings.setSizeFull();
 
-            for (RatedMovie rm : ratedMovieService.findRatingsByMovie(m)) {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMANY);
-                ratings.addComponent(new Label(rm.getUser().getName()));
-                ratings.addComponent(new Label(rm.getRating() + ""));
-                ratings.addComponent(new Label(sdf.format(rm.getTime())));
-                ratings.addComponent(new Label(rm.getDescription()));
+                for (RatedMovie rm : ratedMovieService.findRatingsByMovie(m)) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMANY);
+                    ratings.addComponent(new Label(rm.getUser().getName()));
+                    ratings.addComponent(new Label(rm.getRating() + ""));
+                    ratings.addComponent(new Label(sdf.format(rm.getTime())));
+                    ratings.addComponent(new Label(rm.getDescription()));
+                }
+
+                this.addComponent(new Panel("Bewertungen", ratings));
             }
-
-            this.addComponent(new Panel("Bewertungen", ratings));
 
             GridLayout playtimes = new GridLayout(3, 1);
             playtimes.setMargin(true);

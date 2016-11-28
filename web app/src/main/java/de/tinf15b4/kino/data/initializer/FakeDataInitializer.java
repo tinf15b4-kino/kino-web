@@ -116,17 +116,22 @@ public class FakeDataInitializer implements DataInitializer {
         // Some fake Cinema Ratings
         for (Cinema c : cinemaService.findAll()) {
             // Add random 0..3 ratings
-            long quantity = (long) rnd.nextInt(4);
+            if (c.getId() == cinemaService.findOne(1L).getId()) {
+                // First Cinema doesn't get a Rating
+            } else {
+                long quantity = (long) rnd.nextInt(4);
 
-            for (long j = 0; j < quantity; j++) {
-                RatedCinema rc = new RatedCinema();
-                u = userRepo.getOne((long) rnd.nextInt((int) userRepo.count()) + 1L);
-                rc.setId(new RatedCinemaId(u, c));
-                rc.setRating(rnd.nextInt(6));
-                rc.setDescription(faker.chuckNorris().fact());
-                rc.setTime(faker.date().between(new Date(), new Date(new Date().getTime() + 1000L * 3600 * 24 * 7)));
+                for (long j = 0; j < quantity; j++) {
+                    RatedCinema rc = new RatedCinema();
+                    u = userRepo.getOne((long) rnd.nextInt((int) userRepo.count()) + 1L);
+                    rc.setId(new RatedCinemaId(u, c));
+                    rc.setRating(rnd.nextInt(6));
+                    rc.setDescription(faker.chuckNorris().fact());
+                    rc.setTime(
+                            faker.date().between(new Date(), new Date(new Date().getTime() + 1000L * 3600 * 24 * 7)));
 
-                ratedCinemaService.save(rc);
+                    ratedCinemaService.save(rc);
+                }
             }
         }
 
@@ -135,17 +140,21 @@ public class FakeDataInitializer implements DataInitializer {
             // Add random 0..3 ratings
             long quantity = (long) rnd.nextInt(4);
 
-            for (long j = 0; j < quantity; j++) {
-                RatedMovie rm = new RatedMovie();
-                u = userRepo.getOne((long) rnd.nextInt((int) userRepo.count()) + 1L);
-                rm.setId(new RatedMovieId(u, m));
-                rm.setRating(rnd.nextInt(6));
-                rm.setDescription(faker.chuckNorris().fact());
-                rm.setTime(faker.date().between(new Date(), new Date(new Date().getTime() + 1000L * 3600 * 24 * 7)));
+            if (m.getId() == movieService.findOne(1L).getId()) {
+                // First Movie doesn't get a Rating
+            } else {
+                for (long j = 0; j < quantity; j++) {
+                    RatedMovie rm = new RatedMovie();
+                    u = userRepo.getOne((long) rnd.nextInt((int) userRepo.count()) + 1L);
+                    rm.setId(new RatedMovieId(u, m));
+                    rm.setRating(rnd.nextInt(6));
+                    rm.setDescription(faker.chuckNorris().fact());
+                    rm.setTime(
+                            faker.date().between(new Date(), new Date(new Date().getTime() + 1000L * 3600 * 24 * 7)));
 
-                ratedMovieService.save(rm);
+                    ratedMovieService.save(rm);
+                }
             }
         }
-
     }
 }
