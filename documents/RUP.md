@@ -24,10 +24,11 @@
 
 
 ##2. Architectural Representation 
-MVC
+![MVC][mvc]
 
 ##3. Architectural Goals and Constraints 
-Your MVC Tool
+![spring][spring]
+Quelle: http://terasolunaorg.github.io/guideline/1.0.1.RELEASE/en/Overview/SpringMVCOverview.html
 
 ##4. Use-Case View
 n/a
@@ -45,7 +46,7 @@ class diagram with clearly marked sections of MVC
 n/a
 
 ##7. Deployment View 
-if you have a server/client architecture, you need to show where the parts are deployed. Even if you don't have anything complex, hand in this diagram - use correct UML
+![software architecture][sa]
 
 ##8. Implementation View 
 n/a
@@ -55,10 +56,17 @@ n/a
 
 
 ##9. Data View (optional)
-DB model
+![entity relationship modell][erm]
 
 ##10. Size and Performance 
 optional or n/a
 
 ##11. Quality 
 optional or n/a
+
+
+<!-- Link definitions: -->
+[sa]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/software_architecture/software_architecture.png
+[mvc]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/software_architecture/mvc.png
+[spring]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/software_architecture/spring.png
+[erm]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/database/erm_modell.png
