@@ -5,15 +5,22 @@
 ##1. Introduction
 
 ###1.1 Purpose
+This document provides a comprehensive architectural overview of the system, using a number of different architectural views to depict different aspects of the system. It is intended to capture and convey the significant architectural decisions which have been made on the system.
 
 ###1.2 Scope
+This project shows the architecture of our project SmartCinema.
 
 ###1.3 Definitions, Acronyms, and Abbreviations
+| Acronym | |
+|---------|---|
+| MVC | Modell View Controller|
+| ERM | Entity Relationship Modell |
 
 ###1.4 References
+n/a
 
 ###1.5 Overview
-
+n/a
 
 ##2. Architectural Representation 
 ![MVC][mvc]
