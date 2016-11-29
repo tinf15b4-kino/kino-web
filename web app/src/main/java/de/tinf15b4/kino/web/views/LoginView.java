@@ -1,5 +1,8 @@
 package de.tinf15b4.kino.web.views;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,8 @@ public class LoginView extends GridLayout implements View {
 
     public static final String VIEW_NAME = "login";
     private Label wrongInput;
+
+    private String redirectTo;
 
     @PostConstruct
     public void init() {
@@ -68,7 +73,11 @@ public class LoginView extends GridLayout implements View {
 
     private void tryLogin(String username, String password) {
         if (userBean.login(username, password)) {
-            getUI().getNavigator().navigateTo("");
+            if (redirectTo != null) {
+                getUI().getPage().open(redirectTo, "");
+            } else {
+                getUI().getNavigator().navigateTo("");
+            }
         } else {
             wrongInput.setVisible(true);
         }
@@ -76,6 +85,14 @@ public class LoginView extends GridLayout implements View {
 
     @Override
     public void enter(ViewChangeEvent event) {
+        redirectTo = null;
+        if (event.getParameters() != null && !event.getParameters().isEmpty()) {
+            try {
+                redirectTo = URLDecoder.decode(event.getParameters(), "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                // Well, I guess then we won't redirect. Tough luck.
+            }
+        }
     }
 
 }

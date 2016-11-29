@@ -1,5 +1,8 @@
 package de.tinf15b4.kino.web.ui;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,7 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.ClassResource;
 import com.vaadin.server.FontAwesome;
+import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -127,7 +131,15 @@ public class SmartCinemaUi extends UI {
         } else {
             Button register = new Button("Registrieren", e -> navigateTo("register"));
             header.addComponent(register);
-            Button login = new Button("Anmelden", e -> navigateTo(LoginView.VIEW_NAME));
+            Button login = new Button("Anmelden", e -> {
+                try {
+                    navigateTo(LoginView.VIEW_NAME + "/" +
+                            URLEncoder.encode(Page.getCurrent().getLocation().toASCIIString(), "UTF-8"));
+                } catch (UnsupportedEncodingException e1) {
+                    // FIXME: This should never happen. If it does, we'll quietly limp along.
+                    navigateTo(LoginView.VIEW_NAME);
+                }
+            });
             header.addComponent(login);
             header.setComponentAlignment(register, Alignment.MIDDLE_RIGHT);
             header.setComponentAlignment(login, Alignment.MIDDLE_RIGHT);
