@@ -1,559 +1,1014 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.1.11" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
-  <interface id="1" language="java" name="de.tinf15b4.kino.data.FavoriteRepository" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/data/FavoriteRepository.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="81" width="199" x="3186" y="518"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </interface>  
-  <class id="2" language="java" name="de.tinf15b4.kino.web.KinoWebApplication" project="web app" 
+  <class id="1" language="java" name="de.tinf15b4.kino.web.KinoWebApplication" project="web app" 
     file="/web app/src/main/java/de/tinf15b4/kino/web/KinoWebApplication.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="171" width="283" x="835" y="37"/>    
+    <position height="153" width="283" x="219" y="311"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="3" language="java" name="de.tinf15b4.kino.data.FakeDataInitializer" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/data/FakeDataInitializer.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="117" width="128" x="2407" y="37"/>    
+  <class id="2" language="java" name="de.tinf15b4.kino.web.views.SearchResultsView" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/web/views/SearchResultsView.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="117" width="172" x="5542" y="311"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <enumeration id="4" language="java" name="de.tinf15b4.kino.web.views.Views" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/web/views/Views.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="441" width="216" x="367" y="37"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </enumeration>  
-  <class id="5" language="java" name="de.tinf15b4.kino.web.RootRedirect" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/web/RootRedirect.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="99" width="105" x="42" y="37"/>    
+  <class id="3" language="java" name="de.tinf15b4.kino.data.search.SearchResult" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/search/SearchResult.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="153" width="223" x="1344" y="738"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="de.tinf15b4.kino.data.RatedCinema" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/data/RatedCinema.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="387" width="238" x="1391" y="37"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="7" language="java" name="de.tinf15b4.kino.data.ReminderId" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/data/Reminder.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="225" width="140" x="2700" y="518"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="8" language="java" name="de.tinf15b4.kino.data.Favorite" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/data/Favorite.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="153" width="142" x="1100" y="518"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="9" language="java" name="de.tinf15b4.kino.web.ui.MyVaadinUi" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/web/ui/MyVaadinUi.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="189" width="193" x="1158" y="37"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <interface id="10" language="java" name="de.tinf15b4.kino.data.DataInitializer" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/data/DataInitializer.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="81" width="103" x="2264" y="518"/>    
+  <interface id="4" language="java" name="de.tinf15b4.kino.data.favorites.FavoriteService" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/favorites/FavoriteService.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="189" width="239" x="3847" y="738"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <interface id="11" language="java" name="de.tinf15b4.kino.data.UserRepository" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/data/UserRepository.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="63" width="112" x="2112" y="518"/>    
+  <class id="5" language="java" name="de.tinf15b4.kino.data.playlists.Playlist" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/playlists/Playlist.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="315" width="142" x="1162" y="738"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="6" language="java" name="de.tinf15b4.kino.web.util.ToggleFavoriteListener" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/web/util/ToggleFavoriteListener.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="99" width="153" x="3654" y="738"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <interface id="12" language="java" name="de.tinf15b4.kino.data.PlaylistRepository" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/data/PlaylistRepository.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="99" width="253" x="2407" y="518"/>    
+  <class id="7" language="java" name="de.tinf15b4.kino.data.ratedcinemas.RatedCinemaServiceImpl" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/ratedcinemas/RatedCinemaServiceImpl.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="117" width="266" x="2806" y="311"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="8" language="java" name="de.tinf15b4.kino.data.movies.MovieRepository" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/movies/MovieRepository.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="226" x="6369" y="1093"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <interface id="13" language="java" name="de.tinf15b4.kino.data.RatedCinemaRepository" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/data/RatedCinemaRepository.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="99" width="266" x="2880" y="518"/>    
+  <class id="9" language="java" name="de.tinf15b4.kino.data.ratedcinemas.RatedCinemaId" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/ratedcinemas/RatedCinemaId.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="225" width="165" x="2346" y="738"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
-  </interface>  
-  <interface id="14" language="java" name="de.tinf15b4.kino.data.MovieRepository" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/data/MovieRepository.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="63" width="118" x="1669" y="518"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </interface>  
-  <class id="15" language="java" name="de.tinf15b4.kino.web.views.CinemaListView" project="web app" 
+  </class>  
+  <class id="10" language="java" name="de.tinf15b4.kino.web.views.CinemaListView" project="web app" 
     file="/web app/src/main/java/de/tinf15b4/kino/web/views/CinemaListView.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="135" width="172" x="3411" y="37"/>    
+    <position height="189" width="172" x="3614" y="311"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="16" language="java" name="de.tinf15b4.kino.data.Cinema" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/data/Cinema.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="477" width="252" x="1282" y="873"/>    
+  <class id="11" language="java" name="de.tinf15b4.kino.data.favorites.Favorite" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/favorites/Favorite.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="189" width="142" x="2624" y="311"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="17" language="java" name="de.tinf15b4.kino.data.RatedMovie" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/data/RatedMovie.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="387" width="224" x="3147" y="37"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="18" language="java" name="de.tinf15b4.kino.web.views.CinemaView" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/web/views/CinemaView.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="207" width="227" x="2880" y="37"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <interface id="19" language="java" name="de.tinf15b4.kino.data.RatedMovieRepository" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/data/RatedMovieRepository.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="99" width="245" x="1827" y="518"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </interface>  
-  <class id="20" language="java" name="de.tinf15b4.kino.data.RatedCinemaId" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/data/RatedCinema.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="225" width="165" x="1282" y="518"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="21" language="java" name="de.tinf15b4.kino.data.User" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/data/User.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="351" width="159" x="2501" y="873"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <interface id="22" language="java" name="de.tinf15b4.kino.data.CinemaRepository" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/data/CinemaRepository.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="63" width="128" x="3616" y="518"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </interface>  
-  <class id="23" language="java" name="de.tinf15b4.kino.data.Playlist" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/data/Playlist.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="315" width="142" x="1487" y="518"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="24" language="java" name="de.tinf15b4.kino.data.RatedMovieId" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/data/RatedMovie.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="225" width="151" x="3425" y="518"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="25" language="java" name="de.tinf15b4.kino.web.controllers.FavoriteListControllerImpl" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/web/controllers/FavoriteListControllerImpl.java" binary="false" 
+  <interface id="12" language="java" name="de.tinf15b4.kino.data.favorites.FavoriteRepository" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/favorites/FavoriteRepository.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="171" width="237" x="3623" y="37"/>    
+    <position height="99" width="227" x="3081" y="738"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
-  </class>  
-  <interface id="26" language="java" name="de.tinf15b4.kino.web.controllers.FavoriteListController" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/web/controllers/FavoriteListController.java" binary="false" 
+  </interface>  
+  <class id="13" language="java" name="de.tinf15b4.kino.data.playlists.PlaylistServiceImpl" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/playlists/PlaylistServiceImpl.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="153" width="237" x="3784" y="518"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
-      sort-features="false" accessors="true" visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </interface>  
-  <class id="27" language="java" name="de.tinf15b4.kino.web.views.MovieView" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/web/views/MovieView.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="117" width="172" x="1881" y="37"/>    
+    <position height="135" width="253" x="4887" y="311"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <interface id="28" language="java" name="de.tinf15b4.kino.data.ReminderRepository" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/data/ReminderRepository.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="63" width="140" x="187" y="37"/>    
+  <interface id="14" language="java" name="de.tinf15b4.kino.data.ratedmovies.RatedMovieService" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/ratedmovies/RatedMovieService.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="99" width="245" x="5692" y="738"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </interface>  
-  <class id="29" language="java" name="de.tinf15b4.kino.web.views.MovieListView" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/web/views/MovieListView.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="135" width="172" x="1669" y="37"/>    
+  <interface id="15" language="java" name="de.tinf15b4.kino.data.reminders.ReminderRepository" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/reminders/ReminderRepository.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="63" width="142" x="1607" y="738"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="16" language="java" name="de.tinf15b4.kino.data.reminders.ReminderServiceImpl" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/reminders/ReminderServiceImpl.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="81" width="146" x="1714" y="311"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="30" language="java" name="de.tinf15b4.kino.web.views.FavoriteListView" project="web app" 
+  <class id="17" language="java" name="de.tinf15b4.kino.web.util.CinemaFavoriteUtils" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/web/util/CinemaFavoriteUtils.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="135" width="469" x="542" y="311"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="de.tinf15b4.kino.data.reminders.ReminderId" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/reminders/Reminder.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="225" width="142" x="1971" y="738"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="19" language="java" name="de.tinf15b4.kino.data.reminders.Reminder" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/reminders/Reminder.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="189" width="142" x="1900" y="311"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="20" language="java" name="de.tinf15b4.kino.data.ratedmovies.RatedMovie" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/ratedmovies/RatedMovie.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="387" width="224" x="2082" y="311"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="21" language="java" name="de.tinf15b4.kino.data.ratedmovies.RatedMovieId" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/ratedmovies/RatedMovieId.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="225" width="153" x="2153" y="738"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="22" language="java" name="de.tinf15b4.kino.data.favorites.FavoriteId" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/favorites/FavoriteId.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="225" width="142" x="2551" y="738"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="23" language="java" name="de.tinf15b4.kino.web.views.FavoriteListView" project="web app" 
     file="/web app/src/main/java/de/tinf15b4/kino/web/views/FavoriteListView.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="207" width="266" x="3900" y="37"/>    
+    <position height="207" width="281" x="3826" y="311"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="31" language="java" name="de.tinf15b4.kino.data.Movie" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/data/Movie.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="351" width="162" x="2700" y="873"/>    
+  <interface id="24" language="java" name="de.tinf15b4.kino.data.playlists.PlaylistService" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/playlists/PlaylistService.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="117" width="253" x="4812" y="738"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="25" language="java" name="de.tinf15b4.kino.data.favorites.FavoriteServiceImpl" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/favorites/FavoriteServiceImpl.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="207" width="239" x="3112" y="311"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="32" language="java" name="de.tinf15b4.kino.web.views.StartView" project="web app" 
+  <class id="26" language="java" name="de.tinf15b4.kino.data.users.UserBean" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/users/UserBean.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="171" width="156" x="4323" y="738"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="27" language="java" name="de.tinf15b4.kino.data.users.UserService" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/users/UserService.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="135" width="146" x="5448" y="1093"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="28" language="java" name="de.tinf15b4.kino.data.cinemas.Cinema" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/cinemas/Cinema.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="531" width="282" x="2229" y="1093"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="29" language="java" name="de.tinf15b4.kino.data.initializer.DataInitializer" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/initializer/DataInitializer.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="81" width="136" x="5105" y="738"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="30" language="java" name="de.tinf15b4.kino.data.users.UserServiceImpl" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/users/UserServiceImpl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="153" width="146" x="5356" y="311"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="31" language="java" name="de.tinf15b4.kino.web.util.EnterKeyListener" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/web/util/EnterKeyListener.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="135" width="182" x="1051" y="311"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="32" language="java" name="de.tinf15b4.kino.data.ratedcinemas.RatedCinema" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/ratedcinemas/RatedCinema.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="387" width="238" x="2346" y="311"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="33" language="java" name="de.tinf15b4.kino.data.users.UserRepository" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/users/UserRepository.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="146" x="5281" y="738"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="34" language="java" name="de.tinf15b4.kino.data.search.SearchService" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/search/SearchService.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="164" x="5488" y="738"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="35" language="java" name="de.tinf15b4.kino.data.users.NoUserLoggedInException" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/users/NoUserLoggedInException.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="99" width="189" x="1273" y="311"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="36" language="java" name="de.tinf15b4.kino.web.views.CinemaView" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/web/views/CinemaView.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="189" width="172" x="3402" y="311"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="37" language="java" name="de.tinf15b4.kino.data.cinemas.CinemaServiceImpl" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/cinemas/CinemaServiceImpl.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="135" width="136" x="4147" y="311"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="38" language="java" name="de.tinf15b4.kino.data.ratedcinemas.RatedCinemaRepository" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/ratedcinemas/RatedCinemaRepository.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="99" width="266" x="2733" y="738"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="39" language="java" name="de.tinf15b4.kino.data.initializer.FakeDataInitializer" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/initializer/FakeDataInitializer.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="117" width="136" x="5180" y="311"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="40" language="java" name="de.tinf15b4.kino.web.views.LoginView" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/web/views/LoginView.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="171" width="172" x="4323" y="311"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="41" language="java" name="de.tinf15b4.kino.data.ratedmovies.RatedMovieRepository" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/ratedmovies/RatedMovieRepository.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="99" width="245" x="5977" y="738"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="42" language="java" name="de.tinf15b4.kino.data.reminders.ReminderService" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/reminders/ReminderService.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="63" width="142" x="1789" y="738"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="43" language="java" name="de.tinf15b4.kino.web.views.MovieView" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/web/views/MovieView.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="117" width="172" x="5754" y="311"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="44" language="java" name="de.tinf15b4.kino.data.cinemas.CinemaRepository" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/cinemas/CinemaRepository.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="99" width="221" x="4283" y="1093"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="45" language="java" name="de.tinf15b4.kino.data.users.User" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/users/User.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="351" width="159" x="2551" y="1093"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="46" language="java" name="de.tinf15b4.kino.data.movies.Movie" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/movies/Movie.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="351" width="162" x="1658" y="1093"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="47" language="java" name="de.tinf15b4.kino.web.ui.SmartCinemaUi" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/web/ui/SmartCinemaUi.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="297" width="312" x="4535" y="311"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="48" language="java" name="de.tinf15b4.kino.web.views.MovieListView" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/web/views/MovieListView.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="135" width="172" x="6251" y="311"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="49" language="java" name="de.tinf15b4.kino.data.cinemas.CinemaService" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/cinemas/CinemaService.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="117" width="136" x="4126" y="738"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="50" language="java" name="de.tinf15b4.kino.web.views.StartView" project="web app" 
     file="/web app/src/main/java/de/tinf15b4/kino/web/views/StartView.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="117" width="172" x="623" y="37"/>    
+    <position height="117" width="172" x="1502" y="311"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="33" language="java" name="de.tinf15b4.kino.data.Reminder" project="web app" 
-    file="/web app/src/main/java/de/tinf15b4/kino/data/Reminder.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="189" width="133" x="2700" y="37"/>    
+  <interface id="51" language="java" name="de.tinf15b4.kino.data.movies.MovieService" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/movies/MovieService.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="117" width="132" x="6262" y="738"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="52" language="java" name="de.tinf15b4.kino.data.ratedcinemas.RatedCinemaService" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/ratedcinemas/RatedCinemaService.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="99" width="266" x="3348" y="738"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="53" language="java" name="de.tinf15b4.kino.data.movies.MovieServiceImpl" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/movies/MovieServiceImpl.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="135" width="132" x="6463" y="311"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <association id="34">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="35" name="id"/>      
-      <multiplicity id="36" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="20" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="37">    
-    <end type="SOURCE" refId="3"/>    
-    <end type="TARGET" refId="10"/>  
-  </realization>  
-  <association id="38">    
-    <end type="SOURCE" refId="18" navigable="false">      
-      <attribute id="39" name="ratedCinemaRepo"/>      
-      <multiplicity id="40" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="13" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="41">    
-    <end type="SOURCE" refId="25" navigable="false">      
-      <attribute id="42" name="faveRepo"/>      
-      <multiplicity id="43" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="44">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="45" name="ratedMovieRepo"/>      
-      <multiplicity id="46" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="19" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="47">    
-    <end type="SOURCE" refId="23" navigable="false">      
-      <attribute id="48" name="cinema"/>      
-      <multiplicity id="49" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="16" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="50">    
-    <end type="SOURCE" refId="23" navigable="false">      
-      <attribute id="51" name="movie"/>      
-      <multiplicity id="52" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="31" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="53">    
-    <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="54" name="movie"/>      
-      <multiplicity id="55" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="31" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
+  <class id="54" language="java" name="de.tinf15b4.kino.data.ratedmovies.RatedMovieServiceImpl" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/ratedmovies/RatedMovieServiceImpl.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="117" width="245" x="5966" y="311"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="55" language="java" name="de.tinf15b4.kino.data.playlists.PlaylistRepository" project="web app" 
+    file="/web app/src/main/java/de/tinf15b4/kino/data/playlists/PlaylistRepository.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="99" width="253" x="4519" y="738"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
   <association id="56">    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="57" name="cinema"/>      
-      <multiplicity id="58" minimum="0" maximum="1"/>    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="57" name="movies"/>      
+      <multiplicity id="58" minimum="0" maximum="2147483647"/>    
     </end>    
-    <end type="TARGET" refId="16" navigable="true"/>    
+    <end type="TARGET" refId="46" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="59">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="60" name="id"/>      
-      <multiplicity id="61" minimum="0" maximum="1"/>    
+  <realization id="59">    
+    <end type="SOURCE" refId="37"/>    
+    <end type="TARGET" refId="49"/>  
+  </realization>  
+  <association id="60">    
+    <end type="SOURCE" refId="39" navigable="false">      
+      <attribute id="61" name="movieService"/>      
+      <multiplicity id="62" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="51" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="63">    
+    <end type="SOURCE" refId="43" navigable="false">      
+      <attribute id="64" name="playlistService"/>      
+      <multiplicity id="65" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="24" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="62">    
-    <end type="SOURCE" refId="18" navigable="false">      
-      <attribute id="63" name="repo"/>      
-      <multiplicity id="64" minimum="0" maximum="1"/>    
+  <association id="66">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="67" name="movie"/>      
+      <multiplicity id="68" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="22" navigable="true"/>    
+    <end type="TARGET" refId="46" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="65">    
-    <end type="SOURCE" refId="24" navigable="false">      
-      <attribute id="66" name="movie"/>      
-      <multiplicity id="67" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="31" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="68">    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="69" name="repo"/>      
-      <multiplicity id="70" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="22" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="71">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="72" name="cineRepo"/>      
-      <multiplicity id="73" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="22" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="74">    
-    <end type="SOURCE" refId="20" navigable="false">      
-      <attribute id="75" name="user"/>      
-      <multiplicity id="76" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="21" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="77">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="78" name="ratedCinemaRepo"/>      
-      <multiplicity id="79" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="13" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="80">    
-    <end type="SOURCE" refId="18" navigable="false">      
-      <attribute id="81" name="playlistRepo"/>      
-      <multiplicity id="82" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="12" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="83">    
-    <end type="SOURCE" refId="29" navigable="false">      
-      <attribute id="84" name="repo"/>      
-      <multiplicity id="85" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="14" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="86">    
-    <end type="SOURCE" refId="33" navigable="false">      
-      <attribute id="87" name="id"/>      
-      <multiplicity id="88" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="89">    
-    <end type="SOURCE" refId="24" navigable="false">      
-      <attribute id="90" name="user"/>      
-      <multiplicity id="91" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="21" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="92">    
-    <end type="SOURCE" refId="27" navigable="false">      
-      <attribute id="93" name="ratedMovieRepo"/>      
-      <multiplicity id="94" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="19" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="95">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="96" name="movieRepo"/>      
-      <multiplicity id="97" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="14" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="98">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="99" name="playlistRepo"/>      
-      <multiplicity id="100" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="12" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="101">    
-    <end type="SOURCE" refId="25" navigable="false">      
-      <attribute id="102" name="cineRepo"/>      
-      <multiplicity id="103" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="22" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="104">    
-    <end type="SOURCE" refId="27" navigable="false">      
-      <attribute id="105" name="playlistRepo"/>      
-      <multiplicity id="106" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="12" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="107">    
-    <end type="SOURCE" refId="25"/>    
-    <end type="TARGET" refId="26"/>  
-  </realization>  
-  <association id="108">    
-    <end type="SOURCE" refId="18" navigable="false">      
-      <attribute id="109" name="favRepo"/>      
-      <multiplicity id="110" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="111">    
-    <end type="SOURCE" refId="27" navigable="false">      
-      <attribute id="112" name="repo"/>      
-      <multiplicity id="113" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="14" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="114">    
-    <end type="SOURCE" refId="20" navigable="false">      
-      <attribute id="115" name="cinema"/>      
-      <multiplicity id="116" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="16" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="117">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="118" name="faveRepo"/>      
-      <multiplicity id="119" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="120">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="121" name="userRepo"/>      
-      <multiplicity id="122" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="123">    
+  <association id="69">    
     <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="124" name="user"/>      
-      <multiplicity id="125" minimum="0" maximum="1"/>    
+      <attribute id="70" name="ratedCinemaRepository"/>      
+      <multiplicity id="71" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="21" navigable="true"/>    
+    <end type="TARGET" refId="38" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="126">    
-    <end type="SOURCE" refId="30" navigable="false">      
-      <attribute id="127" name="controller"/>      
-      <multiplicity id="128" minimum="0" maximum="1"/>    
+  <association id="72">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="73" name="movie"/>      
+      <multiplicity id="74" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="46" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="75">    
+    <end type="SOURCE" refId="40" navigable="false">      
+      <attribute id="76" name="userBean"/>      
+      <multiplicity id="77" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="26" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="78">    
+    <end type="SOURCE" refId="26" navigable="false">      
+      <attribute id="79" name="userService"/>      
+      <multiplicity id="80" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="27" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="81">    
+    <end type="SOURCE" refId="39" navigable="false">      
+      <attribute id="82" name="playlistService"/>      
+      <multiplicity id="83" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="24" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="84">    
+    <end type="SOURCE" refId="36" navigable="false">      
+      <attribute id="85" name="favoriteService"/>      
+      <multiplicity id="86" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="87">    
+    <end type="SOURCE" refId="39"/>    
+    <end type="TARGET" refId="29"/>  
+  </realization>  
+  <association id="88">    
+    <end type="SOURCE" refId="34" navigable="false">      
+      <attribute id="89" name="cinemaRepository"/>      
+      <multiplicity id="90" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="44" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="91">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="92" name="cinemaService"/>      
+      <multiplicity id="93" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="49" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="94">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="95" name="cinema"/>      
+      <multiplicity id="96" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="97">    
+    <end type="SOURCE" refId="36" navigable="false">      
+      <attribute id="98" name="playlistService"/>      
+      <multiplicity id="99" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="24" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="100">    
+    <end type="SOURCE" refId="43" navigable="false">      
+      <attribute id="101" name="movieService"/>      
+      <multiplicity id="102" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="51" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="103">    
+    <bendpoint x="3029" y="738"/>    
+    <end type="SOURCE" refId="36" navigable="false">      
+      <attribute id="104" name="c"/>      
+      <multiplicity id="105" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="106">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="107" name="cinema"/>      
+      <multiplicity id="108" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="109">    
+    <end type="SOURCE" refId="25" navigable="false">      
+      <attribute id="110" name="favoriteRepository"/>      
+      <multiplicity id="111" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="112">    
+    <end type="SOURCE" refId="21" navigable="false">      
+      <attribute id="113" name="user"/>      
+      <multiplicity id="114" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="45" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="115">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="6"/>  
+  </realization>  
+  <association id="116">    
+    <bendpoint x="6425" y="738"/>    
+    <end type="SOURCE" refId="53" navigable="false">      
+      <attribute id="117" name="movieRepository"/>      
+      <multiplicity id="118" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="119">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="120" name="user"/>      
+      <multiplicity id="121" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="45" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="122">    
+    <end type="SOURCE" refId="36" navigable="false">      
+      <attribute id="123" name="ratedCinemaService"/>      
+      <multiplicity id="124" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="52" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="125">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="24"/>  
+  </realization>  
+  <realization id="126">    
+    <end type="SOURCE" refId="54"/>    
+    <end type="TARGET" refId="14"/>  
+  </realization>  
+  <association id="127">    
+    <bendpoint x="3050" y="738"/>    
+    <end type="SOURCE" refId="25" navigable="false">      
+      <attribute id="128" name="cinemaRepository"/>      
+      <multiplicity id="129" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="44" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="130">    
+    <end type="SOURCE" refId="54" navigable="false">      
+      <attribute id="131" name="ratedMovieRepository"/>      
+      <multiplicity id="132" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="41" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="133">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="42"/>  
+  </realization>  
+  <association id="134">    
+    <end type="SOURCE" refId="48" navigable="false">      
+      <attribute id="135" name="movieService"/>      
+      <multiplicity id="136" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="51" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="137">    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="138" name="id"/>      
+      <multiplicity id="139" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="21" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="140">    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="141" name="userBean"/>      
+      <multiplicity id="142" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="26" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="143">    
+    <end type="SOURCE" refId="36" navigable="false">      
+      <attribute id="144" name="cinemaService"/>      
+      <multiplicity id="145" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="49" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="146">    
+    <bendpoint x="5457" y="738"/>    
+    <end type="SOURCE" refId="30"/>    
+    <end type="TARGET" refId="27"/>  
+  </realization>  
+  <association id="147">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="148" name="id"/>      
+      <multiplicity id="149" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="150">    
+    <end type="SOURCE" refId="39" navigable="false">      
+      <attribute id="151" name="ratedCinemaService"/>      
+      <multiplicity id="152" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="52" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="153">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="154" name="cinema"/>      
+      <multiplicity id="155" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="156">    
+    <end type="SOURCE" refId="26" navigable="false">      
+      <attribute id="157" name="currentUser"/>      
+      <multiplicity id="158" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="45" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="159">    
+    <end type="SOURCE" refId="25"/>    
+    <end type="TARGET" refId="4"/>  
+  </realization>  
+  <association id="160">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="161" name="searchService"/>      
+      <multiplicity id="162" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="34" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="163">    
+    <end type="SOURCE" refId="47" navigable="false">      
+      <attribute id="164" name="userBean"/>      
+      <multiplicity id="165" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="26" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="166">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="52"/>  
+  </realization>  
+  <association id="167">    
+    <end type="SOURCE" refId="32" navigable="false">      
+      <attribute id="168" name="id"/>      
+      <multiplicity id="169" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="170">    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="171" name="favoriteService"/>      
+      <multiplicity id="172" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="173">    
+    <end type="SOURCE" refId="9" navigable="false">      
+      <attribute id="174" name="user"/>      
+      <multiplicity id="175" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="45" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="176">    
+    <end type="SOURCE" refId="26" navigable="false">      
+      <attribute id="177" name="ui"/>      
+      <multiplicity id="178" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="47" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="179">    
+    <end type="SOURCE" refId="30" navigable="false">      
+      <attribute id="180" name="userRepository"/>      
+      <multiplicity id="181" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="33" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="182">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="183" name="userBean"/>      
+      <multiplicity id="184" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="26" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="185">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="186" name="user"/>      
+      <multiplicity id="187" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="45" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="188">    
+    <end type="SOURCE" refId="53"/>    
+    <end type="TARGET" refId="51"/>  
+  </realization>  
+  <realization id="189">    
+    <end type="SOURCE" refId="36"/>    
+    <end type="TARGET" refId="6"/>  
+  </realization>  
+  <association id="190">    
+    <end type="SOURCE" refId="39" navigable="false">      
+      <attribute id="191" name="cinemaService"/>      
+      <multiplicity id="192" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="49" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="193">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="194" name="playlistRepository"/>      
+      <multiplicity id="195" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="55" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="196">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="197" name="cinemas"/>      
+      <multiplicity id="198" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="28" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="199">    
+    <end type="SOURCE" refId="36" navigable="false">      
+      <attribute id="200" name="userBean"/>      
+      <multiplicity id="201" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="26" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="202">    
+    <end type="SOURCE" refId="39" navigable="false">      
+      <attribute id="203" name="userRepo"/>      
+      <multiplicity id="204" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="33" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="205">    
+    <end type="SOURCE" refId="39" navigable="false">      
+      <attribute id="206" name="ratedMovieService"/>      
+      <multiplicity id="207" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="208">    
+    <bendpoint x="4292" y="738"/>    
+    <end type="SOURCE" refId="37" navigable="false">      
+      <attribute id="209" name="cinemaRepository"/>      
+      <multiplicity id="210" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="44" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="211">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="212" name="movie"/>      
+      <multiplicity id="213" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="46" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="214">    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="215" name="reminderRepository"/>      
+      <multiplicity id="216" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="217">    
+    <end type="SOURCE" refId="11" navigable="false">      
+      <attribute id="218" name="id"/>      
+      <multiplicity id="219" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="22" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="220">    
+    <end type="SOURCE" refId="43" navigable="false">      
+      <attribute id="221" name="ratedMovieService"/>      
+      <multiplicity id="222" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="223">    
+    <end type="SOURCE" refId="39" navigable="false">      
+      <attribute id="224" name="favoriteService"/>      
+      <multiplicity id="225" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="226">    
+    <end type="SOURCE" refId="34" navigable="false">      
+      <attribute id="227" name="movieRepository"/>      
+      <multiplicity id="228" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="229">    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="230" name="favoriteService"/>      
+      <multiplicity id="231" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
