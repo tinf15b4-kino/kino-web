@@ -13,8 +13,9 @@ This project shows the architecture of our project SmartCinema.
 ###1.3 Definitions, Acronyms, and Abbreviations
 | Acronym | |
 |---------|---|
-| MVC | Modell View Controller|
+| API | Application Programming Interface |
 | ERM | Entity Relationship Modell |
+| MVC | Modell View Controller|
 
 ###1.4 References
 n/a
