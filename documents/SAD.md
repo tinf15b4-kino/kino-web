@@ -1,14 +1,6 @@
 #SmartCinema
 #Software Architecture Document
 
-##Revision History
-|	Date | Version | Description | Author |
-|------|---------|-------------|--------|
-| 28.11.2016 | 1.0 | transfer Word Document into MarkDown | Christian Gutermann
-|  |  |  |  |  
-|  |  |  |  |
-
-
 
 ##1. Introduction
 
@@ -38,10 +30,9 @@ n/a
 
 
 ##5. Logical View 
-class diagram with clearly marked sections of MVC
-###5.1 Overview
 
-###5.2 Architecturally Significant Design Packages
+###5.1 Overview
+![UML][uml]
 
 
 ##6. Process View 
@@ -51,20 +42,20 @@ n/a
 ![software architecture][sa]
 
 ##8. Implementation View 
-n/a
+
 ###8.1 Overview
-
+n/a
 ###8.2 Layers
-
+n/a
 
 ##9. Data View (optional)
 ![entity relationship modell][erm]
 
 ##10. Size and Performance 
-optional or n/a
+n/a
 
 ##11. Quality 
-optional or n/a
+n/a
 
 
 <!-- Link definitions: -->
@@ -72,3 +63,4 @@ optional or n/a
 [mvc]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/software_architecture/mvc.png
 [spring]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/software_architecture/spring.png
 [erm]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/database/erm_modell.png
+[uml]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/UML/uml_MVC.jpg
