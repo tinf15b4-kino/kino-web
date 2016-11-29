@@ -70,7 +70,7 @@ public class FavoriteListView extends VerticalLayout implements View {
         pav.setComponentAlignment(l, Alignment.MIDDLE_LEFT);
 
         Button removeBtn = new Button("Entfernen");
-        removeBtn.addClickListener(e -> removeFromFavorites(c.getId(), pav));
+        removeBtn.addClickListener(e -> removeFromFavorites(c, pav));
         pav.addComponent(removeBtn);
         pav.setComponentAlignment(removeBtn, Alignment.MIDDLE_RIGHT);
 
@@ -82,11 +82,11 @@ public class FavoriteListView extends VerticalLayout implements View {
 
     }
 
-    private void removeFromFavorites(long cinemaId, HorizontalLayout row) {
-        if (favoriteService.isCinemaFavorite(cinemaId, userBean.getCurrentUser())) {
+    private void removeFromFavorites(Cinema c, HorizontalLayout row) {
+        if (favoriteService.isCinemaFavorite(userBean.getCurrentUser(), c)) {
             // remove favorite entry
-            String cinemaName = favoriteService.findFavorite(cinemaId, userBean.getCurrentUser()).getCinema().getName();
-            favoriteService.unmarkFavorite(cinemaId, userBean.getCurrentUser());
+            String cinemaName = favoriteService.findFavorite(userBean.getCurrentUser(), c).getCinema().getName();
+            favoriteService.unmarkFavorite(userBean.getCurrentUser(), c);
 
             row.removeAllComponents();
 
@@ -96,9 +96,9 @@ public class FavoriteListView extends VerticalLayout implements View {
             g.addComponent(l, 0, 0);
             g.setComponentAlignment(l, Alignment.MIDDLE_LEFT);
 
-            Button undo = new Button("rückgängig machen");
+            Button undo = new Button("Rückgängig machen");
             undo.setStyleName(ValoTheme.BUTTON_LINK);
-            undo.addClickListener(e -> undoRemove(cinemaId, row));
+            undo.addClickListener(e -> undoRemove(c, row));
             g.addComponent(undo, 1, 0);
             g.setComponentAlignment(undo, Alignment.MIDDLE_LEFT);
             g.setColumnExpandRatio(1, 1.0f);
@@ -107,9 +107,9 @@ public class FavoriteListView extends VerticalLayout implements View {
         }
     }
 
-    private void undoRemove(long cinemaId, HorizontalLayout row) {
-        favoriteService.markFavorite(cinemaId, userBean.getCurrentUser());
+    private void undoRemove(Cinema c, HorizontalLayout row) {
+        favoriteService.markFavorite(userBean.getCurrentUser(), c);
         content.replaceComponent(row,
-                buildListEntry(favoriteService.findFavorite(cinemaId, userBean.getCurrentUser()).getCinema()));
+                buildListEntry(favoriteService.findFavorite(userBean.getCurrentUser(), c).getCinema()));
     }
 }

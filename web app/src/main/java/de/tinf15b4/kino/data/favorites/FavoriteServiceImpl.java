@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.cinemas.CinemaRepository;
 import de.tinf15b4.kino.data.users.User;
 
@@ -19,33 +20,33 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     @Override
     public List<Favorite> getAllFavoritesForUser(User u) {
-        return favoriteRepository.findByUserId(u.getId());
+        return favoriteRepository.findFavoritesByUser(u);
     }
 
     @Override
-    public Favorite findFavorite(long cinemaId, User u) {
-        return favoriteRepository.findFavorite(cinemaId, u.getId());
+    public Favorite findFavorite(User u, Cinema c) {
+        return favoriteRepository.findFavorite(c, u);
     }
 
     @Override
-    public boolean isCinemaFavorite(long cinemaId, User u) {
+    public boolean isCinemaFavorite(User u, Cinema c) {
         if (u == null)
             return false;
-        return findFavorite(cinemaId, u) != null;
+        return findFavorite(u, c) != null;
     }
 
     @Override
-    public void markFavorite(long cinemaId, User u) {
-        if (!isCinemaFavorite(cinemaId, u)) {
-            Favorite f = new Favorite(u, cinemaRepository.findOne(cinemaId));
+    public void markFavorite(User u, Cinema c) {
+        if (!isCinemaFavorite(u, c)) {
+            Favorite f = new Favorite(u, c);
             favoriteRepository.save(f);
         }
     }
 
     @Override
-    public void unmarkFavorite(long cinemaId, User u) {
-        if (isCinemaFavorite(cinemaId, u)) {
-            Favorite fav = findFavorite(cinemaId, u);
+    public void unmarkFavorite(User u, Cinema c) {
+        if (isCinemaFavorite(u, c)) {
+            Favorite fav = findFavorite(u, c);
             favoriteRepository.delete(fav);
         }
     }
