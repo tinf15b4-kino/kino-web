@@ -1,5 +1,6 @@
 package de.tinf15b4.kino.web.views;
 
+import java.io.ByteArrayInputStream;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -10,10 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ExternalResource;
+import com.vaadin.server.Resource;
+import com.vaadin.server.StreamResource;
+import com.vaadin.server.StreamResource.StreamSource;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.Panel;
@@ -65,7 +70,20 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
 
             this.addComponent(new Label(c.getName()));
 
-            // this.addComponent(c.getImage());
+            // Picture
+            StreamSource streamSource = new StreamResource.StreamSource() {
+                @Override
+                public ByteArrayInputStream getStream() {
+                    return (c.getImage() == null) ? null : new ByteArrayInputStream(c.getImage());
+                }
+            };
+
+            StreamResource imageResource = new StreamResource(streamSource, "");
+
+            Image image = new Image(null, (Resource) imageResource);
+
+            image.setHeight("150px");
+            this.addComponent(image);
 
             favoriteButton = CinemaFavoriteUtils.createFavoriteButton(c, favoriteService, userBean, this);
             this.addComponent(favoriteButton);

@@ -1,5 +1,6 @@
 package de.tinf15b4.kino.data.movies;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,7 +13,10 @@ public class Movie {
 
     private String name;
     private String description;
+
+    @Column(length = 100000)
     private byte[] cover;
+
     private long lengthMinutes;
 
     public long getId() {

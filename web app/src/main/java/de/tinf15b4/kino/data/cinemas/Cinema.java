@@ -1,5 +1,6 @@
 package de.tinf15b4.kino.data.cinemas;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,6 +19,8 @@ public class Cinema {
     private String postcode;
     private String city;
     private String country;
+
+    @Column(length = 100000)
     private byte[] image;
 
     public Cinema() {
