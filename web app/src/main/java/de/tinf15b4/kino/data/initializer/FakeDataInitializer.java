@@ -1,9 +1,7 @@
 package de.tinf15b4.kino.data.initializer;
 
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Locale;
@@ -74,7 +72,8 @@ public class FakeDataInitializer implements DataInitializer {
             try {
 
                 byte[] imageInByte;
-                BufferedImage originalImage = ImageIO.read(new File("src/main/resources/images/defaultMovie.jpg"));
+                BufferedImage originalImage = ImageIO
+                        .read(this.getClass().getResourceAsStream("/images/defaultMovie.jpg"));
 
                 // convert BufferedImage to byte array
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -82,12 +81,6 @@ public class FakeDataInitializer implements DataInitializer {
                 baos.flush();
                 imageInByte = baos.toByteArray();
                 baos.close();
-
-                // convert byte array back to BufferedImage
-                ByteArrayInputStream in = new ByteArrayInputStream(imageInByte);
-                BufferedImage bImageFromConvert = ImageIO.read(in);
-
-                ImageIO.write(bImageFromConvert, "jpg", new File("src/main/resources/images/defaultMovie.jpg"));
 
                 m.setCover(imageInByte);
             } catch (IOException e) {
@@ -128,7 +121,8 @@ public class FakeDataInitializer implements DataInitializer {
             try {
 
                 byte[] imageInByte;
-                BufferedImage originalImage = ImageIO.read(new File("src/main/resources/images/defaultCinema.jpg"));
+                BufferedImage originalImage = ImageIO
+                        .read(this.getClass().getResourceAsStream("/images/defaultCinema.jpg"));
 
                 // convert BufferedImage to byte array
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
