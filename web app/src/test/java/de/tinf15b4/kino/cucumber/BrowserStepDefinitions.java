@@ -31,10 +31,12 @@ import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.cinemas.CinemaRepository;
 import de.tinf15b4.kino.data.movies.Movie;
 import de.tinf15b4.kino.data.movies.MovieRepository;
-import de.tinf15b4.kino.data.playlists.PlaylistRepository;
 import de.tinf15b4.kino.data.ratedcinemas.RatedCinema;
 import de.tinf15b4.kino.data.ratedcinemas.RatedCinemaId;
 import de.tinf15b4.kino.data.ratedcinemas.RatedCinemaRepository;
+import de.tinf15b4.kino.data.ratedmovies.RatedMovie;
+import de.tinf15b4.kino.data.ratedmovies.RatedMovieId;
+import de.tinf15b4.kino.data.ratedmovies.RatedMovieRepository;
 import de.tinf15b4.kino.data.users.User;
 import de.tinf15b4.kino.data.users.UserRepository;
 import de.tinf15b4.kino.web.KinoWebApplication;
@@ -66,7 +68,7 @@ public class BrowserStepDefinitions {
     private RatedCinemaRepository rCinemaRepo;
 
     @Autowired
-    private PlaylistRepository playlistRepo;
+    private RatedMovieRepository rMovieRepo;
 
     public BrowserStepDefinitions() throws Exception {
         // These properties can be set on the gradle command line, e.g.
@@ -136,7 +138,7 @@ public class BrowserStepDefinitions {
     }
 
     @Given("^the rating of User (.*) for Cinema (.*) with (.*) stars and description (.*)$")
-    public void withRating(String userName, String cinemaName, int stars, String desc) {
+    public void withCinemaRating(String userName, String cinemaName, int stars, String desc) {
         // FIXME Selecting by id doesn't seem to work as the ids are regenerated
         // when adding to repo. Seems to be only on my machine though (Marco)
         User user = null;
@@ -154,6 +156,27 @@ public class BrowserStepDefinitions {
         RatedCinemaId id = new RatedCinemaId(user, cinema);
         RatedCinema rCinema = new RatedCinema(id, stars, desc, Calendar.getInstance().getTime());
         rCinemaRepo.save(rCinema);
+    }
+
+    @Given("^the rating of User (.*) for Movie (.*) with (.*) stars and description (.*)$")
+    public void withMovieRating(String userName, String movieName, int stars, String desc) {
+        // FIXME Selecting by id doesn't seem to work as the ids are regenerated
+        // when adding to repo. Seems to be only on my machine though (Marco)
+        User user = null;
+        for (User u : userRepo.findAll()) {
+            if (u.getName().equals(userName))
+                user = u;
+        }
+
+        Movie movie = null;
+        for (Movie m : movieRepo.findAll()) {
+            if (m.getName().equals(movieName))
+                movie = m;
+        }
+
+        RatedMovieId id = new RatedMovieId(user, movie);
+        RatedMovie rMovie = new RatedMovie(id, stars, desc, Calendar.getInstance().getTime());
+        rMovieRepo.save(rMovie);
     }
 
     @When("^I search for (.*)$")
