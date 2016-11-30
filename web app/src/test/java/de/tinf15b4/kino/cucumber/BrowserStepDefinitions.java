@@ -194,6 +194,11 @@ public class BrowserStepDefinitions {
         Assert.assertThat(driver.getCurrentUrl(), StringEndsWith.endsWith(urlTail));
     }
 
+    @Then("^the current URL should be (.*)$")
+    public void currentUrlShouldBe(String urlTail) throws Throwable {
+        Assert.assertThat(driver.getCurrentUrl(), StringEndsWith.endsWith(urlTail));
+    }
+
     @When("^I open the start page$")
     public void iOpenTheStartPage() throws Throwable {
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
@@ -249,7 +254,5 @@ public class BrowserStepDefinitions {
     @After
     public void teardown() {
         driver.quit();
-        movieRepo.deleteAll();
-        cinemaRepo.deleteAll();
     }
 }

@@ -20,14 +20,15 @@ Scenario: See the cinema information
 	Given the cinemas 
 		| Id  | Name                    | Street     | Hnr | Postcode | City        | Country     |
 		| 1   | Maier, Maier und Maier  | NiceStreet | 17  | 99244    | Laurenstadt | Deutschland |
-		| 2   | Schicke Scheinwand      | EpicStreet | 23  | 12345    | Timbuktu    | Somewhere   |
+		| 2   | Schicke Schummerwand    | EpicStreet | 23  | 12345    | Timbuktu    | Somewhere   |
 		
 	When I open the start page 
 	And I click the button labeled Kinos 
-	And I click the link labeled Schicke Scheinwand 
+	And I click the link labeled Schicke Schummerwand
 	
-	Then I should see a label containing Schicke Scheinwand 
-	And I should see a label containing EpicStreet 23 
+	Then the current URL should be #!cinema/2
+	And I should see a label containing Schicke Schummerwand
+	And I should see a label containing EpicStreet 23
 	And I should see a label containing 12345 Timbuktu, SOMEWHERE 
 	
 	
