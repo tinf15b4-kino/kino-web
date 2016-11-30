@@ -95,6 +95,7 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
 
                 right.addComponent(new Label(c.getAddress(), ContentMode.PREFORMATTED));
 
+                this.addComponent(new HorizontalLayout(left, right));
                 if (ratedCinemaService.findRatingsByCinema(c).size() > 0) {
                     GridLayout ratings = new GridLayout(4, 1);
                     ratings.setMargin(true);
@@ -112,7 +113,6 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
                     this.addComponent(new Panel("Bewertungen", ratings));
                 }
 
-                this.addComponent(new HorizontalLayout(left, right));
                 GridLayout movies = new GridLayout(3, 1);
                 movies.setMargin(true);
                 movies.setSpacing(true);
