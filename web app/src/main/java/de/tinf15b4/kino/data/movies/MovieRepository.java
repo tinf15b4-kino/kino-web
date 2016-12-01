@@ -12,4 +12,8 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     @Query("select m from Movie m where lower(m.description) like concat('%', lower(:d), '%')")
     List<Movie> findByDescriptionLike(@Param("d") String desc);
+
+    @Query("SELECT m FROM Movie m WHERE (:ac is null OR m.ageControl = :ac) "
+            + "AND (:genre is null OR m.genre = :genre) ORDER BY m.name")
+    List<Movie> findByFilter(@Param("ac") AgeControl ac, @Param("genre") Genre genre);
 }

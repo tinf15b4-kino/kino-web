@@ -23,4 +23,14 @@ public class RatedMovieServiceImpl implements RatedMovieService {
         return ratedMovieRepository.findRatingsByMovie(m);
     }
 
+    @Override
+    public double getAverageRatingForMovie(Movie m) {
+        List<Double> ratings = ratedMovieRepository.getAverageRatingForMovie(m);
+
+        if (ratings.size() == 0)
+            return 0.0;
+        else
+            return ratings.get(0);
+    }
+
 }

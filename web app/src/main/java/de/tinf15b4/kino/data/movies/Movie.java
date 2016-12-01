@@ -18,6 +18,22 @@ public class Movie {
     private byte[] cover;
 
     private long lengthMinutes;
+    private AgeControl ageControl;
+    private Genre genre;
+
+    public Movie() {
+
+    }
+
+    public Movie(String name, String description, byte[] cover, long lengthMinutes, Genre genre,
+            AgeControl ageControl) {
+        this.name = name;
+        this.description = description;
+        this.cover = cover;
+        this.lengthMinutes = lengthMinutes;
+        this.genre = genre;
+        this.ageControl = ageControl;
+    }
 
     public long getId() {
         return id;
@@ -57,5 +73,21 @@ public class Movie {
 
     public void setLengthMinutes(long lengthMinutes) {
         this.lengthMinutes = lengthMinutes;
+    }
+
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+
+    public AgeControl getAgeControl() {
+        return ageControl;
+    }
+
+    public void setAgeControl(AgeControl ageControl) {
+        this.ageControl = ageControl;
     }
 }

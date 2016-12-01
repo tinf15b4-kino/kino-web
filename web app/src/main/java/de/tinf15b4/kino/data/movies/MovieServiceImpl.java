@@ -22,6 +22,11 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
+    public List<Movie> findByFilter(AgeControl ac, Genre genre) {
+        return movieRepository.findByFilter(ac, genre);
+    }
+
+    @Override
     public List<Movie> findAll() {
         return movieRepository.findAll();
     }
