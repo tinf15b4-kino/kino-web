@@ -115,8 +115,8 @@ public class SmartCinemaUi extends UI {
         searchButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
         search.addComponent(searchField);
         search.addComponent(searchButton);
-        searchButton.addClickListener(e -> getNavigator().navigateTo(
-                SearchResultsView.VIEW_NAME + "/" + searchField.getValue()));
+        searchButton.addClickListener(
+                e -> getNavigator().navigateTo(SearchResultsView.VIEW_NAME + "/" + searchField.getValue()));
 
         header.addComponent(search);
         header.setComponentAlignment(search, Alignment.MIDDLE_CENTER);
@@ -124,7 +124,10 @@ public class SmartCinemaUi extends UI {
         if (userBean.isUserLoggedIn()) {
             Button user = new Button(userBean.getCurrentUser().getName(), e -> userClicked());
             header.addComponent(user);
-            Button logout = new Button("Abmelden", e -> userBean.logout());
+            Button logout = new Button("Abmelden", e -> {
+                userBean.logout();
+                Page.getCurrent().reload();
+            });
             header.addComponent(logout);
             header.setComponentAlignment(user, Alignment.MIDDLE_RIGHT);
             header.setComponentAlignment(logout, Alignment.MIDDLE_RIGHT);
@@ -133,10 +136,11 @@ public class SmartCinemaUi extends UI {
             header.addComponent(register);
             Button login = new Button("Anmelden", e -> {
                 try {
-                    navigateTo(LoginView.VIEW_NAME + "/" +
-                            URLEncoder.encode(Page.getCurrent().getLocation().toASCIIString(), "UTF-8"));
+                    navigateTo(LoginView.VIEW_NAME + "/"
+                            + URLEncoder.encode(Page.getCurrent().getLocation().toASCIIString(), "UTF-8"));
                 } catch (UnsupportedEncodingException e1) {
-                    // FIXME: This should never happen. If it does, we'll quietly limp along.
+                    // FIXME: This should never happen. If it does, we'll
+                    // quietly limp along.
                     navigateTo(LoginView.VIEW_NAME);
                 }
             });
