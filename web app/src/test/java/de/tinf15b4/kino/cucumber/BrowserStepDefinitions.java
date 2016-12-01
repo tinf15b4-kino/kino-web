@@ -15,7 +15,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +41,6 @@ import de.tinf15b4.kino.data.users.UserRepository;
 import de.tinf15b4.kino.web.KinoWebApplication;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import io.github.bonigarcia.wdm.FirefoxDriverManager;
-import io.github.bonigarcia.wdm.InternetExplorerDriverManager;
 
 @ContextConfiguration(classes = SpringTestConfig.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = { KinoWebApplication.class })
@@ -84,16 +82,12 @@ public class BrowserStepDefinitions {
 
         switch (drvstr) {
         case "firefox":
-            FirefoxDriverManager.getInstance().setup();
+            FirefoxDriverManager.getInstance().setup("0.11.1");
             driver = new FirefoxDriver();
             break;
         case "chrome":
-            ChromeDriverManager.getInstance().setup();
+            ChromeDriverManager.getInstance().setup("2.25");
             driver = new ChromeDriver();
-            break;
-        case "explorer":
-            InternetExplorerDriverManager.getInstance().setup();
-            driver = new InternetExplorerDriver();
             break;
         case "remote":
             if (remote == null || remote.isEmpty())
