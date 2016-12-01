@@ -57,6 +57,6 @@ After the User found the Information (or not) nothing have to be changed or save
 
 <!-- Link definitions -->
 [SRS]: https://github.com/tinf15b4-kino/kino-web/blob/master/documents/SRS.md
-[flow]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/UC/get%20information/UC_GetInformation.svg
+[flow]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/UC/get%20information/flow_GetInformation.png
 
  
