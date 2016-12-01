@@ -1,4 +1,5 @@
 .gradle
+styles.scss.cache
 /build/
 !gradle/wrapper/gradle-wrapper.jar
 

@@ -21,10 +21,10 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
-import de.tinf15b4.kino.data.Cinema;
-import de.tinf15b4.kino.data.Favorite;
-import de.tinf15b4.kino.data.users.UserLoginBean;
-import de.tinf15b4.kino.web.controllers.FavoriteListController;
+import de.tinf15b4.kino.data.cinemas.Cinema;
+import de.tinf15b4.kino.data.favorites.Favorite;
+import de.tinf15b4.kino.data.favorites.FavoriteService;
+import de.tinf15b4.kino.data.users.UserBean;
 
 @SpringView(name = FavoriteListView.VIEW_NAME)
 public class FavoriteListView extends VerticalLayout implements View {
@@ -33,17 +33,17 @@ public class FavoriteListView extends VerticalLayout implements View {
     private VerticalLayout content;
 
     @Autowired
-    private FavoriteListController controller;
+    private FavoriteService favoriteService;
 
     @Autowired
-    private UserLoginBean userBean;
+    private UserBean userBean;
 
     @PostConstruct
     private void init() {
         if (userBean.isUserLoggedIn()) {
-            List<Favorite> l = controller.getAllFavesForCurrentUser();
+            List<Favorite> l = favoriteService.getAllFavoritesForUser(userBean.getCurrentUser());
 
-            this.addComponent(new Label("Favorite Cinemas"));
+            this.addComponent(new Label("Favoritisierte Kinos"));
 
             content = new VerticalLayout();
             content.setMargin(true);
@@ -51,17 +51,17 @@ public class FavoriteListView extends VerticalLayout implements View {
             this.addComponent(new Panel(content));
 
             if (l.isEmpty()) {
-                content.addComponent(new Label("No Favorite Cinemas yet :("));
+                content.addComponent(new Label("Bisher wurden noch keine Kinos zu den Favoriten hinzugefügt. :("));
             } else {
                 for (Favorite f : l) {
                     content.addComponent(buildListEntry(f.getCinema()));
                 }
             }
         } else {
-            this.addComponent(new Label("Sie müssen sich Anmelden"));
+            this.addComponent(new Label("Sie müssen sich Anmelden!"));
         }
     }
-    
+
     private Component buildListEntry(Cinema c) {
         HorizontalLayout pav = new HorizontalLayout();
         pav.setWidth(100, Unit.PERCENTAGE);
@@ -69,8 +69,8 @@ public class FavoriteListView extends VerticalLayout implements View {
         pav.addComponent(l);
         pav.setComponentAlignment(l, Alignment.MIDDLE_LEFT);
 
-        Button removeBtn = new Button("Remove");
-        removeBtn.addClickListener(e -> removeFromFavorites(c.getId(), pav));
+        Button removeBtn = new Button("Entfernen");
+        removeBtn.addClickListener(e -> removeFromFavorites(c, pav));
         pav.addComponent(removeBtn);
         pav.setComponentAlignment(removeBtn, Alignment.MIDDLE_RIGHT);
 
@@ -82,23 +82,23 @@ public class FavoriteListView extends VerticalLayout implements View {
 
     }
 
-    private void removeFromFavorites(long cinemaId, HorizontalLayout row) {
-        if (controller.isCinemaFavorite(cinemaId)) {
+    private void removeFromFavorites(Cinema c, HorizontalLayout row) {
+        if (favoriteService.isCinemaFavorite(userBean.getCurrentUser(), c)) {
             // remove favorite entry
-            String cinemaName = controller.getFave(cinemaId).getCinema().getName();
-            controller.unmarkFavorite(cinemaId);
+            String cinemaName = favoriteService.findFavorite(userBean.getCurrentUser(), c).getCinema().getName();
+            favoriteService.unmarkFavorite(userBean.getCurrentUser(), c);
 
             row.removeAllComponents();
 
             GridLayout g = new GridLayout(2, 1);
 
-            Label l = new Label(String.format("Favorite Cinema \"%s\" has been removed", cinemaName));
+            Label l = new Label(String.format("Das Kino \"%s\" wurde aus den Favorien entfernt.", cinemaName));
             g.addComponent(l, 0, 0);
             g.setComponentAlignment(l, Alignment.MIDDLE_LEFT);
 
-            Button undo = new Button("Undo");
+            Button undo = new Button("Rückgängig machen");
             undo.setStyleName(ValoTheme.BUTTON_LINK);
-            undo.addClickListener(e -> undoRemove(cinemaId, row));
+            undo.addClickListener(e -> undoRemove(c, row));
             g.addComponent(undo, 1, 0);
             g.setComponentAlignment(undo, Alignment.MIDDLE_LEFT);
             g.setColumnExpandRatio(1, 1.0f);
@@ -107,9 +107,9 @@ public class FavoriteListView extends VerticalLayout implements View {
         }
     }
 
-    private void undoRemove(long cinemaId, HorizontalLayout row) {
-        controller.markFavorite(cinemaId);
-
-        content.replaceComponent(row, buildListEntry(controller.getFave(cinemaId).getCinema()));
+    private void undoRemove(Cinema c, HorizontalLayout row) {
+        favoriteService.markFavorite(userBean.getCurrentUser(), c);
+        content.replaceComponent(row,
+                buildListEntry(favoriteService.findFavorite(userBean.getCurrentUser(), c).getCinema()));
     }
 }

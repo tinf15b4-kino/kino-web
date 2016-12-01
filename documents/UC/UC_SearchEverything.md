@@ -6,8 +6,8 @@ tbd
 
 #### 1.1 Brief Description
 
-The search-everything function will search the whole website without restrictions to categories likes films, cinemas etc.
-The user can enter any text and everything that matsches the given input will be displayed in the view.
+The "search everything" function will search the whole website without restrictions to categories likes films, cinemas etc.
+The user can enter any text and everything that matches the given input will be displayed in the view.
 
 ### 2.Flow of Events
 
@@ -17,9 +17,13 @@ Activity Diagram:
 
 ![flow for search everything][flow]
 
-Feature-File:
+Screenshot:
 
-[Link to the Feature-File](https://github.com/tinf15b4-kino/kino-web/blob/TESB416-89/web%20app/src/test/resources/de/tinf15b4/kino/cucumber/searchEverything.feature.proto)
+![screenshot][screenshot]
+
+Feature File:
+
+[Link to the Feature-File](../../web%20app/src/test/resources/de/tinf15b4/kino/cucumber/searchEverything.feature)
 
 #### 2.2 Alternative Flows
 
@@ -36,7 +40,8 @@ According to our [SRS][SRS] the user should receive the result within one sceond
 The result of the search will be split into three parts:
 - movies: all movies whose title contain the search query.
 - cinemas: all cinemas whose name contain the search query.
-- descriptions: all cinemas or movies whose descipription contains the search query.
+- descriptions: all cinemas or movies whose description contains the search query.
+  (the cinema description may also include the address or other metadata)
 
 ### 4. Preconditions
 
@@ -52,7 +57,8 @@ After submitting the search pattern, the result view should only show entries th
 (n/a)
 
 <!-- Link definitions -->
-[SRS]: https://github.com/tinf15b4-kino/kino-web/blob/master/documents/SRS.md
-[flow]: https://github.com/tinf15b4-kino/kino-web/blob/master/documents/UC/UC_SearchEverything.png
+[SRS]: ../SRS.md
+[flow]: ./search%20everything/flow.png
+[screenshot]: ./search%20everything/screenshot.png
 
  
