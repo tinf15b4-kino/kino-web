@@ -1,7 +1,5 @@
 package de.tinf15b4.kino.web.views;
 
-import java.io.ByteArrayInputStream;
-
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.ExternalResource;
-import com.vaadin.server.StreamResource;
-import com.vaadin.server.StreamResource.StreamSource;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Image;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.VerticalLayout;
 
@@ -24,6 +19,7 @@ import de.tinf15b4.kino.data.cinemas.CinemaService;
 import de.tinf15b4.kino.data.favorites.FavoriteService;
 import de.tinf15b4.kino.data.users.UserBean;
 import de.tinf15b4.kino.web.util.CinemaFavoriteUtils;
+import de.tinf15b4.kino.web.util.PictureUtils;
 import de.tinf15b4.kino.web.util.ToggleFavoriteListener;
 
 @SpringView(name = CinemaListView.VIEW_NAME)
@@ -49,16 +45,7 @@ public class CinemaListView extends VerticalLayout implements View, ToggleFavori
             row.setWidth(100, Unit.PERCENTAGE);
 
             // Picture
-            StreamSource streamSource = new StreamResource.StreamSource() {
-                @Override
-                public ByteArrayInputStream getStream() {
-                    return (c.getImage() == null) ? null : new ByteArrayInputStream(c.getImage());
-                }
-            };
-
-            StreamResource imageResource = new StreamResource(streamSource, "");
-
-            Image image = new Image(null, imageResource);
+            Component image = PictureUtils.getImage(null, c);
 
             image.setHeight("100px");
             row.addComponent(image);

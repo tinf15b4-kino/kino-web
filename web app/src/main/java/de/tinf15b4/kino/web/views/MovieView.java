@@ -1,6 +1,5 @@
 package de.tinf15b4.kino.web.views;
 
-import java.io.ByteArrayInputStream;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,13 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ExternalResource;
-import com.vaadin.server.Resource;
-import com.vaadin.server.StreamResource;
-import com.vaadin.server.StreamResource.StreamSource;
 import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.Panel;
@@ -29,6 +25,7 @@ import de.tinf15b4.kino.data.playlists.Playlist;
 import de.tinf15b4.kino.data.playlists.PlaylistService;
 import de.tinf15b4.kino.data.ratedmovies.RatedMovie;
 import de.tinf15b4.kino.data.ratedmovies.RatedMovieService;
+import de.tinf15b4.kino.web.util.PictureUtils;
 
 @SpringView(name = MovieView.VIEW_NAME)
 public class MovieView extends VerticalLayout implements View {
@@ -63,15 +60,7 @@ public class MovieView extends VerticalLayout implements View {
                 left.addComponent(new Label(m.getName()));
 
                 // Picture
-                StreamSource streamSource = new StreamResource.StreamSource() {
-                    @Override
-                    public ByteArrayInputStream getStream() {
-                        return (m.getCover() == null) ? null : new ByteArrayInputStream(m.getCover());
-                    }
-                };
-
-                StreamResource imageResource = new StreamResource(streamSource, "");
-                Image image = new Image(null, (Resource) imageResource);
+                Component image = PictureUtils.getImage(m, null);
                 image.setHeight("150px");
                 left.addComponent(image);
 
