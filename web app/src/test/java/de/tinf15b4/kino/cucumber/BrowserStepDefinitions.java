@@ -105,7 +105,7 @@ public class BrowserStepDefinitions {
         testConfig.setFakeUser(null);
     }
 
-    @Given("^I am logged in as (.*)$")
+    @Given("^I am logged in as \"([^\\\"]*)\"$")
     public void iAmLoggedIn(String username) throws Throwable {
         User mockUser = new User();
         mockUser.setName(username);
@@ -131,7 +131,7 @@ public class BrowserStepDefinitions {
             userRepo.save(m);
     }
 
-    @Given("^the rating of User (.*) for Cinema (.*) with (.*) stars and description (.*)$")
+    @Given("^the rating of User \"([^\\\"]*)\" for Cinema \"([^\\\"]*)\" with (.*) stars and description \"([^\\\"]*)\"$")
     public void withCinemaRating(String userName, String cinemaName, int stars, String desc) {
         // FIXME Selecting by id doesn't seem to work as the ids are regenerated
         // when adding to repo. Seems to be only on my machine though (Marco)
@@ -152,7 +152,7 @@ public class BrowserStepDefinitions {
         rCinemaRepo.save(rCinema);
     }
 
-    @Given("^the rating of User (.*) for Movie (.*) with (.*) stars and description (.*)$")
+    @Given("^the rating of User \"([^\\\"]*)\" for Movie \"([^\\\"]*)\" with (.*) stars and description \"([^\\\"]*)\"$")
     public void withMovieRating(String userName, String movieName, int stars, String desc) {
         // FIXME Selecting by id doesn't seem to work as the ids are regenerated
         // when adding to repo. Seems to be only on my machine though (Marco)
@@ -173,14 +173,14 @@ public class BrowserStepDefinitions {
         rMovieRepo.save(rMovie);
     }
 
-    @When("^I search for (.*)$")
+    @When("^I search for \"([^\\\"]*)\"$")
     public void iSearchFor(String term) throws Throwable {
         WebElement searchBox = driver.findElement(By.className("kino-search-box"));
         searchBox.sendKeys(term);
         searchBox.sendKeys(Keys.ENTER);
     }
 
-    @Then("^the link (.*) should redirect to (.*)$")
+    @Then("^the link \"([^\\\"]*)\" should redirect to \"([^\\\"]*)\"$")
     public void linkShouldRedirect(String linkLabel, String urlTail) throws Throwable {
         WebElement link = driver.findElement(By.linkText(linkLabel));
         link.click();
@@ -188,7 +188,7 @@ public class BrowserStepDefinitions {
         Assert.assertThat(driver.getCurrentUrl(), StringEndsWith.endsWith(urlTail));
     }
 
-    @Then("^the current URL should be (.*)$")
+    @Then("^the current URL should be \"([^\\\"]*)\"$")
     public void currentUrlShouldBe(String urlTail) throws Throwable {
         Assert.assertThat(driver.getCurrentUrl(), StringEndsWith.endsWith(urlTail));
     }
@@ -206,7 +206,7 @@ public class BrowserStepDefinitions {
         driver.findElement(By.xpath("//*[contains(text(), 'smartCinema')]"));
     }
 
-    @When("^I click the button labeled (.*)$")
+    @When("^I click the button labeled \"([^\\\"]*)\"$")
     public void clickButton(String text) throws Throwable {
         // FIXME: This is actually shit because it will break when the text
         // contains funny characters
@@ -214,7 +214,7 @@ public class BrowserStepDefinitions {
                 By.xpath("//div[contains(@class, 'v-button') and .//span[contains(text(), '" + text + "')]]")).click();
     }
 
-    @When("^I click the link labeled (.*)$")
+    @When("^I click the link labeled \"([^\\\"]*)\"$")
     public void clickLink(String text) throws Throwable {
         // FIXME: This is actually shit because it will break when the text
         // contains funny characters
@@ -222,21 +222,21 @@ public class BrowserStepDefinitions {
                 .click();
     }
 
-    @Then("^I should see a label containing (.*)$")
+    @Then("^I should see a label containing \"([^\\\"]*)\"$")
     public void iShouldSeeALabelContaining(String text) throws Throwable {
         // FIXME: This is actually shit because it will break when the text
         // contains funny characters
         driver.findElement(By.xpath("//*[contains(text(), '" + text + "')]"));
     }
 
-    @Then("^I should see a button labeled (.*)$")
+    @Then("^I should see a button labeled \"([^\\\"]*)\"$")
     public void iShouldSeeAButtonLabeled(String text) throws Throwable {
         // FIXME: This is actually shit because it will break when the text
         // contains funny characters
         driver.findElement(By.xpath("//*[contains(@class, 'v-button') and contains(text(), '" + text + "')]"));
     }
 
-    @Then("^I should not see a link labeled (.*)$")
+    @Then("^I should not see a link labeled \"([^\\\"]*)\"$")
     public void iShouldNotSeeALinkLabeled(String text) throws Throwable {
         // FIXME: This is actually shit because it will break when the text
         // contains funny characters
