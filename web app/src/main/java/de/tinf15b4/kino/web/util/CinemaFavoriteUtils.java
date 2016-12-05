@@ -21,6 +21,7 @@ public class CinemaFavoriteUtils {
             Button favBtn = new Button();
             favBtn.setCaption("Zu Favoriten hinzufügen");
             favBtn.addClickListener(e -> markAsFavorite(c, favoriteService, userBean, listener));
+            favBtn.addStyleName("cinema-favorite-button");
             return favBtn;
         } else {
             MenuBar unfavMenu = new MenuBar();

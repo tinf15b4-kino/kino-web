@@ -2,6 +2,7 @@ package de.tinf15b4.kino.cucumber;
 
 import java.net.InetAddress;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -10,6 +11,7 @@ import org.hamcrest.collection.IsEmptyCollection;
 import org.hamcrest.core.StringEndsWith;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -243,6 +245,57 @@ public class BrowserStepDefinitions {
         List<WebElement> els = driver
                 .findElements(By.xpath("//*[contains(@class, 'v-link') and contains(text(), '" + text + "')]"));
         Assert.assertThat(els, IsEmptyCollection.empty());
+    }
+
+    private void elementsAreAlignedHelper(String selector, String leftright) throws Exception {
+        long pos = Long.MIN_VALUE;
+
+        List<WebElement> els = driver.findElements(By.cssSelector(selector));
+        for (WebElement el : els) {
+            long npos = Long.MIN_VALUE;
+            if (leftright.equals("left")) {
+                npos = el.getLocation().getX();
+            } else {
+                npos = el.getLocation().getX() + el.getSize().getWidth();
+            }
+
+            if (pos > Long.MIN_VALUE && pos != npos) {
+                throw new Exception("Element coordinates differ: " + pos + "px vs " + npos + "px");
+            }
+            pos = npos;
+        }
+    }
+
+    @Then("^all elements matching \"([^\"]+)\" are (right|left)-aligned at ((?:\\d+x\\d+,)*\\d+x\\d+)$")
+    public void elementsAreAligned(String selector, String leftright, String s) throws Throwable {
+        ArrayList<Dimension> sizes = new ArrayList<>();
+
+        for (String r : s.split(",")) {
+            String wh[] = r.split("x");
+            sizes.add(new Dimension(Integer.parseInt(wh[0]), Integer.parseInt(wh[1])));
+        }
+
+        sizes.add(driver.manage().window().getSize()); // restore size at the end
+
+        for (Dimension size : sizes) {
+            driver.manage().window().setSize(size);
+
+            // HACK: Sometimes, the window needs a bit of time to adjust,
+            // but most of the time waiting a second would just be a waste of time.
+            // I don't know how to actually solve this race condition, so if the
+            // test fails, we'll just wait a second and run it again.
+            try {
+                elementsAreAlignedHelper(selector, leftright);
+            } catch (Exception e) {
+                try {
+                    Thread.sleep(1000);
+                    elementsAreAlignedHelper(selector, leftright);
+                } catch (Exception ex) {
+                    throw new Exception("Alignment mismatch at size " +
+                            size.getWidth() + "x" + size.getHeight(), ex);
+                }
+            }
+        }
     }
 
     @After

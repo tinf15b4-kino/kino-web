@@ -46,18 +46,20 @@ public class CinemaListView extends VerticalLayout implements View, ToggleFavori
 
             // Picture
             Component image = PictureUtils.getImage(null, c);
-
+            image.addStyleName("cinema-list-image");
             image.setHeight("100px");
             row.addComponent(image);
 
             Link l = new Link(c.getName(), new ExternalResource("#!" + CinemaView.VIEW_NAME + "/" + c.getId()));
+            l.addStyleName("cinema-list-link");
             row.addComponent(l);
             row.setComponentAlignment(l, Alignment.MIDDLE_LEFT);
 
             Component button = CinemaFavoriteUtils.createFavoriteButton(c, favoriteService, userBean, this);
             row.addComponent(button);
             row.setComponentAlignment(button, Alignment.MIDDLE_RIGHT);
-            row.setExpandRatio(button, 1f);
+
+            row.setExpandRatio(l, 1f);
             row.setSpacing(true);
             this.addComponent(row);
         }
