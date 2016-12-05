@@ -50,6 +50,6 @@ After the user set some filters, he should see the informations (movies), which 
 
 <!-- Link definitions -->
 [SRS]: https://github.com/tinf15b4-kino/kino-web/blob/master/documents/SRS.md
-[Flow]:tbd
+[Flow]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/UC/filter%20information/flow_FilterInformation.png
 [Mockup]: tbd
 [Feature File]: tbd
