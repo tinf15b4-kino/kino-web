@@ -9,11 +9,11 @@ Scenario: See the cinema list
 		| 2   | Schicke Scheinwand      |
 		
 	When I open the start page 
-	And I click the button labeled Kinos 
+	And I click the button labeled "Kinos"
 	
-	Then I should see a label containing Maier, Maier und Maier 
-	And I should see a label containing Schicke Scheinwand 
-	And the link Maier, Maier und Maier should redirect to #!cinema/1
+	Then I should see a label containing "Maier, Maier und Maier"
+	And I should see a label containing "Schicke Scheinwand"
+	And the link "Maier, Maier und Maier" should redirect to "#!cinema/1"
 	
 	
 Scenario: See the cinema information 
@@ -23,13 +23,13 @@ Scenario: See the cinema information
 		| 2   | Schicke Schummerwand    | EpicStreet | 23  | 12345    | Timbuktu    | Somewhere   |
 		
 	When I open the start page 
-	And I click the button labeled Kinos 
-	And I click the link labeled Schicke Schummerwand
+	And I click the button labeled "Kinos"
+	And I click the link labeled "Schicke Schummerwand"
 	
-	Then the current URL should be #!cinema/2
-	And I should see a label containing Schicke Schummerwand
-	And I should see a label containing EpicStreet 23
-	And I should see a label containing 12345 Timbuktu, SOMEWHERE 
+	Then the current URL should be "#!cinema/2"
+	And I should see a label containing "Schicke Schummerwand"
+	And I should see a label containing "EpicStreet 23"
+	And I should see a label containing "12345 Timbuktu, SOMEWHERE"
 	
 	
 Scenario: See the cinema rating 
@@ -40,13 +40,13 @@ Scenario: See the cinema rating
 	And the users 
 		| Id  | Name       |
 		| 1   | Mustermann |
-	And the rating of User Mustermann for Cinema Schicke Scheinwand with 4 stars and description This is a nice Cinema 
+	And the rating of User "Mustermann" for Cinema "Schicke Scheinwand" with 4 stars and description "This is a nice Cinema"
 	
 	When I open the start page 
-	And I click the button labeled Kinos 
-	And I click the link labeled Schicke Scheinwand 
+	And I click the button labeled "Kinos"
+	And I click the link labeled "Schicke Scheinwand"
 	
-	Then I should see a label containing Schicke Scheinwand 
-	And I should see a label containing Mustermann 
-	And I should see a label containing 4 
-	And I should see a label containing This is a nice Cinema
+	Then I should see a label containing "Schicke Scheinwand"
+	And I should see a label containing "Mustermann"
+	And I should see a label containing "4"
+	And I should see a label containing "This is a nice Cinema"
