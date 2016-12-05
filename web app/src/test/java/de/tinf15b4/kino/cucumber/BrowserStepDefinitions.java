@@ -2,6 +2,7 @@ package de.tinf15b4.kino.cucumber;
 
 import java.net.InetAddress;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -10,12 +11,12 @@ import org.hamcrest.collection.IsEmptyCollection;
 import org.hamcrest.core.StringEndsWith;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +43,6 @@ import de.tinf15b4.kino.data.users.UserRepository;
 import de.tinf15b4.kino.web.KinoWebApplication;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import io.github.bonigarcia.wdm.FirefoxDriverManager;
-import io.github.bonigarcia.wdm.InternetExplorerDriverManager;
 
 @ContextConfiguration(classes = SpringTestConfig.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = { KinoWebApplication.class })
@@ -84,16 +84,12 @@ public class BrowserStepDefinitions {
 
         switch (drvstr) {
         case "firefox":
-            FirefoxDriverManager.getInstance().setup();
+            FirefoxDriverManager.getInstance().setup("0.11.1");
             driver = new FirefoxDriver();
             break;
         case "chrome":
-            ChromeDriverManager.getInstance().setup();
+            ChromeDriverManager.getInstance().setup("2.25");
             driver = new ChromeDriver();
-            break;
-        case "explorer":
-            InternetExplorerDriverManager.getInstance().setup();
-            driver = new InternetExplorerDriver();
             break;
         case "remote":
             if (remote == null || remote.isEmpty())
@@ -111,7 +107,7 @@ public class BrowserStepDefinitions {
         testConfig.setFakeUser(null);
     }
 
-    @Given("^I am logged in as (.*)$")
+    @Given("^I am logged in as \"([^\\\"]*)\"$")
     public void iAmLoggedIn(String username) throws Throwable {
         User mockUser = new User();
         mockUser.setName(username);
@@ -137,7 +133,7 @@ public class BrowserStepDefinitions {
             userRepo.save(m);
     }
 
-    @Given("^the rating of User (.*) for Cinema (.*) with (.*) stars and description (.*)$")
+    @Given("^the rating of User \"([^\\\"]*)\" for Cinema \"([^\\\"]*)\" with (.*) stars and description \"([^\\\"]*)\"$")
     public void withCinemaRating(String userName, String cinemaName, int stars, String desc) {
         // FIXME Selecting by id doesn't seem to work as the ids are regenerated
         // when adding to repo. Seems to be only on my machine though (Marco)
@@ -158,7 +154,7 @@ public class BrowserStepDefinitions {
         rCinemaRepo.save(rCinema);
     }
 
-    @Given("^the rating of User (.*) for Movie (.*) with (.*) stars and description (.*)$")
+    @Given("^the rating of User \"([^\\\"]*)\" for Movie \"([^\\\"]*)\" with (.*) stars and description \"([^\\\"]*)\"$")
     public void withMovieRating(String userName, String movieName, int stars, String desc) {
         // FIXME Selecting by id doesn't seem to work as the ids are regenerated
         // when adding to repo. Seems to be only on my machine though (Marco)
@@ -179,14 +175,14 @@ public class BrowserStepDefinitions {
         rMovieRepo.save(rMovie);
     }
 
-    @When("^I search for (.*)$")
+    @When("^I search for \"([^\\\"]*)\"$")
     public void iSearchFor(String term) throws Throwable {
         WebElement searchBox = driver.findElement(By.className("kino-search-box"));
         searchBox.sendKeys(term);
         searchBox.sendKeys(Keys.ENTER);
     }
 
-    @Then("^the link (.*) should redirect to (.*)$")
+    @Then("^the link \"([^\\\"]*)\" should redirect to \"([^\\\"]*)\"$")
     public void linkShouldRedirect(String linkLabel, String urlTail) throws Throwable {
         WebElement link = driver.findElement(By.linkText(linkLabel));
         link.click();
@@ -194,7 +190,7 @@ public class BrowserStepDefinitions {
         Assert.assertThat(driver.getCurrentUrl(), StringEndsWith.endsWith(urlTail));
     }
 
-    @Then("^the current URL should be (.*)$")
+    @Then("^the current URL should be \"([^\\\"]*)\"$")
     public void currentUrlShouldBe(String urlTail) throws Throwable {
         Assert.assertThat(driver.getCurrentUrl(), StringEndsWith.endsWith(urlTail));
     }
@@ -212,7 +208,7 @@ public class BrowserStepDefinitions {
         driver.findElement(By.xpath("//*[contains(text(), 'smartCinema')]"));
     }
 
-    @When("^I click the button labeled (.*)$")
+    @When("^I click the button labeled \"([^\\\"]*)\"$")
     public void clickButton(String text) throws Throwable {
         // FIXME: This is actually shit because it will break when the text
         // contains funny characters
@@ -220,7 +216,7 @@ public class BrowserStepDefinitions {
                 By.xpath("//div[contains(@class, 'v-button') and .//span[contains(text(), '" + text + "')]]")).click();
     }
 
-    @When("^I click the link labeled (.*)$")
+    @When("^I click the link labeled \"([^\\\"]*)\"$")
     public void clickLink(String text) throws Throwable {
         // FIXME: This is actually shit because it will break when the text
         // contains funny characters
@@ -228,27 +224,78 @@ public class BrowserStepDefinitions {
                 .click();
     }
 
-    @Then("^I should see a label containing (.*)$")
+    @Then("^I should see a label containing \"([^\\\"]*)\"$")
     public void iShouldSeeALabelContaining(String text) throws Throwable {
         // FIXME: This is actually shit because it will break when the text
         // contains funny characters
         driver.findElement(By.xpath("//*[contains(text(), '" + text + "')]"));
     }
 
-    @Then("^I should see a button labeled (.*)$")
+    @Then("^I should see a button labeled \"([^\\\"]*)\"$")
     public void iShouldSeeAButtonLabeled(String text) throws Throwable {
         // FIXME: This is actually shit because it will break when the text
         // contains funny characters
         driver.findElement(By.xpath("//*[contains(@class, 'v-button') and contains(text(), '" + text + "')]"));
     }
 
-    @Then("^I should not see a link labeled (.*)$")
+    @Then("^I should not see a link labeled \"([^\\\"]*)\"$")
     public void iShouldNotSeeALinkLabeled(String text) throws Throwable {
         // FIXME: This is actually shit because it will break when the text
         // contains funny characters
         List<WebElement> els = driver
                 .findElements(By.xpath("//*[contains(@class, 'v-link') and contains(text(), '" + text + "')]"));
         Assert.assertThat(els, IsEmptyCollection.empty());
+    }
+
+    private void elementsAreAlignedHelper(String selector, String leftright) throws Exception {
+        long pos = Long.MIN_VALUE;
+
+        List<WebElement> els = driver.findElements(By.cssSelector(selector));
+        for (WebElement el : els) {
+            long npos = Long.MIN_VALUE;
+            if (leftright.equals("left")) {
+                npos = el.getLocation().getX();
+            } else {
+                npos = el.getLocation().getX() + el.getSize().getWidth();
+            }
+
+            if (pos > Long.MIN_VALUE && pos != npos) {
+                throw new Exception("Element coordinates differ: " + pos + "px vs " + npos + "px");
+            }
+            pos = npos;
+        }
+    }
+
+    @Then("^all elements matching \"([^\"]+)\" are (right|left)-aligned at ((?:\\d+x\\d+,)*\\d+x\\d+)$")
+    public void elementsAreAligned(String selector, String leftright, String s) throws Throwable {
+        ArrayList<Dimension> sizes = new ArrayList<>();
+
+        for (String r : s.split(",")) {
+            String wh[] = r.split("x");
+            sizes.add(new Dimension(Integer.parseInt(wh[0]), Integer.parseInt(wh[1])));
+        }
+
+        sizes.add(driver.manage().window().getSize()); // restore size at the end
+
+        for (Dimension size : sizes) {
+            driver.manage().window().setSize(size);
+
+            // HACK: Sometimes, the window needs a bit of time to adjust,
+            // but most of the time waiting a second would just be a waste of time.
+            // I don't know how to actually solve this race condition, so if the
+            // test fails, we'll just wait a second and run it again.
+            try {
+                elementsAreAlignedHelper(selector, leftright);
+            } catch (Exception e) {
+                try {
+                    Thread.sleep(1000);
+                    elementsAreAlignedHelper(selector, leftright);
+                } catch (Exception ex) {
+                    throw new Exception("Alignment mismatch at size " +
+                            size.getWidth() + "x" + size.getHeight(), ex);
+                }
+            }
+        }
     }
 
     @After

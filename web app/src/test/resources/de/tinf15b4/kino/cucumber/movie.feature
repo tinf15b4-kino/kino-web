@@ -10,12 +10,12 @@ Scenario: See the movie list
 		| 3   | Weihnachtsmann  | Yo Mama     |
 		
 	When I open the start page 
-	And I click the button labeled Filme 
+	And I click the button labeled "Filme"
 	
-	Then I should see a label containing Donald Duck 
-	And I should see a label containing Daisy Duck 
-	And I should see a label containing Weihnachtsmann 
-	And the link Donald Duck should redirect to #!movie/1
+	Then I should see a label containing "Donald Duck"
+	And I should see a label containing "Daisy Duck"
+	And I should see a label containing "Weihnachtsmann"
+	And the link "Donald Duck" should redirect to "#!movie/1"
 	
 	
 Scenario: See the movie information 
@@ -26,12 +26,12 @@ Scenario: See the movie information
 		| 3   | Weihnachtsmann  | Yo Mama     | 456			  |
 		
 	When I open the start page 
-	And I click the button labeled Filme 
-	And I click the link labeled Donald Duck 
+	And I click the button labeled "Filme"
+	And I click the link labeled "Donald Duck"
 	
-	Then I should see a label containing Donald Duck 
-	And I should see a label containing 37 Minuten 
-	And I should see a label containing Yo Mama 
+	Then I should see a label containing "Donald Duck"
+	And I should see a label containing "37 Minuten"
+	And I should see a label containing "Yo Mama"
 	
 	
 Scenario: See the movie rating 
@@ -43,13 +43,13 @@ Scenario: See the movie rating
 	And the users 
 		| Id  | Name       |
 		| 1   | Mustermann |
-	And the rating of User Mustermann for Movie Donald Duck with 4 stars and description This is a nice Movie 
+	And the rating of User "Mustermann" for Movie "Donald Duck" with 4 stars and description "This is a nice Movie"
 	
 	When I open the start page 
-	And I click the button labeled Filme 
-	And I click the link labeled Donald Duck 
+	And I click the button labeled "Filme"
+	And I click the link labeled "Donald Duck"
 	
-	Then I should see a label containing Donald Duck 
-	And I should see a label containing Mustermann 
-	And I should see a label containing 4 
-	And I should see a label containing This is a nice Movie
+	Then I should see a label containing "Donald Duck"
+	And I should see a label containing "Mustermann"
+	And I should see a label containing "4"
+	And I should see a label containing "This is a nice Movie"

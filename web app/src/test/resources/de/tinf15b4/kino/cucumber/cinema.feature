@@ -9,12 +9,15 @@ Scenario: See the cinema list
 		| 2   | Schicke Scheinwand      |
 		
 	When I open the start page 
-	And I click the button labeled Kinos 
+	And I click the button labeled "Kinos"
 	
-	Then I should see a label containing Maier, Maier und Maier 
-	And I should see a label containing Schicke Scheinwand 
-	And the link Maier, Maier und Maier should redirect to #!cinema/1
-	
+	Then I should see a label containing "Maier, Maier und Maier"
+	And I should see a label containing "Schicke Scheinwand"
+	And all elements matching ".cinema-list-image" are left-aligned at 300x400,800x600,1024x768,1280x720
+	And all elements matching ".cinema-list-link" are left-aligned at 300x400,800x600,1024x768,1280x720
+	And all elements matching ".cinema-favorite-button" are right-aligned at 300x400,800x600,1024x768,1280x720
+	And the link "Maier, Maier und Maier" should redirect to "#!cinema/1"
+
 	
 Scenario: See the cinema information 
 	Given the cinemas 
@@ -23,13 +26,13 @@ Scenario: See the cinema information
 		| 2   | Schicke Schummerwand    | EpicStreet | 23  | 12345    | Timbuktu    | Somewhere   |
 		
 	When I open the start page 
-	And I click the button labeled Kinos 
-	And I click the link labeled Schicke Schummerwand
+	And I click the button labeled "Kinos"
+	And I click the link labeled "Schicke Schummerwand"
 	
-	Then the current URL should be #!cinema/2
-	And I should see a label containing Schicke Schummerwand
-	And I should see a label containing EpicStreet 23
-	And I should see a label containing 12345 Timbuktu, SOMEWHERE 
+	Then the current URL should be "#!cinema/2"
+	And I should see a label containing "Schicke Schummerwand"
+	And I should see a label containing "EpicStreet 23"
+	And I should see a label containing "12345 Timbuktu, SOMEWHERE"
 	
 	
 Scenario: See the cinema rating 
@@ -40,13 +43,13 @@ Scenario: See the cinema rating
 	And the users 
 		| Id  | Name       |
 		| 1   | Mustermann |
-	And the rating of User Mustermann for Cinema Schicke Scheinwand with 4 stars and description This is a nice Cinema 
+	And the rating of User "Mustermann" for Cinema "Schicke Scheinwand" with 4 stars and description "This is a nice Cinema"
 	
 	When I open the start page 
-	And I click the button labeled Kinos 
-	And I click the link labeled Schicke Scheinwand 
+	And I click the button labeled "Kinos"
+	And I click the link labeled "Schicke Scheinwand"
 	
-	Then I should see a label containing Schicke Scheinwand 
-	And I should see a label containing Mustermann 
-	And I should see a label containing 4 
-	And I should see a label containing This is a nice Cinema
+	Then I should see a label containing "Schicke Scheinwand"
+	And I should see a label containing "Mustermann"
+	And I should see a label containing "4"
+	And I should see a label containing "This is a nice Cinema"
