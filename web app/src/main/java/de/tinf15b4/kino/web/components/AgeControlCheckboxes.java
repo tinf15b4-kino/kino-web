@@ -1,4 +1,4 @@
-package de.tinf15b4.kino.web.views;
+package de.tinf15b4.kino.web.components;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -10,6 +10,7 @@ import com.vaadin.ui.VerticalLayout;
 
 import de.tinf15b4.kino.data.movies.AgeControl;
 import de.tinf15b4.kino.data.movies.MovieFilterData;
+import de.tinf15b4.kino.web.views.MovieListView;
 
 public class AgeControlCheckboxes extends VerticalLayout {
 

@@ -1,4 +1,4 @@
-package de.tinf15b4.kino.web.views;
+package de.tinf15b4.kino.web.components;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,6 +9,7 @@ import com.vaadin.ui.VerticalLayout;
 
 import de.tinf15b4.kino.data.movies.Genre;
 import de.tinf15b4.kino.data.movies.MovieFilterData;
+import de.tinf15b4.kino.web.views.MovieListView;
 
 public class GenreCheckboxes extends VerticalLayout {
 

@@ -23,6 +23,9 @@ import com.vaadin.ui.VerticalLayout;
 import de.tinf15b4.kino.data.movies.Movie;
 import de.tinf15b4.kino.data.movies.MovieFilterData;
 import de.tinf15b4.kino.data.movies.MovieService;
+import de.tinf15b4.kino.web.components.AgeControlCheckboxes;
+import de.tinf15b4.kino.web.components.DateTimeFilter;
+import de.tinf15b4.kino.web.components.GenreCheckboxes;
 
 @SpringView(name = MovieListView.VIEW_NAME)
 public class MovieListView extends VerticalLayout implements View {

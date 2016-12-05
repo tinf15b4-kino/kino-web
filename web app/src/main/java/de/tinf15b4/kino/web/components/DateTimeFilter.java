@@ -1,4 +1,4 @@
-package de.tinf15b4.kino.web.views;
+package de.tinf15b4.kino.web.components;
 
 import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.DateField;
@@ -6,6 +6,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
 import de.tinf15b4.kino.data.movies.MovieFilterData;
+import de.tinf15b4.kino.web.views.MovieListView;
 
 public class DateTimeFilter extends VerticalLayout {
 
