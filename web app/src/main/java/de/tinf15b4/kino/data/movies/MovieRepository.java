@@ -2,6 +2,7 @@ package de.tinf15b4.kino.data.movies;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,8 +25,8 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     @Query("SELECT m " +
             "FROM Movie m, Playlist p, RatedMovie rm " + 
             "WHERE m = p.id.movie " + //"AND m = rm.id.movie "+
-            "AND (:ac is null OR m.ageControl = :ac) "+
-            "AND (:genre is null OR m.genre = :genre) "+
+            "AND ((:ac) is null OR m.ageControl IN (:ac)) "+
+            "AND ((:genre) is null OR m.genre IN (:genre)) "+
 //            "AND (:gRating is null OR rm.rating >= :gRating) "+
 //            "AND (:lRating is null OR rm.rating <= :lRating) "+
             "AND (:gPrice is null OR p.price >= :gPrice) "+
@@ -34,8 +35,8 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
             "AND (:lTime is null OR p.time <= :lTime) "+ 
             "GROUP BY m")
     List<Movie> allmightyFilter(
-            @Param("ac") AgeControl ac,
-            @Param("genre") Genre genre,
+            @Param("ac") Set<AgeControl> ac,
+            @Param("genre") Set<Genre> genre,
 //            @Param("gRating") Double gRating, // greater than this value
 //            @Param("lRating") Double lRating, // less than...
             @Param("gPrice") Integer gPrice, // price in cents, greater than...

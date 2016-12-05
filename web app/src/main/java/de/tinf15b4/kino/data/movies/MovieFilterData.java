@@ -5,8 +5,8 @@ import java.util.Set;
 
 public class MovieFilterData {
 
-    private AgeControl ageControl;
-    private Genre genre;
+    private Set<AgeControl> ageControl;
+    private Set<Genre> genre;
     private Integer upperPrice;
     private Integer lowerPrice;
     private Date upperTime;
@@ -17,7 +17,8 @@ public class MovieFilterData {
         // this means everything will be shown
     }
 
-    public MovieFilterData(AgeControl ageControl, Genre genre, Integer upperPrice, Integer lowerPrice, Date upperTime,
+    public MovieFilterData(Set<AgeControl> ageControl, Set<Genre> genre, Integer upperPrice, Integer lowerPrice,
+            Date upperTime,
             Date lowerTime) {
         this.ageControl = ageControl;
         this.genre = genre;
@@ -27,20 +28,20 @@ public class MovieFilterData {
         this.lowerTime = lowerTime;
     }
 
-    public AgeControl getAgeControl() {
+    public Set<AgeControl> getAgeControl() {
         return ageControl;
     }
 
     public void setAgeControl(Set<AgeControl> ageControl) {
         // FIXME: TEMPORARY!! Waiting for fix...
-        this.ageControl = ageControl.size() > 0 ? ageControl.iterator().next() : null;
+        this.ageControl = ageControl;
     }
 
-    public Genre getGenre() {
+    public Set<Genre> getGenre() {
         return genre;
     }
 
-    public void setGenre(Genre genre) {
+    public void setGenre(Set<Genre> genre) {
         this.genre = genre;
     }
 
