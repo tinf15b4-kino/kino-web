@@ -37,8 +37,8 @@ public class MovieServiceImpl implements MovieService {
         Set<AgeControl> ageControl = filterData.getAgeControl();
         Set<Genre> genre = filterData.getGenre();
         return movieRepository.allmightyFilter(ageControl.isEmpty() ? null : ageControl, genre.isEmpty() ? null : genre,
-                filterData.getUpperPrice(), filterData.getLowerPrice(), filterData.getUpperTime(),
-                filterData.getLowerTime());
+                filterData.getLowerPrice(), filterData.getUpperPrice(), filterData.getLowerTime(),
+                filterData.getUpperTime());
     }
 
 }

@@ -86,6 +86,7 @@ public class MovieListView extends VerticalLayout implements View {
         layout.setSpacing(true);
         layout.addComponent(new AgeControlCheckboxes(this, filterData));
         layout.addComponent(new GenreCheckboxes(this, filterData));
+        layout.addComponent(new DateTimeFilter(this, filterData));
         return layout;
     }
 
