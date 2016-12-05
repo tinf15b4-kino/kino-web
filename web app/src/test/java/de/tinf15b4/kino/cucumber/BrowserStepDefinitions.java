@@ -19,9 +19,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 
 import cucumber.api.java.After;
@@ -30,6 +33,8 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.cinemas.CinemaRepository;
+import de.tinf15b4.kino.data.favorites.Favorite;
+import de.tinf15b4.kino.data.favorites.FavoriteRepository;
 import de.tinf15b4.kino.data.movies.Movie;
 import de.tinf15b4.kino.data.movies.MovieRepository;
 import de.tinf15b4.kino.data.ratedcinemas.RatedCinema;
@@ -46,6 +51,7 @@ import io.github.bonigarcia.wdm.FirefoxDriverManager;
 
 @ContextConfiguration(classes = SpringTestConfig.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = { KinoWebApplication.class })
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 public class BrowserStepDefinitions {
     private WebDriver driver = null;
 
@@ -69,6 +75,9 @@ public class BrowserStepDefinitions {
 
     @Autowired
     private RatedMovieRepository rMovieRepo;
+
+    @Autowired
+    private FavoriteRepository faveRepo;
 
     public BrowserStepDefinitions() throws Exception {
         // These properties can be set on the gradle command line, e.g.
@@ -110,7 +119,10 @@ public class BrowserStepDefinitions {
     @Given("^I am logged in as \"([^\\\"]*)\"$")
     public void iAmLoggedIn(String username) throws Throwable {
         User mockUser = new User();
+        mockUser.setId(1);
         mockUser.setName(username);
+
+        userRepo.save(mockUser);
 
         testConfig.setFakeUser(mockUser);
     }
@@ -175,6 +187,19 @@ public class BrowserStepDefinitions {
         rMovieRepo.save(rMovie);
     }
 
+    private static class FaveCinemaTableRow {
+        public String user;
+        public long cinema;
+    }
+
+    @Given("^the favorite cinemas")
+    public void withFavoriteCinemas(List<FaveCinemaTableRow> faves) {
+        for (FaveCinemaTableRow row : faves) {
+            Favorite f = new Favorite(userRepo.findByName(row.user), cinemaRepo.findOne(row.cinema));
+            faveRepo.save(f);
+        }
+    }
+
     @When("^I search for \"([^\\\"]*)\"$")
     public void iSearchFor(String term) throws Throwable {
         WebElement searchBox = driver.findElement(By.className("kino-search-box"));
@@ -216,6 +241,44 @@ public class BrowserStepDefinitions {
                 By.xpath("//div[contains(@class, 'v-button') and .//span[contains(text(), '" + text + "')]]")).click();
     }
 
+    @When("^I click the menu item labeled \"([^\\\"]*)\"$")
+    public void clickMenuitem(String text) throws Throwable {
+        // FIXME: This is actually shit because it will break when the text
+        // contains funny characters
+        driver.findElement(
+                By.xpath("//*[contains(@class, 'v-menubar-menuitem') and .//*[contains(text(), '" + text + "')]]")).click();
+    }
+
+    @When("^I click the menu item labeled \"([^\\\"]*)\" below \"([^\"]+)\"$")
+    public void clickMenuitemBelow(String text, String selector) throws Throwable {
+        // FIXME: This is actually shit because it will break when the text
+        // contains funny characters
+        driver.findElement(By.cssSelector(selector)).findElement(
+                By.xpath(".//*[contains(@class, 'v-menubar-menuitem') and .//*[contains(text(), '" + text + "')]]")).click();
+    }
+
+    @When("^I click the button labeled \"([^\\\"]*)\" below \"([^\"]+)\"$")
+    public void clickButtonBelow(String text, String selector) throws Throwable {
+        // FIXME: This is actually shit because it will break when the text
+        // contains funny characters
+        WebElement button = driver.findElement(By.cssSelector(selector)).findElement(
+                By.xpath(".//*[contains(@class, 'v-button') and .//*[contains(text(), '" + text + "')]]"));
+
+        button.click();
+    }
+
+    @When("^I wait until an element containing \"([^\"]+)\" appears$")
+    public void waitUntilLabelAppears(String text) throws Throwable {
+        new WebDriverWait(driver, 10000).until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//*[contains(text(), '"+text+"')]")));
+    }
+
+    @When("^I wait until every element containing \"([^\"]+)\" disappears")
+    public void waitUntilLabelDisappears(String text) throws Throwable {
+        new WebDriverWait(driver, 10000).until(ExpectedConditions.invisibilityOfElementLocated(
+                By.xpath("//*[contains(text(), '"+text+"')]")));
+    }
+
     @When("^I click the link labeled \"([^\\\"]*)\"$")
     public void clickLink(String text) throws Throwable {
         // FIXME: This is actually shit because it will break when the text
@@ -229,6 +292,14 @@ public class BrowserStepDefinitions {
         // FIXME: This is actually shit because it will break when the text
         // contains funny characters
         driver.findElement(By.xpath("//*[contains(text(), '" + text + "')]"));
+    }
+
+    @Then("^I should see a label containing \"([^\\\"]*)\" below \"([^\"]+)\"$")
+    public void iShouldSeeALabelContainingBelow(String text, String selector) throws Throwable {
+        // FIXME: This is actually shit because it will break when the text
+        // contains funny characters
+        driver.findElement(By.cssSelector(selector))
+                .findElement(By.xpath(".//*[contains(text(), '" + text + "')]"));
     }
 
     @Then("^I should see a button labeled \"([^\\\"]*)\"$")
@@ -297,6 +368,17 @@ public class BrowserStepDefinitions {
             }
         }
     }
+
+    @Then("the database should have saved cinema (\\d+) as favorite")
+    public void favoriteIsInDb(long cinemaId) {
+        Assert.assertNotNull(faveRepo.findFavorite(cinemaRepo.findOne(cinemaId), testConfig.getFakeUser()));
+    }
+
+    @Then("the database should not have saved cinema (\\d+) as favorite")
+    public void favoriteIsNotInDb(long cinemaId) {
+        Assert.assertNull(faveRepo.findFavorite(cinemaRepo.findOne(cinemaId), testConfig.getFakeUser()));
+    }
+
 
     @After
     public void teardown() {
