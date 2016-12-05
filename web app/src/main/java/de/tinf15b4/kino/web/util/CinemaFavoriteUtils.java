@@ -37,10 +37,12 @@ public class CinemaFavoriteUtils {
         if (!userBean.isUserLoggedIn()) {
             Notification.show("Melden sie sich an, um diese Funktion nutzen zu können.", Type.WARNING_MESSAGE);
         }
-        if (!favoriteService.isCinemaFavorite(userBean.getCurrentUser(), c)) {
-            // create new favorite entry
-            favoriteService.save(new Favorite(userBean.getCurrentUser(), c));
-            listener.favoriteAdded();
+        if (userBean.isUserLoggedIn()) {
+            if (!favoriteService.isCinemaFavorite(userBean.getCurrentUser(), c)) {
+                // create new favorite entry
+                favoriteService.save(new Favorite(userBean.getCurrentUser(), c));
+                listener.favoriteAdded();
+            }
         }
     }
 
