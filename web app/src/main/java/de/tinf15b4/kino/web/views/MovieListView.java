@@ -26,6 +26,7 @@ import de.tinf15b4.kino.data.movies.MovieService;
 import de.tinf15b4.kino.web.components.AgeControlCheckboxes;
 import de.tinf15b4.kino.web.components.DateTimeFilter;
 import de.tinf15b4.kino.web.components.GenreCheckboxes;
+import de.tinf15b4.kino.web.components.PriceFilter;
 
 @SpringView(name = MovieListView.VIEW_NAME)
 public class MovieListView extends VerticalLayout implements View {
@@ -90,6 +91,7 @@ public class MovieListView extends VerticalLayout implements View {
         layout.addComponent(new AgeControlCheckboxes(this, filterData));
         layout.addComponent(new GenreCheckboxes(this, filterData));
         layout.addComponent(new DateTimeFilter(this, filterData));
+        layout.addComponent(new PriceFilter(this, filterData));
         return layout;
     }
 
