@@ -1,6 +1,7 @@
 package de.tinf15b4.kino.data.movies;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,9 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> allmightyFilter(MovieFilterData filterData) {
-        return movieRepository.allmightyFilter(filterData.getAgeControl(), filterData.getGenre(),
+        Set<AgeControl> ageControl = filterData.getAgeControl();
+        Set<Genre> genre = filterData.getGenre();
+        return movieRepository.allmightyFilter(ageControl.isEmpty() ? null : ageControl, genre.isEmpty() ? null : genre,
                 filterData.getUpperPrice(), filterData.getLowerPrice(), filterData.getUpperTime(),
                 filterData.getLowerTime());
     }

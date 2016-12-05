@@ -1,6 +1,7 @@
 package de.tinf15b4.kino.data.movies;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 public class MovieFilterData {
@@ -13,8 +14,8 @@ public class MovieFilterData {
     private Date lowerTime;
 
     public MovieFilterData() {
-        // don't initialize anything
-        // this means everything will be shown
+        this.ageControl = new HashSet<>();
+        this.genre = new HashSet<>();
     }
 
     public MovieFilterData(Set<AgeControl> ageControl, Set<Genre> genre, Integer upperPrice, Integer lowerPrice,
@@ -33,7 +34,6 @@ public class MovieFilterData {
     }
 
     public void setAgeControl(Set<AgeControl> ageControl) {
-        // FIXME: TEMPORARY!! Waiting for fix...
         this.ageControl = ageControl;
     }
 

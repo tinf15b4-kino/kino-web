@@ -25,17 +25,14 @@ import de.tinf15b4.kino.data.movies.MovieFilterData;
 import de.tinf15b4.kino.data.movies.MovieService;
 
 @SpringView(name = MovieListView.VIEW_NAME)
-public class MovieListView extends VerticalLayout implements View{
+public class MovieListView extends VerticalLayout implements View {
     public static final String VIEW_NAME = "movies";
 
     @Autowired
     private MovieService movieService;
-
-    private VerticalLayout movieLayout;
-
     private MovieFilterData filterData;
 
-    private AgeControlCheckboxes age;
+    private VerticalLayout movieLayout;
 
     @PostConstruct
     public void init() {
@@ -86,13 +83,11 @@ public class MovieListView extends VerticalLayout implements View{
 
     private Component createFilter() {
         HorizontalLayout layout = new HorizontalLayout();
-        age = new AgeControlCheckboxes(this);
-        layout.addComponent(age);
+        layout.addComponent(new AgeControlCheckboxes(this, filterData));
         return layout;
     }
 
     public void filterChanged() {
-        filterData.setAgeControl(age.getSelectedAges());
         removeComponent(movieLayout);
         addComponent(createMovies(), 1);
     }
