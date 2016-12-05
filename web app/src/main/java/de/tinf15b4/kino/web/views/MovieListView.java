@@ -13,6 +13,7 @@ import com.vaadin.server.StreamResource;
 import com.vaadin.server.StreamResource.StreamSource;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Link;
@@ -32,6 +33,8 @@ public class MovieListView extends VerticalLayout implements View{
     public void init() {
         this.setMargin(true);
         this.setSpacing(true);
+
+        addComponent(createFilter());
 
         for (Movie m : movieService.findAll()) {
             HorizontalLayout row = new HorizontalLayout();
@@ -63,8 +66,18 @@ public class MovieListView extends VerticalLayout implements View{
         }
     }
 
+    private Component createFilter() {
+        HorizontalLayout layout = new HorizontalLayout();
+        AgeControlCheckboxes age = new AgeControlCheckboxes(this);
+        layout.addComponent(age);
+        return layout;
+    }
+
+    public void filterChanged() {
+        // TODO update view
+    }
+
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-
     }
 }
