@@ -23,7 +23,7 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     List<Movie> findByFilter(@Param("ac") AgeControl ac, @Param("genre") Genre genre);
     
     @Query("SELECT m " +
-            "FROM Movie m, Playlist p, RatedMovie rm " + 
+            "FROM Movie m, Playlist p " + //, RatedMovie rm " + 
             "WHERE m = p.id.movie " + //"AND m = rm.id.movie "+
             "AND ((:ac) is null OR m.ageControl IN (:ac)) "+
             "AND ((:genre) is null OR m.genre IN (:genre)) "+
