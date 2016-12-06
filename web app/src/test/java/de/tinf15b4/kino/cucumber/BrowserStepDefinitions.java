@@ -32,6 +32,8 @@ import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.cinemas.CinemaRepository;
 import de.tinf15b4.kino.data.movies.Movie;
 import de.tinf15b4.kino.data.movies.MovieRepository;
+import de.tinf15b4.kino.data.playlists.Playlist;
+import de.tinf15b4.kino.data.playlists.PlaylistRepository;
 import de.tinf15b4.kino.data.ratedcinemas.RatedCinema;
 import de.tinf15b4.kino.data.ratedcinemas.RatedCinemaId;
 import de.tinf15b4.kino.data.ratedcinemas.RatedCinemaRepository;
@@ -69,6 +71,9 @@ public class BrowserStepDefinitions {
 
     @Autowired
     private RatedMovieRepository rMovieRepo;
+
+    @Autowired
+    private PlaylistRepository playlistRepo;
 
     public BrowserStepDefinitions() throws Exception {
         // These properties can be set on the gradle command line, e.g.
@@ -173,6 +178,16 @@ public class BrowserStepDefinitions {
         RatedMovieId id = new RatedMovieId(user, movie);
         RatedMovie rMovie = new RatedMovie(id, stars, desc, Calendar.getInstance().getTime());
         rMovieRepo.save(rMovie);
+    }
+
+    @Given("^movie (.*) is played in cinema (.*) for (.*) cents")
+    public void withPlayist(long movieId, long cinemaId, int price) {
+        Playlist p = new Playlist();
+        p.setCinema(cinemaRepo.findOne(cinemaId));
+        p.setMovie(movieRepo.findOne(movieId));
+        p.setPrice(price);
+        playlistRepo.save(p);
+        playlistRepo.findAll();
     }
 
     @When("^I search for \"([^\\\"]*)\"$")
