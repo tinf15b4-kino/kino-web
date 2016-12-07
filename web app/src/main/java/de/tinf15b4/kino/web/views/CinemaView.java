@@ -3,6 +3,7 @@ package de.tinf15b4.kino.web.views;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,6 @@ import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -87,13 +87,16 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
                 right.addComponent(new Label(c.getAddress(), ContentMode.PREFORMATTED));
 
                 this.addComponent(new HorizontalLayout(left, right));
-                if (ratedCinemaService.findRatingsByCinema(c).size() > 0) {
+
+                List<RatedCinema> ratedCinemas = ratedCinemaService.findRatingsByCinema(c);
+
+                if (ratedCinemas.size() > 0) {
                     GridLayout ratings = new GridLayout(4, 1);
                     ratings.setMargin(true);
                     ratings.setSpacing(true);
                     ratings.setSizeFull();
 
-                    for (RatedCinema rc : ratedCinemaService.findRatingsByCinema(c)) {
+                    for (RatedCinema rc : ratedCinemas) {
                         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMANY);
                         ratings.addComponent(new Label(rc.getUser().getName()));
                         ratings.addComponent(new Label(rc.getRating() + ""));
@@ -104,22 +107,27 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
                     this.addComponent(new Panel("Bewertungen", ratings));
                 }
 
-                GridLayout movies = new GridLayout(3, 1);
-                movies.setMargin(true);
-                movies.setSpacing(true);
-                movies.setSizeFull();
+                List<Playlist> playlistEntries = playlistService.findForCinema(c, new Date(),
+                        new Date(new Date().getTime() + 1000L * 3600 * 24 * 7));
 
-                for (Playlist p : playlistService.findForCinema(c, new Date(),
-                        new Date(new Date().getTime() + 1000L * 3600 * 24 * 7))) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("E HH:mm", Locale.GERMANY);
-                    NumberFormat pricef = NumberFormat.getCurrencyInstance(Locale.GERMANY);
-                    movies.addComponent(new Label(sdf.format(p.getTime())));
-                    movies.addComponent(new Link(p.getMovie().getName(),
-                            new ExternalResource("#!" + MovieView.VIEW_NAME + "/" + p.getMovie().getId())));
-                    movies.addComponent(new Label(pricef.format(p.getPrice() / 100.0)));
+                if (playlistEntries.size() > 0) {
+                    GridLayout movies = new GridLayout(3, 1);
+                    movies.setMargin(true);
+                    movies.setSpacing(true);
+                    movies.setSizeFull();
+
+                    for (Playlist p : playlistEntries) {
+                        SimpleDateFormat sdf = new SimpleDateFormat("E HH:mm", Locale.GERMANY);
+                        NumberFormat pricef = NumberFormat.getCurrencyInstance(Locale.GERMANY);
+                        movies.addComponent(new Label(sdf.format(p.getTime())));
+                        movies.addComponent(new Link(p.getMovie().getName(),
+                                new ExternalResource("#!" + MovieView.VIEW_NAME + "/" + p.getMovie().getId())));
+                        movies.addComponent(new Label(pricef.format(p.getPrice() / 100.0)));
+                    }
+
+                    this.addComponent(new Panel("Filme", movies));
                 }
 
-                this.addComponent(new Panel("Filme", movies));
             }
         }
     }

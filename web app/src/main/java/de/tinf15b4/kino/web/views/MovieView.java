@@ -3,6 +3,7 @@ package de.tinf15b4.kino.web.views;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,13 +69,15 @@ public class MovieView extends VerticalLayout implements View {
                 right.addComponent(new Label(m.getDescription()));
                 this.addComponent(new HorizontalLayout(left, right));
 
-                if (ratedMovieService.findRatingsByMovie(m).size() > 0) {
+                List<RatedMovie> ratedMovies = ratedMovieService.findRatingsByMovie(m);
+
+                if (ratedMovies.size() > 0) {
                     GridLayout ratings = new GridLayout(4, 1);
                     ratings.setMargin(true);
                     ratings.setSpacing(true);
                     ratings.setSizeFull();
 
-                    for (RatedMovie rm : ratedMovieService.findRatingsByMovie(m)) {
+                    for (RatedMovie rm : ratedMovies) {
                         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMANY);
                         ratings.addComponent(new Label(rm.getUser().getName()));
                         ratings.addComponent(new Label(rm.getRating() + ""));
@@ -85,22 +88,26 @@ public class MovieView extends VerticalLayout implements View {
                     this.addComponent(new Panel("Bewertungen", ratings));
                 }
 
-                GridLayout playtimes = new GridLayout(3, 1);
-                playtimes.setMargin(true);
-                playtimes.setSpacing(true);
-                playtimes.setSizeFull();
+                List<Playlist> playlistEntries = playlistService.findForMovie(m, new Date(),
+                        new Date(new Date().getTime() + 1000L * 3600 * 24 * 7));
 
-                for (Playlist p : playlistService.findForMovie(m, new Date(),
-                        new Date(new Date().getTime() + 1000L * 3600 * 24 * 7))) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("E HH:mm", Locale.GERMANY);
-                    NumberFormat pricef = NumberFormat.getCurrencyInstance(Locale.GERMANY);
-                    playtimes.addComponent(new Label(sdf.format(p.getTime())));
-                    playtimes.addComponent(new Link(p.getCinema().getName(),
-                            new ExternalResource("#!" + CinemaView.VIEW_NAME + "/" + p.getCinema().getId())));
-                    playtimes.addComponent(new Label(pricef.format(p.getPrice() / 100.0)));
+                if (playlistEntries.size() > 0) {
+                    GridLayout playtimes = new GridLayout(3, 1);
+                    playtimes.setMargin(true);
+                    playtimes.setSpacing(true);
+                    playtimes.setSizeFull();
+
+                    for (Playlist p : playlistEntries) {
+                        SimpleDateFormat sdf = new SimpleDateFormat("E HH:mm", Locale.GERMANY);
+                        NumberFormat pricef = NumberFormat.getCurrencyInstance(Locale.GERMANY);
+                        playtimes.addComponent(new Label(sdf.format(p.getTime())));
+                        playtimes.addComponent(new Link(p.getCinema().getName(),
+                                new ExternalResource("#!" + CinemaView.VIEW_NAME + "/" + p.getCinema().getId())));
+                        playtimes.addComponent(new Label(pricef.format(p.getPrice() / 100.0)));
+                    }
+
+                    this.addComponent(new Panel("Spielplan", playtimes));
                 }
-
-                this.addComponent(new Panel("Spielplan", playtimes));
             }
         }
     }
