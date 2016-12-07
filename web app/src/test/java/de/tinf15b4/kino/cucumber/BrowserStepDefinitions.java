@@ -12,6 +12,7 @@ import org.hamcrest.core.StringEndsWith;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -202,9 +203,44 @@ public class BrowserStepDefinitions {
 
     @When("^I search for \"([^\\\"]*)\"$")
     public void iSearchFor(String term) throws Throwable {
-        WebElement searchBox = driver.findElement(By.className("kino-search-box"));
-        searchBox.sendKeys(term);
-        searchBox.sendKeys(Keys.ENTER);
+        typeInto(term, ".kino-search-box");
+        sendKey("RETURN");
+    }
+
+    @When("^I type \"([^\"]+)\" into \"([^\"]+)\"$")
+    public void typeInto(String input, String selector) throws Throwable {
+        WebElement box = driver.findElement(By.cssSelector(selector));
+        // HACK: Focus element with javascript, this is needed on linux firefox
+        ((JavascriptExecutor)driver).executeScript(
+                "try { window.focus(); arguments[0].focus() } catch(e) {}; return null;",
+                box);
+        box.sendKeys(input);
+    }
+
+    @When("^I type \"([^\"]+)\"$")
+    public void type(String input) throws Throwable {
+        WebElement el = driver.switchTo().activeElement();
+        // HACK: Focus element with javascript, this is needed on linux firefox
+        ((JavascriptExecutor)driver).executeScript(
+                "try { window.focus(); arguments[0].focus() } catch(e) {}; return null;",
+                el);
+        el.sendKeys(input);
+    }
+
+    @When("^I press (RETURN|ENTER|TAB)$")
+    public void sendKey(String input) throws Throwable {
+        WebElement box = driver.switchTo().activeElement();
+        switch (input) {
+            case "RETURN":
+                box.sendKeys(Keys.RETURN);
+                break;
+            case "ENTER":
+                box.sendKeys(Keys.ENTER);
+                break;
+            case "TAB":
+                box.sendKeys(Keys.TAB);
+                break;
+        }
     }
 
     @Then("^the link \"([^\\\"]*)\" should redirect to \"([^\\\"]*)\"$")
@@ -217,6 +253,13 @@ public class BrowserStepDefinitions {
 
     @Then("^the current URL should be \"([^\\\"]*)\"$")
     public void currentUrlShouldBe(String urlTail) throws Throwable {
+        // HACK: Possibly wait a little bit
+        for (int i = 0; i < 100; ++i) {
+            if (driver.getCurrentUrl().endsWith(urlTail))
+                break;
+
+            Thread.sleep(10);
+        }
         Assert.assertThat(driver.getCurrentUrl(), StringEndsWith.endsWith(urlTail));
     }
 
@@ -276,7 +319,12 @@ public class BrowserStepDefinitions {
     @When("^I wait until every element containing \"([^\"]+)\" disappears")
     public void waitUntilLabelDisappears(String text) throws Throwable {
         new WebDriverWait(driver, 10000).until(ExpectedConditions.invisibilityOfElementLocated(
-                By.xpath("//*[contains(text(), '"+text+"')]")));
+                By.xpath("//*[contains(text(), '" + text + "')]")));
+    }
+
+    @When("^I click on \"([^\"]+)\"$")
+    public void clickOn(String selector) throws Throwable {
+        driver.findElement(By.cssSelector(selector)).click();
     }
 
     @When("^I click the link labeled \"([^\\\"]*)\"$")
@@ -285,6 +333,12 @@ public class BrowserStepDefinitions {
         // contains funny characters
         driver.findElement(By.xpath("//div[contains(@class, 'v-link') and .//span[contains(text(), '" + text + "')]]"))
                 .click();
+    }
+
+    @When("^I wait until a label containing \"([^\"]+)\" is visible$")
+    public void waitForLabel(String content) throws Throwable {
+        new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+                "//*[contains(text(), '"+content+"')]")));
     }
 
     @Then("^I should see a label containing \"([^\\\"]*)\"$")
@@ -315,6 +369,15 @@ public class BrowserStepDefinitions {
         // contains funny characters
         List<WebElement> els = driver
                 .findElements(By.xpath("//*[contains(@class, 'v-link') and contains(text(), '" + text + "')]"));
+        Assert.assertThat(els, IsEmptyCollection.empty());
+    }
+
+    @Then("^I should not see a label containing \"([^\"]+)\"$")
+    public void iShouldNotSeeALabel(String text) {
+        // FIXME: This is actually shit because it will break when the text
+        // contains funny characters
+        List<WebElement> els = driver
+                .findElements(By.xpath("//*[contains(text(), '" + text + "')]"));
         Assert.assertThat(els, IsEmptyCollection.empty());
     }
 

@@ -56,6 +56,7 @@ Feature: Search everything
     And I search for "Schlampe"
 
     Then I should see a label containing "Lombardi"
+    And I should not see a label containing "Daisy Maier"
 
   Scenario: Fulltext search in cinema addresses
     Given the cinemas
@@ -84,3 +85,17 @@ Feature: Search everything
     And I search for "Weihnachtsfrau"
 
     Then I should not see a link labeled "Weihnachtsfrau"
+
+  Scenario: Search with enter key
+    When I open the start page
+    And I type "nemo" into ".kino-search-box"
+    And I press ENTER
+
+    Then the current URL should be "#!search/nemo"
+
+  Scenario: Search with mouse click
+    When I open the start page
+    And I type "nemo" into ".kino-search-box"
+    And I click on ".kino-search-button"
+
+    Then the current URL should be "#!search/nemo"
