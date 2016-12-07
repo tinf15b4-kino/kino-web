@@ -1,6 +1,4 @@
-#Use-Case Specification: Get information
-##Table of Contents
-tbd    
+#Use-Case Specification: Get information   
 
 ### 1. Get information
 

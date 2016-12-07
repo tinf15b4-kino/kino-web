@@ -23,7 +23,7 @@ import de.tinf15b4.kino.web.util.PictureUtils;
 import de.tinf15b4.kino.web.util.ToggleFavoriteListener;
 
 @SpringView(name = CinemaListView.VIEW_NAME)
-public class CinemaListView extends VerticalLayout implements View, ToggleFavoriteListener {
+public class CinemaListView extends VerticalLayout implements View {
     public static final String VIEW_NAME = "cinemas";
 
     @Autowired
@@ -43,6 +43,7 @@ public class CinemaListView extends VerticalLayout implements View, ToggleFavori
         for (Cinema c : cinemaService.findAll()) {
             HorizontalLayout row = new HorizontalLayout();
             row.setWidth(100, Unit.PERCENTAGE);
+            row.addStyleName("cinema-row-"+c.getId());
 
             // Picture
             Component image = PictureUtils.getImage(null, c);
@@ -55,9 +56,7 @@ public class CinemaListView extends VerticalLayout implements View, ToggleFavori
             row.addComponent(l);
             row.setComponentAlignment(l, Alignment.MIDDLE_LEFT);
 
-            Component button = CinemaFavoriteUtils.createFavoriteButton(c, favoriteService, userBean, this);
-            row.addComponent(button);
-            row.setComponentAlignment(button, Alignment.MIDDLE_RIGHT);
+            createFavoriteBtn(c.getId(), row);
 
             row.setExpandRatio(l, 1f);
             row.setSpacing(true);
@@ -69,14 +68,38 @@ public class CinemaListView extends VerticalLayout implements View, ToggleFavori
     public void enter(ViewChangeListener.ViewChangeEvent event) {
     }
 
-    @Override
-    public void favoriteRemoved() {
-        updateView();
+    private class FavoriteBtnManager implements ToggleFavoriteListener {
+        public Component button = null;
+        public HorizontalLayout row;
+        public long cinemaId;
+
+        @Override
+        public void favoriteRemoved() {
+            recreateBtn();
+        }
+
+        @Override
+        public void favoriteAdded() {
+            recreateBtn();
+        }
+
+        public void recreateBtn() {
+            if (button != null)
+                row.removeComponent(button);
+
+            button = CinemaFavoriteUtils.createFavoriteButton(cinemaService.findOne(cinemaId),
+                    favoriteService, userBean, this);
+
+            row.addComponent(button);
+            row.setComponentAlignment(button, Alignment.MIDDLE_RIGHT);
+        }
     }
 
-    @Override
-    public void favoriteAdded() {
-        updateView();
+    private void createFavoriteBtn(long cinemaId, HorizontalLayout row) {
+        FavoriteBtnManager mgr = new FavoriteBtnManager();
+        mgr.row = row;
+        mgr.cinemaId = cinemaId;
+        mgr.recreateBtn();
     }
 
     private void updateView() {

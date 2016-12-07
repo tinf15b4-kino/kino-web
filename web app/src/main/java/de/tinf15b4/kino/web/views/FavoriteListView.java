@@ -59,12 +59,13 @@ public class FavoriteListView extends VerticalLayout implements View {
                 }
             }
         } else {
-            this.addComponent(new Label("Sie müssen sich Anmelden!"));
+            this.addComponent(new Label("Sie müssen sich anmelden!"));
         }
     }
 
     private Component buildListEntry(Cinema c) {
         HorizontalLayout pav = new HorizontalLayout();
+        pav.addStyleName("favorite-cinema-row-"+c.getId());
         pav.setWidth(100, Unit.PERCENTAGE);
 
         Component image = PictureUtils.getImage(null, c);
@@ -100,7 +101,7 @@ public class FavoriteListView extends VerticalLayout implements View {
 
             GridLayout g = new GridLayout(2, 1);
 
-            Label l = new Label(String.format("Das Kino \"%s\" wurde aus den Favorien entfernt.", cinemaName));
+            Label l = new Label(String.format("Das Kino \"%s\" wurde aus den Favoriten entfernt.", cinemaName));
             g.addComponent(l, 0, 0);
             g.setComponentAlignment(l, Alignment.MIDDLE_LEFT);
 
