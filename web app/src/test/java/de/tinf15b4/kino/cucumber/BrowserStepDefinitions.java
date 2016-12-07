@@ -4,6 +4,7 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -207,11 +208,12 @@ public class BrowserStepDefinitions {
     }
 
     @Given("^movie (.*) is played in cinema (.*) for (.*) cents")
-    public void withPlayist(long movieId, long cinemaId, int price) {
+    public void withPlayist1(long movieId, long cinemaId, int price) {
         Playlist p = new Playlist();
         p.setCinema(cinemaRepo.findOne(cinemaId));
         p.setMovie(movieRepo.findOne(movieId));
         p.setPrice(price);
+        p.setTime(new Date(new Date().getTime() + 1000L * 3600));
         playlistRepo.save(p);
         playlistRepo.findAll();
     }
@@ -226,9 +228,8 @@ public class BrowserStepDefinitions {
     public void typeInto(String input, String selector) throws Throwable {
         WebElement box = driver.findElement(By.cssSelector(selector));
         // HACK: Focus element with javascript, this is needed on linux firefox
-        ((JavascriptExecutor)driver).executeScript(
-                "try { window.focus(); arguments[0].focus() } catch(e) {}; return null;",
-                box);
+        ((JavascriptExecutor) driver)
+                .executeScript("try { window.focus(); arguments[0].focus() } catch(e) {}; return null;", box);
         box.sendKeys(input);
     }
 
@@ -236,9 +237,8 @@ public class BrowserStepDefinitions {
     public void type(String input) throws Throwable {
         WebElement el = driver.switchTo().activeElement();
         // HACK: Focus element with javascript, this is needed on linux firefox
-        ((JavascriptExecutor)driver).executeScript(
-                "try { window.focus(); arguments[0].focus() } catch(e) {}; return null;",
-                el);
+        ((JavascriptExecutor) driver)
+                .executeScript("try { window.focus(); arguments[0].focus() } catch(e) {}; return null;", el);
         el.sendKeys(input);
     }
 
@@ -246,15 +246,15 @@ public class BrowserStepDefinitions {
     public void sendKey(String input) throws Throwable {
         WebElement box = driver.switchTo().activeElement();
         switch (input) {
-            case "RETURN":
-                box.sendKeys(Keys.RETURN);
-                break;
-            case "ENTER":
-                box.sendKeys(Keys.ENTER);
-                break;
-            case "TAB":
-                box.sendKeys(Keys.TAB);
-                break;
+        case "RETURN":
+            box.sendKeys(Keys.RETURN);
+            break;
+        case "ENTER":
+            box.sendKeys(Keys.ENTER);
+            break;
+        case "TAB":
+            box.sendKeys(Keys.TAB);
+            break;
         }
     }
 
@@ -304,37 +304,40 @@ public class BrowserStepDefinitions {
         // FIXME: This is actually shit because it will break when the text
         // contains funny characters
         driver.findElement(
-                By.xpath("//*[contains(@class, 'v-menubar-menuitem') and .//*[contains(text(), '" + text + "')]]")).click();
+                By.xpath("//*[contains(@class, 'v-menubar-menuitem') and .//*[contains(text(), '" + text + "')]]"))
+                .click();
     }
 
     @When("^I click the menu item labeled \"([^\\\"]*)\" below \"([^\"]+)\"$")
     public void clickMenuitemBelow(String text, String selector) throws Throwable {
         // FIXME: This is actually shit because it will break when the text
         // contains funny characters
-        driver.findElement(By.cssSelector(selector)).findElement(
-                By.xpath(".//*[contains(@class, 'v-menubar-menuitem') and .//*[contains(text(), '" + text + "')]]")).click();
+        driver.findElement(By.cssSelector(selector))
+                .findElement(By.xpath(
+                        ".//*[contains(@class, 'v-menubar-menuitem') and .//*[contains(text(), '" + text + "')]]"))
+                .click();
     }
 
     @When("^I click the button labeled \"([^\\\"]*)\" below \"([^\"]+)\"$")
     public void clickButtonBelow(String text, String selector) throws Throwable {
         // FIXME: This is actually shit because it will break when the text
         // contains funny characters
-        WebElement button = driver.findElement(By.cssSelector(selector)).findElement(
-                By.xpath(".//*[contains(@class, 'v-button') and .//*[contains(text(), '" + text + "')]]"));
+        WebElement button = driver.findElement(By.cssSelector(selector))
+                .findElement(By.xpath(".//*[contains(@class, 'v-button') and .//*[contains(text(), '" + text + "')]]"));
 
         button.click();
     }
 
     @When("^I wait until an element containing \"([^\"]+)\" appears$")
     public void waitUntilLabelAppears(String text) throws Throwable {
-        new WebDriverWait(driver, 10000).until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("//*[contains(text(), '"+text+"')]")));
+        new WebDriverWait(driver, 10000)
+                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), '" + text + "')]")));
     }
 
     @When("^I wait until every element containing \"([^\"]+)\" disappears")
     public void waitUntilLabelDisappears(String text) throws Throwable {
-        new WebDriverWait(driver, 10000).until(ExpectedConditions.invisibilityOfElementLocated(
-                By.xpath("//*[contains(text(), '" + text + "')]")));
+        new WebDriverWait(driver, 10000).until(
+                ExpectedConditions.invisibilityOfElementLocated(By.xpath("//*[contains(text(), '" + text + "')]")));
     }
 
     @When("^I click on \"([^\"]+)\"$")
@@ -352,8 +355,30 @@ public class BrowserStepDefinitions {
 
     @When("^I wait until a label containing \"([^\"]+)\" is visible$")
     public void waitForLabel(String content) throws Throwable {
-        new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
-                "//*[contains(text(), '"+content+"')]")));
+        new WebDriverWait(driver, 10).until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(text(), '" + content + "')]")));
+    }
+
+    @When("^I toggle checkbox filter \"([^\\\"]*)\"$")
+    public void addFilter(String filter) {
+        WebElement checkbox = driver.findElement(
+                By.xpath(".//input[@type = 'checkbox' and ../label[contains(text(), '" + filter + "') ]]"));
+        // FIXME: This fails because of stupid label::before covering the
+        // checkbox. I can't seem to find a solution for this issue. Focusing
+        // the checkbox and selecting it by space does not work either
+        checkbox.click();
+    }
+
+    @When("^I enter \"([^\\\"]*)\" in the (lower-date|upper-date|lower-price|upper-price) filter$")
+    public void enterFilter(String filterString, String filterId) {
+        WebElement filterField = driver.findElement(By.id(filterId));
+        filterField.clear();
+        filterField.sendKeys(filterString);
+        // Wait two second for the live filtering to catch up
+        try {
+            Thread.sleep(2000);
+        } catch (Exception ex) {
+        }
     }
 
     @Then("^I should see a label containing \"([^\\\"]*)\"$")
@@ -367,8 +392,7 @@ public class BrowserStepDefinitions {
     public void iShouldSeeALabelContainingBelow(String text, String selector) throws Throwable {
         // FIXME: This is actually shit because it will break when the text
         // contains funny characters
-        driver.findElement(By.cssSelector(selector))
-                .findElement(By.xpath(".//*[contains(text(), '" + text + "')]"));
+        driver.findElement(By.cssSelector(selector)).findElement(By.xpath(".//*[contains(text(), '" + text + "')]"));
     }
 
     @Then("^I should see a button labeled \"([^\\\"]*)\"$")
@@ -391,8 +415,7 @@ public class BrowserStepDefinitions {
     public void iShouldNotSeeALabel(String text) {
         // FIXME: This is actually shit because it will break when the text
         // contains funny characters
-        List<WebElement> els = driver
-                .findElements(By.xpath("//*[contains(text(), '" + text + "')]"));
+        List<WebElement> els = driver.findElements(By.xpath("//*[contains(text(), '" + text + "')]"));
         Assert.assertThat(els, IsEmptyCollection.empty());
     }
 
@@ -424,13 +447,15 @@ public class BrowserStepDefinitions {
             sizes.add(new Dimension(Integer.parseInt(wh[0]), Integer.parseInt(wh[1])));
         }
 
-        sizes.add(driver.manage().window().getSize()); // restore size at the end
+        sizes.add(driver.manage().window().getSize()); // restore size at the
+                                                       // end
 
         for (Dimension size : sizes) {
             driver.manage().window().setSize(size);
 
             // HACK: Sometimes, the window needs a bit of time to adjust,
-            // but most of the time waiting a second would just be a waste of time.
+            // but most of the time waiting a second would just be a waste of
+            // time.
             // I don't know how to actually solve this race condition, so if the
             // test fails, we'll just wait a second and run it again.
             try {
@@ -440,8 +465,7 @@ public class BrowserStepDefinitions {
                     Thread.sleep(1000);
                     elementsAreAlignedHelper(selector, leftright);
                 } catch (Exception ex) {
-                    throw new Exception("Alignment mismatch at size " +
-                            size.getWidth() + "x" + size.getHeight(), ex);
+                    throw new Exception("Alignment mismatch at size " + size.getWidth() + "x" + size.getHeight(), ex);
                 }
             }
         }
@@ -456,7 +480,6 @@ public class BrowserStepDefinitions {
     public void favoriteIsNotInDb(long cinemaId) {
         Assert.assertNull(faveRepo.findFavorite(cinemaRepo.findOne(cinemaId), testConfig.getFakeUser()));
     }
-
 
     @After
     public void teardown() {

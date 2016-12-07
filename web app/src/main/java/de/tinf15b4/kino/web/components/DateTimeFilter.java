@@ -14,7 +14,9 @@ public class DateTimeFilter extends VerticalLayout {
         setSpacing(true);
         addComponent(new Label("Spielzeit"));
         DateField from = new DateField("zwischen");
+        from.setId("lower-date");
         DateField to = new DateField("und");
+        to.setId("upper-date");
         addComponent(from);
         addComponent(to);
 

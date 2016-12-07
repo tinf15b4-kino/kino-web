@@ -17,7 +17,9 @@ public class PriceFilter extends VerticalLayout {
         setSpacing(true);
         addComponent(new Label("Preis"));
         TextField from = new TextField("zwischen");
+        from.setId("lower-price");
         TextField to = new TextField("und");
+        to.setId("upper-price");
         addComponent(from);
         addComponent(to);
 
