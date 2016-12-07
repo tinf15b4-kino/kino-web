@@ -23,11 +23,6 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<Movie> findByFilter(AgeControl ac, Genre genre) {
-        return movieRepository.findByFilter(ac, genre);
-    }
-
-    @Override
     public List<Movie> findAll() {
         return movieRepository.findAll();
     }
@@ -38,7 +33,7 @@ public class MovieServiceImpl implements MovieService {
         Set<Genre> genre = filterData.getGenre();
         return movieRepository.allmightyFilter(ageControl.isEmpty() ? null : ageControl, genre.isEmpty() ? null : genre,
                 filterData.getLowerPrice(), filterData.getUpperPrice(), filterData.getLowerTime(),
-                filterData.getUpperTime());
+                filterData.getUpperTime(), filterData.getUpperRating(), filterData.getLowerRating());
     }
 
 }

@@ -8,8 +8,6 @@ public interface MovieService {
 
     Movie findOne(long l);
 
-    List<Movie> findByFilter(AgeControl ac, Genre genre);
-
     List<Movie> findAll();
 
     List<Movie> allmightyFilter(MovieFilterData filterData);

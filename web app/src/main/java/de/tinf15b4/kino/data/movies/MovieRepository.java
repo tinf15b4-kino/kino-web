@@ -17,32 +17,26 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
 
     @Query("select m from Movie m where lower(m.description) like concat('%', lower(:d), '%')")
     List<Movie> findByDescriptionLike(@Param("d") String desc);
-
-    @Query("SELECT m FROM Movie m WHERE (:ac is null OR m.ageControl = :ac) "
-            + "AND (:genre is null OR m.genre = :genre) ORDER BY m.name")
-    List<Movie> findByFilter(@Param("ac") AgeControl ac, @Param("genre") Genre genre);
     
     @Query("SELECT m " +
-            "FROM Movie m, Playlist p " + //, RatedMovie rm " + 
-            "WHERE m = p.id.movie " + //"AND m = rm.id.movie "+
-            "AND ((:ac) is null OR m.ageControl IN (:ac)) "+
-            "AND ((:genre) is null OR m.genre IN (:genre)) "+
-//            "AND (:gRating is null OR rm.rating >= :gRating) "+
-//            "AND (:lRating is null OR rm.rating <= :lRating) "+
-            "AND (:gPrice is null OR p.price >= :gPrice) "+
-            "AND (:lPrice is null OR p.price <= :lPrice) "+
-            "AND (:gTime is null OR p.time >= :gTime) "+
-            "AND (:lTime is null OR p.time <= :lTime) "+ 
-            "GROUP BY m")
+            "FROM RatedMovie rm RIGHT JOIN rm.id.movie m, Playlist p " + 
+            "WHERE m = p.id.movie " + 
+            "AND ((:ac) is null OR m.ageControl IN (:ac)) " +
+            "AND ((:genre) is null OR m.genre IN (:genre)) " +
+            "AND (:upperPrice is null OR p.price BETWEEN :upperPrice AND :lowerPrice) " +
+            "AND (:upperTime is null OR p.time BETWEEN :upperTime AND :lowerTime) " + 
+            "GROUP BY m " + 
+            "HAVING :upperRating is null " +
+            "OR (AVG(rm.rating) IS NOT null AND AVG(rm.rating) BETWEEN :upperRating AND :lowerRating)")
     List<Movie> allmightyFilter(
             @Param("ac") Set<AgeControl> ac,
             @Param("genre") Set<Genre> genre,
-//            @Param("gRating") Double gRating, // greater than this value
-//            @Param("lRating") Double lRating, // less than...
-            @Param("gPrice") Integer gPrice, // price in cents, greater than...
-            @Param("lPrice") Integer lPrice, // price in cents, less than...
-            @Param("gTime") Date gTime, // greater than...
-            @Param("lTime") Date lTime // less than..
+            @Param("upperPrice") Integer upperPrice, // price in cents, greater than...
+            @Param("lowerPrice") Integer lowerPrice, // price in cents, less than...
+            @Param("upperTime") Date upperTime, // greater than tahn this value
+            @Param("lowerTime") Date lowerTime, // less than..
+            @Param("upperRating") Double upperRating, // greater than...
+            @Param("lowerRating") Double lowerRating // less than...
             );
 
     //@formatter:on

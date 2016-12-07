@@ -12,6 +12,8 @@ public class MovieFilterData {
     private Integer lowerPrice;
     private Date upperTime;
     private Date lowerTime;
+    private Double upperRating;
+    private Double lowerRating;
 
     public MovieFilterData() {
         this.ageControl = new HashSet<>();
@@ -19,14 +21,15 @@ public class MovieFilterData {
     }
 
     public MovieFilterData(Set<AgeControl> ageControl, Set<Genre> genre, Integer upperPrice, Integer lowerPrice,
-            Date upperTime,
-            Date lowerTime) {
+            Date upperTime, Date lowerTime, Double upperRating, Double lowerRating) {
         this.ageControl = ageControl;
         this.genre = genre;
         this.upperPrice = upperPrice;
         this.lowerPrice = lowerPrice;
         this.upperTime = upperTime;
         this.lowerTime = lowerTime;
+        this.upperRating = upperRating;
+        this.lowerRating = lowerRating;
     }
 
     public Set<AgeControl> getAgeControl() {
@@ -75,6 +78,22 @@ public class MovieFilterData {
 
     public void setLowerTime(Date lowerTime) {
         this.lowerTime = lowerTime;
+    }
+
+    public Double getUpperRating() {
+        return upperRating;
+    }
+
+    public void setUpperRating(Double upperRating) {
+        this.upperRating = upperRating;
+    }
+
+    public Double getLowerRating() {
+        return lowerRating;
+    }
+
+    public void setLowerRating(Double lowerRating) {
+        this.lowerRating = lowerRating;
     }
 
 }
