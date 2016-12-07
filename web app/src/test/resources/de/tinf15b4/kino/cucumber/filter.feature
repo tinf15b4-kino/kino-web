@@ -53,7 +53,7 @@ Scenario: See the movie list with active genre filter
 	
 	Then I should see a label containing "Donald Duck" 
 	And I should not see a label containing "Daisy Duck" 
-	And I should not see a label containing "Weihnachtsmann" 
+	And I should see a label containing "Weihnachtsmann" 
 	
 	
 Scenario: See the movie list with active price filter 
