@@ -1,6 +1,4 @@
-#Use-Case-Specification: Filter Information
-##Table of Contents
-tbd    
+#Use-Case-Specification: Filter Information   
 
 ### 1. Filter Information 
 #### 1.1 Brief Description
