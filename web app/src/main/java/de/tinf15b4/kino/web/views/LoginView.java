@@ -7,20 +7,23 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vaadin.event.ShortcutAction;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.themes.ValoTheme;
 
 import de.tinf15b4.kino.data.users.UserBean;
-import de.tinf15b4.kino.web.util.EnterKeyListener;
+import de.tinf15b4.kino.web.util.ShortcutUtils;
 
 @SpringView(name = LoginView.VIEW_NAME)
-public class LoginView extends GridLayout implements View {
+public class LoginView extends Panel implements View {
 
     @Autowired
     UserBean userBean;
@@ -33,42 +36,32 @@ public class LoginView extends GridLayout implements View {
     @PostConstruct
     public void init() {
         setSizeFull();
-        setMargin(true);
-        setSpacing(true);
-        setColumns(2);
-        setRows(4);
 
-        setColumnExpandRatio(1, 1);
-        setRowExpandRatio(3, 1);
+        FormLayout l = new FormLayout();
+        l.setMargin(true);
+        l.setSpacing(true);
 
-        Label username = new Label("Benutzername oder Email:");
-        username.setSizeUndefined();
-        TextField usernameInput = new TextField();
+        TextField usernameInput = new TextField("Benutzername oder E-Mail");
+        usernameInput.addStyleName("login-username-field");
+        l.addComponent(usernameInput);
 
-        addComponent(username, 0, 0);
-        addComponent(usernameInput, 1, 0);
+        PasswordField passwordInput = new PasswordField("Passwort");
+        passwordInput.addStyleName("login-password-field");
+        l.addComponent(passwordInput);
 
-        Label password = new Label("Passwort:");
-        password.setSizeUndefined();
-        PasswordField passwordInput = new PasswordField();
-        addComponent(password, 0, 1);
-        addComponent(passwordInput, 1, 1);
-
-        wrongInput = new Label("Benutzername oder Passwort falsch. Bitte erneut eingeben");
+        wrongInput = new Label("Benutzername oder Passwort falsch. Bitte erneut eingeben.");
         wrongInput.setVisible(false);
-        addComponent(wrongInput, 1, 2);
-
-        EnterKeyListener listener = new EnterKeyListener() {
-
-            @Override
-            public void onEnterKeyPressed() {
-                tryLogin(usernameInput.getValue(), passwordInput.getValue());
-            }
-        };
-        listener.installOn(passwordInput);
+        l.addComponent(wrongInput);
 
         Button login = new Button("Anmelden", e -> tryLogin(usernameInput.getValue(), passwordInput.getValue()));
-        addComponent(login, 0, 3, 1, 3);
+        login.addStyleName("login-submit-button");
+        login.addStyleName(ValoTheme.BUTTON_PRIMARY);
+        l.addComponent(login);
+
+        ShortcutUtils.registerScopedShortcut(this, login, ShortcutAction.KeyCode.ENTER);
+
+        this.setContent(l);
+        this.addStyleName(ValoTheme.PANEL_BORDERLESS);
     }
 
     private void tryLogin(String username, String password) {

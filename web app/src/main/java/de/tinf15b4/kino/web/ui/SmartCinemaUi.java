@@ -30,8 +30,10 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
 import de.tinf15b4.kino.data.users.UserBean;
+import de.tinf15b4.kino.web.util.ShortcutUtils;
 import de.tinf15b4.kino.web.views.CinemaListView;
 import de.tinf15b4.kino.web.views.FavoriteListView;
 import de.tinf15b4.kino.web.views.LoginView;
@@ -106,20 +108,25 @@ public class SmartCinemaUi extends UI {
         header.addComponent(logo);
         header.setComponentAlignment(logo, Alignment.MIDDLE_LEFT);
 
+        Panel searchPanel = new Panel();
         HorizontalLayout search = new HorizontalLayout();
         TextField searchField = new TextField();
         searchField.setWidth("20em");
         searchField.setInputPrompt("Suche nach Kinos und Filmen");
         searchField.addStyleName("kino-search-box");
         Button searchButton = new Button("\uD83D\uDD0E");
-        searchButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+        searchButton.addStyleName("kino-search-button");
         search.addComponent(searchField);
         search.addComponent(searchButton);
         searchButton.addClickListener(
                 e -> getNavigator().navigateTo(SearchResultsView.VIEW_NAME + "/" + searchField.getValue()));
+        ShortcutUtils.registerScopedShortcut(searchPanel, searchButton, ShortcutAction.KeyCode.ENTER);
 
-        header.addComponent(search);
-        header.setComponentAlignment(search, Alignment.MIDDLE_CENTER);
+        searchPanel.setContent(search);
+        searchPanel.setWidthUndefined();
+        searchPanel.addStyleName(ValoTheme.PANEL_BORDERLESS);
+        header.addComponent(searchPanel);
+        header.setComponentAlignment(searchPanel, Alignment.MIDDLE_CENTER);
 
         if (userBean.isUserLoggedIn()) {
             Button user = new Button(userBean.getCurrentUser().getName(), e -> userClicked());
@@ -148,7 +155,7 @@ public class SmartCinemaUi extends UI {
             header.setComponentAlignment(register, Alignment.MIDDLE_RIGHT);
             header.setComponentAlignment(login, Alignment.MIDDLE_RIGHT);
         }
-        header.setExpandRatio(search, 1);
+        header.setExpandRatio(searchPanel, 1);
 
         return header;
     }
