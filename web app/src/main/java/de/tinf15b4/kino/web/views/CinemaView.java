@@ -12,7 +12,9 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -123,9 +125,11 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
     }
 
     private void replaceFavoriteButton() {
-        int index = this.getComponentIndex(favoriteButton);
-        this.removeComponent(favoriteButton);
-        this.addComponent(CinemaFavoriteUtils.createFavoriteButton(c, favoriteService, userBean, this), index);
+        AbstractOrderedLayout favParent = (AbstractOrderedLayout) favoriteButton.getParent();
+        int index = favParent.getComponentIndex(favoriteButton);
+        favParent.removeComponent(favoriteButton);
+        favoriteButton = CinemaFavoriteUtils.createFavoriteButton(c, favoriteService, userBean, this);
+        favParent.addComponent(favoriteButton, index);
     }
 
     @Override

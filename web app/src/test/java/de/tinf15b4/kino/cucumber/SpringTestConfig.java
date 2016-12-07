@@ -1,5 +1,8 @@
 package de.tinf15b4.kino.cucumber;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +20,10 @@ public class SpringTestConfig {
 
     public void setFakeUser(User u) {
         fakeLogin = u;
+    }
+
+    public User getFakeUser() {
+        return fakeLogin;
     }
 
     @Bean
