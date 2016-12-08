@@ -208,7 +208,7 @@ public class BrowserStepDefinitions {
     }
 
     @Given("^movie (.*) is played in cinema (.*) for (.*) cents")
-    public void withPlayist1(long movieId, long cinemaId, int price) {
+    public void withPlayist(long movieId, long cinemaId, int price) {
         Playlist p = new Playlist();
         p.setCinema(cinemaRepo.findOne(cinemaId));
         p.setMovie(movieRepo.findOne(movieId));
@@ -369,7 +369,7 @@ public class BrowserStepDefinitions {
         checkbox.click();
     }
 
-    @When("^I enter \"([^\\\"]*)\" in the (lower-date|upper-date|lower-price|upper-price) filter$")
+    @When("^I enter \"([^\\\"]*)\" in the (lower-price|upper-price) filter$")
     public void enterFilter(String filterString, String filterId) {
         WebElement filterField = driver.findElement(By.id(filterId));
         filterField.clear();
