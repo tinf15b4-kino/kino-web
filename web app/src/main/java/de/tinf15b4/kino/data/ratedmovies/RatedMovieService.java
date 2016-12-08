@@ -10,4 +10,6 @@ public interface RatedMovieService {
 
     List<RatedMovie> findRatingsByMovie(Movie m);
 
+    double getAverageRatingForMovie(Movie m);
+
 }

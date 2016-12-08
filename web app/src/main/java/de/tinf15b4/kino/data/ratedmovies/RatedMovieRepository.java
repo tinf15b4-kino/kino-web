@@ -15,4 +15,7 @@ public interface RatedMovieRepository extends JpaRepository<RatedMovie, Long> {
 
     @Query("SELECT rm FROM RatedMovie rm WHERE rm.id.user = :user ORDER BY rm.time ASC")
     List<RatedMovie> findRatingsByUser(@Param("user") User user);
+
+    @Query("SELECT avg(rm.rating) FROM RatedMovie rm WHERE rm.id.movie = :movie GROUP BY rm.id.movie")
+    List<Double> getAverageRatingForMovie(@Param("movie") Movie movie);
 }

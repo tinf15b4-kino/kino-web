@@ -66,6 +66,10 @@ public class MovieView extends VerticalLayout implements View {
                 left.addComponent(image);
 
                 right.addComponent(new Label("Länge: " + m.getLengthMinutes() + " Minuten"));
+                right.addComponent(new Label("Genre: " + m.getGenre()));
+                right.addComponent(new Label("Altersfreigabe: " + m.getAgeControl()));
+                right.addComponent(
+                        new Label("Durschschnittliche Bewertung: " + ratedMovieService.getAverageRatingForMovie(m)));
                 right.addComponent(new Label(m.getDescription()));
                 this.addComponent(new HorizontalLayout(left, right));
 
