@@ -26,7 +26,7 @@ UI Mockup / after:
 
 Feature-File:
 
-[Link to the Feature-File](https://github.com/tinf15b4-kino/kino-web/blob/TESB416-89/web%20app/src/test/resources/de/tinf15b4/kino/cucumber/manageFavorites.feature.proto)
+[Link to the Feature-File][feature]
 
 #### 2.1/2 Basic Flow: Remove a favorite (from favorite list)
 
@@ -56,7 +56,7 @@ UI Mockups:
 
 Feature-File:
 
-[Link to the Feature-File](https://github.com/tinf15b4-kino/kino-web/blob/TESB416-89/web%20app/src/test/resources/de/tinf15b4/kino/cucumber/manageFavorites.feature.proto)
+[Link to the Feature-File][feature]
 
 #### 2.2 Alternative Flows
 (n/a)

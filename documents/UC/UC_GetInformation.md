@@ -50,7 +50,7 @@ List of Cinemas:
 ![Picture - List of Cinemas][screenshot_cinemalist]
 
 
-Selected Movie:
+Selected Cinema:
 
 ![Picture - selected Cinema][screenshot_cinema]
 
