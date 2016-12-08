@@ -1,6 +1,4 @@
-#Use-Case-Specification: Manage favorites
-##Table of Contents
-tbd    
+#Use-Case-Specification: Manage favorites  
 
 ### 1. Manage Favorites
 #### 1.1 Brief Description

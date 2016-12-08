@@ -1,6 +1,4 @@
-#Use-Case Specification: Search everything
-##Table of Contents
-tbd    
+#Use-Case Specification: Search everything 
 
 ### 1. Search everything
 

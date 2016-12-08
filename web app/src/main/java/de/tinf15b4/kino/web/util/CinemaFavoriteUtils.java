@@ -21,6 +21,7 @@ public class CinemaFavoriteUtils {
             Button favBtn = new Button();
             favBtn.setCaption("Zu Favoriten hinzufügen");
             favBtn.addClickListener(e -> markAsFavorite(c, favoriteService, userBean, listener));
+            favBtn.addStyleName("cinema-favorite-button");
             return favBtn;
         } else {
             MenuBar unfavMenu = new MenuBar();
@@ -34,12 +35,14 @@ public class CinemaFavoriteUtils {
     public static void markAsFavorite(Cinema c, FavoriteService favoriteService, UserBean userBean,
             ToggleFavoriteListener listener) {
         if (!userBean.isUserLoggedIn()) {
-            Notification.show("Melden sie sich an, um diese Funktion nutzen zu können.", Type.WARNING_MESSAGE);
+            Notification.show("Melden Sie sich an, um diese Funktion nutzen zu können.", Type.WARNING_MESSAGE);
         }
-        if (!favoriteService.isCinemaFavorite(userBean.getCurrentUser(), c)) {
-            // create new favorite entry
-            favoriteService.save(new Favorite(userBean.getCurrentUser(), c));
-            listener.favoriteAdded();
+        if (userBean.isUserLoggedIn()) {
+            if (!favoriteService.isCinemaFavorite(userBean.getCurrentUser(), c)) {
+                // create new favorite entry
+                favoriteService.save(new Favorite(userBean.getCurrentUser(), c));
+                listener.favoriteAdded();
+            }
         }
     }
 

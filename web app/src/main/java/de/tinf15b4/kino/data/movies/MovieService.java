@@ -10,4 +10,6 @@ public interface MovieService {
 
     List<Movie> findAll();
 
+    List<Movie> allmightyFilter(MovieFilterData filterData);
+
 }

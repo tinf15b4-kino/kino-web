@@ -8,14 +8,20 @@ Scenario: See the movie list
 		| 1   | Donald Duck     | Yo Mama     |
 		| 2   | Daisy Duck      | Yo Mama     |
 		| 3   | Weihnachtsmann  | Yo Mama     |
-		
-	When I open the start page 
-	And I click the button labeled Filme 
+	And the cinemas 
+		| Id  | Name                    |
+		| 1   | Maier, Maier und Maier  |
+	And movie 1 is played in cinema 1 for 100 cents 
+	And movie 2 is played in cinema 1 for 100 cents 
+	And movie 3 is played in cinema 1 for 100 cents 
 	
-	Then I should see a label containing Donald Duck 
-	And I should see a label containing Daisy Duck 
-	And I should see a label containing Weihnachtsmann 
-	And the link Donald Duck should redirect to #!movie/1
+	When I open the start page 
+	And I click the button labeled "Filme" 
+	
+	Then I should see a label containing "Donald Duck" 
+	And I should see a label containing "Daisy Duck" 
+	And I should see a label containing "Weihnachtsmann" 
+	And the link "Donald Duck" should redirect to "#!movie/1" 
 	
 	
 Scenario: See the movie information 
@@ -24,14 +30,20 @@ Scenario: See the movie information
 		| 1   | Donald Duck     | Yo Mama     | 37			  |
 		| 2   | Daisy Duck      | Yo Mama     | 123			  |
 		| 3   | Weihnachtsmann  | Yo Mama     | 456			  |
-		
-	When I open the start page 
-	And I click the button labeled Filme 
-	And I click the link labeled Donald Duck 
+	And the cinemas 
+		| Id  | Name                    |
+		| 1   | Maier, Maier und Maier  |
+	And movie 1 is played in cinema 1 for 100 cents 
+	And movie 2 is played in cinema 1 for 100 cents 
+	And movie 3 is played in cinema 1 for 100 cents 
 	
-	Then I should see a label containing Donald Duck 
-	And I should see a label containing 37 Minuten 
-	And I should see a label containing Yo Mama 
+	When I open the start page 
+	And I click the button labeled "Filme" 
+	And I click the link labeled "Donald Duck" 
+	
+	Then I should see a label containing "Donald Duck" 
+	And I should see a label containing "37 Minuten" 
+	And I should see a label containing "Yo Mama" 
 	
 	
 Scenario: See the movie rating 
@@ -43,13 +55,19 @@ Scenario: See the movie rating
 	And the users 
 		| Id  | Name       |
 		| 1   | Mustermann |
-	And the rating of User Mustermann for Movie Donald Duck with 4 stars and description This is a nice Movie 
+	And the cinemas 
+		| Id  | Name                    |
+		| 1   | Maier, Maier und Maier  |
+	And movie 1 is played in cinema 1 for 100 cents 
+	And movie 2 is played in cinema 1 for 100 cents 
+	And movie 3 is played in cinema 1 for 100 cents 
+	And the rating of User "Mustermann" for Movie "Donald Duck" with 4 stars and description "This is a nice Movie" 
 	
 	When I open the start page 
-	And I click the button labeled Filme 
-	And I click the link labeled Donald Duck 
+	And I click the button labeled "Filme" 
+	And I click the link labeled "Donald Duck" 
 	
-	Then I should see a label containing Donald Duck 
-	And I should see a label containing Mustermann 
-	And I should see a label containing 4 
-	And I should see a label containing This is a nice Movie
+	Then I should see a label containing "Donald Duck" 
+	And I should see a label containing "Mustermann" 
+	And I should see a label containing "4" 
+	And I should see a label containing "This is a nice Movie"

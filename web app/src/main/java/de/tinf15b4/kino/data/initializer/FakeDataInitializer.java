@@ -19,6 +19,8 @@ import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.cinemas.CinemaService;
 import de.tinf15b4.kino.data.favorites.Favorite;
 import de.tinf15b4.kino.data.favorites.FavoriteService;
+import de.tinf15b4.kino.data.movies.AgeControl;
+import de.tinf15b4.kino.data.movies.Genre;
 import de.tinf15b4.kino.data.movies.Movie;
 import de.tinf15b4.kino.data.movies.MovieService;
 import de.tinf15b4.kino.data.playlists.Playlist;
@@ -67,6 +69,8 @@ public class FakeDataInitializer implements DataInitializer {
             m.setName(faker.superhero().name());
             m.setDescription(faker.shakespeare().kingRichardIIIQuote());
             m.setLengthMinutes(faker.number().numberBetween(20, 240));
+            m.setGenre(Genre.values()[rnd.nextInt(Genre.values().length)]);
+            m.setAgeControl(AgeControl.values()[rnd.nextInt(AgeControl.values().length)]);
 
             // Picture
             try {

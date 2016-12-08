@@ -10,11 +10,11 @@ Feature: Search everything
       | 3   | Weihnachtsmann  | Yo Mama     |
 
     When I open the start page
-    And I search for duck
+    And I search for "duck"
 
-    Then I should see a label containing Donald Duck
-    And I should see a label containing Daisy Duck
-    And the link Donald Duck should redirect to #!movie/1
+    Then I should see a label containing "Donald Duck"
+    And I should see a label containing "Daisy Duck"
+    And the link "Donald Duck" should redirect to "#!movie/1"
 
   Scenario: Search in cinema names
     Given the cinemas
@@ -23,10 +23,10 @@ Feature: Search everything
       | 2   | Schicke Scheinwand      |
 
     When I open the start page
-    And I search for schick
+    And I search for "schick"
 
-    Then I should see a label containing Scheinwand
-    And the link Schicke Scheinwand should redirect to #!cinema/2
+    Then I should see a label containing "Scheinwand"
+    And the link "Schicke Scheinwand" should redirect to "#!cinema/2"
 
   Scenario: Search in both cinemas and movies
     Given the movies
@@ -40,10 +40,10 @@ Feature: Search everything
       | 2   | Schicke Scheinwand      |
 
     When I open the start page
-    And I search for Maier
+    And I search for "Maier"
 
-    Then I should see a label containing Daisy Maier
-    And I should see a label containing Maier, Maier und Maier
+    Then I should see a label containing "Daisy Maier"
+    And I should see a label containing "Maier, Maier und Maier"
 
   Scenario: Fulltext search in movie descriptions
     Given the movies
@@ -53,9 +53,10 @@ Feature: Search everything
       | 3   | Lombardi        | Du bist ne Schlampe, ich bin normaler Mensch!     |
 
     When I open the start page
-    And I search for Schlampe
+    And I search for "Schlampe"
 
-    Then I should see a label containing Lombardi
+    Then I should see a label containing "Lombardi"
+    And I should not see a label containing "Daisy Maier"
 
   Scenario: Fulltext search in cinema addresses
     Given the cinemas
@@ -64,10 +65,10 @@ Feature: Search everything
       | 2   | Schicke Scheinwand      | Stramme Straße  | Neustadt an der Lisa  |
 
     When I open the start page
-    And I search for Lisa
+    And I search for "Lisa"
 
-    Then I should see a label containing Schicke Scheinwand
-    And I should see a label containing Maier
+    Then I should see a label containing "Schicke Scheinwand"
+    And I should see a label containing "Maier"
 
   Scenario: No results
     Given the movies
@@ -81,6 +82,20 @@ Feature: Search everything
       | 2   | Schicke Scheinwand      |
 
     When I open the start page
-    And I search for Weihnachtsfrau
+    And I search for "Weihnachtsfrau"
 
-    Then I should not see a link labeled Weihnachtsfrau
+    Then I should not see a link labeled "Weihnachtsfrau"
+
+  Scenario: Search with enter key
+    When I open the start page
+    And I type "nemo" into ".kino-search-box"
+    And I press ENTER
+
+    Then the current URL should be "#!search/nemo"
+
+  Scenario: Search with mouse click
+    When I open the start page
+    And I type "nemo" into ".kino-search-box"
+    And I click on ".kino-search-button"
+
+    Then the current URL should be "#!search/nemo"

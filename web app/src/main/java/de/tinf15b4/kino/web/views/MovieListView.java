@@ -1,6 +1,7 @@
 package de.tinf15b4.kino.web.views;
 
 import java.io.ByteArrayInputStream;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -13,27 +14,43 @@ import com.vaadin.server.StreamResource;
 import com.vaadin.server.StreamResource.StreamSource;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.VerticalLayout;
 
 import de.tinf15b4.kino.data.movies.Movie;
+import de.tinf15b4.kino.data.movies.MovieFilterData;
 import de.tinf15b4.kino.data.movies.MovieService;
+import de.tinf15b4.kino.web.components.AgeControlCheckboxes;
+import de.tinf15b4.kino.web.components.DateTimeFilter;
+import de.tinf15b4.kino.web.components.GenreCheckboxes;
+import de.tinf15b4.kino.web.components.PriceFilter;
 
 @SpringView(name = MovieListView.VIEW_NAME)
-public class MovieListView extends VerticalLayout implements View{
+public class MovieListView extends VerticalLayout implements View {
     public static final String VIEW_NAME = "movies";
 
     @Autowired
     private MovieService movieService;
+    private MovieFilterData filterData;
+
+    private VerticalLayout movieLayout;
 
     @PostConstruct
     public void init() {
         this.setMargin(true);
         this.setSpacing(true);
+        filterData = new MovieFilterData();
 
-        for (Movie m : movieService.findAll()) {
+        addComponent(createFilter());
+        addComponent(createMovies());
+    }
+
+    private Component createMovies() {
+        movieLayout = new VerticalLayout();
+        for (Movie m : getFilteredMovies()) {
             HorizontalLayout row = new HorizontalLayout();
             row.setWidth(100, Unit.PERCENTAGE);
 
@@ -59,12 +76,31 @@ public class MovieListView extends VerticalLayout implements View{
 
             row.setExpandRatio(l, 1f);
             row.setSpacing(true);
-            this.addComponent(row);
+            movieLayout.addComponent(row);
         }
+        return movieLayout;
+    }
+
+    private List<Movie> getFilteredMovies() {
+        return movieService.allmightyFilter(filterData);
+    }
+
+    private Component createFilter() {
+        HorizontalLayout layout = new HorizontalLayout();
+        layout.setSpacing(true);
+        layout.addComponent(new AgeControlCheckboxes(this, filterData));
+        layout.addComponent(new GenreCheckboxes(this, filterData));
+        layout.addComponent(new DateTimeFilter(this, filterData));
+        layout.addComponent(new PriceFilter(this, filterData));
+        return layout;
+    }
+
+    public void filterChanged() {
+        removeComponent(movieLayout);
+        addComponent(createMovies(), 1);
     }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-
     }
 }

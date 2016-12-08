@@ -25,6 +25,7 @@ import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.favorites.Favorite;
 import de.tinf15b4.kino.data.favorites.FavoriteService;
 import de.tinf15b4.kino.data.users.UserBean;
+import de.tinf15b4.kino.web.util.PictureUtils;
 
 @SpringView(name = FavoriteListView.VIEW_NAME)
 public class FavoriteListView extends VerticalLayout implements View {
@@ -58,13 +59,19 @@ public class FavoriteListView extends VerticalLayout implements View {
                 }
             }
         } else {
-            this.addComponent(new Label("Sie müssen sich Anmelden!"));
+            this.addComponent(new Label("Sie müssen sich anmelden!"));
         }
     }
 
     private Component buildListEntry(Cinema c) {
         HorizontalLayout pav = new HorizontalLayout();
+        pav.addStyleName("favorite-cinema-row-"+c.getId());
         pav.setWidth(100, Unit.PERCENTAGE);
+
+        Component image = PictureUtils.getImage(null, c);
+        image.setHeight("100px");
+        pav.addComponent(image);
+
         Link l = new Link(c.getName(), new ExternalResource("#!" + CinemaView.VIEW_NAME + "/" + c.getId()));
         pav.addComponent(l);
         pav.setComponentAlignment(l, Alignment.MIDDLE_LEFT);
@@ -73,6 +80,8 @@ public class FavoriteListView extends VerticalLayout implements View {
         removeBtn.addClickListener(e -> removeFromFavorites(c, pav));
         pav.addComponent(removeBtn);
         pav.setComponentAlignment(removeBtn, Alignment.MIDDLE_RIGHT);
+        pav.setExpandRatio(removeBtn, 1f);
+        pav.setSpacing(true);
 
         return pav;
     }
@@ -92,7 +101,7 @@ public class FavoriteListView extends VerticalLayout implements View {
 
             GridLayout g = new GridLayout(2, 1);
 
-            Label l = new Label(String.format("Das Kino \"%s\" wurde aus den Favorien entfernt.", cinemaName));
+            Label l = new Label(String.format("Das Kino \"%s\" wurde aus den Favoriten entfernt.", cinemaName));
             g.addComponent(l, 0, 0);
             g.setComponentAlignment(l, Alignment.MIDDLE_LEFT);
 
