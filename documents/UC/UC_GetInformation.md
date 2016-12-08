@@ -25,9 +25,35 @@ Activity Diagram:
 
 ![flow for get information][flow]
 
+
 Feature-File:
 
-[Link to the Feature-File](tbd)
+[Link to the Feature-File Movie][feature_movie]
+
+[Link to the Feature-File Cinema][feature_cinema]
+
+
+Screenshots:
+
+List of Movies:
+
+![Picture - List of Movies][screenshot_movielist]
+
+
+Selected Movie:
+
+![Picture - selected Movie][screenshot_movie]
+
+
+List of Cinemas:
+
+![Picture - List of Cinemas][screenshot_cinemalist]
+
+
+Selected Movie:
+
+![Picture - selected Cinema][screenshot_cinema]
+
 
 #### 2.2 Alternative Flows
 
@@ -56,5 +82,13 @@ After the User found the Information (or not) nothing have to be changed or save
 <!-- Link definitions -->
 [SRS]: https://github.com/tinf15b4-kino/kino-web/blob/master/documents/SRS.md
 [flow]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/UC/get%20information/flow_GetInformation.png
+[Screenshot_movielist]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/UC/filter%20information/screenshot_FilterInformation.png
+[Screenshot_movie]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/UC/get%20information/screenshot_movie_GetInformation.png
+[Screenshot_cinemalist]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/UC/get%20information/screenshot_cinemalist_GetInformation.png
+[Screenshot_cinema]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/UC/get%20information/screenshot_cinema_GetInformation.png
+[feature_cinema]: https://github.com/tinf15b4-kino/kino-web/blob/master/web%20app/src/test/resources/de/tinf15b4/kino/cucumber/cinema.feature
+[feature_movie]: https://github.com/tinf15b4-kino/kino-web/blob/master/web%20app/src/test/resources/de/tinf15b4/kino/cucumber/movie.feature
+
+
 
  
