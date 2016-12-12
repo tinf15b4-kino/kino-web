@@ -46,7 +46,7 @@ public class CinemaListView extends VerticalLayout implements View {
             row.addStyleName("cinema-row-"+c.getId());
 
             // Picture
-            Component image = PictureUtils.getImage(null, c);
+            Component image = PictureUtils.getCinemaImage(c);
             image.addStyleName("cinema-list-image");
             image.setHeight("100px");
             row.addComponent(image);

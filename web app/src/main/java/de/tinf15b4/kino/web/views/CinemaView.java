@@ -76,7 +76,7 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
                 left.addComponent(new Label(c.getName()));
 
                 // Picture
-                Component image = PictureUtils.getImage(null, c);
+                Component image = PictureUtils.getCinemaImage(c);
                 image.setHeight("150px");
 
                 left.addComponent(image);

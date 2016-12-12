@@ -12,20 +12,27 @@ import de.tinf15b4.kino.data.movies.Movie;
 
 public class PictureUtils {
 
-    // Just give a Moive or a Cinema not both!
-    public static Component getImage(Movie m, Cinema c) {
+    public static Component getMovieCover(Movie m) {
         StreamSource streamSource = new StreamResource.StreamSource() {
             @Override
             public ByteArrayInputStream getStream() {
 
-                if (!(m == null)) {
                     return (m.getCover() == null) ? null : new ByteArrayInputStream(m.getCover());
+            }
+        };
 
-                } else if (!(c == null)) {
+        StreamResource imageResource = new StreamResource(streamSource, "");
+        Image image = new Image(null, imageResource);
+
+        return image;
+    }
+
+    public static Component getCinemaImage(Cinema c) {
+        StreamSource streamSource = new StreamResource.StreamSource() {
+            @Override
+            public ByteArrayInputStream getStream() {
+
                     return (c.getImage() == null) ? null : new ByteArrayInputStream(c.getImage());
-                }
-
-                return null;
             }
         };
 
