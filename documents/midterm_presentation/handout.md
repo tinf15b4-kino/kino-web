@@ -14,7 +14,7 @@ All team members hold the roles Implementer, Test Designer, Business Designer an
 | Jonas Kümmerlin | Deployment Manager | xx h |
 
 ###Overall Use Case Diagramm
-![OUCD][oucd]
+<img src="https://github.com/tinf15b4-kino/kino-web/blob/master/documents/UC/OUCD.png" alt="oucd" width="90%"/>
 
 
 
