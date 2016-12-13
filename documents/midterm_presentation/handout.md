@@ -1,4 +1,4 @@
-![logo_smart_cinema][bg]
+<img src="https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/Logo/Logo_blue_background.png" alt="logo_smartcinema" width="50%"/>
 #Handout
 ##Midterm Presentation, 15.12.2016
 
