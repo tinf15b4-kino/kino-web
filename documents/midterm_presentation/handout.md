@@ -11,7 +11,7 @@ All team members hold the roles Implementer, Test Designer, Business Designer an
 | Christian Gutermann | Graphic Designer | xx h |
 | Marco Herglotz | Tool Specialist | xx h |
 | Simon Knab | Database Designer, Project Manager | xx h |
-| Jonas Kümmerlin | Deployment Manager | xx h |
+| Jonas KÃ¼mmerlin | Deployment Manager | xx h |
 
 ###Overall Use Case Diagramm
 ![OUCD][oucd]
@@ -20,5 +20,5 @@ All team members hold the roles Implementer, Test Designer, Business Designer an
 
 
 <!-- Link definitions: -->
-[bg]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documentsLogo/Logo_blue_background.png
+[bg]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/Logo/Logo_blue_background.png
 [oucd]: https://github.com/tinf15b4-kino/kino-web/blob/master/documents/UC/OUCD.png
