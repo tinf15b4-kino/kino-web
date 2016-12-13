@@ -8,7 +8,7 @@ All team members hold the roles Implementer, Test Designer, Business Designer an
 
 | Name | Roles | Time Spent |
 |------|-------|------------|
-| Christian Gutermann | Graphic Designer | xx h |
+| Christian Gutermann | Graphic Designer | 42 h |
 | Marco Herglotz | Tool Specialist | xx h |
 | Simon Knab | Database Designer, Project Manager | 43 h |
 | Jonas Kümmerlin | Deployment Manager | xx h |
