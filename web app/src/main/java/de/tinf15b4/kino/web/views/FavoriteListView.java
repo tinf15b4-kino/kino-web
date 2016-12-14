@@ -68,7 +68,7 @@ public class FavoriteListView extends VerticalLayout implements View {
         pav.addStyleName("favorite-cinema-row-"+c.getId());
         pav.setWidth(100, Unit.PERCENTAGE);
 
-        Component image = PictureUtils.getImage(null, c);
+        Component image = PictureUtils.getCinemaImage(c);
         image.setHeight("100px");
         pav.addComponent(image);
 

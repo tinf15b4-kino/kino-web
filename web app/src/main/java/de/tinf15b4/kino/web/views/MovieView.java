@@ -61,7 +61,7 @@ public class MovieView extends VerticalLayout implements View {
                 left.addComponent(new Label(m.getName()));
 
                 // Picture
-                Component image = PictureUtils.getImage(m, null);
+                Component image = PictureUtils.getMovieCover(m);
                 image.setHeight("150px");
                 left.addComponent(image);
 
