@@ -55,21 +55,16 @@ Having an account enables the user to save favorite movies and cinemas and use o
 #### 3.1.2 User interface
 Inside the application (both web and android app), users can see a list of all movies that are currently showing. If they select a movie, they get information about where and when the movie will be shown in the next week. Additionally, information about prices will be visible. There will also be a rating system for movies and cinemas, as well as a way to filter the information and mark movies/cinemas as favorites.
 
+see: [Use Case: Get Information](https://github.com/tinf15b4-kino/kino-web/blob/master/documents/UC/UC_GetInformation.md)
+
 #### 3.1.3 Rating system
 The rating system requires the user to log in. Users can write reviews and rate cinemas and movies with zero to five stars. All other users can see those ratings and reviews to decide whether they want to see this movie in the given cinema. Users can comment on other ratings.
 
 #### 3.1.4 Favorites
-
 see: [Use Case: Manage Favorites](https://github.com/tinf15b4-kino/kino-web/blob/master/documents/UC/UC_ManageFavorites.md)
 
 #### 3.1.5 Filter
-There will be certain ways to filter the list of movies and cinemas. Available filters are: 
-- name
-- location/distance
-- favorites
-- genre
-- schedule
-- prices
+see: [Use Case: Filter Information](https://github.com/tinf15b4-kino/kino-web/blob/master/documents/UC/UC_FilterInformation.md)
 
 #### 3.1.6 Overall search
 see: [Use Case: Search Everything](https://github.com/tinf15b4-kino/kino-web/blob/master/documents/UC/UC_SearchEverything.md)

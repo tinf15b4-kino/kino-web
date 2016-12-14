@@ -26,7 +26,7 @@ UI Mockup / after:
 
 Feature-File:
 
-[Link to the Feature-File](https://github.com/tinf15b4-kino/kino-web/blob/TESB416-89/web%20app/src/test/resources/de/tinf15b4/kino/cucumber/manageFavorites.feature.proto)
+[Link to the Feature-File][feature]
 
 #### 2.1/2 Basic Flow: Remove a favorite (from favorite list)
 
@@ -44,7 +44,7 @@ UI Mockup / after:
 
 Feature-File:
 
-[Link to the Feature-File](https://github.com/tinf15b4-kino/kino-web/blob/TESB416-89/web%20app/src/test/resources/de/tinf15b4/kino/cucumber/manageFavorites.feature.proto)
+[Link to the Feature-File][feature]
 
 #### 2.1/3 Basic Flow: Show favorite cinemas
 
@@ -56,7 +56,7 @@ UI Mockups:
 
 Feature-File:
 
-[Link to the Feature-File](https://github.com/tinf15b4-kino/kino-web/blob/TESB416-89/web%20app/src/test/resources/de/tinf15b4/kino/cucumber/manageFavorites.feature.proto)
+[Link to the Feature-File][feature]
 
 #### 2.2 Alternative Flows
 (n/a)
@@ -99,3 +99,4 @@ Furthermore, the option to remove the favorite mark will be exchanged for an opt
 [Remove_List_mockup]: https://rawgit.com/tinf15b4-kino/kino-web/master/documents/UC/manage%20favorites/unmark%20favorite%20on%20favorite%20list.svg
 [Removed_from_list_mockup]: https://rawgit.com/tinf15b4-kino/kino-web/master/documents/UC/manage%20favorites/favorite%20unmarked%20on%20favorite%20list.svg
 [Favorite_List_Empty_mockup]: https://rawgit.com/tinf15b4-kino/kino-web/master/documents/UC/manage%20favorites/no%20favorite%20cinemas.svg
+[feature]: https://github.com/tinf15b4-kino/kino-web/blob/master/web%20app/src/test/resources/de/tinf15b4/kino/cucumber/manageFavorites.feature

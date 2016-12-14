@@ -24,6 +24,9 @@ Activity Diagram:
 Feature-File:
 [Link to the Feature-File][Feature File]
 
+Screenshot:
+![Screenshot][Screenshot]
+
 
 #### 2.2 Alternative Flows
 (n/a)
@@ -49,5 +52,5 @@ After the user set some filters, he should see the informations (movies), which 
 <!-- Link definitions -->
 [SRS]: https://github.com/tinf15b4-kino/kino-web/blob/master/documents/SRS.md
 [Flow]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/UC/filter%20information/flow_FilterInformation.png
-[Mockup]: tbd
-[Feature File]: tbd
+[Screenshot]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/UC/filter%20information/screenshot_FilterInformation.png
+[Feature File]: https://github.com/tinf15b4-kino/kino-web/blob/master/web%20app/src/test/resources/de/tinf15b4/kino/cucumber/filter.feature
