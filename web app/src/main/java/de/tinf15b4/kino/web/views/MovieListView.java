@@ -13,6 +13,7 @@ import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.VerticalLayout;
 
@@ -23,7 +24,7 @@ import de.tinf15b4.kino.web.components.AgeControlCheckboxes;
 import de.tinf15b4.kino.web.components.DateTimeFilter;
 import de.tinf15b4.kino.web.components.GenreCheckboxes;
 import de.tinf15b4.kino.web.components.PriceFilter;
-import de.tinf15b4.kino.web.util.PictureUtils;
+import de.tinf15b4.kino.web.controllers.PictureController;
 
 @SpringView(name = MovieListView.VIEW_NAME)
 public class MovieListView extends VerticalLayout implements View {
@@ -51,7 +52,7 @@ public class MovieListView extends VerticalLayout implements View {
             HorizontalLayout row = new HorizontalLayout();
             row.setWidth(100, Unit.PERCENTAGE);
 
-            Component image = PictureUtils.getMovieCover(m);
+            Image image = new Image(null, new ExternalResource(PictureController.getMoviePictureUrl(m)));
 
             image.setHeight("100px");
             row.addComponent(image);

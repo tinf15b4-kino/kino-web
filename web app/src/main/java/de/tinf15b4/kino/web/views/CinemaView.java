@@ -17,6 +17,7 @@ import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.Panel;
@@ -30,8 +31,8 @@ import de.tinf15b4.kino.data.playlists.PlaylistService;
 import de.tinf15b4.kino.data.ratedcinemas.RatedCinema;
 import de.tinf15b4.kino.data.ratedcinemas.RatedCinemaService;
 import de.tinf15b4.kino.data.users.UserBean;
+import de.tinf15b4.kino.web.controllers.PictureController;
 import de.tinf15b4.kino.web.util.CinemaFavoriteUtils;
-import de.tinf15b4.kino.web.util.PictureUtils;
 import de.tinf15b4.kino.web.util.ToggleFavoriteListener;
 
 @SpringView(name = CinemaView.VIEW_NAME)
@@ -76,7 +77,7 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
                 left.addComponent(new Label(c.getName()));
 
                 // Picture
-                Component image = PictureUtils.getCinemaImage(c);
+                Component image = new Image(null, new ExternalResource(PictureController.getCinemaPictureUrl(c)));
                 image.setHeight("150px");
 
                 left.addComponent(image);
