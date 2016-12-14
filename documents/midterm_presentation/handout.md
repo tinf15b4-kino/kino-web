@@ -11,7 +11,7 @@ All team members hold the roles Implementer, Test Designer, Business Designer an
 | Christian Gutermann | Graphic Designer | 42 h |
 | Marco Herglotz | Tool Specialist | 42 h |
 | Simon Knab | Database Designer, Project Manager | 43 h |
-| Jonas Kümmerlin | Deployment Manager | xx h |
+| Jonas Kümmerlin | Deployment Manager | 57 h |
 
 ###Overall Use Case Diagramm
 <img src="https://github.com/tinf15b4-kino/kino-web/blob/master/documents/UC/OUCD.png" alt="oucd" width="90%"/>
