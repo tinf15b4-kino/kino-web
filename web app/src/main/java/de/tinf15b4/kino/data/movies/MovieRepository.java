@@ -23,11 +23,13 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
             "WHERE m = p.id.movie " + 
             "AND ((:ac) is null OR m.ageControl IN (:ac)) " +
             "AND ((:genre) is null OR m.genre IN (:genre)) " +
-            "AND (:upperPrice is null OR p.price BETWEEN :upperPrice AND :lowerPrice) " +
-            "AND (:upperTime is null OR p.time BETWEEN :upperTime AND :lowerTime) " + 
+            "AND (:upperPrice is null OR p.price >= :upperPrice) " + 
+            "AND (:lowerPrice is null OR p.price <= :lowerPrice) " +
+            "AND (:upperTime is null OR p.time >= :upperTime) " +
+            "AND (:lowerTime is null OR p.time <= :lowerTime) " + 
             "GROUP BY m " + 
-            "HAVING :upperRating is null " +
-            "OR (AVG(rm.rating) IS NOT null AND AVG(rm.rating) BETWEEN :upperRating AND :lowerRating)")
+            "HAVING (:upperRating is null OR (AVG(rm.rating) IS NOT null AND AVG(rm.rating) >= :upperRating)) " +
+            "AND (:lowerRating is null OR (AVG(rm.rating) IS NOT null AND AVG(rm.rating) <= :lowerRating))")
     List<Movie> allmightyFilter(
             @Param("ac") Set<AgeControl> ac,
             @Param("genre") Set<Genre> genre,

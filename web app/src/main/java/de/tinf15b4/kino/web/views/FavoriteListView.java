@@ -15,6 +15,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.Panel;
@@ -25,7 +26,7 @@ import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.favorites.Favorite;
 import de.tinf15b4.kino.data.favorites.FavoriteService;
 import de.tinf15b4.kino.data.users.UserBean;
-import de.tinf15b4.kino.web.util.PictureUtils;
+import de.tinf15b4.kino.web.controllers.PictureController;
 
 @SpringView(name = FavoriteListView.VIEW_NAME)
 public class FavoriteListView extends VerticalLayout implements View {
@@ -68,7 +69,7 @@ public class FavoriteListView extends VerticalLayout implements View {
         pav.addStyleName("favorite-cinema-row-"+c.getId());
         pav.setWidth(100, Unit.PERCENTAGE);
 
-        Component image = PictureUtils.getImage(null, c);
+        Component image = new Image(null, new ExternalResource(PictureController.getCinemaPictureUrl(c)));
         image.setHeight("100px");
         pav.addComponent(image);
 
