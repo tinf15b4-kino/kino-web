@@ -30,6 +30,7 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.BaseTheme;
 import com.vaadin.ui.themes.ValoTheme;
 
 import de.tinf15b4.kino.data.users.UserBean;
@@ -72,26 +73,35 @@ public class SmartCinemaUi extends UI {
         grid.addComponent(createHeader(), 0, 0, 1, 0);
 
         // Navigator at left side
-        grid.addComponent(createNavigator(), 0, 1);
+        grid.addComponent(createNavigator(), 0, 2);
+
+        // left part of naviagtor bar
+        grid.addComponent(createNavigatorBarLeft(), 0, 1);
+
+        // Navigaor bar under header
+        grid.addComponent(createNavigatorBarRight(), 1, 1);
 
         // Main area
         HorizontalLayout layout = new HorizontalLayout();
         layout.setSizeFull();
-        layout.setMargin(true);
+        layout.setMargin(false);
         Panel panel = new Panel();
         layout.addComponent(panel);
-        grid.addComponent(layout, 1, 1);
+        layout.setStyleName("layout");
+        grid.addComponent(layout, 1, 2);
         panel.setSizeFull();
 
+
         // Footer
-        grid.addComponent(createFooter(), 0, 2, 1, 2);
+        // grid.addComponent(createFooter(), 0, 2, 1, 2);
 
         // Main View (in grid cell 1 1) will get all excess space
-        grid.setColumnExpandRatio(1, 1);
-        grid.setRowExpandRatio(1, 1);
+        grid.setColumnExpandRatio(1, 2);
+        grid.setRowExpandRatio(2, 3);
 
         Navigator nav = new Navigator(this, panel);
         nav.addProvider(viewProvider);
+
 
     }
 
@@ -140,6 +150,9 @@ public class SmartCinemaUi extends UI {
             header.setComponentAlignment(logout, Alignment.MIDDLE_RIGHT);
         } else {
             Button register = new Button("Registrieren", e -> navigateTo("register"));
+            register.setStyleName("registerBtn");
+            register.addStyleName(BaseTheme.BUTTON_LINK);
+
             header.addComponent(register);
             Button login = new Button("Anmelden", e -> {
                 try {
@@ -151,9 +164,12 @@ public class SmartCinemaUi extends UI {
                     navigateTo(LoginView.VIEW_NAME);
                 }
             });
+
             header.addComponent(login);
             header.setComponentAlignment(register, Alignment.MIDDLE_RIGHT);
             header.setComponentAlignment(login, Alignment.MIDDLE_RIGHT);
+            login.setStyleName("loginBtn");
+            login.addStyleName(BaseTheme.BUTTON_LINK);
         }
         header.setExpandRatio(searchPanel, 1);
 
@@ -215,6 +231,8 @@ public class SmartCinemaUi extends UI {
         navigator.setSpacing(true);
         navigator.setMargin(true);
         navigator.setSizeUndefined();
+        navigator.setStyleName("navigator");
+        navigator.setHeight("100%");
 
         navigator.addComponent(createViewButton("Filme", MovieListView.VIEW_NAME, FontAwesome.PLAY_CIRCLE_O));
         navigator.addComponent(createViewButton("Kinos", CinemaListView.VIEW_NAME, FontAwesome.VIDEO_CAMERA));
@@ -223,6 +241,32 @@ public class SmartCinemaUi extends UI {
         navigator.addComponent(createViewButton("Demnächst", "coming_soon", FontAwesome.HISTORY));
 
         return navigator;
+    }
+
+    private Component createNavigatorBarLeft() {
+        HorizontalLayout navigatorBarLeft = new HorizontalLayout();
+        navigatorBarLeft.setWidth("100%");
+        navigatorBarLeft.setHeight("60px");
+        navigatorBarLeft.setStyleName("navigatorBarLeft");
+
+        Label NavLabelL = new Label();
+        NavLabelL.setCaption("navR");
+        navigatorBarLeft.addComponent(NavLabelL);
+        return navigatorBarLeft;
+    }
+
+    private Component createNavigatorBarRight() {
+        HorizontalLayout navigatorBarRight = new HorizontalLayout();
+        navigatorBarRight.setWidth("100%");
+        navigatorBarRight.setHeight("60px");
+        navigatorBarRight.setStyleName("navigatorBarRight");
+
+        Label navLabelR = new Label();
+        navLabelR.setCaption("navR");
+
+        navigatorBarRight.addComponent(navLabelR);
+
+        return navigatorBarRight;
     }
 
     private Component createViewButton(String readableName, String viewId, FontAwesome icon) {
