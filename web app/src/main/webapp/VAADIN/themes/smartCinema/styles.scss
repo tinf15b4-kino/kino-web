@@ -12,6 +12,7 @@
 .headerbackground {
 	background-color:#000000;
 	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+	padding: 0px 15px 0px 15px;
 }
 
 .footerbackground {
@@ -19,7 +20,7 @@
 }
 
 .copyrightText {
-	color: white;
+	color: white; 
 }
 
 .navigatorBarLeft {
@@ -40,40 +41,129 @@
 
 .v-panel-content {
    background-color:#1f1f1f;
+   color:#ffffff;
 }
+
+.v-panel-content.v-panel-content-searchPanel {
+   background-color:#3f3f3f;
+   border-radius:10px;
+   color:#ffffff;
+}
+
+.searchPanel {
+	background-color:#3f3f3f;
+}
+
+.v-button.v-button-cinemaSearchBtn .v-button-wrap {
+	display: inline-block;
+	border: none;
+	color: #FFFFFF;
+	text-align: center;
+	font-size: 20px;
+	cursor: pointer;
+	background-color:#3f3f3f;
+}
+
+.v-textfield.v-textfield-cinemaSearchBox {
+	color:#ffffff;
+	background-color:#3f3f3f;
+	border:none;
+
+}
+
 
 .layout {
 	background-color:#1f1f1f;
-	bordercolor:#1f1f1f;
+	border:none;
 }
 
-.v-button.v-button-registerBtn .v-button-wrap {
+.v-button.v-button-homeBtn .v-button-wrap {
+	display: inline-block;
+	border: none;
+	color: #FFFFFF;
+	text-align: center;
+	font-size: 40px;
+	cursor: pointer;
+	margin-right: 35px;
+}
+
+.v-button.v-button-foldBtn .v-button-wrap {
+	display: inline-block;
+	border: none;
+	color: #FFFFFF;
+	text-align: center;
+	font-size: 40px;
+	cursor: pointer;
+	margin-left: 35px;
+}
+
+.v-button.v-button-register_userBtn .v-button-wrap {
 	display: inline-block;
 	border: none;
 	color: #FFFFFF;
 	text-align: center;
 	font-size: 16px;
 	cursor: pointer;
+	font-weight:bold;
 	
 }
 
-.v-button.v-button-loginBtn .v-button-wrap{
+.v-button.v-button-register_userBtn:hover .v-button-wrap {
+	color:#194b7d;
+}
+
+
+.v-button.v-button-login_logoutBtn .v-button-wrap {
 
   display: inline-block;
   border-radius: 25px;
-  background-color: #0000ff;
+  background-color: #194b7d;
   border: none;
   color: #FFFFFF;
   text-align: center;
   font-size: 16px;
-  padding: 5px 15px 5px 15px;
+  padding: 5px 20px 5px 20px;
   transition: all 0.5s;
   cursor: pointer;
+  font-weight:bold;
      
 }
 
+.v-button.v-button-login_logoutBtn:hover .v-button-wrap {
+	background-color:#4373a4;
+}
+
+.navHeadings {
+	font-weight:bold;
+	color:#424242;
+	font-size:13px;
+}
+
+.v-button.v-widget.navigatorButton.v-button-navigatorButton { 
+	display: inline-block;
+	border: none;
+	color: #FFFFFF;
+	text-align: center;
+	font-size: 16px;
+	cursor: pointer;
+	font-weight:bold;
+
+}
+
+.v-button.v-button-navigatorBtn .v-button-wrap {
+	display: inline-block;
+	border: none;
+	color: #FFFFFF;
+	text-align: center;
+	font-size: 15px;
+	cursor: pointer;
+}
+
+
+
+
 ::-webkit-scrollbar {
-    width: 12px;
+    width: 10px;
 }
  
 ::-webkit-scrollbar-track {
