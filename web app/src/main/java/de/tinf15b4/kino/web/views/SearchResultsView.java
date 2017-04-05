@@ -18,6 +18,8 @@ import de.tinf15b4.kino.data.search.SearchService;
 
 @SpringView(name = SearchResultsView.VIEW_NAME)
 public class SearchResultsView extends VerticalLayout implements View {
+    private static final long serialVersionUID = 654947209531243500L;
+
     public static final String VIEW_NAME = "search";
 
     @Autowired

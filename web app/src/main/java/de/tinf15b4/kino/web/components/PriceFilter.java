@@ -12,6 +12,7 @@ import de.tinf15b4.kino.data.movies.MovieFilterData;
 import de.tinf15b4.kino.web.views.MovieListView;
 
 public class PriceFilter extends VerticalLayout {
+    private static final long serialVersionUID = -8899650706074387697L;
 
     public PriceFilter(MovieListView view, MovieFilterData filterData) {
         setSpacing(true);

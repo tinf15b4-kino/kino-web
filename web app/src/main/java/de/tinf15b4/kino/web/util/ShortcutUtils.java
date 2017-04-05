@@ -6,6 +6,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Panel;
 
 public class ShortcutUtils {
+    @SuppressWarnings("serial")
     public static void registerScopedShortcut(Panel scope, Button button, int key) {
         scope.addAction(new ShortcutListener(null, key, null) {
             @Override

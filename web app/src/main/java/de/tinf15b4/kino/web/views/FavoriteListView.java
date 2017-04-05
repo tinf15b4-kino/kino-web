@@ -30,6 +30,8 @@ import de.tinf15b4.kino.web.controllers.PictureController;
 
 @SpringView(name = FavoriteListView.VIEW_NAME)
 public class FavoriteListView extends VerticalLayout implements View {
+    private static final long serialVersionUID = -7534909329867215414L;
+
     public static final String VIEW_NAME = "favourites";
 
     private VerticalLayout content;
