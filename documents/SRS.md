@@ -194,7 +194,7 @@ You can find any internal linked sources in the chapter References (go to the to
 
 
 <!-- Link definitions: -->
-[codestyle]: https://google.github.io/styleguide/javaguide.html
+[code style]: https://google.github.io/styleguide/javaguide.html
 [blog]: https://smartcinemaproject.wordpress.com/
 [git]: https://git-scm.com/
 [github]: https://github.com/
