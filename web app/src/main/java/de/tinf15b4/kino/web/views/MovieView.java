@@ -56,23 +56,23 @@ public class MovieView extends VerticalLayout implements View {
             if (m == null) {
                 this.getUI().getNavigator().navigateTo(MovieListView.VIEW_NAME);
             } else {
-                VerticalLayout left = new VerticalLayout();
-                VerticalLayout right = new VerticalLayout();
-                right.setMargin(true);
-                left.addComponent(new Label(m.getName()));
+                HorizontalLayout heading = new HorizontalLayout();
+                Label movieName = new Label(m.getName());
+                movieName.setStyleName("movieNameLabel");
+                heading.addComponent(movieName);
 
+                this.addComponent(heading);
+
+                HorizontalLayout informationRow = new HorizontalLayout();
                 // Picture
                 Component image = new Image(null, new ExternalResource(PictureController.getMoviePictureUrl(m)));
-                image.setHeight("150px");
-                left.addComponent(image);
+                image.setHeight("250px");
 
-                right.addComponent(new Label("Länge: " + m.getLengthMinutes() + " Minuten"));
-                right.addComponent(new Label("Genre: " + m.getGenre()));
-                right.addComponent(new Label("Altersfreigabe: " + m.getAgeControl()));
-                right.addComponent(
-                        new Label("Durschschnittliche Bewertung: " + ratedMovieService.getAverageRatingForMovie(m)));
-                right.addComponent(new Label(m.getDescription()));
-                this.addComponent(new HorizontalLayout(left, right));
+                informationRow.addComponent(image);
+                informationRow.addComponent(createMovieInfoBox(m));
+                informationRow.setSpacing(true);
+
+                this.addComponent(informationRow);
 
                 List<RatedMovie> ratedMovies = ratedMovieService.findRatingsByMovie(m);
 
@@ -115,5 +115,20 @@ public class MovieView extends VerticalLayout implements View {
                 }
             }
         }
+    }
+
+    private Component createMovieInfoBox(Movie m) {
+        VerticalLayout infoBox = new VerticalLayout();
+
+        infoBox.addComponent(new Label("Länge: " + m.getLengthMinutes() + " Minuten"));
+        infoBox.addComponent(new Label("Genre: " + m.getGenre()));
+        infoBox.addComponent(new Label("Altersfreigabe: " + m.getAgeControl()));
+        infoBox.addComponent(
+                new Label("Durschschnittliche Bewertung: " + ratedMovieService.getAverageRatingForMovie(m)));
+        infoBox.addComponent(new Label(m.getDescription()));
+
+        infoBox.setStyleName("movieInfoBox");
+
+        return infoBox;
     }
 }

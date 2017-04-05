@@ -71,23 +71,23 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
             if (c == null) {
                 this.getUI().getNavigator().navigateTo(CinemaListView.VIEW_NAME);
             } else {
-                VerticalLayout left = new VerticalLayout();
-                VerticalLayout right = new VerticalLayout();
-                right.setMargin(true);
-                left.addComponent(new Label(c.getName()));
+                HorizontalLayout heading = new HorizontalLayout();
+                Label cinemaName = new Label(c.getName());
+                cinemaName.setStyleName("cinemaNameLabel");
+                heading.addComponent(cinemaName);
 
+                this.addComponent(heading);
+
+                HorizontalLayout informationRow = new HorizontalLayout();
                 // Picture
                 Component image = new Image(null, new ExternalResource(PictureController.getCinemaPictureUrl(c)));
-                image.setHeight("150px");
+                image.setHeight("200px");
 
-                left.addComponent(image);
+                informationRow.addComponent(image);
+                informationRow.addComponent(createCinemaInfoBox(c));
+                informationRow.setSpacing(true);
 
-                favoriteButton = CinemaFavoriteUtils.createFavoriteButton(c, favoriteService, userBean, this);
-                right.addComponent(favoriteButton);
-
-                right.addComponent(new Label(c.getAddress(), ContentMode.PREFORMATTED));
-
-                this.addComponent(new HorizontalLayout(left, right));
+                this.addComponent(informationRow);
 
                 List<RatedCinema> ratedCinemas = ratedCinemaService.findRatingsByCinema(c);
 
@@ -131,6 +131,18 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
 
             }
         }
+    }
+
+    private Component createCinemaInfoBox(Cinema c) {
+        VerticalLayout infoBox = new VerticalLayout();
+
+        infoBox.addComponent(new Label(c.getAddress(), ContentMode.PREFORMATTED));
+
+        favoriteButton = CinemaFavoriteUtils.createFavoriteButton(c, favoriteService, userBean, this);
+        favoriteButton.addStyleName("detail");
+        infoBox.addComponent(favoriteButton);
+
+        return infoBox;
     }
 
     private void replaceFavoriteButton() {

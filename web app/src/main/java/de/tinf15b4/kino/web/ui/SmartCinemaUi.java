@@ -7,7 +7,6 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.gargoylesoftware.htmlunit.OnbeforeunloadHandler;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.event.ShortcutAction;
@@ -17,7 +16,6 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.shared.ui.colorpicker.Color;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
@@ -158,7 +156,7 @@ public class SmartCinemaUi extends UI {
                 Page.getCurrent().reload();  
               
             });
-            logout.setStyleName("login_logutBtn");
+            logout.setStyleName("login_logoutBtn");
             logout.addStyleName(BaseTheme.BUTTON_LINK);
             header.addComponent(logout);
             header.setComponentAlignment(user, Alignment.MIDDLE_RIGHT);
@@ -244,8 +242,6 @@ public class SmartCinemaUi extends UI {
 
     private Component createNavigator() {
         VerticalLayout navigator = new VerticalLayout();
-        navigator.setSpacing(true);
-        navigator.setMargin(true);
         navigator.setSizeUndefined();
         navigator.setStyleName("navigator");
         navigator.setHeight("100%");
@@ -264,7 +260,7 @@ public class SmartCinemaUi extends UI {
         newMovieBtn.addStyleName(BaseTheme.BUTTON_LINK);
         navigator.addComponent(newMovieBtn);
         
-        Button soonBtn = (Button) (createViewButton("Demn‰chst", "coming_soon", FontAwesome.HISTORY));
+        Button soonBtn = (Button) (createViewButton("Demn√§chst", "coming_soon", FontAwesome.HISTORY));
         soonBtn.setStyleName("navigatorBtn");
         soonBtn.addStyleName(BaseTheme.BUTTON_LINK);
         navigator.addComponent(soonBtn);
