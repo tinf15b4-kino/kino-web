@@ -6,7 +6,6 @@ import java.net.URLDecoder;
 import java.security.SecureRandom;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.assertj.core.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.google.common.base.Strings;
 
 import de.tinf15b4.kino.data.users.User;
 import de.tinf15b4.kino.data.users.UserService;
