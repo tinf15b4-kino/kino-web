@@ -198,4 +198,4 @@ You can find any internal linked sources in the chapter References (go to the to
 [blog]: https://smartcinemaproject.wordpress.com/
 [git]: https://git-scm.com/
 [github]: https://github.com/
-[oucd]: https://github.com/tinf15b4-kino/kino-web/blob/master/documents/UC/OUCD.png
+[oucd]: UC/OUCD.png
