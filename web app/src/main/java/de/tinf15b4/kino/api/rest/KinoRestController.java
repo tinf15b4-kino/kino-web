@@ -4,6 +4,9 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.URLDecoder;
 import java.security.SecureRandom;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.base.Strings;
 
+import de.tinf15b4.kino.data.cinemas.Cinema;
+import de.tinf15b4.kino.data.cinemas.CinemaService;
+import de.tinf15b4.kino.data.favorites.Favorite;
+import de.tinf15b4.kino.data.favorites.FavoriteService;
+import de.tinf15b4.kino.data.movies.Movie;
+import de.tinf15b4.kino.data.movies.MovieService;
+import de.tinf15b4.kino.data.playlists.Playlist;
+import de.tinf15b4.kino.data.playlists.PlaylistService;
+import de.tinf15b4.kino.data.ratedcinemas.RatedCinemaService;
+import de.tinf15b4.kino.data.ratedmovies.RatedMovie;
+import de.tinf15b4.kino.data.ratedmovies.RatedMovieService;
 import de.tinf15b4.kino.data.users.User;
 import de.tinf15b4.kino.data.users.UserService;
 
@@ -34,7 +48,25 @@ public class KinoRestController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "api/rest/authorize", method = RequestMethod.GET)
+    @Autowired
+    private FavoriteService favoriteService;
+
+    @Autowired
+    private CinemaService cinemaService;
+
+    @Autowired
+    private MovieService movieService;
+
+    @Autowired
+    private RatedCinemaService ratedCinemaService;
+
+    @Autowired
+    private RatedMovieService ratedMovieService;
+
+    @Autowired
+    private PlaylistService playlistService;
+
+    @RequestMapping(value = "rest/authorize", method = RequestMethod.GET)
     public ResponseEntity<?> authorize(@RequestParam(name = "username") String username,
             @RequestParam(name = "password") String password) throws UnsupportedEncodingException {
         if (Strings.isNullOrEmpty(username) || Strings.isNullOrEmpty(password))
@@ -58,7 +90,7 @@ public class KinoRestController {
             return ResponseEntity.badRequest().body(WRONG_PASSWORD);
     }
 
-    @RequestMapping(value = "api/rest/logout", method = RequestMethod.GET)
+    @RequestMapping(value = "rest/logout", method = RequestMethod.GET)
     public ResponseEntity<?> logout(@RequestParam(name = "token") String token) {
         ResponseEntity<?> response = checkToken(token);
         if (response.getStatusCode() == HttpStatus.OK) {
@@ -70,12 +102,61 @@ public class KinoRestController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(TOKEN_INVALID);
     }
 
-    @RequestMapping(value = "api/rest/getUser", method = RequestMethod.GET)
+    @RequestMapping(value = "rest/getUser", method = RequestMethod.GET)
     public ResponseEntity<?> getUser(@RequestParam(name = "token") String token) {
         ResponseEntity<?> response = checkToken(token);
         if (response.getStatusCode() != HttpStatus.OK)
             return response;
         return ResponseEntity.ok(userService.findByName((String) response.getBody()));
+    }
+
+    @RequestMapping(value = "rest/getCinemas", method = RequestMethod.GET)
+    public ResponseEntity<?> getCinemas() {
+        return ResponseEntity.ok(cinemaService.findAll().toArray(new Cinema[0]));
+    }
+
+    @RequestMapping(value = "rest/getMovies", method = RequestMethod.GET)
+    public ResponseEntity<?> getMovies() {
+        return ResponseEntity.ok(movieService.findAll().toArray(new Movie[0]));
+    }
+
+    @RequestMapping(value = "rest/getPlaylistForCinema", method = RequestMethod.GET)
+    public ResponseEntity<?> getPlaylistForCinema(@RequestParam(name = "cinemaId") long cinemaId,
+            @RequestParam(name = "from") String from, @RequestParam(name = "to") String to) throws ParseException {
+        DateFormat dateFormatter = SimpleDateFormat.getDateInstance();
+        return ResponseEntity.ok(playlistService
+                .findForCinema(cinemaService.findOne(cinemaId), dateFormatter.parse(from), dateFormatter.parse(to))
+                .toArray(new Playlist[0]));
+    }
+
+    @RequestMapping(value = "rest/getPlaylistForMovie", method = RequestMethod.GET)
+    public ResponseEntity<?> getPlaylistForMovie(@RequestParam(name = "movieId") long movieId,
+            @RequestParam(name = "from") String from, @RequestParam(name = "to") String to) throws ParseException {
+        DateFormat dateFormatter = SimpleDateFormat.getDateInstance();
+        return ResponseEntity.ok(playlistService
+                .findForMovie(movieService.findOne(movieId), dateFormatter.parse(from), dateFormatter.parse(to))
+                .toArray(new Playlist[0]));
+    }
+
+    @RequestMapping(value = "rest/getRatedMovies", method = RequestMethod.GET)
+    public ResponseEntity<?> getRatedMovies(@RequestParam(name = "movieId") long movieId) {
+        return ResponseEntity
+                .ok(ratedMovieService.findRatingsByMovie(movieService.findOne(movieId)).toArray(new RatedMovie[0]));
+    }
+
+    @RequestMapping(value = "rest/getRatedCinemas", method = RequestMethod.GET)
+    public ResponseEntity<?> getRatedCinemas(@RequestParam(name = "cinemaId") long cinemaId) {
+        return ResponseEntity
+                .ok(ratedCinemaService.findRatingsByCinema(cinemaService.findOne(cinemaId)).toArray(new RatedMovie[0]));
+    }
+
+    @RequestMapping(value = "rest/getFavorites", method = RequestMethod.GET)
+    public ResponseEntity<?> getFavorites(@RequestParam(name = "token") String token) {
+        ResponseEntity<?> response = checkToken(token);
+        if (response.getStatusCode() != HttpStatus.OK)
+            return response;
+        User user = userService.findByName((String) response.getBody());
+        return ResponseEntity.ok(favoriteService.getAllFavoritesForUser(user).toArray(new Favorite[0]));
     }
 
     private ResponseEntity<?> checkToken(String tokenKey) {

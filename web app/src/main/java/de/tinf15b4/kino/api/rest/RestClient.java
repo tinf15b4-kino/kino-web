@@ -20,6 +20,8 @@ import com.google.common.io.ByteStreams;
 
 public class RestClient {
 
+    private static final String ENCODING = "UTF-8";
+
     private static final String AUTHORIZE = "/authorize?name=%s&password=%s";
     private static final String LOGOUT = "/logout?token=%s";
 
@@ -42,8 +44,8 @@ public class RestClient {
     public RestResponse authorize() {
         String requestUrl;
         try {
-            requestUrl = baseUrl + String.format(AUTHORIZE, URLEncoder.encode(trainerName, "UTF-8"),
-                    URLEncoder.encode(password, "UTF-8"));
+            requestUrl = baseUrl + String.format(AUTHORIZE, URLEncoder.encode(trainerName, ENCODING),
+                    URLEncoder.encode(password, ENCODING));
             authorized = true;
             RestResponse response = doGetRequest(requestUrl, String.class, false);
             if (response.hasError()) {
@@ -54,8 +56,7 @@ public class RestClient {
             return response;
         } catch (UnsupportedEncodingException e) {
             // should never happen
-            e.printStackTrace();
-            return null;
+            throw new RuntimeException(e);
         }
     }
 
@@ -73,12 +74,16 @@ public class RestClient {
         return doRestCall(parseUrl(urlString), expectedResult, RequestMethod.GET, toJson(""), needAuthorization);
     }
 
+    // Might be used soonish?
+    @SuppressWarnings("unused")
     private RestResponse doPostRequest(String urlString, Class<?> expectedResult, Object postObject,
             boolean needAuthorization) {
         return doRestCall(parseUrl(urlString), expectedResult, RequestMethod.POST, toJson(postObject),
                 needAuthorization);
     }
 
+    // Might be used soonish?
+    @SuppressWarnings("unused")
     private RestResponse doDeleteRequest(String urlString, Object deleteObject, boolean needAuthorization) {
         return doRestCall(parseUrl(urlString), String.class, RequestMethod.DELETE, toJson(deleteObject),
                 needAuthorization);
