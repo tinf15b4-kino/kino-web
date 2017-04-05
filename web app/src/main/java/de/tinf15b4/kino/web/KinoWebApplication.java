@@ -23,7 +23,8 @@ import de.tinf15b4.kino.data.initializer.DataInitializer;
 @EnableJpaRepositories(basePackages = "de.tinf15b4.kino.data.*")
 @EntityScan(basePackages = "de.tinf15b4.kino.data.*")
 @EnableScheduling
-@ComponentScan({ "de.tinf15b4.kino.data.*", "de.tinf15b4.kino.web", "de.tinf15b4.kino.web.*" })
+@ComponentScan({ "de.tinf15b4.kino.data.*", "de.tinf15b4.kino.web", "de.tinf15b4.kino.web.*",
+        "de.tinf15b4.kino.api.rest" })
 public class KinoWebApplication {
 
     @Bean
