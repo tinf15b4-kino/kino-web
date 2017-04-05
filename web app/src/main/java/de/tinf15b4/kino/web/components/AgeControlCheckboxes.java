@@ -13,6 +13,7 @@ import de.tinf15b4.kino.data.movies.MovieFilterData;
 import de.tinf15b4.kino.web.views.MovieListView;
 
 public class AgeControlCheckboxes extends VerticalLayout {
+    private static final long serialVersionUID = -5925889883817907053L;
 
     private Set<AgeControl> selected;
 

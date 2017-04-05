@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.tinf15b4.kino.data.cinemas.Cinema;
-import de.tinf15b4.kino.data.cinemas.CinemaRepository;
 import de.tinf15b4.kino.data.users.User;
 
 @Service
@@ -14,9 +13,6 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     @Autowired
     private FavoriteRepository favoriteRepository;
-
-    @Autowired
-    private CinemaRepository cinemaRepository;
 
     @Override
     public List<Favorite> getAllFavoritesForUser(User u) {

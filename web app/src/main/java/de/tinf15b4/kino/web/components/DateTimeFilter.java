@@ -9,6 +9,7 @@ import de.tinf15b4.kino.data.movies.MovieFilterData;
 import de.tinf15b4.kino.web.views.MovieListView;
 
 public class DateTimeFilter extends VerticalLayout {
+    private static final long serialVersionUID = -6267956035416269481L;
 
     public DateTimeFilter(MovieListView view, MovieFilterData filterData) {
         setSpacing(true);

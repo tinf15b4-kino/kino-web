@@ -25,6 +25,8 @@ import de.tinf15b4.kino.web.util.ToggleFavoriteListener;
 
 @SpringView(name = CinemaListView.VIEW_NAME)
 public class CinemaListView extends VerticalLayout implements View {
+    private static final long serialVersionUID = -7735249245890741447L;
+
     public static final String VIEW_NAME = "cinemas";
 
     @Autowired
@@ -101,10 +103,5 @@ public class CinemaListView extends VerticalLayout implements View {
         mgr.row = row;
         mgr.cinemaId = cinemaId;
         mgr.recreateBtn();
-    }
-
-    private void updateView() {
-        removeAllComponents();
-        init();
     }
 }

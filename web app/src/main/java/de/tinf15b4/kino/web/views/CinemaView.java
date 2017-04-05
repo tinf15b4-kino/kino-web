@@ -37,6 +37,8 @@ import de.tinf15b4.kino.web.util.ToggleFavoriteListener;
 
 @SpringView(name = CinemaView.VIEW_NAME)
 public class CinemaView extends VerticalLayout implements View, ToggleFavoriteListener {
+    private static final long serialVersionUID = 4293327123523820239L;
+
     public static final String VIEW_NAME = "cinema";
 
     @Autowired

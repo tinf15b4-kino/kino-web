@@ -31,6 +31,8 @@ import de.tinf15b4.kino.web.controllers.PictureController;
 
 @SpringView(name = MovieView.VIEW_NAME)
 public class MovieView extends VerticalLayout implements View {
+    private static final long serialVersionUID = -8396322298622735942L;
+
     public static final String VIEW_NAME = "movie";
 
     @Autowired

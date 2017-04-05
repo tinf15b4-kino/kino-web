@@ -7,6 +7,7 @@ import com.vaadin.ui.VerticalLayout;
 
 @SpringView(name = StartView.VIEW_NAME)
 public class StartView extends VerticalLayout implements View {
+    private static final long serialVersionUID = -3023236022867313886L;
 
     public static final String VIEW_NAME = "";
 

@@ -12,6 +12,7 @@ import de.tinf15b4.kino.data.movies.MovieFilterData;
 import de.tinf15b4.kino.web.views.MovieListView;
 
 public class GenreCheckboxes extends VerticalLayout {
+    private static final long serialVersionUID = 7341950890048141830L;
 
     private Set<Genre> selected;
 

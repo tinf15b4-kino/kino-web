@@ -24,6 +24,7 @@ import de.tinf15b4.kino.web.util.ShortcutUtils;
 
 @SpringView(name = LoginView.VIEW_NAME)
 public class LoginView extends Panel implements View {
+    private static final long serialVersionUID = -4391963842959397392L;
 
     @Autowired
     UserBean userBean;
