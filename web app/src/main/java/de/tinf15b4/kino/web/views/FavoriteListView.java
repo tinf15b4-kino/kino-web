@@ -1,32 +1,24 @@
 package de.tinf15b4.kino.web.views;
 
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.ExternalResource;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Image;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Link;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.favorites.Favorite;
 import de.tinf15b4.kino.data.favorites.FavoriteService;
 import de.tinf15b4.kino.data.users.UserBean;
 import de.tinf15b4.kino.web.controllers.PictureController;
+import de.tinf15b4.kino.web.util.CinemaFavoriteUtils;
+import de.tinf15b4.kino.web.util.ToggleFavoriteListener;
+import org.springframework.beans.factory.annotation.Autowired;
+import de.tinf15b4.kino.data.cinemas.CinemaService;
+
+import javax.annotation.PostConstruct;
+import java.util.List;
 
 @SpringView(name = FavoriteListView.VIEW_NAME)
 public class FavoriteListView extends VerticalLayout implements View {
@@ -42,6 +34,9 @@ public class FavoriteListView extends VerticalLayout implements View {
     @Autowired
     private UserBean userBean;
 
+    @Autowired
+    private CinemaService cinemaService;
+
     @PostConstruct
     private void init() {
         if (userBean.isUserLoggedIn()) {
@@ -50,19 +45,88 @@ public class FavoriteListView extends VerticalLayout implements View {
             this.addComponent(new Label("Favoritisierte Kinos"));
 
             content = new VerticalLayout();
-            content.setMargin(true);
-            content.setSpacing(true);
-            this.addComponent(new Panel(content));
 
             if (l.isEmpty()) {
                 content.addComponent(new Label("Bisher wurden noch keine Kinos zu den Favoriten hinzugefügt. :("));
             } else {
-                for (Favorite f : l) {
-                    content.addComponent(buildListEntry(f.getCinema()));
+                for (Cinema c : cinemaService.findAll()) {
+                    if (favoriteService.isCinemaFavorite(userBean.getCurrentUser(), c)) {
+                        HorizontalLayout row = new HorizontalLayout();
+                        row.setWidth(100, Unit.PERCENTAGE);
+                        row.setId("cinemaRow_" + c.getId());
+
+                        // Picture
+                        Component image = new Image(null, new ExternalResource(PictureController.getCinemaPictureUrl(c)));
+                        image.setId("cinemaImage_" + c.getId());
+                        image.setHeight("200px");
+                        row.addComponent(image);
+
+                        // Info-Box
+                        Component movieInfoBox = createCinemaInfoBox(c);
+                        row.addComponent(movieInfoBox);
+
+                        row.setExpandRatio(movieInfoBox, 1f);
+                        row.setSpacing(true);
+                        content.addComponent(row);
+                    }
                 }
             }
+            content.setSpacing(true);
+            this.addComponent(content);
+
         } else {
-            this.addComponent(new Label("Sie müssen sich anmelden!"));
+            this.addComponent(new Label("Sie müssen sich anmelden um diese Funktion nutzen zu können!"));
+        }
+    }
+
+    private Component createCinemaInfoBox(Cinema c) {
+
+        VerticalLayout cinemaInfoBox = new VerticalLayout();
+
+        Link l = new Link(c.getName(), new ExternalResource("#!" + CinemaView.VIEW_NAME + "/" + c.getId()));
+        l.setId("cinemaListLink_" + c.getId());
+        cinemaInfoBox.addComponent(l);
+        cinemaInfoBox.setComponentAlignment(l, Alignment.TOP_LEFT);
+
+        cinemaInfoBox.addComponent(new Label(c.getAddress(), ContentMode.PREFORMATTED));
+
+        createFavoriteBtn(c.getId(), cinemaInfoBox);
+
+
+        return cinemaInfoBox;
+    }
+
+    private void createFavoriteBtn(long cinemaId, VerticalLayout row) {
+        FavoriteListView.FavoriteBtnManager mgr = new FavoriteListView.FavoriteBtnManager();
+        mgr.row = row;
+        mgr.cinemaId = cinemaId;
+        mgr.recreateBtn();
+    }
+
+    private class FavoriteBtnManager implements ToggleFavoriteListener {
+        public Component button = null;
+        public VerticalLayout row;
+        public long cinemaId;
+
+        @Override
+        public void favoriteRemoved() {
+            recreateBtn();
+        }
+
+        @Override
+        public void favoriteAdded() {
+            recreateBtn();
+        }
+
+        public void recreateBtn() {
+            if (button != null)
+                row.removeComponent(button);
+
+            button = CinemaFavoriteUtils.createFavoriteButton(cinemaService.findOne(cinemaId),
+                    favoriteService, userBean, this);
+
+            row.addComponent(button);
+            row.setComponentAlignment(button, Alignment.BOTTOM_LEFT);
         }
     }
 

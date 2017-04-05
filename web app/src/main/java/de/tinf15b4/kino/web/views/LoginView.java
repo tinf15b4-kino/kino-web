@@ -1,26 +1,18 @@
 package de.tinf15b4.kino.web.views;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-
-import javax.annotation.PostConstruct;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.PasswordField;
-import com.vaadin.ui.TextField;
+import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-
 import de.tinf15b4.kino.data.users.UserBean;
 import de.tinf15b4.kino.web.util.ShortcutUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.PostConstruct;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 @SpringView(name = LoginView.VIEW_NAME)
 public class LoginView extends Panel implements View {
@@ -43,11 +35,11 @@ public class LoginView extends Panel implements View {
         l.setSpacing(true);
 
         TextField usernameInput = new TextField("Benutzername oder E-Mail");
-        usernameInput.addStyleName("login-username-field");
+        usernameInput.setId("loginUsernameField");
         l.addComponent(usernameInput);
 
         PasswordField passwordInput = new PasswordField("Passwort");
-        passwordInput.addStyleName("login-password-field");
+        passwordInput.addStyleName("loginPasswordField");
         l.addComponent(passwordInput);
 
         wrongInput = new Label("Benutzername oder Passwort falsch. Bitte erneut eingeben.");
@@ -55,18 +47,22 @@ public class LoginView extends Panel implements View {
         l.addComponent(wrongInput);
 
         Button login = new Button("Anmelden", e -> tryLogin(usernameInput.getValue(), passwordInput.getValue()));
-        login.addStyleName("login-submit-button");
-        login.addStyleName(ValoTheme.BUTTON_PRIMARY);
+        login.setId("loginSubmitButton");
+        login.addStyleName(ValoTheme.BUTTON_LINK);
         l.addComponent(login);
+        l.setId("loginForm");
+
 
         ShortcutUtils.registerScopedShortcut(this, login, ShortcutAction.KeyCode.ENTER);
 
         this.setContent(l);
         this.addStyleName(ValoTheme.PANEL_BORDERLESS);
+
     }
 
     private void tryLogin(String username, String password) {
         if (userBean.login(username, password)) {
+            Notification.show("Erfolgreich als " + username + " angemedet!", Notification.Type.TRAY_NOTIFICATION);
             if (redirectTo != null) {
                 getUI().getPage().open(redirectTo, "");
             } else {

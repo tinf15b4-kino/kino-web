@@ -52,6 +52,9 @@ targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    vaadinAddons{
+        url "http://maven.vaadin.com/vaadin-addons"
+    }
 }
 
 dependencies {
@@ -62,6 +65,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile('com.h2database:h2')
     compile('com.github.javafaker:javafaker:0.10')
+    compile('org.vaadin.addons:ratingstars:2.1')
     testCompile('org.seleniumhq.selenium:selenium-java')
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('info.cukes:cucumber-java:' + cucumberVersion)
