@@ -23,6 +23,21 @@ public class Cinema {
     @Column(length = 100000)
     private byte[] image;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Cinema)) return false;
+
+        Cinema cinema = (Cinema) o;
+
+        return id == cinema.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
+    }
+
     public Cinema() {
 
     }
