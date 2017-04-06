@@ -101,4 +101,7 @@ public class Cinema {
         this.image = image;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 }
