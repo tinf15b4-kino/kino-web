@@ -30,6 +30,7 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.BaseTheme;
 import com.vaadin.ui.themes.ValoTheme;
 
 import de.tinf15b4.kino.data.users.UserBean;
@@ -72,35 +73,46 @@ public class SmartCinemaUi extends UI {
         grid.addComponent(createHeader(), 0, 0, 1, 0);
 
         // Navigator at left side
-        grid.addComponent(createNavigator(), 0, 1);
+        grid.addComponent(createNavigator(), 0, 2);
+
+        // left part of naviagtor bar
+        grid.addComponent(createNavigatorBarLeft(), 0, 1);
+
+        // Navigaor bar under header
+        grid.addComponent(createNavigatorBarRight(), 1, 1);
 
         // Main area
         HorizontalLayout layout = new HorizontalLayout();
         layout.setSizeFull();
-        layout.setMargin(true);
+        layout.setMargin(false);
         Panel panel = new Panel();
+        panel.addStyleName(ValoTheme.PANEL_BORDERLESS);
         layout.addComponent(panel);
-        grid.addComponent(layout, 1, 1);
+        layout.setStyleName("layout");
+        grid.addComponent(layout, 1, 2);
         panel.setSizeFull();
 
+
         // Footer
-        grid.addComponent(createFooter(), 0, 2, 1, 2);
+        // grid.addComponent(createFooter(), 0, 2, 1, 2);
 
         // Main View (in grid cell 1 1) will get all excess space
-        grid.setColumnExpandRatio(1, 1);
-        grid.setRowExpandRatio(1, 1);
+        grid.setColumnExpandRatio(1, 2);
+        grid.setRowExpandRatio(2, 3);
 
         Navigator nav = new Navigator(this, panel);
         nav.addProvider(viewProvider);
+
 
     }
 
     private Component createHeader() {
         header = new HorizontalLayout();
         header.setSpacing(true);
-        header.setMargin(new MarginInfo(false, true));
+        //header.setMargin(new MarginInfo(false, true));
+
         header.setWidth("100%");
-        header.addStyleName("headerbackground");
+        header.addStyleName("headerbackground");  
         header.setHeight("60px");
 
         Image logo = new Image(null, new ClassResource("/images/logo.png"));
@@ -109,13 +121,18 @@ public class SmartCinemaUi extends UI {
         header.setComponentAlignment(logo, Alignment.MIDDLE_LEFT);
 
         Panel searchPanel = new Panel();
+        searchPanel.setStyleName("searchPanel");
         HorizontalLayout search = new HorizontalLayout();
         TextField searchField = new TextField();
         searchField.setWidth("20em");
         searchField.setInputPrompt("Suche nach Kinos und Filmen");
-        searchField.addStyleName("kino-search-box");
-        Button searchButton = new Button("\uD83D\uDD0E");
-        searchButton.addStyleName("kino-search-button");
+        searchField.setStyleName("cinemaSearchBox");
+        searchField.addStyleName(ValoTheme.PANEL_BORDERLESS);
+        Button searchButton = new Button();
+        searchButton.setIcon(FontAwesome.SEARCH);
+        searchButton.setStyleName("cinemaSearchBtn");
+        searchButton.addStyleName(BaseTheme.BUTTON_LINK);
+        searchButton.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
         search.addComponent(searchField);
         search.addComponent(searchButton);
         searchButton.addClickListener(
@@ -131,15 +148,24 @@ public class SmartCinemaUi extends UI {
         if (userBean.isUserLoggedIn()) {
             Button user = new Button(userBean.getCurrentUser().getName(), e -> userClicked());
             header.addComponent(user);
+            user.setStyleName("register_userBtn");
+            user.addStyleName(BaseTheme.BUTTON_LINK);
+            
             Button logout = new Button("Abmelden", e -> {
                 userBean.logout();
-                Page.getCurrent().reload();
+                Page.getCurrent().reload();  
+              
             });
+            logout.setStyleName("login_logoutBtn");
+            logout.addStyleName(BaseTheme.BUTTON_LINK);
             header.addComponent(logout);
             header.setComponentAlignment(user, Alignment.MIDDLE_RIGHT);
             header.setComponentAlignment(logout, Alignment.MIDDLE_RIGHT);
         } else {
             Button register = new Button("Registrieren", e -> navigateTo("register"));
+            register.setStyleName("register_userBtn");
+            register.addStyleName(BaseTheme.BUTTON_LINK);
+
             header.addComponent(register);
             Button login = new Button("Anmelden", e -> {
                 try {
@@ -151,9 +177,13 @@ public class SmartCinemaUi extends UI {
                     navigateTo(LoginView.VIEW_NAME);
                 }
             });
+
             header.addComponent(login);
             header.setComponentAlignment(register, Alignment.MIDDLE_RIGHT);
             header.setComponentAlignment(login, Alignment.MIDDLE_RIGHT);
+            login.setStyleName("login_logoutBtn");
+            login.addStyleName(BaseTheme.BUTTON_LINK);
+            login.addStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
         }
         header.setExpandRatio(searchPanel, 1);
 
@@ -212,17 +242,98 @@ public class SmartCinemaUi extends UI {
 
     private Component createNavigator() {
         VerticalLayout navigator = new VerticalLayout();
-        navigator.setSpacing(true);
-        navigator.setMargin(true);
         navigator.setSizeUndefined();
+        navigator.setStyleName("navigator");
+        navigator.setHeight("100%");
 
-        navigator.addComponent(createViewButton("Filme", MovieListView.VIEW_NAME, FontAwesome.PLAY_CIRCLE_O));
-        navigator.addComponent(createViewButton("Kinos", CinemaListView.VIEW_NAME, FontAwesome.VIDEO_CAMERA));
-        navigator.addComponent(createViewButton("Favoriten", FavoriteListView.VIEW_NAME, FontAwesome.HEART));
-        navigator.addComponent(createViewButton("Neu im Kino", "new", FontAwesome.EXCLAMATION_CIRCLE));
-        navigator.addComponent(createViewButton("Demnächst", "coming_soon", FontAwesome.HISTORY));
+        Label movieLabel =  new Label("FILME");
+        movieLabel.setStyleName("navHeadings");
+        navigator.addComponent(movieLabel);
+        
+        Button movieBtn = (Button) (createViewButton("Filme", MovieListView.VIEW_NAME, FontAwesome.PLAY));
+        movieBtn.setStyleName("navigatorBtn");
+        movieBtn.addStyleName(BaseTheme.BUTTON_LINK);
+        navigator.addComponent(movieBtn);
+        
+        Button newMovieBtn = (Button) (createViewButton("Neu im Kino", "new", FontAwesome.EXCLAMATION_CIRCLE));
+        newMovieBtn.setStyleName("navigatorBtn");
+        newMovieBtn.addStyleName(BaseTheme.BUTTON_LINK);
+        navigator.addComponent(newMovieBtn);
+        
+        Button soonBtn = (Button) (createViewButton("Demnächst", "coming_soon", FontAwesome.HISTORY));
+        soonBtn.setStyleName("navigatorBtn");
+        soonBtn.addStyleName(BaseTheme.BUTTON_LINK);
+        navigator.addComponent(soonBtn);
+        
+        //navigator.addComponent(createViewButton("Neu im Kino", "new", FontAwesome.EXCLAMATION_CIRCLE));
+        // navigator.addComponent(createViewButton("Demnächst", "coming_soon", FontAwesome.HISTORY));
+        
+        Label cinemaLabel = new Label("KINOS");
+        cinemaLabel.setStyleName("navHeadings");
+        navigator.addComponent(cinemaLabel);
+        
+        Button cinemaBtn = (Button) (createViewButton("Kinos", CinemaListView.VIEW_NAME, FontAwesome.VIDEO_CAMERA));
+        cinemaBtn.setStyleName("navigatorBtn");
+        cinemaBtn.addStyleName(BaseTheme.BUTTON_LINK);
+        navigator.addComponent(cinemaBtn);
+        
+        Button favoriteBtn = (Button) (createViewButton("Favoriten", FavoriteListView.VIEW_NAME, FontAwesome.HEART));
+        favoriteBtn.setStyleName("navigatorBtn");
+        favoriteBtn.addStyleName(BaseTheme.BUTTON_LINK);
+        navigator.addComponent(favoriteBtn);
+        
+        // navigator.addComponent(createViewButton("Kinos", CinemaListView.VIEW_NAME, FontAwesome.VIDEO_CAMERA));
+        // navigator.addComponent(createViewButton("Favoriten", FavoriteListView.VIEW_NAME, FontAwesome.HEART));
+        
+        Label nothingLabel = new Label("");
+        navigator.addComponent(nothingLabel);
+        navigator.setExpandRatio(nothingLabel, 1f);
+        
+        navigator.setStyleName("navigator");
+        navigator.addStyleName(BaseTheme.BUTTON_LINK);
+        
 
         return navigator;
+    }
+
+    private Component createNavigatorBarLeft() {
+        HorizontalLayout navigatorBarLeft = new HorizontalLayout();
+        navigatorBarLeft.setWidth("100%");
+        navigatorBarLeft.setHeight("60px");
+        navigatorBarLeft.setStyleName("navigatorBarLeft");
+        
+        Button foldBtn = new Button();
+        foldBtn.setIcon(FontAwesome.REORDER);
+        foldBtn.setStyleName("foldBtn");
+        foldBtn.addStyleName(BaseTheme.BUTTON_LINK);
+        
+        Button homeBtn = new Button("", e -> navigateTo("home"));
+        homeBtn.setIcon(FontAwesome.HOME);
+        homeBtn.setStyleName("homeBtn");
+        homeBtn.addStyleName(BaseTheme.BUTTON_LINK);
+        
+        
+        navigatorBarLeft.addComponent(foldBtn);
+        navigatorBarLeft.setComponentAlignment(foldBtn, Alignment.TOP_LEFT);
+        
+        navigatorBarLeft.addComponent(homeBtn);
+        navigatorBarLeft.setComponentAlignment(homeBtn, Alignment.TOP_RIGHT);
+        
+        return navigatorBarLeft;
+    }
+
+    private Component createNavigatorBarRight() {
+        HorizontalLayout navigatorBarRight = new HorizontalLayout();
+        navigatorBarRight.setWidth("100%");
+        navigatorBarRight.setHeight("60px");
+        navigatorBarRight.setStyleName("navigatorBarRight");
+
+        Label navLabelR = new Label();
+        navLabelR.setCaption("navR");
+
+        navigatorBarRight.addComponent(navLabelR);
+
+        return navigatorBarRight;
     }
 
     private Component createViewButton(String readableName, String viewId, FontAwesome icon) {
