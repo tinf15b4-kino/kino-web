@@ -36,11 +36,12 @@ import de.tinf15b4.kino.data.users.UserService;
 @RestController
 public class KinoRestController {
 
-    private static final String NOT_NULL = "Parameters or request body must not be null";
-    private static final String WRONG_PASSWORD = "Wrong username or password";
-    private static final String USER_LOGGED_IN = "This user is already logged in";
-    private static final String TOKEN_INVALID = "Token invalid or expired";
-    private static final Object LOGOUT_SUCCESS = "Logout successful";
+    public static final String NOT_NULL = "Parameters or request body must not be null";
+    public static final String WRONG_PASSWORD = "Wrong username or password";
+    public static final String USER_LOGGED_IN = "This user is already logged in";
+    public static final String TOKEN_INVALID = "Token invalid or expired";
+    public static final String LOGOUT_SUCCESS = "Logout successful";
+    public static final String INVALID_ID = "Id does not exist";
 
     private ConcurrentHashMap<Token, String> tokens = new ConcurrentHashMap<>();
     private ConcurrentHashMap<String, Token> users = new ConcurrentHashMap<>();
@@ -123,31 +124,50 @@ public class KinoRestController {
     @RequestMapping(value = "rest/getPlaylistForCinema", method = RequestMethod.GET)
     public ResponseEntity<?> getPlaylistForCinema(@RequestParam(name = "cinemaId") long cinemaId,
             @RequestParam(name = "from") String from, @RequestParam(name = "to") String to) throws ParseException {
-        DateFormat dateFormatter = SimpleDateFormat.getDateInstance();
-        return ResponseEntity.ok(playlistService
-                .findForCinema(cinemaService.findOne(cinemaId), dateFormatter.parse(from), dateFormatter.parse(to))
-                .toArray(new Playlist[0]));
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Cinema cinema = cinemaService.findOne(cinemaId);
+            if (cinema != null)
+                return ResponseEntity
+                        .ok(playlistService.findForCinema(cinema, dateFormatter.parse(from), dateFormatter.parse(to))
+                                .toArray(new Playlist[0]));
+        } catch (ParseException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.badRequest().body(INVALID_ID);
     }
 
     @RequestMapping(value = "rest/getPlaylistForMovie", method = RequestMethod.GET)
     public ResponseEntity<?> getPlaylistForMovie(@RequestParam(name = "movieId") long movieId,
             @RequestParam(name = "from") String from, @RequestParam(name = "to") String to) throws ParseException {
-        DateFormat dateFormatter = SimpleDateFormat.getDateInstance();
-        return ResponseEntity.ok(playlistService
-                .findForMovie(movieService.findOne(movieId), dateFormatter.parse(from), dateFormatter.parse(to))
-                .toArray(new Playlist[0]));
+        try {
+            DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+            Movie movie = movieService.findOne(movieId);
+            if (movie != null)
+                return ResponseEntity
+                        .ok(playlistService.findForMovie(movie, dateFormatter.parse(from), dateFormatter.parse(to))
+                                .toArray(new Playlist[0]));
+        } catch (ParseException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.badRequest().body(INVALID_ID);
     }
 
     @RequestMapping(value = "rest/getRatedMovies", method = RequestMethod.GET)
     public ResponseEntity<?> getRatedMovies(@RequestParam(name = "movieId") long movieId) {
-        return ResponseEntity
-                .ok(ratedMovieService.findRatingsByMovie(movieService.findOne(movieId)).toArray(new RatedMovie[0]));
+        Movie movie = movieService.findOne(movieId);
+        if (movie != null)
+            return ResponseEntity.ok(ratedMovieService.findRatingsByMovie(movie).toArray(new RatedMovie[0]));
+        return ResponseEntity.badRequest().body(INVALID_ID);
     }
 
     @RequestMapping(value = "rest/getRatedCinemas", method = RequestMethod.GET)
     public ResponseEntity<?> getRatedCinemas(@RequestParam(name = "cinemaId") long cinemaId) {
-        return ResponseEntity
-                .ok(ratedCinemaService.findRatingsByCinema(cinemaService.findOne(cinemaId)).toArray(new RatedMovie[0]));
+        Cinema cinema = cinemaService.findOne(cinemaId);
+        if (cinema != null)
+            return ResponseEntity.ok(
+                    ratedCinemaService.findRatingsByCinema(cinemaService.findOne(cinemaId)).toArray(new RatedMovie[0]));
+        return ResponseEntity.badRequest().body(INVALID_ID);
     }
 
     @RequestMapping(value = "rest/getFavorites", method = RequestMethod.GET)
