@@ -37,7 +37,7 @@ import de.tinf15b4.kino.data.users.UserService;
 public class KinoRestController {
 
     private static final String NOT_NULL = "Parameters or request body must not be null";
-    private static final String WRONG_PASSWORD = "Wrong password";
+    private static final String WRONG_PASSWORD = "Wrong username or password";
     private static final String USER_LOGGED_IN = "This user is already logged in";
     private static final String TOKEN_INVALID = "Token invalid or expired";
     private static final Object LOGOUT_SUCCESS = "Logout successful";
@@ -180,7 +180,9 @@ public class KinoRestController {
     private void updateTokenForUser(String username, Token token) {
         if (username == null) {
             synchronized (tokens) {
-                users.remove(tokens.remove(token));
+                String tokenKey = tokens.remove(token);
+                if (!Strings.isNullOrEmpty(tokenKey))
+                    users.remove(tokenKey);
             }
         } else {
             synchronized (tokens) {
