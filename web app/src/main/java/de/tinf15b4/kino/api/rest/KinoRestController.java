@@ -2,7 +2,6 @@ package de.tinf15b4.kino.api.rest;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
-import java.net.URLDecoder;
 import java.security.SecureRandom;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -72,9 +71,6 @@ public class KinoRestController {
             @RequestParam(name = "password") String password) throws UnsupportedEncodingException {
         if (Strings.isNullOrEmpty(username) || Strings.isNullOrEmpty(password))
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(NOT_NULL);
-
-        username = URLDecoder.decode(username, "UTF-8");
-        password = URLDecoder.decode(password, "UTF-8");
 
         User user = userService.findByName(username);
 

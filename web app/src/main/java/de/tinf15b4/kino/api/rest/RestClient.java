@@ -6,11 +6,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,8 +17,6 @@ import com.google.common.base.Charsets;
 import com.google.common.io.ByteStreams;
 
 public class RestClient {
-
-    private static final String ENCODING = "UTF-8";
 
     private static final String AUTHORIZE = "/authorize?name=%s&password=%s";
     private static final String LOGOUT = "/logout?token=%s";
@@ -43,21 +39,15 @@ public class RestClient {
 
     public RestResponse authorize() {
         String requestUrl;
-        try {
-            requestUrl = baseUrl + String.format(AUTHORIZE, URLEncoder.encode(trainerName, ENCODING),
-                    URLEncoder.encode(password, ENCODING));
-            authorized = true;
-            RestResponse response = doGetRequest(requestUrl, String.class, false);
-            if (response.hasError()) {
-                authorized = false;
-            } else {
-                token = (String) response.getValue();
-            }
-            return response;
-        } catch (UnsupportedEncodingException e) {
-            // should never happen
-            throw new RuntimeException(e);
+        requestUrl = baseUrl + String.format(AUTHORIZE, trainerName, password);
+        authorized = true;
+        RestResponse response = doGetRequest(requestUrl, String.class, false);
+        if (response.hasError()) {
+            authorized = false;
+        } else {
+            token = (String) response.getValue();
         }
+        return response;
     }
 
     public RestResponse logout() {
