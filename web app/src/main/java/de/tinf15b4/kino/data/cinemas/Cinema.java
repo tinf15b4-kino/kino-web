@@ -25,8 +25,10 @@ public class Cinema {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Cinema)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof Cinema))
+            return false;
 
         Cinema cinema = (Cinema) o;
 
