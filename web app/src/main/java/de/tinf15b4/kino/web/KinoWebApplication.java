@@ -3,6 +3,7 @@ package de.tinf15b4.kino.web;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
+import org.jsondoc.spring.boot.starter.EnableJSONDoc;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,8 +24,9 @@ import de.tinf15b4.kino.data.initializer.DataInitializer;
 @EnableJpaRepositories(basePackages = "de.tinf15b4.kino.data.*")
 @EntityScan(basePackages = "de.tinf15b4.kino.data.*")
 @EnableScheduling
+@EnableJSONDoc
 @ComponentScan({ "de.tinf15b4.kino.data.*", "de.tinf15b4.kino.web", "de.tinf15b4.kino.web.*",
-        "de.tinf15b4.kino.api.rest" })
+        "de.tinf15b4.kino.api.rest.*" })
 public class KinoWebApplication {
 
     @Bean
