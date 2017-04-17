@@ -2,60 +2,73 @@ package de.tinf15b4.kino.data.ratedmovies;
 
 import java.util.Date;
 
-import javax.persistence.EmbeddedId;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
+import de.tinf15b4.kino.data.EntityModel;
 import de.tinf15b4.kino.data.movies.Movie;
 import de.tinf15b4.kino.data.users.User;
 
 @Entity
-public class RatedMovie {
+@Table(name = "ratedMovie", uniqueConstraints = @UniqueConstraint(columnNames = { RatedMovie.FieldInfos.USER,
+        RatedMovie.FieldInfos.MOVIE }))
+public class RatedMovie extends EntityModel {
 
-    // FIXME: This should not have its own id
-    @EmbeddedId
-    private RatedMovieId id;
+    public interface FieldInfos {
+        String USER = "user";
+        String MOVIE = "movie";
+        String RATING = "rating";
+        String DESCRIPTION = "description";
+        String TIME = "time";
+    }
 
+    @ManyToOne
+    @JoinColumn(name = RatedMovie.FieldInfos.USER, nullable = false)
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = RatedMovie.FieldInfos.MOVIE, nullable = false)
+    private Movie movie;
+
+    @Column(name = RatedMovie.FieldInfos.RATING, nullable = false)
     private int rating;
+
+    @Column(name = RatedMovie.FieldInfos.DESCRIPTION, nullable = true)
     private String description;
+
+    @Column(name = RatedMovie.FieldInfos.TIME, nullable = false)
     private Date time;
 
     public RatedMovie() {
 
     }
 
-    public RatedMovie(RatedMovieId id, int rating, String description, Date time) {
-        this.id = id;
+    public RatedMovie(User user, Movie movie, int rating, String description, Date time) {
+        this.user = user;
+        this.movie = movie;
         this.rating = rating;
         this.description = description;
         this.time = time;
     }
 
-    public RatedMovie(User user, Movie movie, int rating, String description, Date time) {
-        this(new RatedMovieId(user, movie), rating, description, time);
-    }
-
-    public RatedMovieId getId() {
-        return id;
-    }
-
-    public void setId(RatedMovieId id) {
-        this.id = id;
-    }
-
     public User getUser() {
-        return id.getUser();
+        return user;
     }
 
     public void setUser(User user) {
-        this.id.setUser(user);
+        this.user = user;
     }
 
     public Movie getMovie() {
-        return id.getMovie();
+        return movie;
     }
 
     public void setMovie(Movie movie) {
-        this.id.setMovie(movie);
+        this.movie = movie;
     }
 
     public int getRating() {

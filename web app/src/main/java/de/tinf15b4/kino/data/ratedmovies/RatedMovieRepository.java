@@ -10,12 +10,12 @@ import de.tinf15b4.kino.data.movies.Movie;
 import de.tinf15b4.kino.data.users.User;
 
 public interface RatedMovieRepository extends JpaRepository<RatedMovie, Long> {
-    @Query("SELECT rm FROM RatedMovie rm WHERE rm.id.movie = :movie ORDER BY rm.time ASC")
+    @Query("SELECT rm FROM RatedMovie rm WHERE rm.movie = :movie ORDER BY rm.time ASC")
     List<RatedMovie> findRatingsByMovie(@Param("movie") Movie movie);
 
-    @Query("SELECT rm FROM RatedMovie rm WHERE rm.id.user = :user ORDER BY rm.time ASC")
+    @Query("SELECT rm FROM RatedMovie rm WHERE rm.user = :user ORDER BY rm.time ASC")
     List<RatedMovie> findRatingsByUser(@Param("user") User user);
 
-    @Query("SELECT avg(rm.rating) FROM RatedMovie rm WHERE rm.id.movie = :movie GROUP BY rm.id.movie")
+    @Query("SELECT avg(rm.rating) FROM RatedMovie rm WHERE rm.movie = :movie GROUP BY rm.movie")
     List<Double> getAverageRatingForMovie(@Param("movie") Movie movie);
 }

@@ -1,44 +1,56 @@
 package de.tinf15b4.kino.data.favorites;
 
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
+import de.tinf15b4.kino.data.EntityModel;
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.users.User;
 
 @Entity
-public class Favorite {
+@Table(name = "favorite", uniqueConstraints = @UniqueConstraint(columnNames = { Favorite.FieldInfos.USER,
+        Favorite.FieldInfos.CINEMA }))
+public class Favorite extends EntityModel {
 
-    @EmbeddedId
-    private FavoriteId id;
+    public interface FieldInfos {
+        String USER = "user";
+        String CINEMA = "cinema";
+    }
+
+    @ManyToOne
+    @JoinColumn(name = Favorite.FieldInfos.USER, nullable = false)
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = Favorite.FieldInfos.CINEMA, nullable = false)
+    private Cinema cinema;
 
     public Favorite() {
     }
 
-    public Favorite(FavoriteId id) {
-        this.id = id;
-    }
-
     public Favorite(User user, Cinema cinema) {
-        this(new FavoriteId(user, cinema));
+        this.user = user;
+        this.cinema = cinema;
     }
 
 
     public Cinema getCinema() {
-        return id.getCinema();
+        return cinema;
     }
 
     public void setCinema(Cinema cinema) {
-        this.id.setCinema(cinema);
+        this.cinema = cinema;
     }
 
     public User getUser() {
-        return id.getUser();
+        return user;
     }
 
     public void setUser(User user) {
-        this.id.setUser(user);
-        ;
+        this.user = user;
     }
 
 }

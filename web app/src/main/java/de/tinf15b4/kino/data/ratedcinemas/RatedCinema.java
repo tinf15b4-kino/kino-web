@@ -2,42 +2,57 @@ package de.tinf15b4.kino.data.ratedcinemas;
 
 import java.util.Date;
 
-import javax.persistence.EmbeddedId;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
+import de.tinf15b4.kino.data.EntityModel;
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.users.User;
 
 @Entity
-public class RatedCinema {
+@Table(name = "ratedCinema", uniqueConstraints = @UniqueConstraint(columnNames = { RatedCinema.FieldInfos.USER,
+        RatedCinema.FieldInfos.CINEMA }))
+public class RatedCinema extends EntityModel {
 
-    @EmbeddedId
-    private RatedCinemaId id;
+    public interface FieldInfos {
+        String USER = "user";
+        String CINEMA = "cinema";
+        String RATING = "rating";
+        String DESCRIPTION = "description";
+        String TIME = "time";
+    }
 
+    @ManyToOne
+    @JoinColumn(name = RatedCinema.FieldInfos.USER, nullable = false)
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = RatedCinema.FieldInfos.CINEMA, nullable = false)
+    private Cinema cinema;
+
+    @Column(name = RatedCinema.FieldInfos.RATING, nullable = false)
     private int rating;
+
+    @Column(name = RatedCinema.FieldInfos.DESCRIPTION, nullable = true)
     private String description;
+
+    @Column(name = RatedCinema.FieldInfos.TIME, nullable = false)
     private Date time;
 
     public RatedCinema() {
     }
 
-    public RatedCinema(RatedCinemaId id, int rating, String description, Date time) {
-        this.id = id;
+
+    public RatedCinema(User user, Cinema cinema, int rating, String description, Date time) {
+        this.user = user;
+        this.cinema = cinema;
         this.rating = rating;
         this.description = description;
         this.time = time;
-    }
-
-    public RatedCinema(User user, Cinema cinema, int rating, String description, Date time) {
-        this(new RatedCinemaId(user, cinema), rating, description, time);
-    }
-
-    public RatedCinemaId getId() {
-        return id;
-    }
-
-    public void setId(RatedCinemaId id) {
-        this.id = id;
     }
 
     public Date getTime() {
@@ -49,19 +64,19 @@ public class RatedCinema {
     }
 
     public User getUser() {
-        return id.getUser();
+        return user;
     }
 
     public void setUser(User user) {
-        id.setUser(user);
+        this.user = user;
     }
 
     public Cinema getCinema() {
-        return id.getCinema();
+        return cinema;
     }
 
     public void setCinema(Cinema cinema) {
-        id.setCinema(cinema);
+        this.cinema = cinema;
     }
 
     public int getRating() {
