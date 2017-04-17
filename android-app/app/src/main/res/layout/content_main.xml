@@ -4,13 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="de.tinf15b4.kino.smartcinema.CinemaListView">
+    android:id="@+id/content_main"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="de.tinf15b4.kino.smartcinema.MainActivity"
+    tools:showIn="@layout/app_bar_main">
 
-    <ListView
-        android:id="@+id/cinemaList"
-        android:layout_width="367dp"
-        android:layout_height="493dp"
-        tools:layout_editor_absoluteX="9dp"
-        tools:layout_editor_absoluteY="9dp" />
 
 </android.support.constraint.ConstraintLayout>
