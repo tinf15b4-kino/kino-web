@@ -8,11 +8,11 @@ import javax.persistence.UniqueConstraint;
 import de.tinf15b4.kino.data.EntityModel;
 
 @Entity
-@Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = { User.FieldInfos.EMAIL }))
+@Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = { User.FieldInfos.NAME }))
 public class User extends EntityModel {
     // TODO: Make name or email a primary key, or at least enforce their
     // uniqueness
-    // --- Made email unique for now, Simon (17.04.2017)
+    // --- Made name unique for now to fit cucumber tests, Simon (17.04.2017)
 
     public interface FieldInfos {
         String NAME = "name";
@@ -24,7 +24,7 @@ public class User extends EntityModel {
     @Column(name = User.FieldInfos.NAME, nullable = false)
     private String name;
 
-    @Column(name = User.FieldInfos.EMAIL, nullable = false)
+    @Column(name = User.FieldInfos.EMAIL)
     private String email;
 
     @Column(name = User.FieldInfos.FAVORITE_LOCATION)
@@ -32,7 +32,7 @@ public class User extends EntityModel {
 
     // FIXME: PLAIN TEXT PASSWORD STORAGE OMG PLEASE KILL ME WHAT AM I DOING
     // WITH MY LIFE
-    @Column(name = User.FieldInfos.PASSWORD, nullable = false)
+    @Column(name = User.FieldInfos.PASSWORD)
     private String password;
 
     public String getName() {
