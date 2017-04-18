@@ -9,37 +9,57 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.ByteStreams;
+import com.sun.jna.platform.win32.Netapi32Util.User;
+
+import de.tinf15b4.kino.data.cinemas.Cinema;
+import de.tinf15b4.kino.data.favorites.Favorite;
+import de.tinf15b4.kino.data.playlists.Playlist;
+import de.tinf15b4.kino.data.ratedcinemas.RatedCinema;
 
 public class RestClient {
 
     private static final String AUTHORIZE = "/authorize?name=%s&password=%s";
     private static final String LOGOUT = "/logout?token=%s";
+    private static final String GET_USER = "/getUser?token=%s";
+    private static final String GET_CINEMAS = "/getCinemas";
+    private static final String GET_CINEMA = "/getCinema?cinemaId=%s";
+    private static final String GET_FAVORITE = "/getFavorite?token=%s&cinemaId=%s";
+    private static final String SAVE_FAVORITE = "/saveFavorite?token=%s";
+    private static final String DELETE_FAVORITE = "/deleteFavorite?token=%s";
+    private static final String GET_RATED_CINEMAS = "/getRatedCinemas?cinemaId=%s";
+    private static final String GET_PLAYLIST_CINEMA = "/getPlaylistForCinema?cinemaId=%s&from=%s&to=%w";
 
     private static final String MISSING_AUTHORIZATION = "Token invalid or expired";
     private static final String INTERNAL_SERVER_ERROR = "Internal Server Error";
 
     private String token;
     private String baseUrl;
-    private String trainerName;
+    private String userNameOrEmail;
     private String password;
 
     private boolean authorized;
 
-    public RestClient(String trainerName, String password, String baseUrl) {
-        this.trainerName = trainerName;
+    public RestClient(String baseUrl) {
+        this(null, null, baseUrl);
+    }
+
+    public RestClient(String userNameOrEmail, String password, String baseUrl) {
+        this.userNameOrEmail = userNameOrEmail;
         this.password = password;
-        this.baseUrl = baseUrl + "/api/rest";
+        this.baseUrl = baseUrl + "/rest";
     }
 
     public RestResponse authorize() {
-        String requestUrl;
-        requestUrl = baseUrl + String.format(AUTHORIZE, trainerName, password);
+        String requestUrl = baseUrl + String.format(AUTHORIZE, userNameOrEmail, password);
         authorized = true;
         RestResponse response = doGetRequest(requestUrl, String.class, false);
         if (response.hasError()) {
@@ -60,20 +80,58 @@ public class RestClient {
         return response;
     }
 
+    public RestResponse getUser() {
+        String requestUrl = baseUrl + String.format(GET_USER, token);
+        return doGetRequest(requestUrl, User.class, true);
+    }
+
+    public RestResponse getCinemas() {
+        String requestUrl = baseUrl + String.format(GET_CINEMAS, token);
+        return doGetRequest(requestUrl, Cinema[].class, false);
+    }
+
+    public RestResponse getFavorite(long cinemaId) {
+        String requestUrl = baseUrl + String.format(GET_FAVORITE, token, cinemaId);
+        return doGetRequest(requestUrl, Favorite.class, true);
+    }
+
+    public RestResponse getCinema(long cinemaId) {
+        String requestUrl = baseUrl + String.format(GET_CINEMA, cinemaId);
+        return doGetRequest(requestUrl, Cinema.class, false);
+    }
+
+    public RestResponse saveFavorite(Favorite favorite) {
+        String requestUrl = baseUrl + String.format(SAVE_FAVORITE, token);
+        return doPostRequest(requestUrl, Favorite.class, favorite, true);
+    }
+
+    public RestResponse deleteFavorite(Favorite favorite) {
+        String requestUrl = baseUrl + String.format(DELETE_FAVORITE, token);
+        return doDeleteRequest(requestUrl, favorite, true);
+    }
+
+    public RestResponse getRatedCinemas(long cinemaId) {
+        String requestUrl = baseUrl + String.format(GET_RATED_CINEMAS, cinemaId);
+        return doGetRequest(requestUrl, RatedCinema[].class, false);
+    }
+
+    public RestResponse getPlaylistForCinemas(long cinemaId, Date from, Date to) {
+        DateFormat format = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        String requestUrl = baseUrl
+                + String.format(GET_PLAYLIST_CINEMA, cinemaId, format.format(from), format.format(to));
+        return doGetRequest(requestUrl, Playlist[].class, false);
+    }
+
     private RestResponse doGetRequest(String urlString, Class<?> expectedResult, boolean needAuthorization) {
         return doRestCall(parseUrl(urlString), expectedResult, RequestMethod.GET, toJson(""), needAuthorization);
     }
 
-    // Might be used soonish?
-    @SuppressWarnings("unused")
     private RestResponse doPostRequest(String urlString, Class<?> expectedResult, Object postObject,
             boolean needAuthorization) {
         return doRestCall(parseUrl(urlString), expectedResult, RequestMethod.POST, toJson(postObject),
                 needAuthorization);
     }
 
-    // Might be used soonish?
-    @SuppressWarnings("unused")
     private RestResponse doDeleteRequest(String urlString, Object deleteObject, boolean needAuthorization) {
         return doRestCall(parseUrl(urlString), String.class, RequestMethod.DELETE, toJson(deleteObject),
                 needAuthorization);
@@ -157,4 +215,5 @@ public class RestClient {
     private byte[] toJson(Object body) {
         return GsonFactory.buildGson().toJson(body).getBytes(Charsets.UTF_8);
     }
+
 }

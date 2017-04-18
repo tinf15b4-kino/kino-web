@@ -8,5 +8,6 @@ public class RestControllerConstants {
     public static final String TOKEN_INVALID = "Token invalid or expired";
     public static final String LOGOUT_SUCCESS = "Logout successful";
     public static final String INVALID_ID = "Id does not exist";
+    public static final Object DELETE_SUCCESSFUL = "Deleted successfully";
 
 }

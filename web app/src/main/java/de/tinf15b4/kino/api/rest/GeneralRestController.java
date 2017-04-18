@@ -3,6 +3,7 @@ package de.tinf15b4.kino.api.rest;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import org.jsondoc.core.annotation.Api;
 import org.jsondoc.core.annotation.ApiAuthNone;
@@ -54,7 +55,8 @@ public class GeneralRestController {
     @ApiMethod(description = "Returns all cinemas")
     @RequestMapping(value = "rest/getCinemas", method = RequestMethod.GET)
     public ResponseEntity<?> getCinemas() {
-        return ResponseEntity.ok(cinemaService.findAll().toArray(new Cinema[0]));
+        List<Cinema> cinemas = cinemaService.findAll();
+        return ResponseEntity.ok(cinemas.toArray(new Cinema[0]));
     }
 
     @ApiMethod(description = "Returns all movies")
@@ -68,10 +70,10 @@ public class GeneralRestController {
     @RequestMapping(value = "rest/getPlaylistForCinema", method = RequestMethod.GET)
     public ResponseEntity<?> getPlaylistForCinema(
             @ApiQueryParam(name = "cinemaId", description = "Id of the cinema") @RequestParam(name = "cinemaId") long cinemaId,
-            @ApiQueryParam(name = "from", description = "Start date in format yyyy-MM-dd") @RequestParam(name = "from") String from,
-            @ApiQueryParam(name = "to", description = "End date in format yyyy-MM-dd") @RequestParam(name = "to") String to)
+            @ApiQueryParam(name = "from", description = "Start date in format dd.MM.yyyy HH:mm") @RequestParam(name = "from") String from,
+            @ApiQueryParam(name = "to", description = "End date in format dd.MM.yyyy HH:mm") @RequestParam(name = "to") String to)
             throws ParseException {
-        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         try {
             Cinema cinema = cinemaService.findOne(cinemaId);
             if (cinema != null)
@@ -89,11 +91,11 @@ public class GeneralRestController {
     @RequestMapping(value = "rest/getPlaylistForMovie", method = RequestMethod.GET)
     public ResponseEntity<?> getPlaylistForMovie(
             @ApiQueryParam(name = "movieId", description = "Id of the movie") @RequestParam(name = "movieId") long movieId,
-            @ApiQueryParam(name = "from", description = "Start date in format yyyy-MM-dd") @RequestParam(name = "from") String from,
-            @ApiQueryParam(name = "to", description = "End date in format yyyy-MM-dd") @RequestParam(name = "to") String to)
+            @ApiQueryParam(name = "from", description = "Start date in format dd.MM.yyyy HH:mm") @RequestParam(name = "from") String from,
+            @ApiQueryParam(name = "to", description = "End date in format dd.MM.yyyy HH:mm") @RequestParam(name = "to") String to)
             throws ParseException {
         try {
-            DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+            DateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
             Movie movie = movieService.findOne(movieId);
             if (movie != null)
                 return ResponseEntity

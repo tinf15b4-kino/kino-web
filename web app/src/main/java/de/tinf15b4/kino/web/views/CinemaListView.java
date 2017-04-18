@@ -15,9 +15,9 @@ import com.vaadin.ui.Image;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.VerticalLayout;
 
+import de.tinf15b4.kino.api.rest.RestClient;
+import de.tinf15b4.kino.api.rest.RestResponse;
 import de.tinf15b4.kino.data.cinemas.Cinema;
-import de.tinf15b4.kino.data.cinemas.CinemaService;
-import de.tinf15b4.kino.data.favorites.FavoriteService;
 import de.tinf15b4.kino.data.users.UserBean;
 import de.tinf15b4.kino.web.controllers.PictureController;
 import de.tinf15b4.kino.web.util.CinemaFavoriteUtils;
@@ -30,12 +30,6 @@ public class CinemaListView extends VerticalLayout implements View {
     public static final String VIEW_NAME = "cinemas";
 
     @Autowired
-    private CinemaService cinemaService;
-
-    @Autowired
-    private FavoriteService favoriteService;
-
-    @Autowired
     private UserBean userBean;
 
     @PostConstruct
@@ -43,27 +37,31 @@ public class CinemaListView extends VerticalLayout implements View {
         this.setMargin(true);
         this.setSpacing(true);
 
-        for (Cinema c : cinemaService.findAll()) {
-            HorizontalLayout row = new HorizontalLayout();
-            row.setWidth(100, Unit.PERCENTAGE);
-            row.addStyleName("cinema-row-"+c.getId());
+        RestClient restClient = userBean.getRestClient();
+        RestResponse cinemaResponse = restClient.getCinemas();
+        if (!cinemaResponse.hasError()) {
+            for (Cinema c : (Cinema[]) cinemaResponse.getValue()) {
+                HorizontalLayout row = new HorizontalLayout();
+                row.setWidth(100, Unit.PERCENTAGE);
+                row.addStyleName("cinema-row-" + c.getId());
 
-            // Picture
-            Component image = new Image(null, new ExternalResource(PictureController.getCinemaPictureUrl(c)));
-            image.addStyleName("cinema-list-image");
-            image.setHeight("100px");
-            row.addComponent(image);
+                // Picture
+                Component image = new Image(null, new ExternalResource(PictureController.getCinemaPictureUrl(c)));
+                image.addStyleName("cinema-list-image");
+                image.setHeight("100px");
+                row.addComponent(image);
 
-            Link l = new Link(c.getName(), new ExternalResource("#!" + CinemaView.VIEW_NAME + "/" + c.getId()));
-            l.addStyleName("cinema-list-link");
-            row.addComponent(l);
-            row.setComponentAlignment(l, Alignment.MIDDLE_LEFT);
+                Link l = new Link(c.getName(), new ExternalResource("#!" + CinemaView.VIEW_NAME + "/" + c.getId()));
+                l.addStyleName("cinema-list-link");
+                row.addComponent(l);
+                row.setComponentAlignment(l, Alignment.MIDDLE_LEFT);
 
-            createFavoriteBtn(c.getId(), row);
+                createFavoriteBtn(c.getId(), row);
 
-            row.setExpandRatio(l, 1f);
-            row.setSpacing(true);
-            this.addComponent(row);
+                row.setExpandRatio(l, 1f);
+                row.setSpacing(true);
+                this.addComponent(row);
+            }
         }
     }
 
@@ -90,8 +88,7 @@ public class CinemaListView extends VerticalLayout implements View {
             if (button != null)
                 row.removeComponent(button);
 
-            button = CinemaFavoriteUtils.createFavoriteButton(cinemaService.findOne(cinemaId),
-                    favoriteService, userBean, this);
+            button = CinemaFavoriteUtils.createFavoriteButton(cinemaId, userBean, this);
 
             row.addComponent(button);
             row.setComponentAlignment(button, Alignment.MIDDLE_RIGHT);

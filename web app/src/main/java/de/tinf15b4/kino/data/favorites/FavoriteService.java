@@ -17,7 +17,7 @@ public interface FavoriteService {
 
     void unmarkFavorite(User u, Cinema c);
 
-    void save(Favorite f);
+    Favorite save(Favorite f);
 
     void delete(Favorite f);
 

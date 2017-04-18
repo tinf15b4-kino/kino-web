@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.jsondoc.core.annotation.Api;
 import org.jsondoc.core.annotation.ApiAuthToken;
+import org.jsondoc.core.annotation.ApiBodyObject;
 import org.jsondoc.core.annotation.ApiError;
 import org.jsondoc.core.annotation.ApiErrors;
 import org.jsondoc.core.annotation.ApiMethod;
@@ -17,6 +18,7 @@ import org.jsondoc.core.pojo.ApiVisibility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.base.Strings;
 
+import de.tinf15b4.kino.data.cinemas.Cinema;
+import de.tinf15b4.kino.data.cinemas.CinemaService;
 import de.tinf15b4.kino.data.favorites.Favorite;
 import de.tinf15b4.kino.data.favorites.FavoriteService;
 import de.tinf15b4.kino.data.users.User;
@@ -43,6 +47,9 @@ public class SecureRestController {
 
     @Autowired
     private FavoriteService favoriteService;
+
+    @Autowired
+    private CinemaService cinemaService;
 
     @ApiMethod(description = "Attempts to log in the given user")
     @ApiErrors(apierrors = { @ApiError(code = "406", description = "username or password were null or empty"),
@@ -105,6 +112,54 @@ public class SecureRestController {
             return response;
         User user = userService.findByName((String) response.getBody());
         return ResponseEntity.ok(favoriteService.getAllFavoritesForUser(user).toArray(new Favorite[0]));
+    }
+
+    @ApiMethod(description = "Returns the favorite for the given token and cinemaId. If there is none, return null")
+    @ApiErrors(apierrors = { @ApiError(code = "401", description = "Token was invalid"),
+            @ApiError(code = "400", description = "Id does not exist") })
+    @RequestMapping(value = "rest/getFavorite", method = RequestMethod.GET)
+    public ResponseEntity<?> getFavorite(
+            @ApiQueryParam(name = "token", description = "Authentication token for the current user") @RequestParam(name = "token") String token,
+            @ApiQueryParam(name = "cinemaId", description = "Id of the cinema") @RequestParam(name = "cinemaId") long cinemaId) {
+        ResponseEntity<?> response = checkToken(token);
+        if (response.getStatusCode() != HttpStatus.OK)
+            return response;
+        User user = userService.findByName((String) response.getBody());
+        Cinema cinema = cinemaService.findOne(cinemaId);
+        if (cinema == null)
+            return ResponseEntity.badRequest().body(RestControllerConstants.INVALID_ID);
+        return ResponseEntity.ok(favoriteService.findFavorite(user, cinema));
+    }
+
+    @ApiMethod(description = "Saves the given favorite for the given token")
+    @ApiErrors(apierrors = { @ApiError(code = "401", description = "Token was invalid"),
+            @ApiError(code = "406", description = "favorite was null") })
+    @RequestMapping(value = "rest/saveFavorite", method = RequestMethod.POST)
+    public ResponseEntity<?> saveFavorite(
+            @ApiQueryParam(name = "token", description = "Authentication token for the current user") @RequestParam(name = "token") String token,
+            @ApiBodyObject(clazz = Favorite.class) @RequestBody Favorite favorite) {
+        ResponseEntity<?> response = checkToken(token);
+        if (response.getStatusCode() != HttpStatus.OK)
+            return response;
+        if (favorite == null)
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(RestControllerConstants.NOT_NULL);
+        return ResponseEntity.ok(favoriteService.save(favorite));
+    }
+
+    @ApiMethod(description = "Deletes the given favorite for the given token")
+    @ApiErrors(apierrors = { @ApiError(code = "401", description = "Token was invalid"),
+            @ApiError(code = "406", description = "favorite was null") })
+    @RequestMapping(value = "rest/deleteFavorite", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteFavorite(
+            @ApiQueryParam(name = "token", description = "Authentication token for the current user") @RequestParam(name = "token") String token,
+            @ApiBodyObject(clazz = Favorite.class) @RequestBody Favorite favorite) {
+        ResponseEntity<?> response = checkToken(token);
+        if (response.getStatusCode() != HttpStatus.OK)
+            return response;
+        if (favorite == null)
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(RestControllerConstants.NOT_NULL);
+        favoriteService.delete(favorite);
+        return ResponseEntity.ok(RestControllerConstants.DELETE_SUCCESSFUL);
     }
 
     private ResponseEntity<?> checkToken(String tokenKey) {

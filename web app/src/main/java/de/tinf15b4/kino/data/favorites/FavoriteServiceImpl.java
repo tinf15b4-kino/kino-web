@@ -48,8 +48,8 @@ public class FavoriteServiceImpl implements FavoriteService {
     }
 
     @Override
-    public void save(Favorite f) {
-        favoriteRepository.save(f);
+    public Favorite save(Favorite f) {
+        return favoriteRepository.save(f);
     }
 
     @Override
