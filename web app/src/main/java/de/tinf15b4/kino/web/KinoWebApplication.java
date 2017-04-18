@@ -26,7 +26,7 @@ import de.tinf15b4.kino.data.initializer.DataInitializer;
 @EnableScheduling
 @EnableJSONDoc
 @ComponentScan({ "de.tinf15b4.kino.data.*", "de.tinf15b4.kino.web", "de.tinf15b4.kino.web.*",
-        "de.tinf15b4.kino.api.rest.*" })
+        "de.tinf15b4.kino.api.rest" })
 public class KinoWebApplication {
 
     @Bean
