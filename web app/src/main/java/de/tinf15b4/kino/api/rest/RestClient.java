@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.ByteStreams;
-import com.sun.jna.platform.win32.Netapi32Util.User;
 
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.favorites.Favorite;
 import de.tinf15b4.kino.data.playlists.Playlist;
 import de.tinf15b4.kino.data.ratedcinemas.RatedCinema;
+import de.tinf15b4.kino.data.users.User;
 
 public class RestClient {
 
