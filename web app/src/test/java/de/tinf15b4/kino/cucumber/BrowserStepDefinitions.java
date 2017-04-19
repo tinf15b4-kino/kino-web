@@ -214,7 +214,7 @@ public class BrowserStepDefinitions {
 
     @When("^I search for \"([^\\\"]*)\"$")
     public void iSearchFor(String term) throws Throwable {
-        typeInto(term, ".#cinemaSearchBox");
+        typeInto(term, "#cinemaSearchBox");
         sendKey("RETURN");
     }
 
@@ -456,7 +456,7 @@ public class BrowserStepDefinitions {
                 elementsAreAlignedHelper(selector, leftright);
             } catch (Exception e) {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(10000);
                     elementsAreAlignedHelper(selector, leftright);
                 } catch (Exception ex) {
                     throw new Exception("Alignment mismatch at size " + size.getWidth() + "x" + size.getHeight(), ex);

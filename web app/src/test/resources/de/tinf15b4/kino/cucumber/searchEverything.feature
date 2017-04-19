@@ -88,14 +88,14 @@ Feature: Search everything
 
   Scenario: Search with enter key
     When I open the start page
-    And I type "nemo" into ".kino-search-box"
+    And I type "nemo" into "#cinemaSearchBox"
     And I press ENTER
 
     Then the current URL should be "#!search/nemo"
 
   Scenario: Search with mouse click
     When I open the start page
-    And I type "nemo" into ".kino-search-box"
-    And I click on ".kino-search-button"
+    And I type "nemo" into "#cinemaSearchBox"
+    And I click on "#cinemaSearchBtn"
 
     Then the current URL should be "#!search/nemo"

@@ -39,7 +39,7 @@ public class LoginView extends Panel implements View {
         l.addComponent(usernameInput);
 
         PasswordField passwordInput = new PasswordField("Passwort");
-        passwordInput.addStyleName("loginPasswordField");
+        passwordInput.setId("loginPasswordField");
         l.addComponent(passwordInput);
 
         wrongInput = new Label("Benutzername oder Passwort falsch. Bitte erneut eingeben.");
@@ -51,6 +51,8 @@ public class LoginView extends Panel implements View {
         login.addStyleName(ValoTheme.BUTTON_LINK);
         l.addComponent(login);
         l.setId("loginForm");
+        l.setSizeFull();
+
 
 
         ShortcutUtils.registerScopedShortcut(this, login, ShortcutAction.KeyCode.ENTER);

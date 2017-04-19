@@ -135,7 +135,12 @@
 #loginForm {
 	display: inline-block;
 	color: #FFFFFF;
-	margin: auto;
+}
+
+#loginForm table{
+	position: relative;
+	left: 20%;
+	top: 15%;
 }
 
 #loginSubmitButton {
