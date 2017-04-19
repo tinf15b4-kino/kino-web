@@ -42,10 +42,8 @@ import de.tinf15b4.kino.data.movies.MovieRepository;
 import de.tinf15b4.kino.data.playlists.Playlist;
 import de.tinf15b4.kino.data.playlists.PlaylistRepository;
 import de.tinf15b4.kino.data.ratedcinemas.RatedCinema;
-import de.tinf15b4.kino.data.ratedcinemas.RatedCinemaId;
 import de.tinf15b4.kino.data.ratedcinemas.RatedCinemaRepository;
 import de.tinf15b4.kino.data.ratedmovies.RatedMovie;
-import de.tinf15b4.kino.data.ratedmovies.RatedMovieId;
 import de.tinf15b4.kino.data.ratedmovies.RatedMovieRepository;
 import de.tinf15b4.kino.data.users.User;
 import de.tinf15b4.kino.data.users.UserRepository;
@@ -168,8 +166,7 @@ public class BrowserStepDefinitions {
                 cinema = c;
         }
 
-        RatedCinemaId id = new RatedCinemaId(user, cinema);
-        RatedCinema rCinema = new RatedCinema(id, stars, desc, Calendar.getInstance().getTime());
+        RatedCinema rCinema = new RatedCinema(user, cinema, stars, desc, Calendar.getInstance().getTime());
         rCinemaRepo.save(rCinema);
     }
 
@@ -189,8 +186,7 @@ public class BrowserStepDefinitions {
                 movie = m;
         }
 
-        RatedMovieId id = new RatedMovieId(user, movie);
-        RatedMovie rMovie = new RatedMovie(id, stars, desc, Calendar.getInstance().getTime());
+        RatedMovie rMovie = new RatedMovie(user, movie, stars, desc, Calendar.getInstance().getTime());
         rMovieRepo.save(rMovie);
     }
 

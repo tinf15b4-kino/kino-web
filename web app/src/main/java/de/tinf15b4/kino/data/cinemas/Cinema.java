@@ -2,46 +2,48 @@ package de.tinf15b4.kino.data.cinemas;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+import de.tinf15b4.kino.data.EntityModel;
 
 @Entity
-public class Cinema {
+@Table(name = "cinema", uniqueConstraints = @UniqueConstraint(columnNames = { Cinema.FieldInfos.NAME }))
+public class Cinema extends EntityModel {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    public interface FieldInfos {
+        String NAME = "name";
+        String STREET = "street";
+        String HNR = "hnr";
+        String POSTCODE = "postcode";
+        String CITY = "city";
+        String COUNTRY = "country";
+        String IMAGE = "image";
+        int IMAGE_LENGTH = 100000;
+    }
 
+    @Column(name = FieldInfos.NAME, nullable = false)
     private String name;
+
+    @Column(name = FieldInfos.STREET)
     private String street;
+
+    @Column(name = FieldInfos.HNR)
     private String hnr;
+
+    @Column(name = FieldInfos.POSTCODE)
     private String postcode;
+
+    @Column(name = FieldInfos.CITY)
     private String city;
+
+    @Column(name = FieldInfos.COUNTRY)
     private String country;
 
-    @Column(length = 100000)
+    @Column(name = FieldInfos.IMAGE, length = FieldInfos.IMAGE_LENGTH)
     private byte[] image;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof Cinema))
-            return false;
-
-        Cinema cinema = (Cinema) o;
-
-        return id == cinema.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return (int) (id ^ (id >>> 32));
-    }
-
     public Cinema() {
-
     }
 
     public Cinema(String name, String street, String hnr, String postcode, String city, String country, byte[] image) {
@@ -56,10 +58,6 @@ public class Cinema {
 
     public String getAddress() {
         return String.format("%s %s\n%s %s, %S", street, hnr, postcode, city, country);
-    }
-
-    public long getId() {
-        return id;
     }
 
     public String getName() {
@@ -116,9 +114,5 @@ public class Cinema {
 
     public void setImage(byte[] image) {
         this.image = image;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 }
