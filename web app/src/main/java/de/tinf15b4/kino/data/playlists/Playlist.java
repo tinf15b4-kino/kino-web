@@ -1,39 +1,41 @@
 package de.tinf15b4.kino.data.playlists;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import de.tinf15b4.kino.data.EntityModel;
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.movies.Movie;
 
-import java.util.Date;
-
 @Entity
-public class Playlist {
+@Table(name = "playlist")
+public class Playlist extends EntityModel {
 
-    // FIXME: This should not have its own id
-    @Id
-    @GeneratedValue
-    private long id;
-
-    private Date time;
-    private int price; // in cents
+    public interface FieldInfos {
+        String CINEMA = "cinema";
+        String MOVIE = "movie";
+        String TIME = "time";
+        String PRICE = "price";
+    }
 
     @ManyToOne
+    @JoinColumn(name = Playlist.FieldInfos.CINEMA, nullable = false)
     private Cinema cinema;
 
     @ManyToOne
+    @JoinColumn(name = Playlist.FieldInfos.MOVIE, nullable = false)
     private Movie movie;
 
-    public long getId() {
-        return id;
-    }
+    @Column(name = Playlist.FieldInfos.TIME, nullable = false)
+    private Date time;
 
-    public void setId(long id) {
-        this.id = id;
-    }
+    @Column(name = Playlist.FieldInfos.PRICE, nullable = false)
+    private int price; // in cents
 
     public Date getTime() {
         return time;

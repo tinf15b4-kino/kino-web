@@ -1,81 +1,33 @@
 package de.tinf15b4.kino.data.reminders;
 
-import java.io.Serializable;
-
-import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
+import de.tinf15b4.kino.data.EntityModel;
 import de.tinf15b4.kino.data.movies.Movie;
 import de.tinf15b4.kino.data.users.User;
 
 @Entity
-public class Reminder {
+@Table(name = "reminder", uniqueConstraints = @UniqueConstraint(columnNames = { Reminder.FieldInfos.USER,
+        Reminder.FieldInfos.MOVIE }))
+public class Reminder extends EntityModel {
 
-    @EmbeddedId
-    private ReminderId id;
+    public interface FieldInfos {
+        String USER = "user";
+        String MOVIE = "movie";
 
-    public ReminderId getId() {
-        return id;
     }
-
-    public void setId(ReminderId id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return id.getUser();
-    }
-
-    public void setUser(User user) {
-        this.id.setUser(user);
-    }
-
-    public Movie getMovie() {
-        return id.getMovie();
-    }
-
-    public void setMovie(Movie movie) {
-        this.id.setMovie(movie);
-    }
-
-}
-
-@Embeddable
-class ReminderId implements Serializable {
-
-    private static final long serialVersionUID = 27317125927302502L;
 
     @ManyToOne
+    @JoinColumn(name = Reminder.FieldInfos.USER, nullable = false)
     private User user;
 
     @ManyToOne
+    @JoinColumn(name = Reminder.FieldInfos.MOVIE, nullable = false)
     private Movie movie;
-
-    public ReminderId(User user, Movie movie) {
-        this.user = user;
-        this.movie = movie;
-    }
-
-    public ReminderId() {
-    }
-
-    @Override
-    public int hashCode() {
-        return movie.hashCode() + user.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (!(o instanceof ReminderId))
-            return false;
-
-        ReminderId that = (ReminderId) o;
-        return user.getId() == that.getUser().getId() && movie.getId() == that.getMovie().getId();
-    }
 
     public User getUser() {
         return user;
@@ -92,4 +44,5 @@ class ReminderId implements Serializable {
     public void setMovie(Movie movie) {
         this.movie = movie;
     }
+
 }

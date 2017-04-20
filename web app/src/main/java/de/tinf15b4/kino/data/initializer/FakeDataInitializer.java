@@ -26,10 +26,8 @@ import de.tinf15b4.kino.data.movies.MovieService;
 import de.tinf15b4.kino.data.playlists.Playlist;
 import de.tinf15b4.kino.data.playlists.PlaylistService;
 import de.tinf15b4.kino.data.ratedcinemas.RatedCinema;
-import de.tinf15b4.kino.data.ratedcinemas.RatedCinemaId;
 import de.tinf15b4.kino.data.ratedcinemas.RatedCinemaService;
 import de.tinf15b4.kino.data.ratedmovies.RatedMovie;
-import de.tinf15b4.kino.data.ratedmovies.RatedMovieId;
 import de.tinf15b4.kino.data.ratedmovies.RatedMovieService;
 import de.tinf15b4.kino.data.users.User;
 import de.tinf15b4.kino.data.users.UserRepository;
@@ -142,7 +140,7 @@ public class FakeDataInitializer implements DataInitializer {
 
             cinemaService.save(c);
 
-            // Cinema 3,5,7 are favorites
+            // Cinema 4,6,8 are favorites
             if (i == 3 || i == 5 || i == 7) {
                 favoriteService.save(new Favorite(userRepo.getOne(1l), c));
             }
@@ -170,7 +168,8 @@ public class FakeDataInitializer implements DataInitializer {
                 for (long j = 0; j < quantity; j++) {
                     RatedCinema rc = new RatedCinema();
                     u = userRepo.getOne((long) rnd.nextInt((int) userRepo.count()) + 1L);
-                    rc.setId(new RatedCinemaId(u, c));
+                    rc.setUser(u);
+                    rc.setCinema(c);
                     rc.setRating(rnd.nextInt(6));
                     rc.setDescription(faker.chuckNorris().fact());
                     rc.setTime(
@@ -192,7 +191,8 @@ public class FakeDataInitializer implements DataInitializer {
                 for (long j = 0; j < quantity; j++) {
                     RatedMovie rm = new RatedMovie();
                     u = userRepo.getOne((long) rnd.nextInt((int) userRepo.count()) + 1L);
-                    rm.setId(new RatedMovieId(u, m));
+                    rm.setUser(u);
+                    rm.setMovie(m);
                     rm.setRating(rnd.nextInt(6));
                     rm.setDescription(faker.chuckNorris().fact());
                     rm.setTime(

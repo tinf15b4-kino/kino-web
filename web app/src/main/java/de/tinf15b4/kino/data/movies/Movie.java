@@ -2,38 +2,41 @@ package de.tinf15b4.kino.data.movies;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+import de.tinf15b4.kino.data.EntityModel;
 
 @Entity
-public class Movie {
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Movie)) return false;
+@Table(name = "movie", uniqueConstraints = @UniqueConstraint(columnNames = { Movie.FieldInfos.NAME }))
+public class Movie extends EntityModel {
 
-        Movie movie = (Movie) o;
-
-        return id == movie.id;
+    public interface FieldInfos {
+        String NAME = "name";
+        String DESCRIPTION = "description";
+        String COVER = "cover";
+        int COVER_LENGTH = 100000;
+        String LENGTH_MINUTES = "lengthMinutes";
+        String AGE_CONTROL = "ageControl";
+        String GENRE = "genre";
     }
 
-    @Override
-    public int hashCode() {
-        return (int) (id ^ (id >>> 32));
-    }
-
-    @Id
-    @GeneratedValue
-    private long id;
-
+    @Column(name = Movie.FieldInfos.NAME, nullable = false)
     private String name;
+
+    @Column(name = Movie.FieldInfos.DESCRIPTION)
     private String description;
 
-    @Column(length = 100000)
+    @Column(name = Movie.FieldInfos.COVER, length = Movie.FieldInfos.COVER_LENGTH)
     private byte[] cover;
 
+    @Column(name = Movie.FieldInfos.LENGTH_MINUTES)
     private long lengthMinutes;
+
+    @Column(name = Movie.FieldInfos.AGE_CONTROL)
     private AgeControl ageControl;
+
+    @Column(name = Movie.FieldInfos.GENRE)
     private Genre genre;
 
     public Movie() {
@@ -48,14 +51,6 @@ public class Movie {
         this.lengthMinutes = lengthMinutes;
         this.genre = genre;
         this.ageControl = ageControl;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getName() {

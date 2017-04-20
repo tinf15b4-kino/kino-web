@@ -1,32 +1,39 @@
 package de.tinf15b4.kino.data.users;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+import de.tinf15b4.kino.data.EntityModel;
 
 @Entity
-public class User {
+@Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = { User.FieldInfos.NAME }))
+public class User extends EntityModel {
     // TODO: Make name or email a primary key, or at least enforce their
     // uniqueness
-    @Id
-    @GeneratedValue
-    private long id;
+    // --- Made name unique for now to fit cucumber tests, Simon (17.04.2017)
 
+    public interface FieldInfos {
+        String NAME = "name";
+        String EMAIL = "email";
+        String PASSWORD = "password";
+        String FAVORITE_LOCATION = "favLocation";
+    }
+
+    @Column(name = User.FieldInfos.NAME, nullable = false)
     private String name;
+
+    @Column(name = User.FieldInfos.EMAIL)
     private String email;
+
+    @Column(name = User.FieldInfos.FAVORITE_LOCATION)
     private String favLocation; // TODO: Numeric Zip Code?
 
     // FIXME: PLAIN TEXT PASSWORD STORAGE OMG PLEASE KILL ME WHAT AM I DOING
     // WITH MY LIFE
+    @Column(name = User.FieldInfos.PASSWORD)
     private String password;
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
