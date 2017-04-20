@@ -2,13 +2,9 @@ package de.tinf15b4.kino.data.movies;
 
 import java.util.List;
 
-public interface MovieService {
+import de.tinf15b4.kino.data.ServiceModel;
 
-    void save(Movie m);
-
-    Movie findOne(long l);
-
-    List<Movie> findAll();
+public interface MovieService extends ServiceModel<Movie> {
 
     List<Movie> allmightyFilter(MovieFilterData filterData);
 
