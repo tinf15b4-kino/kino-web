@@ -30,7 +30,7 @@ import de.tinf15b4.kino.data.ratedcinemas.RatedCinemaService;
 import de.tinf15b4.kino.data.ratedmovies.RatedMovie;
 import de.tinf15b4.kino.data.ratedmovies.RatedMovieService;
 import de.tinf15b4.kino.data.users.User;
-import de.tinf15b4.kino.data.users.UserRepository;
+import de.tinf15b4.kino.data.users.UserService;
 
 @Service
 public class FakeDataInitializer implements DataInitializer {
@@ -47,7 +47,7 @@ public class FakeDataInitializer implements DataInitializer {
     private PlaylistService playlistService;
 
     @Autowired
-    private UserRepository userRepo;
+    private UserService userService;
 
     @Autowired
     private RatedCinemaService ratedCinemaService;
@@ -97,7 +97,7 @@ public class FakeDataInitializer implements DataInitializer {
         u.setName("Max Mustermann");
         u.setEmail("max.mustermann@example.com");
         u.setPassword("muster");
-        userRepo.save(u);
+        userService.save(u);
 
         // Some more fake users
         for (int i = 0; i < 10; ++i) {
@@ -105,7 +105,7 @@ public class FakeDataInitializer implements DataInitializer {
             u.setName(faker.name().fullName());
             u.setEmail(faker.internet().emailAddress());
             u.setPassword(faker.beer().name());
-            userRepo.save(u);
+            userService.save(u);
         }
 
         // 10 fake cinemas
@@ -142,7 +142,7 @@ public class FakeDataInitializer implements DataInitializer {
 
             // Cinema 4,6,8 are favorites
             if (i == 3 || i == 5 || i == 7) {
-                favoriteService.save(new Favorite(userRepo.getOne(1l), c));
+                favoriteService.save(new Favorite(userService.findOne(1l), c));
             }
 
             // Now make them show some movies during the next week
@@ -167,7 +167,7 @@ public class FakeDataInitializer implements DataInitializer {
 
                 for (long j = 0; j < quantity; j++) {
                     RatedCinema rc = new RatedCinema();
-                    u = userRepo.getOne((long) rnd.nextInt((int) userRepo.count()) + 1L);
+                    u = userService.findOne((long) rnd.nextInt((int) userService.count()) + 1L);
                     rc.setUser(u);
                     rc.setCinema(c);
                     rc.setRating(rnd.nextInt(6));
@@ -175,7 +175,10 @@ public class FakeDataInitializer implements DataInitializer {
                     rc.setTime(
                             faker.date().between(new Date(), new Date(new Date().getTime() + 1000L * 3600 * 24 * 7)));
 
-                    ratedCinemaService.save(rc);
+                    if (!ratedCinemaService.save(rc).isPresent()) {
+                        System.out.println(String.format("Rating for User: %s and Cinema: %s already exist",
+                                rc.getUser().getName(), rc.getCinema().getName()));
+                    }
                 }
             }
         }
@@ -190,7 +193,7 @@ public class FakeDataInitializer implements DataInitializer {
             } else {
                 for (long j = 0; j < quantity; j++) {
                     RatedMovie rm = new RatedMovie();
-                    u = userRepo.getOne((long) rnd.nextInt((int) userRepo.count()) + 1L);
+                    u = userService.findOne((long) rnd.nextInt((int) userService.count()) + 1L);
                     rm.setUser(u);
                     rm.setMovie(m);
                     rm.setRating(rnd.nextInt(6));
@@ -198,7 +201,10 @@ public class FakeDataInitializer implements DataInitializer {
                     rm.setTime(
                             faker.date().between(new Date(), new Date(new Date().getTime() + 1000L * 3600 * 24 * 7)));
 
-                    ratedMovieService.save(rm);
+                    if (!ratedMovieService.save(rm).isPresent()) {
+                        System.out.println(String.format("Rating for User: \"%s\" and Movie: \"%s\" already exist",
+                                rm.getUser().getName(), rm.getMovie().getName()));
+                    }
                 }
             }
         }

@@ -1,12 +1,8 @@
 package de.tinf15b4.kino.data.users;
 
-import java.util.List;
+import de.tinf15b4.kino.data.ServiceModel;
 
-public interface UserService {
-
-    List<User> findAll();
-
-    User findById(long id);
+public interface UserService extends ServiceModel<User> {
 
     User findByName(String username);
 
