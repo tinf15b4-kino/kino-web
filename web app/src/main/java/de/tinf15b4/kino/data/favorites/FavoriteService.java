@@ -2,10 +2,11 @@ package de.tinf15b4.kino.data.favorites;
 
 import java.util.List;
 
+import de.tinf15b4.kino.data.ServiceModel;
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.users.User;
 
-public interface FavoriteService {
+public interface FavoriteService extends ServiceModel<Favorite> {
 
     List<Favorite> getAllFavoritesForUser(User u);
 
@@ -16,9 +17,5 @@ public interface FavoriteService {
     void markFavorite(User u, Cinema c);
 
     void unmarkFavorite(User u, Cinema c);
-
-    Favorite save(Favorite f);
-
-    void delete(Favorite f);
 
 }
