@@ -2,6 +2,8 @@ package de.tinf15b4.kino.api.rest;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.jsondoc.core.annotation.Api;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.base.Strings;
 
+import de.tinf15b4.kino.data.ImageContainer;
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.cinemas.CinemaService;
 import de.tinf15b4.kino.data.favorites.Favorite;
@@ -111,7 +114,9 @@ public class SecureRestController {
         if (response.getStatusCode() != HttpStatus.OK)
             return response;
         User user = userService.findByName((String) response.getBody());
-        return ResponseEntity.ok(favoriteService.getAllFavoritesForUser(user).toArray(new Favorite[0]));
+        List<Favorite> favorites = favoriteService.getAllFavoritesForUser(user);
+        filterImages(favorites);
+        return ResponseEntity.ok(favorites.toArray(new Favorite[0]));
     }
 
     @ApiMethod(description = "Returns the favorite for the given token and cinemaId. If there is none, return null")
@@ -128,7 +133,9 @@ public class SecureRestController {
         Cinema cinema = cinemaService.findOne(cinemaId);
         if (cinema == null)
             return ResponseEntity.badRequest().body(RestControllerConstants.INVALID_ID);
-        return ResponseEntity.ok(favoriteService.findFavorite(user, cinema));
+        Favorite favorite = favoriteService.findFavorite(user, cinema);
+        favorite.doFilter();
+        return ResponseEntity.ok(favorite);
     }
 
     @ApiMethod(description = "Saves the given favorite for the given token")
@@ -143,7 +150,13 @@ public class SecureRestController {
             return response;
         if (favorite == null)
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(RestControllerConstants.NOT_NULL);
-        return ResponseEntity.ok(favoriteService.save(favorite));
+        Optional<Favorite> updated = favoriteService.save(favorite);
+        if (updated.isPresent()) {
+            updated.get().doFilter();
+            return ResponseEntity.ok(updated.get());
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(RestControllerConstants.INTERNAL_SERVER_ERROR);
     }
 
     @ApiMethod(description = "Deletes the given favorite for the given token")
@@ -193,5 +206,10 @@ public class SecureRestController {
                 users.put(username, token);
             }
         }
+    }
+
+    private void filterImages(List<?> containers) {
+        containers.stream().filter(o -> o instanceof ImageContainer)//
+                .forEach(c -> ((ImageContainer) c).doFilter());
     }
 }

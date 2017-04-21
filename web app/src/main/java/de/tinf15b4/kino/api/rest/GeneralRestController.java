@@ -21,12 +21,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.tinf15b4.kino.data.ImageContainer;
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.cinemas.CinemaService;
 import de.tinf15b4.kino.data.movies.Movie;
 import de.tinf15b4.kino.data.movies.MovieService;
 import de.tinf15b4.kino.data.playlists.Playlist;
 import de.tinf15b4.kino.data.playlists.PlaylistService;
+import de.tinf15b4.kino.data.ratedcinemas.RatedCinema;
 import de.tinf15b4.kino.data.ratedcinemas.RatedCinemaService;
 import de.tinf15b4.kino.data.ratedmovies.RatedMovie;
 import de.tinf15b4.kino.data.ratedmovies.RatedMovieService;
@@ -56,13 +58,16 @@ public class GeneralRestController {
     @RequestMapping(value = "rest/getCinemas", method = RequestMethod.GET)
     public ResponseEntity<?> getCinemas() {
         List<Cinema> cinemas = cinemaService.findAll();
+        filterImages(cinemas);
         return ResponseEntity.ok(cinemas.toArray(new Cinema[0]));
     }
 
     @ApiMethod(description = "Returns all movies")
     @RequestMapping(value = "rest/getMovies", method = RequestMethod.GET)
     public ResponseEntity<?> getMovies() {
-        return ResponseEntity.ok(movieService.findAll().toArray(new Movie[0]));
+        List<Movie> movies = movieService.findAll();
+        filterImages(movies);
+        return ResponseEntity.ok(movies.toArray(new Movie[0]));
     }
 
     @ApiMethod(description = "Returns all playtimes for the cinema with the given id between the given dates")
@@ -76,10 +81,12 @@ public class GeneralRestController {
         DateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         try {
             Cinema cinema = cinemaService.findOne(cinemaId);
-            if (cinema != null)
-                return ResponseEntity
-                        .ok(playlistService.findForCinema(cinema, dateFormatter.parse(from), dateFormatter.parse(to))
-                                .toArray(new Playlist[0]));
+            if (cinema != null) {
+                List<Playlist> playlists = playlistService.findForCinema(cinema, dateFormatter.parse(from),
+                        dateFormatter.parse(to));
+                filterImages(playlists);
+                return ResponseEntity.ok(playlists.toArray(new Playlist[0]));
+            }
         } catch (ParseException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -97,10 +104,12 @@ public class GeneralRestController {
         try {
             DateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
             Movie movie = movieService.findOne(movieId);
-            if (movie != null)
-                return ResponseEntity
-                        .ok(playlistService.findForMovie(movie, dateFormatter.parse(from), dateFormatter.parse(to))
-                                .toArray(new Playlist[0]));
+            if (movie != null) {
+                List<Playlist> playlists = playlistService.findForMovie(movie, dateFormatter.parse(from),
+                        dateFormatter.parse(to));
+                filterImages(playlists);
+                return ResponseEntity.ok(playlists.toArray(new Playlist[0]));
+            }
         } catch (ParseException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -113,8 +122,11 @@ public class GeneralRestController {
     public ResponseEntity<?> getRatedMovies(
             @ApiQueryParam(name = "movieId", description = "Id of the movie") @RequestParam(name = "movieId") long movieId) {
         Movie movie = movieService.findOne(movieId);
-        if (movie != null)
-            return ResponseEntity.ok(ratedMovieService.findRatingsByMovie(movie).toArray(new RatedMovie[0]));
+        if (movie != null) {
+            List<RatedMovie> movies = ratedMovieService.findRatingsByMovie(movie);
+            filterImages(movies);
+            return ResponseEntity.ok(movies.toArray(new RatedMovie[0]));
+        }
         return ResponseEntity.badRequest().body(RestControllerConstants.INVALID_ID);
     }
 
@@ -124,9 +136,16 @@ public class GeneralRestController {
     public ResponseEntity<?> getRatedCinemas(
             @ApiQueryParam(name = "cinemaId", description = "Id of the cinema") @RequestParam(name = "cinemaId") long cinemaId) {
         Cinema cinema = cinemaService.findOne(cinemaId);
-        if (cinema != null)
-            return ResponseEntity.ok(
-                    ratedCinemaService.findRatingsByCinema(cinemaService.findOne(cinemaId)).toArray(new RatedMovie[0]));
+        if (cinema != null) {
+            List<RatedCinema> cinemas = ratedCinemaService.findRatingsByCinema(cinemaService.findOne(cinemaId));
+            filterImages(cinemas);
+            return ResponseEntity.ok(cinemas.toArray(new RatedMovie[0]));
+        }
         return ResponseEntity.badRequest().body(RestControllerConstants.INVALID_ID);
+    }
+
+    private void filterImages(List<?> containers) {
+        containers.stream().filter(o -> o instanceof ImageContainer)//
+                .forEach(c -> ((ImageContainer) c).doFilter());
     }
 }

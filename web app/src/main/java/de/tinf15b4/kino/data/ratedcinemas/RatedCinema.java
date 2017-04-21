@@ -10,13 +10,14 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import de.tinf15b4.kino.data.EntityModel;
+import de.tinf15b4.kino.data.ImageContainer;
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.users.User;
 
 @Entity
 @Table(name = "ratedCinema", uniqueConstraints = @UniqueConstraint(columnNames = { RatedCinema.FieldInfos.USER,
         RatedCinema.FieldInfos.CINEMA }))
-public class RatedCinema extends EntityModel {
+public class RatedCinema extends EntityModel implements ImageContainer {
 
     public interface FieldInfos {
         String USER = "user";
@@ -45,7 +46,6 @@ public class RatedCinema extends EntityModel {
 
     public RatedCinema() {
     }
-
 
     public RatedCinema(User user, Cinema cinema, int rating, String description, Date time) {
         this.user = user;
@@ -93,5 +93,10 @@ public class RatedCinema extends EntityModel {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public void doFilter() {
+        this.cinema.setImage(null);
     }
 }

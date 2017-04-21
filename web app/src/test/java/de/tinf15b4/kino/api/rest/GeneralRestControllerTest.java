@@ -48,38 +48,38 @@ public class GeneralRestControllerTest extends AbstractRestControllerTest {
 
     @Test
     public void testGetCallsWithValidIdsAndDates() throws Exception {
-        ResponseEntity<?> response = underTest.getPlaylistForCinema(0, "1234-12-12", "1234-12-12");
+        ResponseEntity<?> response = underTest.getPlaylistForCinema(0, "12.12.1234 00:00", "12.12.1234 00:00");
         assertValidResponse(response);
-        response = underTest.getPlaylistForMovie(0, "1234-12-12", "1234-12-12");
+        response = underTest.getPlaylistForMovie(0, "12.12.1234 00:00", "12.12.1234 00:00");
         assertValidResponse(response);
     }
 
     @Test
     public void testGetCallsWithInvalidIdsAndValidDates() throws Exception {
-        ResponseEntity<?> response = underTest.getPlaylistForCinema(-1, "1234-12-12", "1234-12-12");
+        ResponseEntity<?> response = underTest.getPlaylistForCinema(-1, "12.12.1234 00:00", "12.12.1234 00:00");
         assertInvalidResponse(response, HttpStatus.BAD_REQUEST, RestControllerConstants.INVALID_ID);
-        response = underTest.getPlaylistForMovie(10, "1234-12-12", "1234-12-12");
+        response = underTest.getPlaylistForMovie(10, "12.12.1234 00:00", "12.12.1234 00:00");
         assertInvalidResponse(response, HttpStatus.BAD_REQUEST, RestControllerConstants.INVALID_ID);
     }
 
     @Test
     public void testGetCallsWithValidIdsAndInvalidDates() throws Exception {
-        ResponseEntity<?> response = underTest.getPlaylistForCinema(0, "1234-12.12", "1234-12-12");
+        ResponseEntity<?> response = underTest.getPlaylistForCinema(0, "1234-12.12", "12.12.1234 00:00");
         assertInvalidResponse(response, HttpStatus.BAD_REQUEST, "Unparseable date");
-        response = underTest.getPlaylistForCinema(0, "1234-12-12", "1234-12.12");
+        response = underTest.getPlaylistForCinema(0, "12.12.1234 00:00", "1234-12.12");
         assertInvalidResponse(response, HttpStatus.BAD_REQUEST, "Unparseable date");
 
-        response = underTest.getPlaylistForMovie(0, "1234-12-12", "1234-12.12");
+        response = underTest.getPlaylistForMovie(0, "12.12.1234 00:00", "1234-12.12");
         assertInvalidResponse(response, HttpStatus.BAD_REQUEST, "Unparseable date");
-        response = underTest.getPlaylistForMovie(0, "1234-12.12", "1234-12-12");
+        response = underTest.getPlaylistForMovie(0, "1234-12.12", "12.12.1234 00:00");
         assertInvalidResponse(response, HttpStatus.BAD_REQUEST, "Unparseable date");
     }
 
     @Test
     public void testGetCallsWithInvalidIdsAndDates() throws Exception {
-        ResponseEntity<?> response = underTest.getPlaylistForCinema(10, "1234-12-12", "1234-12-12");
+        ResponseEntity<?> response = underTest.getPlaylistForCinema(10, "12.12.1234 00:00", "12.12.1234 00:00");
         assertInvalidResponse(response, HttpStatus.BAD_REQUEST, RestControllerConstants.INVALID_ID);
-        response = underTest.getPlaylistForMovie(-1, "1234-12-12", "1234-12-12");
+        response = underTest.getPlaylistForMovie(-1, "12.12.1234 00:00", "12.12.1234 00:00");
         assertInvalidResponse(response, HttpStatus.BAD_REQUEST, RestControllerConstants.INVALID_ID);
     }
 
