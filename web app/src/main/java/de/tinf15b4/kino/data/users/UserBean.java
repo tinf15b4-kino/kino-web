@@ -13,7 +13,7 @@ import de.tinf15b4.kino.web.ui.SmartCinemaUi;
 @SessionScope
 public class UserBean {
 
-    private static final String BASE_URL = "http://localhost:8080";
+    private static final String BASE_URL = "https://smartcinema-dev.tinf15b4.de/";
 
     private RestClient restClient;
 
