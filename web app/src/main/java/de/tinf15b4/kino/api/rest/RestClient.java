@@ -255,6 +255,9 @@ public class RestClient {
                 result.append(reader.readLine());
             }
             return result.toString();
+        } catch (NullPointerException e) {
+            // URL must have been wrong. We got an error, but there is no stream
+            throw new RuntimeException("URL does not exist", e);
         }
     }
 

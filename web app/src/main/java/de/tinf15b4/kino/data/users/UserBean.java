@@ -33,7 +33,9 @@ public class UserBean {
     }
 
     public boolean login(String nameOrMail, String password) {
-        restClient = new RestClient(nameOrMail, password, request.getRequestURL().toString());
+        StringBuffer url = request.getRequestURL();
+        url.delete(url.indexOf(request.getRequestURI()), url.length());
+        restClient = new RestClient(nameOrMail, password, url.toString());
         RestResponse loginResponse = restClient.authorize();
         if (!loginResponse.hasError()) {
             // login was successful
