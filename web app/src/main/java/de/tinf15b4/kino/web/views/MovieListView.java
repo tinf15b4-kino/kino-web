@@ -1,11 +1,13 @@
 package de.tinf15b4.kino.web.views;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.google.common.collect.Lists;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.ExternalResource;
@@ -17,9 +19,10 @@ import com.vaadin.ui.Image;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.VerticalLayout;
 
+import de.tinf15b4.kino.api.rest.RestResponse;
 import de.tinf15b4.kino.data.movies.Movie;
 import de.tinf15b4.kino.data.movies.MovieFilterData;
-import de.tinf15b4.kino.data.movies.MovieService;
+import de.tinf15b4.kino.data.users.UserBean;
 import de.tinf15b4.kino.web.components.AgeControlCheckboxes;
 import de.tinf15b4.kino.web.components.DateTimeFilter;
 import de.tinf15b4.kino.web.components.GenreCheckboxes;
@@ -33,7 +36,8 @@ public class MovieListView extends VerticalLayout implements View {
     public static final String VIEW_NAME = "movies";
 
     @Autowired
-    private MovieService movieService;
+    private UserBean userBean;
+
     private MovieFilterData filterData;
 
     private VerticalLayout movieLayout;
@@ -72,7 +76,10 @@ public class MovieListView extends VerticalLayout implements View {
     }
 
     private List<Movie> getFilteredMovies() {
-        return movieService.allmightyFilter(filterData);
+        RestResponse response = userBean.getRestClient().getFilteredMovies(filterData);
+        if (!response.hasError())
+            return Lists.newArrayList((Movie[]) response.getValue());
+        return new ArrayList<>();
     }
 
     private Component createFilter() {

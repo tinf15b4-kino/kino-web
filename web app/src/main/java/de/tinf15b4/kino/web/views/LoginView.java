@@ -27,7 +27,7 @@ public class LoginView extends Panel implements View {
     private static final long serialVersionUID = -4391963842959397392L;
 
     @Autowired
-    UserBean userBean;
+    private UserBean userBean;
 
     public static final String VIEW_NAME = "login";
     private Label wrongInput;
