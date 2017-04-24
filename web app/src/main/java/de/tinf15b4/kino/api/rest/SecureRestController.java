@@ -134,7 +134,8 @@ public class SecureRestController {
         if (cinema == null)
             return ResponseEntity.badRequest().body(RestControllerConstants.INVALID_ID);
         Favorite favorite = favoriteService.findFavorite(user, cinema);
-        favorite.doFilter();
+        if (favorite != null)
+            favorite.doFilter();
         return ResponseEntity.ok(favorite);
     }
 
