@@ -1,9 +1,8 @@
 package de.tinf15b4.kino.data.users;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 
@@ -20,12 +19,12 @@ public class UserBean {
     private SmartCinemaUi ui;
     private User currentUser;
 
-    @Autowired
-    private HttpServletRequest request;
+    @Value("${local.server.port}")
+    private int port;
 
     @PostConstruct
     public void init() {
-        restClient = new RestClient(request.getRequestURL().toString());
+        restClient = new RestClient("http://localhost:" + port);
     }
 
     public boolean isUserLoggedIn() {
@@ -33,9 +32,7 @@ public class UserBean {
     }
 
     public boolean login(String nameOrMail, String password) {
-        StringBuffer url = request.getRequestURL();
-        url.delete(url.indexOf(request.getRequestURI()), url.length());
-        restClient = new RestClient(nameOrMail, password, url.toString());
+        restClient = new RestClient(nameOrMail, password, "http://localhost:" + port);
         RestResponse loginResponse = restClient.authorize();
         if (!loginResponse.hasError()) {
             // login was successful
