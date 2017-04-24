@@ -61,9 +61,6 @@ public class BrowserStepDefinitions {
     private int port;
 
     @Autowired
-    private SpringTestConfig testConfig;
-
-    @Autowired
     private MovieRepository movieRepo;
 
     @Autowired
@@ -118,7 +115,7 @@ public class BrowserStepDefinitions {
 
     @Given("^I am not logged in$")
     public void iAmNotLoggedIn() throws Throwable {
-        testConfig.setFakeUser(null);
+        // do nothing
     }
 
     @Given("^I am logged in as \"([^\\\"]*)\"$")
@@ -126,10 +123,16 @@ public class BrowserStepDefinitions {
         User mockUser = new User();
         mockUser.setId(1);
         mockUser.setName(username);
+        mockUser.setPassword("muster");
 
         userRepo.save(mockUser);
 
-        testConfig.setFakeUser(mockUser);
+        iOpenTheStartPage();
+        waitForLabel("Anmelden");
+        clickButton("Anmelden");
+        typeInto(username, ".login-username-field");
+        typeInto("muster", ".login-password-field");
+        clickOn(".login-submit-button");
     }
 
     @Given("^the movies$")
@@ -469,12 +472,13 @@ public class BrowserStepDefinitions {
 
     @Then("the database should have saved cinema (\\d+) as favorite")
     public void favoriteIsInDb(long cinemaId) {
-        Assert.assertNotNull(faveRepo.findFavorite(cinemaRepo.findOne(cinemaId), testConfig.getFakeUser()));
+        Assert.assertNotNull(
+                faveRepo.findFavorite(cinemaRepo.findOne(cinemaId), userRepo.findByName("Max Mustermann")));
     }
 
     @Then("the database should not have saved cinema (\\d+) as favorite")
     public void favoriteIsNotInDb(long cinemaId) {
-        Assert.assertNull(faveRepo.findFavorite(cinemaRepo.findOne(cinemaId), testConfig.getFakeUser()));
+        Assert.assertNull(faveRepo.findFavorite(cinemaRepo.findOne(cinemaId), userRepo.findByName("Max Mustermann")));
     }
 
     @After

@@ -37,8 +37,7 @@ public class CinemaListView extends VerticalLayout implements View {
         this.setMargin(true);
         this.setSpacing(true);
 
-        RestClient restClient = userBean.getRestClient();
-        RestResponse cinemaResponse = restClient.getCinemas();
+        RestResponse cinemaResponse = userBean.getRestClient().getCinemas();
         if (!cinemaResponse.hasError()) {
             for (Cinema c : (Cinema[]) cinemaResponse.getValue()) {
                 HorizontalLayout row = new HorizontalLayout();
