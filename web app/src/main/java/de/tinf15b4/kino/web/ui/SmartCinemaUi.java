@@ -10,12 +10,26 @@ import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Panel;
+import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.BaseTheme;
 import com.vaadin.ui.themes.ValoTheme;
 import de.tinf15b4.kino.data.users.UserBean;
 import de.tinf15b4.kino.web.util.ShortcutUtils;
-import de.tinf15b4.kino.web.views.*;
+import de.tinf15b4.kino.web.views.CinemaListView;
+import de.tinf15b4.kino.web.views.FavoriteListView;
+import de.tinf15b4.kino.web.views.LoginView;
+import de.tinf15b4.kino.web.views.MovieListView;
+import de.tinf15b4.kino.web.views.SearchResultsView;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -189,9 +203,6 @@ public class SmartCinemaUi extends UI {
         soonBtn.setId("navigatorBtn_Soon");
         soonBtn.addStyleName(BaseTheme.BUTTON_LINK);
         navigator.addComponent(soonBtn);
-
-        //navigator.addComponent(createViewButton("Neu im Kino", "new", FontAwesome.EXCLAMATION_CIRCLE));
-        // navigator.addComponent(createViewButton("Demnächst", "coming_soon", FontAwesome.HISTORY));
 
         Label cinemaLabel = new Label("KINOS");
         cinemaLabel.setId("navHeadings_Cinemas");
