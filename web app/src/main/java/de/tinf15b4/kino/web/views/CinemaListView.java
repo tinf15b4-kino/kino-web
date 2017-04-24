@@ -15,11 +15,11 @@ import com.vaadin.ui.Image;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.VerticalLayout;
 
+import de.tinf15b4.kino.api.rest.PictureController;
 import de.tinf15b4.kino.api.rest.RestClient;
 import de.tinf15b4.kino.api.rest.RestResponse;
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.users.UserBean;
-import de.tinf15b4.kino.web.controllers.PictureController;
 import de.tinf15b4.kino.web.util.CinemaFavoriteUtils;
 import de.tinf15b4.kino.web.util.ToggleFavoriteListener;
 

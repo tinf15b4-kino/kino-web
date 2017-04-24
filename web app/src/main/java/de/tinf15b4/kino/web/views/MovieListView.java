@@ -19,6 +19,7 @@ import com.vaadin.ui.Image;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.VerticalLayout;
 
+import de.tinf15b4.kino.api.rest.PictureController;
 import de.tinf15b4.kino.api.rest.RestResponse;
 import de.tinf15b4.kino.data.movies.Movie;
 import de.tinf15b4.kino.data.movies.MovieFilterData;
@@ -27,7 +28,6 @@ import de.tinf15b4.kino.web.components.AgeControlCheckboxes;
 import de.tinf15b4.kino.web.components.DateTimeFilter;
 import de.tinf15b4.kino.web.components.GenreCheckboxes;
 import de.tinf15b4.kino.web.components.PriceFilter;
-import de.tinf15b4.kino.web.controllers.PictureController;
 
 @SpringView(name = MovieListView.VIEW_NAME)
 public class MovieListView extends VerticalLayout implements View {

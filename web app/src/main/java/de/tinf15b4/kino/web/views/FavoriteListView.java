@@ -23,11 +23,11 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
+import de.tinf15b4.kino.api.rest.PictureController;
 import de.tinf15b4.kino.api.rest.RestResponse;
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.favorites.Favorite;
 import de.tinf15b4.kino.data.users.UserBean;
-import de.tinf15b4.kino.web.controllers.PictureController;
 
 @SpringView(name = FavoriteListView.VIEW_NAME)
 public class FavoriteListView extends VerticalLayout implements View {
