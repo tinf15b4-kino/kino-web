@@ -11,8 +11,6 @@ public class Kino24WebApplicationTests {
 
     @Test
     public void contextLoads() {
-        // TMP HACK to test TESB416-228
-        assert(false);
     }
 
 }
