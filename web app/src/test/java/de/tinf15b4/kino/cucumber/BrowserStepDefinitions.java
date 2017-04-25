@@ -130,9 +130,9 @@ public class BrowserStepDefinitions {
         iOpenTheStartPage();
         waitForLabel("Anmelden");
         clickButton("Anmelden");
-        typeInto(username, ".login-username-field");
-        typeInto("muster", ".login-password-field");
-        clickOn(".login-submit-button");
+        typeInto(username, "#loginUsernameField");
+        typeInto("muster", "#loginPasswordField");
+        clickOn("#loginSubmitButton");
     }
 
     @Given("^the movies$")
