@@ -98,7 +98,7 @@ public class BrowserStepDefinitions {
 
         switch (drvstr) {
         case "firefox":
-            FirefoxDriverManager.getInstance().setup("0.11.1");
+            FirefoxDriverManager.getInstance().setup("0.16.0");
             driver = new FirefoxDriver();
             break;
         case "chrome":
