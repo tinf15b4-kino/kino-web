@@ -79,7 +79,16 @@ After the User found the Information (or not) nothing have to be changed or save
 ### 6. Extension Points
 (n/a)
 
+
+### 7. Function Points
+
+We calculated the function points with the following table from TINY TOOLS. The Use Case "Get information " has
+70.4 points.
+
+![functionpoints]
+
 <!-- Link definitions -->
+[functionpoints]: ../TinyTools%20Functionpoints/get_information_charTable.PNG
 [SRS]: https://github.com/tinf15b4-kino/kino-web/blob/master/documents/SRS.md
 [flow]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/UC/get%20information/flow_GetInformation.png
 [Screenshot_movielist]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/UC/filter%20information/screenshot_FilterInformation.png
