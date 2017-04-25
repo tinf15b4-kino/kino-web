@@ -20,11 +20,16 @@ public class UserBean {
     private User currentUser;
 
     @Value("${local.server.port}")
-    private int port;
+    private int port = 0;
 
     @PostConstruct
     public void init() {
-        restClient = new RestClient("http://localhost:" + port);
+        String baseUrl = System.getenv("SMARTCINEMA_API_URL");
+
+        if (baseUrl == null)
+            baseUrl = "http://localhost:" + port;
+
+        restClient = new RestClient(baseUrl);
     }
 
     public boolean isUserLoggedIn() {
