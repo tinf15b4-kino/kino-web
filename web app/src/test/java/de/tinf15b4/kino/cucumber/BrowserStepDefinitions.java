@@ -216,7 +216,7 @@ public class BrowserStepDefinitions {
 
     @When("^I search for \"([^\\\"]*)\"$")
     public void iSearchFor(String term) throws Throwable {
-        typeInto(term, ".kino-search-box");
+        typeInto(term, "#cinemaSearchBox");
         sendKey("RETURN");
     }
 

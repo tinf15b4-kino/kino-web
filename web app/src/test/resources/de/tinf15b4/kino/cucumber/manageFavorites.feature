@@ -15,9 +15,9 @@ Feature: Manage favorites
     # HACK: The page switching has a light delay, and the previous page already contains the same button.
     # therefore, we'll wait until we are definitely on the cinema detail page
     And I wait until an element containing "EpicStreet" appears
-    And I click the button labeled "Zu Favoriten hinzufügen"
+    And I click the button labeled "Favorit" below "#cinemaInfoBox_2"
 
-    Then I should see a label containing "Zu Favoriten hinzugefügt"
+    Then I should see a label containing "als Favorit markiert"
     And the database should have saved cinema 2 as favorite
 
   Scenario: add favorite on cinema list page
@@ -29,9 +29,9 @@ Feature: Manage favorites
 
     When I open the start page
     And I click the button labeled "Kinos"
-    And I click the button labeled "Zu Favoriten hinzufügen" below ".cinema-row-2"
+    And I click the button labeled "Favorit" below "#cinemaRow_2"
 
-    Then I should see a label containing "Zu Favoriten hinzugefügt"
+    Then I should see a label containing "als Favorit markiert"
     And the database should have saved cinema 2 as favorite
 
   Scenario: List Favorites
@@ -64,33 +64,35 @@ Feature: Manage favorites
 
     When I open the start page
     And I click the button labeled "Favoriten"
-    And I click the button labeled "Entfernen" below ".favorite-cinema-row-2"
+    And I click the button labeled "Favorit" below "#cinemaRow_2"
 
-    Then I should see a label containing "wurde aus den Favoriten entfernt"
-    And I should see a label containing "Rückgängig machen"
+    Then I should see a label containing "als Favorit entfernt"
+    # TODO: Reimplement the undo feature
+    # And I should see a label containing "Rückgängig machen"
     And the database should not have saved cinema 2 as favorite
     And the database should have saved cinema 1 as favorite
 
-  Scenario: Delete from favorite list, then undo
-    Given I am logged in as "Max Mustermann"
-    And the cinemas
-      | Id  | Name                    |
-      | 1   | Maier, Maier und Maier  |
-      | 2   | Schicke Scheinwand      |
-    And the favorite cinemas
-      | User            | Cinema  |
-      | Max Mustermann  | 2       |
-      | Max Mustermann  | 1       |
+  # TODO: Reimplement the undo feature
+  # Scenario: Delete from favorite list, then undo
+  #  Given I am logged in as "Max Mustermann"
+  #  And the cinemas
+  #    | Id  | Name                    |
+  #    | 1   | Maier, Maier und Maier  |
+  #    | 2   | Schicke Scheinwand      |
+  #  And the favorite cinemas
+  #    | User            | Cinema  |
+  #    | Max Mustermann  | 2       |
+  #    | Max Mustermann  | 1       |
 
-    When I open the start page
-    And I click the button labeled "Favoriten"
-    And I click the button labeled "Entfernen" below ".favorite-cinema-row-2"
-    And I click the button labeled "Rückgängig machen" below ".favorite-cinema-row-2"
-    # HACK: UI lag causes us to click the wrong button, so we have to wait until the right one is there
-    And I wait until every element containing "wurde aus den Favoriten entfern" disappears
+  #  When I open the start page
+  #  And I click the button labeled "Favoriten"
+  #  And I click the button labeled "Favorit" below "#cinemaRow_2"
+  #  # And I click the button labeled "Rückgängig machen" below ".favorite-cinema-row-2"
+  #  # HACK: UI lag causes us to click the wrong button, so we have to wait until the right one is there
+  #  And I wait until every element containing "wurde aus den Favoriten entfern" disappears
 
-    Then I should see a label containing "Entfernen" below ".favorite-cinema-row-2"
-    And the database should have saved cinema 2 as favorite
+  #  Then I should see a label containing "Entfernen" below "#cinemaRow_2"
+  #  And the database should have saved cinema 2 as favorite
 
   Scenario: Remove favorite from cinema page
     Given I am logged in as "Max Mustermann"
@@ -109,10 +111,9 @@ Feature: Manage favorites
     # HACK: The page switching has a light delay, and the previous page already contains the same button.
     # therefore, we'll wait until we are definitely on the cinema detail page
     And I wait until an element containing "EpicStreet" appears
-    And I click the menu item labeled "Zu Favoriten hinzugefügt"
-    And I click the menu item labeled "Aus Favoriten entfernen"
+    And I click the button labeled "Favorit" below "#cinemaInfoBox_2"
 
-    Then I should see a label containing "Zu Favoriten hinzufügen"
+    Then I should see a label containing "als Favorit entfernt"
     And the database should not have saved cinema 2 as favorite
 
   Scenario: Remove favorite from cinema list
@@ -128,10 +129,9 @@ Feature: Manage favorites
 
     When I open the start page
     And I click the button labeled "Kinos"
-    And I click the menu item labeled "Zu Favoriten hinzugefügt" below ".cinema-row-2"
-    And I click the menu item labeled "Aus Favoriten entfernen"
+    And I click the button labeled "Favorit" below "#cinemaRow_2"
 
-    Then I should see a label containing "Zu Favoriten hinzufügen" below ".cinema-row-2"
+    Then I should see a label containing "als Favorit entfernt"
     And the database should not have saved cinema 2 as favorite
 
   Scenario: Show favorites without login
@@ -159,7 +159,7 @@ Feature: Manage favorites
     # HACK: The page switching has a light delay, and the previous page already contains the same button.
     # therefore, we'll wait until we are definitely on the cinema detail page
     And I wait until an element containing "EpicStreet" appears
-    And I click the button labeled "Zu Favoriten hinzufügen"
+    And I click the button labeled "Favorit" below "#cinemaInfoBox_2"
 
     # TODO: The Use-case specification requires us to redirect to the login page
     # instead, but that's not going to be implemented this year
@@ -174,7 +174,7 @@ Feature: Manage favorites
 
     When I open the start page
     And I click the button labeled "Kinos"
-    And I click the button labeled "Zu Favoriten hinzufügen" below ".cinema-row-2"
+    And I click the button labeled "Favorit" below "#cinemaRow_2"
 
     # TODO: The Use-case specification requires us to redirect to the login page
     # instead, but that's not going to be implemented this year

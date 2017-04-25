@@ -1,30 +1,23 @@
 package de.tinf15b4.kino.web.views;
 
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Image;
-import com.vaadin.ui.Link;
-import com.vaadin.ui.VerticalLayout;
-
+import com.vaadin.ui.*;
 import de.tinf15b4.kino.data.movies.Movie;
 import de.tinf15b4.kino.data.movies.MovieFilterData;
 import de.tinf15b4.kino.data.movies.MovieService;
+import de.tinf15b4.kino.data.ratedmovies.RatedMovieService;
 import de.tinf15b4.kino.web.components.AgeControlCheckboxes;
 import de.tinf15b4.kino.web.components.DateTimeFilter;
 import de.tinf15b4.kino.web.components.GenreCheckboxes;
 import de.tinf15b4.kino.web.components.PriceFilter;
 import de.tinf15b4.kino.web.controllers.PictureController;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.PostConstruct;
+import java.util.List;
 
 @SpringView(name = MovieListView.VIEW_NAME)
 public class MovieListView extends VerticalLayout implements View {
@@ -38,13 +31,18 @@ public class MovieListView extends VerticalLayout implements View {
 
     private VerticalLayout movieLayout;
 
+    @Autowired
+    private RatedMovieService ratedMovieService;
+
     @PostConstruct
     public void init() {
         this.setMargin(true);
         this.setSpacing(true);
         filterData = new MovieFilterData();
 
-        addComponent(createFilter());
+        Component filter = createFilter();
+        filter.setId("movieFilter");
+        addComponent(filter);
         addComponent(createMovies());
     }
 
@@ -56,19 +54,42 @@ public class MovieListView extends VerticalLayout implements View {
 
             Image image = new Image(null, new ExternalResource(PictureController.getMoviePictureUrl(m)));
 
-            image.setHeight("100px");
+            image.setHeight("200px");
             row.addComponent(image);
 
-            Link l = new Link(m.getName(), new ExternalResource("#!" + MovieView.VIEW_NAME + "/" + m.getId()));
+            Component movieInfoBox = createMovieInfoBox(m);
+            movieInfoBox.setId("movieInfoBox_" + m.getId());
 
-            row.addComponent(l);
-            row.setComponentAlignment(l, Alignment.MIDDLE_LEFT);
+            row.addComponent(movieInfoBox);
+            row.setComponentAlignment(movieInfoBox, Alignment.TOP_LEFT);
 
-            row.setExpandRatio(l, 1f);
+            row.setExpandRatio(movieInfoBox, 1f);
             row.setSpacing(true);
+            row.setId("movieRow_" + m.getId());
+
             movieLayout.addComponent(row);
         }
         return movieLayout;
+    }
+
+    private Component createMovieInfoBox(Movie m) {
+
+        VerticalLayout movieInfoBox = new VerticalLayout();
+
+        Link l = new Link(m.getName(), new ExternalResource("#!" + MovieView.VIEW_NAME + "/" + m.getId()));
+        l.setId("movieListLink_" + m.getId());
+        movieInfoBox.addComponent(l);
+        movieInfoBox.setComponentAlignment(l, Alignment.TOP_LEFT);
+
+        movieInfoBox.addComponent(new Label("Länge: " + m.getLengthMinutes() + " Minuten"));
+        movieInfoBox.addComponent(new Label("Genre: " + m.getGenre()));
+        movieInfoBox.addComponent(new Label("Altersfreigabe: " + m.getAgeControl()));
+        movieInfoBox.addComponent(
+                new Label("Durschschnittliche Bewertung: " + ratedMovieService.getAverageRatingForMovie(m)));
+        movieInfoBox.addComponent(new Label(m.getDescription()));
+
+
+        return movieInfoBox;
     }
 
     private List<Movie> getFilteredMovies() {
