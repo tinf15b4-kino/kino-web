@@ -1,4 +1,4 @@
-package de.tinf15b4.kino.web.controllers;
+package de.tinf15b4.kino.api.rest;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -6,52 +6,60 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import org.jsondoc.core.annotation.Api;
+import org.jsondoc.core.annotation.ApiAuthNone;
+import org.jsondoc.core.annotation.ApiMethod;
+import org.jsondoc.core.annotation.ApiQueryParam;
+import org.jsondoc.core.annotation.ApiVersion;
+import org.jsondoc.core.pojo.ApiStage;
+import org.jsondoc.core.pojo.ApiVisibility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import de.tinf15b4.kino.data.cinemas.Cinema;
-import de.tinf15b4.kino.data.cinemas.CinemaRepository;
+import de.tinf15b4.kino.data.cinemas.CinemaService;
 import de.tinf15b4.kino.data.movies.Movie;
-import de.tinf15b4.kino.data.movies.MovieRepository;
+import de.tinf15b4.kino.data.movies.MovieService;
 
-@Controller
+@Api(name = "Picture services", description = "Offers all methods needed to retrieve pictures from the database", visibility = ApiVisibility.PUBLIC, stage = ApiStage.BETA)
+@ApiVersion(since = "0.0.1")
+@ApiAuthNone
+@RestController
 public class PictureController {
-    @Autowired
-    private CinemaRepository cineRepo;
 
     @Autowired
-    private MovieRepository movieRepo;
+    private CinemaService cinemaService;
+
+    @Autowired
+    private MovieService movieService;
 
     private byte[] defaultCinemaImage;
     private byte[] defaultMovieCover;
 
-    @RequestMapping(value = "/picture/cinema/{cid}", produces = MediaType.IMAGE_JPEG_VALUE)
-    @ResponseBody
-    byte[] getCinemaPicture(@PathVariable("cid") long cinemaid) {
-        Cinema c = cineRepo.findOne(cinemaid);
+    @ApiMethod(description = "Returns the image of the cinema with the given id")
+    @RequestMapping(value = "rest/cinemaPicture", produces = MediaType.IMAGE_JPEG_VALUE)
+    public byte[] getCinemaPicture(
+            @ApiQueryParam(name = "cinemaId", description = "Id of the cinema") @RequestParam(name = "cinemaId") long cinemaId) {
+        Cinema c = cinemaService.findOne(cinemaId);
         if (c != null) {
-            if (c.getImage() == null)
-                return getDefaultCinemaImage();
             return c.getImage();
         } else {
-            return null;
+            return getDefaultCinemaImage();
         }
     }
 
-    @RequestMapping(value = "/picture/movie/{mid}", produces = MediaType.IMAGE_JPEG_VALUE)
-    @ResponseBody
-    byte[] getMoviePicture(@PathVariable("mid") long movieid) {
-        Movie m = movieRepo.findOne(movieid);
+    @ApiMethod(description = "Returns the cover of the movie with the given id")
+    @RequestMapping(value = "rest/moviePicture", produces = MediaType.IMAGE_JPEG_VALUE)
+    public byte[] getMoviePicture(
+            @ApiQueryParam(name = "movieId", description = "Id of the movie") @RequestParam(name = "movieId") long movieId) {
+        Movie m = movieService.findOne(movieId);
         if (m != null) {
-            if (m.getCover() == null)
-                return getDefaultMovieCover();
             return m.getCover();
         } else {
-            return null;
+            return getDefaultMovieCover();
         }
     }
 
@@ -65,14 +73,6 @@ public class PictureController {
         if (defaultMovieCover == null)
             loadDefaultMovieCover();
         return defaultMovieCover;
-    }
-
-    public static String getCinemaPictureUrl(Cinema c) {
-        return "/picture/cinema/" + c.getId();
-    }
-
-    public static String getMoviePictureUrl(Movie m) {
-        return "/picture/movie/" + m.getId();
     }
 
     private void loadDefaultCinemaImage() {
@@ -104,5 +104,13 @@ public class PictureController {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public static String getCinemaPictureUrl(Cinema c) {
+        return "/rest/cinemaPicture?cinemaId=" + c.getId();
+    }
+
+    public static String getMoviePictureUrl(Movie m) {
+        return "/rest/moviePicture?movieId=" + m.getId();
     }
 }

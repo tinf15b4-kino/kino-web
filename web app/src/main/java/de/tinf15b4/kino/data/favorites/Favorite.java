@@ -7,13 +7,14 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import de.tinf15b4.kino.data.EntityModel;
+import de.tinf15b4.kino.data.ImageContainer;
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.users.User;
 
 @Entity
 @Table(name = "favorite", uniqueConstraints = @UniqueConstraint(columnNames = { Favorite.FieldInfos.USER,
         Favorite.FieldInfos.CINEMA }))
-public class Favorite extends EntityModel {
+public class Favorite extends EntityModel implements ImageContainer {
 
     public interface FieldInfos {
         String USER = "user";
@@ -36,7 +37,6 @@ public class Favorite extends EntityModel {
         this.cinema = cinema;
     }
 
-
     public Cinema getCinema() {
         return cinema;
     }
@@ -51,6 +51,11 @@ public class Favorite extends EntityModel {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public void doFilter() {
+        this.cinema.setImage(null);
     }
 
 }

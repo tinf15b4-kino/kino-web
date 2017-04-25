@@ -9,12 +9,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import de.tinf15b4.kino.data.EntityModel;
+import de.tinf15b4.kino.data.ImageContainer;
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.movies.Movie;
 
 @Entity
 @Table(name = "playlist")
-public class Playlist extends EntityModel {
+public class Playlist extends EntityModel implements ImageContainer {
 
     public interface FieldInfos {
         String CINEMA = "cinema";
@@ -67,5 +68,11 @@ public class Playlist extends EntityModel {
 
     public void setMovie(Movie movie) {
         this.movie = movie;
+    }
+
+    @Override
+    public void doFilter() {
+        this.cinema.setImage(null);
+        this.movie.setCover(null);
     }
 }

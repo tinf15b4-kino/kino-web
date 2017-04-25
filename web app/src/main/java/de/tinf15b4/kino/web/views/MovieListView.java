@@ -1,23 +1,34 @@
 package de.tinf15b4.kino.web.views;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.google.common.collect.Lists;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Link;
+import com.vaadin.ui.VerticalLayout;
+
+import de.tinf15b4.kino.api.rest.PictureController;
+import de.tinf15b4.kino.api.rest.RestResponse;
 import de.tinf15b4.kino.data.movies.Movie;
 import de.tinf15b4.kino.data.movies.MovieFilterData;
-import de.tinf15b4.kino.data.movies.MovieService;
-import de.tinf15b4.kino.data.ratedmovies.RatedMovieService;
+import de.tinf15b4.kino.data.users.UserBean;
 import de.tinf15b4.kino.web.components.AgeControlCheckboxes;
 import de.tinf15b4.kino.web.components.DateTimeFilter;
 import de.tinf15b4.kino.web.components.GenreCheckboxes;
 import de.tinf15b4.kino.web.components.PriceFilter;
-import de.tinf15b4.kino.web.controllers.PictureController;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.annotation.PostConstruct;
-import java.util.List;
 
 @SpringView(name = MovieListView.VIEW_NAME)
 public class MovieListView extends VerticalLayout implements View {
@@ -26,13 +37,11 @@ public class MovieListView extends VerticalLayout implements View {
     public static final String VIEW_NAME = "movies";
 
     @Autowired
-    private MovieService movieService;
+    private UserBean userBean;
+
     private MovieFilterData filterData;
 
     private VerticalLayout movieLayout;
-
-    @Autowired
-    private RatedMovieService ratedMovieService;
 
     @PostConstruct
     public void init() {
@@ -84,16 +93,22 @@ public class MovieListView extends VerticalLayout implements View {
         movieInfoBox.addComponent(new Label("Länge: " + m.getLengthMinutes() + " Minuten"));
         movieInfoBox.addComponent(new Label("Genre: " + m.getGenre()));
         movieInfoBox.addComponent(new Label("Altersfreigabe: " + m.getAgeControl()));
-        movieInfoBox.addComponent(
-                new Label("Durschschnittliche Bewertung: " + ratedMovieService.getAverageRatingForMovie(m)));
-        movieInfoBox.addComponent(new Label(m.getDescription()));
 
+        RestResponse avgRatingResponse = userBean.getRestClient().getAverageRatingForMovie(m.getId());
+        double avgRating = 0d;
+        if (!avgRatingResponse.hasError())
+            avgRating = (Double) avgRatingResponse.getValue();
+        movieInfoBox.addComponent(new Label("Durschschnittliche Bewertung: " + avgRating));
+        movieInfoBox.addComponent(new Label(m.getDescription()));
 
         return movieInfoBox;
     }
 
     private List<Movie> getFilteredMovies() {
-        return movieService.allmightyFilter(filterData);
+        RestResponse response = userBean.getRestClient().getFilteredMovies(filterData);
+        if (!response.hasError())
+            return Lists.newArrayList((Movie[]) response.getValue());
+        return new ArrayList<>();
     }
 
     private Component createFilter() {

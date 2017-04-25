@@ -1,33 +1,34 @@
 package de.tinf15b4.kino.web.views;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Link;
+import com.vaadin.ui.VerticalLayout;
+
+import de.tinf15b4.kino.api.rest.PictureController;
+import de.tinf15b4.kino.api.rest.RestResponse;
 import de.tinf15b4.kino.data.cinemas.Cinema;
-import de.tinf15b4.kino.data.cinemas.CinemaService;
-import de.tinf15b4.kino.data.favorites.FavoriteService;
 import de.tinf15b4.kino.data.users.UserBean;
-import de.tinf15b4.kino.web.controllers.PictureController;
 import de.tinf15b4.kino.web.util.CinemaFavoriteUtils;
 import de.tinf15b4.kino.web.util.ToggleFavoriteListener;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.annotation.PostConstruct;
 
 @SpringView(name = CinemaListView.VIEW_NAME)
 public class CinemaListView extends VerticalLayout implements View {
     private static final long serialVersionUID = -7735249245890741447L;
 
     public static final String VIEW_NAME = "cinemas";
-
-    @Autowired
-    private CinemaService cinemaService;
-
-    @Autowired
-    private FavoriteService favoriteService;
 
     @Autowired
     private UserBean userBean;
@@ -37,24 +38,27 @@ public class CinemaListView extends VerticalLayout implements View {
         this.setMargin(true);
         this.setSpacing(true);
 
-        for (Cinema c : cinemaService.findAll()) {
-            HorizontalLayout row = new HorizontalLayout();
-            row.setWidth(100, Unit.PERCENTAGE);
-            row.setId("cinemaRow_" + c.getId());
+        RestResponse cinemaResponse = userBean.getRestClient().getCinemas();
+        if (!cinemaResponse.hasError()) {
+            for (Cinema c : (Cinema[]) cinemaResponse.getValue()) {
+                HorizontalLayout row = new HorizontalLayout();
+                row.setWidth(100, Unit.PERCENTAGE);
+                row.setId("cinemaRow_" + c.getId());
 
-            // Picture
-            Component image = new Image(null, new ExternalResource(PictureController.getCinemaPictureUrl(c)));
-            image.setId("cinemaImage_" + c.getId());
-            image.setHeight("200px");
-            row.addComponent(image);
+                // Picture
+                Component image = new Image(null, new ExternalResource(PictureController.getCinemaPictureUrl(c)));
+                image.setId("cinemaImage_" + c.getId());
+                image.setHeight("200px");
+                row.addComponent(image);
 
-            // Info-Box
-            Component movieInfoBox = createCinemaInfoBox(c);
-            row.addComponent(movieInfoBox);
+                // Info-Box
+                Component movieInfoBox = createCinemaInfoBox(c);
+                row.addComponent(movieInfoBox);
 
-            row.setExpandRatio(movieInfoBox, 1f);
-            row.setSpacing(true);
-            this.addComponent(row);
+                row.setExpandRatio(movieInfoBox, 1f);
+                row.setSpacing(true);
+                this.addComponent(row);
+            }
         }
     }
 
@@ -74,7 +78,6 @@ public class CinemaListView extends VerticalLayout implements View {
         cinemaInfoBox.addComponent(new Label(c.getAddress(), ContentMode.PREFORMATTED));
 
         createFavoriteBtn(c.getId(), cinemaInfoBox);
-
 
         return cinemaInfoBox;
     }
@@ -98,8 +101,7 @@ public class CinemaListView extends VerticalLayout implements View {
             if (button != null)
                 row.removeComponent(button);
 
-            button = CinemaFavoriteUtils.createFavoriteButton(cinemaService.findOne(cinemaId),
-                    favoriteService, userBean, this);
+            button = CinemaFavoriteUtils.createFavoriteButton(cinemaId, userBean, this);
 
             row.addComponent(button);
             row.setComponentAlignment(button, Alignment.BOTTOM_LEFT);
@@ -113,8 +115,4 @@ public class CinemaListView extends VerticalLayout implements View {
         mgr.recreateBtn();
     }
 
-    private void updateView() {
-        removeAllComponents();
-        init();
-    }
 }

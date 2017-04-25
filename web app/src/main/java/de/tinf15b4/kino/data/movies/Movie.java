@@ -6,10 +6,11 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import de.tinf15b4.kino.data.EntityModel;
+import de.tinf15b4.kino.data.ImageContainer;
 
 @Entity
 @Table(name = "movie", uniqueConstraints = @UniqueConstraint(columnNames = { Movie.FieldInfos.NAME }))
-public class Movie extends EntityModel {
+public class Movie extends EntityModel implements ImageContainer {
 
     public interface FieldInfos {
         String NAME = "name";
@@ -99,5 +100,10 @@ public class Movie extends EntityModel {
 
     public void setAgeControl(AgeControl ageControl) {
         this.ageControl = ageControl;
+    }
+
+    @Override
+    public void doFilter() {
+        setCover(null);
     }
 }

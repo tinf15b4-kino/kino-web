@@ -1,40 +1,50 @@
 package de.tinf15b4.kino.data.users;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 
+import de.tinf15b4.kino.api.rest.RestClient;
+import de.tinf15b4.kino.api.rest.RestResponse;
 import de.tinf15b4.kino.web.ui.SmartCinemaUi;
 
 @Component
 @SessionScope
 public class UserBean {
 
-    @Autowired
-    private UserService userService;
+    private RestClient restClient;
 
     private SmartCinemaUi ui;
     private User currentUser;
+
+    @Value("${local.server.port}")
+    private int port;
+
+    @PostConstruct
+    public void init() {
+        restClient = new RestClient("http://localhost:" + port);
+    }
 
     public boolean isUserLoggedIn() {
         return currentUser != null;
     }
 
     public boolean login(String nameOrMail, String password) {
-        User user = userService.findByName(nameOrMail);
-        if (user == null) {
-            // Try to find the user by its email if finding by username fails
-            user = userService.findByEmail(nameOrMail);
+        restClient = new RestClient(nameOrMail, password, "http://localhost:" + port);
+        RestResponse loginResponse = restClient.authorize();
+        if (!loginResponse.hasError()) {
+            // login was successful
+            RestResponse userResponse = restClient.getUser();
+            if (!userResponse.hasError()) {
+                // which should always be the case
+                currentUser = (User) userResponse.getValue();
+                ui.update();
+                return true;
+            }
         }
-        if (user != null && user.getPassword().equals(password)) {
-            // login successful
-            this.currentUser = user;
-            ui.update();
-            return true;
-        } else {
-            // login failed
-            return false;
-        }
+        return false;
     }
 
     public boolean logout() {
@@ -43,9 +53,13 @@ public class UserBean {
             // no option to hit logout in this case
             throw new NoUserLoggedInException("There is no user logged in. Logout failed");
         } else {
-            currentUser = null;
-            ui.update();
-            return true;
+            RestResponse response = restClient.logout();
+            if (!response.hasError()) {
+                currentUser = null;
+                ui.update();
+                return true;
+            }
+            return false;
         }
     }
 
@@ -55,6 +69,10 @@ public class UserBean {
 
     public void setUi(SmartCinemaUi ui) {
         this.ui = ui;
+    }
+
+    public RestClient getRestClient() {
+        return restClient;
     }
 
 }
