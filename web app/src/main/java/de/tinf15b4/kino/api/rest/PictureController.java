@@ -1,5 +1,11 @@
 package de.tinf15b4.kino.api.rest;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 import org.jsondoc.core.annotation.Api;
 import org.jsondoc.core.annotation.ApiAuthNone;
 import org.jsondoc.core.annotation.ApiMethod;
@@ -30,7 +36,10 @@ public class PictureController {
     @Autowired
     private MovieService movieService;
 
-    @ApiMethod(description = "Returnsthe cover of the cinema with the given id")
+    private byte[] defaultCinemaImage;
+    private byte[] defaultMovieCover;
+
+    @ApiMethod(description = "Returns the image of the cinema with the given id")
     @RequestMapping(value = "rest/cinemaPicture", produces = MediaType.IMAGE_JPEG_VALUE)
     public byte[] getCinemaPicture(
             @ApiQueryParam(name = "cinemaId", description = "Id of the cinema") @RequestParam(name = "cinemaId") long cinemaId) {
@@ -38,7 +47,7 @@ public class PictureController {
         if (c != null) {
             return c.getImage();
         } else {
-            return null;
+            return getDefaultCinemaImage();
         }
     }
 
@@ -50,7 +59,50 @@ public class PictureController {
         if (m != null) {
             return m.getCover();
         } else {
-            return null;
+            return getDefaultMovieCover();
+        }
+    }
+
+    private byte[] getDefaultCinemaImage() {
+        if (defaultCinemaImage == null)
+            loadDefaultCinemaImage();
+        return defaultCinemaImage;
+    }
+
+    private byte[] getDefaultMovieCover() {
+        if (defaultMovieCover == null)
+            loadDefaultMovieCover();
+        return defaultMovieCover;
+    }
+
+    private void loadDefaultCinemaImage() {
+        try {
+            BufferedImage originalImage = ImageIO
+                    .read(this.getClass().getResourceAsStream("/images/defaultCinema.jpg"));
+
+            // convert BufferedImage to byte array
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(originalImage, "jpg", baos);
+            baos.flush();
+            defaultCinemaImage = baos.toByteArray();
+            baos.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void loadDefaultMovieCover() {
+        try {
+            BufferedImage originalImage = ImageIO.read(this.getClass().getResourceAsStream("/images/defaultMovie.jpg"));
+
+            // convert BufferedImage to byte array
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(originalImage, "jpg", baos);
+            baos.flush();
+            defaultMovieCover = baos.toByteArray();
+            baos.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
     }
 

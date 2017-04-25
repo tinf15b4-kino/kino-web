@@ -1,11 +1,11 @@
 package de.tinf15b4.kino.web.util;
 
+import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
-import com.vaadin.ui.themes.ValoTheme;
+import com.vaadin.ui.themes.BaseTheme;
 
 import de.tinf15b4.kino.api.rest.RestClient;
 import de.tinf15b4.kino.api.rest.RestResponse;
@@ -19,16 +19,22 @@ public class CinemaFavoriteUtils {
         if (!userBean.isUserLoggedIn() || !isCinemaFavorite(cinemaId, userBean.getRestClient())) {
             // create button
             Button favBtn = new Button();
-            favBtn.setCaption("Zu Favoriten hinzufügen");
+            favBtn.setCaption("Favorit");
+            favBtn.setIcon(FontAwesome.HEART);
             favBtn.addClickListener(e -> markAsFavorite(cinemaId, userBean, listener));
-            favBtn.addStyleName("cinema-favorite-button");
+            favBtn.setId("cinemaFavBtn_" + cinemaId);
+            favBtn.addStyleName(BaseTheme.BUTTON_LINK);
+            favBtn.setDescription("Als Favorit markieren");
             return favBtn;
         } else {
-            MenuBar unfavMenu = new MenuBar();
-            unfavMenu.setStyleName(ValoTheme.MENUBAR_BORDERLESS);
-            MenuBar.MenuItem menu = unfavMenu.addItem("Zu Favoriten hinzugefügt", null);
-            menu.addItem("Aus Favoriten entfernen", i -> unmarkFavorite(cinemaId, listener, userBean));
-            return unfavMenu;
+            Button unfavBtn = new Button();
+            unfavBtn.setCaption("Favorit");
+            unfavBtn.setIcon(FontAwesome.HEART);
+            unfavBtn.addClickListener(e -> unmarkFavorite(cinemaId, listener, userBean));
+            unfavBtn.setId("cinemaUnfavBtn_" + cinemaId);
+            unfavBtn.addStyleName(BaseTheme.BUTTON_LINK);
+            unfavBtn.setDescription("Als Favorit entfernen");
+            return unfavBtn;
         }
     }
 
@@ -36,35 +42,43 @@ public class CinemaFavoriteUtils {
         if (!userBean.isUserLoggedIn()) {
             Notification.show("Melden Sie sich an, um diese Funktion nutzen zu können.", Type.WARNING_MESSAGE);
         } else {
-            if (!isCinemaFavorite(cinemaId, userBean.getRestClient())) {
+            Favorite fav = getFavorite(cinemaId, userBean.getRestClient());
+            if (fav == null) {
+
                 // create new favorite entry
                 RestResponse cinemaResponse = userBean.getRestClient().getCinema(cinemaId);
                 if (!cinemaResponse.hasError()) {
-                    userBean.getRestClient()
+                    RestResponse favoriteResponse = userBean.getRestClient()
                             .saveFavorite(new Favorite(userBean.getCurrentUser(), (Cinema) cinemaResponse.getValue()));
-                    listener.favoriteAdded();
+                    if (!favoriteResponse.hasError()) {
+                        Notification.show("Das Kino " + ((Favorite) favoriteResponse.getValue()).getCinema().getName()
+                                + " wurde als Favorit markiert.", Type.TRAY_NOTIFICATION);
+                        listener.favoriteAdded();
+                    }
                 }
             }
         }
     }
 
     private static void unmarkFavorite(long cinemaId, ToggleFavoriteListener listener, UserBean userBean) {
-        RestResponse response = userBean.getRestClient().getFavorite(cinemaId);
-        if (!response.hasError()) {
-            Favorite fav = (Favorite) response.getValue();
-            if (fav != null) {
-                // remove favorite entry
-                userBean.getRestClient().deleteFavorite(fav);
-                listener.favoriteRemoved();
-            }
+        Favorite fav = getFavorite(cinemaId, userBean.getRestClient());
+        if (fav != null) {
+            Notification.show("Das Kino " + fav.getCinema().getName() + " wurde als Favorit entfernt.",
+                    Type.TRAY_NOTIFICATION);
+            // remove favorite entry
+            userBean.getRestClient().deleteFavorite(fav);
+            listener.favoriteRemoved();
         }
     }
 
     public static boolean isCinemaFavorite(long cinemaId, RestClient restClient) {
+        return getFavorite(cinemaId, restClient) != null;
+    }
+
+    private static Favorite getFavorite(long cinemaId, RestClient restClient) {
         RestResponse response = restClient.getFavorite(cinemaId);
         if (!response.hasError())
-            if (response.getValue() != null)
-                return true;
-        return false;
+            return (Favorite) response.getValue();
+        return null;
     }
 }

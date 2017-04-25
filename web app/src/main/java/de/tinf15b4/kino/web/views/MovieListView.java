@@ -16,6 +16,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.VerticalLayout;
 
@@ -48,7 +49,9 @@ public class MovieListView extends VerticalLayout implements View {
         this.setSpacing(true);
         filterData = new MovieFilterData();
 
-        addComponent(createFilter());
+        Component filter = createFilter();
+        filter.setId("movieFilter");
+        addComponent(filter);
         addComponent(createMovies());
     }
 
@@ -60,19 +63,45 @@ public class MovieListView extends VerticalLayout implements View {
 
             Image image = new Image(null, new ExternalResource(PictureController.getMoviePictureUrl(m)));
 
-            image.setHeight("100px");
+            image.setHeight("200px");
             row.addComponent(image);
 
-            Link l = new Link(m.getName(), new ExternalResource("#!" + MovieView.VIEW_NAME + "/" + m.getId()));
+            Component movieInfoBox = createMovieInfoBox(m);
+            movieInfoBox.setId("movieInfoBox_" + m.getId());
 
-            row.addComponent(l);
-            row.setComponentAlignment(l, Alignment.MIDDLE_LEFT);
+            row.addComponent(movieInfoBox);
+            row.setComponentAlignment(movieInfoBox, Alignment.TOP_LEFT);
 
-            row.setExpandRatio(l, 1f);
+            row.setExpandRatio(movieInfoBox, 1f);
             row.setSpacing(true);
+            row.setId("movieRow_" + m.getId());
+
             movieLayout.addComponent(row);
         }
         return movieLayout;
+    }
+
+    private Component createMovieInfoBox(Movie m) {
+
+        VerticalLayout movieInfoBox = new VerticalLayout();
+
+        Link l = new Link(m.getName(), new ExternalResource("#!" + MovieView.VIEW_NAME + "/" + m.getId()));
+        l.setId("movieListLink_" + m.getId());
+        movieInfoBox.addComponent(l);
+        movieInfoBox.setComponentAlignment(l, Alignment.TOP_LEFT);
+
+        movieInfoBox.addComponent(new Label("Länge: " + m.getLengthMinutes() + " Minuten"));
+        movieInfoBox.addComponent(new Label("Genre: " + m.getGenre()));
+        movieInfoBox.addComponent(new Label("Altersfreigabe: " + m.getAgeControl()));
+
+        RestResponse avgRatingResponse = userBean.getRestClient().getAverageRatingForMovie(m.getId());
+        double avgRating = 0d;
+        if (!avgRatingResponse.hasError())
+            avgRating = (Double) avgRatingResponse.getValue();
+        movieInfoBox.addComponent(new Label("Durschschnittliche Bewertung: " + avgRating));
+        movieInfoBox.addComponent(new Label(m.getDescription()));
+
+        return movieInfoBox;
     }
 
     private List<Movie> getFilteredMovies() {

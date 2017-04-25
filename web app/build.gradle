@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.2.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.3.RELEASE")
     }
 }
 
@@ -13,7 +13,7 @@ apply plugin: 'org.springframework.boot'
 
 project.ext {
     cucumberVersion = '1.2.5'
-    seleniumVersion = '3.0.1'
+    seleniumVersion = '3.4.0'
 }
 
 jar {
@@ -35,7 +35,7 @@ sourceSets {
 
 configurations.all {
     resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-        if (details.requested.group == 'org.seleniumhq.selenium') {
+        if (details.requested.group == 'org.seleniumhq.selenium' && details.requested.name != 'htmlunit-driver') {
             //HACK: Force Selenium 3 down spring boot's throat
             details.useVersion seleniumVersion
         }
@@ -55,7 +55,7 @@ repositories {
 }
 
 dependencies {
-    compile('com.vaadin:vaadin-spring-boot-starter:1.1.1')
+    compile('com.vaadin:vaadin-spring-boot-starter:1.2.0')
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.boot:spring-boot-starter-jetty')
     compile('org.springframework.boot:spring-boot-devtools')

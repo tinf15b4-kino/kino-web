@@ -54,9 +54,17 @@ After submitting the search pattern, the result view should only show entries th
 ### 6. Extension Points
 (n/a)
 
+### 7. Function Points
+
+We calculated the function points with the following table from TINY TOOLS. The Use Case "Search Everything" has
+73.04 points.
+
+![functionpoints]
+
 <!-- Link definitions -->
 [SRS]: ../SRS.md
 [flow]: ./search%20everything/flow.png
 [screenshot]: ./search%20everything/screenshot.png
+[functionpoints]: ../TinyTools%20Functionpoints/search_everything_charTable.PNG
 
  

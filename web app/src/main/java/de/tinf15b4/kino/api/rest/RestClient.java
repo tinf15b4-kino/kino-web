@@ -45,6 +45,7 @@ public class RestClient {
     private static final String GET_MOVIE = "/getMovie?movieId=%s";
     private static final String GET_FILTERED_MOVIES = "/getFilteredMovies";
     private static final String GET_RATING_FOR_MOVIE = "/getAverageRatingForMovie?movieId=%s";
+    private static final String GET_RATING_FOR_CINEMA = "/getAverageRatingForCinema?cinemaId=%s";
     private static final String GET_RATED_MOVIES = "/getRatedMovies?movieId=%s";
     private static final String GET_PLAYLIST_MOVIE = "/getPlaylistForMovie?movieId=%s&from=%s&to=%s";
     private static final String GET_SEARCH_RESULT = "/getSearchResult?term=%s";
@@ -168,6 +169,11 @@ public class RestClient {
 
     public RestResponse getAverageRatingForMovie(long movieId) {
         String requestUrl = baseUrl + String.format(GET_RATING_FOR_MOVIE, movieId);
+        return doGetRequest(requestUrl, Double.class, false);
+    }
+
+    public RestResponse getAverageRatingForCinema(long cinemaId) {
+        String requestUrl = baseUrl + String.format(GET_RATING_FOR_CINEMA, cinemaId);
         return doGetRequest(requestUrl, Double.class, false);
     }
 

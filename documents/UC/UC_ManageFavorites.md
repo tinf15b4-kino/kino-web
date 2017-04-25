@@ -90,7 +90,15 @@ Furthermore, the option to remove the favorite mark will be exchanged for an opt
 ### 6. Extension Points
 (n/a)
 
+### 7. Function Points
+
+We calculated the function points with the following table from TINY TOOLS. The Use Case "Manage favorites" has
+58.08 points.
+
+![functionpoints]
+
 <!-- Link definitions -->
+[functionpoints]: ../TinyTools%20Functionpoints/manage_favorites_charTable.PNG
 [SRS]: https://github.com/tinf15b4-kino/kino-web/blob/master/documents/SRS.md
 [Add_flow]: https://rawgit.com/tinf15b4-kino/kino-web/master/documents/UC/manage%20favorites/activity%20diagram%20-%20add%20new%20favorite%20cinema.svg
 [Remove_flow]: https://rawgit.com/tinf15b4-kino/kino-web/master/documents/UC/manage%20favorites/activity%20diagram%20-%20remove%20favorite%20from%20favorite%20list.svg

@@ -95,7 +95,7 @@ public class BrowserStepDefinitions {
 
         switch (drvstr) {
         case "firefox":
-            FirefoxDriverManager.getInstance().setup("0.11.1");
+            FirefoxDriverManager.getInstance().setup("0.16.0");
             driver = new FirefoxDriver();
             break;
         case "chrome":
@@ -219,7 +219,7 @@ public class BrowserStepDefinitions {
 
     @When("^I search for \"([^\\\"]*)\"$")
     public void iSearchFor(String term) throws Throwable {
-        typeInto(term, ".kino-search-box");
+        typeInto(term, "#cinemaSearchBox");
         sendKey("RETURN");
     }
 

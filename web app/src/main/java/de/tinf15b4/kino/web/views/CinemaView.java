@@ -60,23 +60,28 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
                 if (c == null) {
                     this.getUI().getNavigator().navigateTo(CinemaListView.VIEW_NAME);
                 } else {
-                    VerticalLayout left = new VerticalLayout();
-                    VerticalLayout right = new VerticalLayout();
-                    right.setMargin(true);
-                    left.addComponent(new Label(c.getName()));
+                    HorizontalLayout heading = new HorizontalLayout();
+                    Label cinemaName = new Label(c.getName());
+                    cinemaName.setId("cinemaNameLabel_" + c.getId());
+                    heading.addComponent(cinemaName);
 
+                    this.addComponent(heading);
+
+                    HorizontalLayout informationRow = new HorizontalLayout();
                     // Picture
                     Component image = new Image(null, new ExternalResource(PictureController.getCinemaPictureUrl(c)));
-                    image.setHeight("150px");
+                    image.setHeight("200px");
 
-                    left.addComponent(image);
+                    informationRow.addComponent(image);
 
-                    favoriteButton = CinemaFavoriteUtils.createFavoriteButton(c.getId(), userBean, this);
-                    right.addComponent(favoriteButton);
+                    // Info-Box
+                    Component cinemaInfoBox = createCinemaInfoBox(c);
+                    cinemaInfoBox.setId("cinemaInfoBox_" + c.getId());
+                    informationRow.addComponent(cinemaInfoBox);
 
-                    right.addComponent(new Label(c.getAddress(), ContentMode.PREFORMATTED));
+                    informationRow.setSpacing(true);
 
-                    this.addComponent(new HorizontalLayout(left, right));
+                    this.addComponent(informationRow);
 
                     RestResponse ratedCinemaResponse = userBean.getRestClient().getRatedCinemas(c.getId());
                     if (!ratedCinemaResponse.hasError()) {
@@ -95,39 +100,51 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
                                 ratings.addComponent(new Label(rc.getRating() + ""));
                                 ratings.addComponent(new Label(sdf.format(rc.getTime())));
                                 ratings.addComponent(new Label(rc.getDescription()));
+
+                                this.addComponent(new Panel("Bewertungen", ratings));
                             }
-
-                            this.addComponent(new Panel("Bewertungen", ratings));
                         }
-                    }
 
-                    RestResponse playlistResponse = userBean.getRestClient().getPlaylistForCinemas(c.getId(),
-                            new Date(), new Date(new Date().getTime() + 1000L * 3600 * 24 * 7));
-                    if (!playlistResponse.hasError()) {
-                        List<Playlist> playlistEntries = Lists.newArrayList((Playlist[]) playlistResponse.getValue());
+                        RestResponse playlistResponse = userBean.getRestClient().getPlaylistForCinemas(c.getId(),
+                                new Date(), new Date(new Date().getTime() + 1000L * 3600 * 24 * 7));
+                        if (!playlistResponse.hasError()) {
+                            List<Playlist> playlistEntries = Lists
+                                    .newArrayList((Playlist[]) playlistResponse.getValue());
 
-                        if (playlistEntries.size() > 0) {
-                            GridLayout movies = new GridLayout(3, 1);
-                            movies.setMargin(true);
-                            movies.setSpacing(true);
-                            movies.setSizeFull();
+                            if (playlistEntries.size() > 0) {
+                                GridLayout movies = new GridLayout(3, 1);
+                                movies.setMargin(true);
+                                movies.setSpacing(true);
+                                movies.setSizeFull();
 
-                            for (Playlist p : playlistEntries) {
-                                SimpleDateFormat sdf = new SimpleDateFormat("E HH:mm", Locale.GERMANY);
-                                NumberFormat pricef = NumberFormat.getCurrencyInstance(Locale.GERMANY);
-                                movies.addComponent(new Label(sdf.format(p.getTime())));
-                                movies.addComponent(new Link(p.getMovie().getName(),
-                                        new ExternalResource("#!" + MovieView.VIEW_NAME + "/" + p.getMovie().getId())));
-                                movies.addComponent(new Label(pricef.format(p.getPrice() / 100.0)));
+                                for (Playlist p : playlistEntries) {
+                                    SimpleDateFormat sdf = new SimpleDateFormat("E HH:mm", Locale.GERMANY);
+                                    NumberFormat pricef = NumberFormat.getCurrencyInstance(Locale.GERMANY);
+                                    movies.addComponent(new Label(sdf.format(p.getTime())));
+                                    movies.addComponent(new Link(p.getMovie().getName(), new ExternalResource(
+                                            "#!" + MovieView.VIEW_NAME + "/" + p.getMovie().getId())));
+                                    movies.addComponent(new Label(pricef.format(p.getPrice() / 100.0)));
+                                }
+
+                                this.addComponent(new Panel("Filme", movies));
                             }
-
-                            this.addComponent(new Panel("Filme", movies));
                         }
-                    }
 
+                    }
                 }
             }
         }
+    }
+
+    private Component createCinemaInfoBox(Cinema c) {
+        VerticalLayout infoBox = new VerticalLayout();
+
+        infoBox.addComponent(new Label(c.getAddress(), ContentMode.PREFORMATTED));
+
+        favoriteButton = CinemaFavoriteUtils.createFavoriteButton(c.getId(), userBean, this);
+        infoBox.addComponent(favoriteButton);
+
+        return infoBox;
     }
 
     private void replaceFavoriteButton() {

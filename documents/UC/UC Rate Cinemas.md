@@ -31,3 +31,12 @@ Write Review Dialog
 
 (n/a)
 
+## 3. Function Points
+
+We calculated the function points with the following table from TINY TOOLS. The Use Case "Rate Cinemas" has
+57.2 points.
+
+![functionpoints]
+
+<!-- Link definitions -->
+[functionpoints]: ../TinyTools%20Functionpoints/rate_cinemas_charTable.PNG

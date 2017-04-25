@@ -13,9 +13,9 @@ Scenario: See the cinema list
 	
 	Then I should see a label containing "Maier, Maier und Maier"
 	And I should see a label containing "Schicke Scheinwand"
-	And all elements matching ".cinema-list-image" are left-aligned at 300x400,800x600,1024x768,1280x720
-	And all elements matching ".cinema-list-link" are left-aligned at 300x400,800x600,1024x768,1280x720
-	And all elements matching ".cinema-favorite-button" are right-aligned at 300x400,800x600,1024x768,1280x720
+	And all elements matching "[id^=cinemaImage]" are left-aligned at 300x400,800x600,1024x768,1280x720
+	And all elements matching "[id^=cinemaListLink]" are left-aligned at 300x400,800x600,1024x768,1280x720
+	And all elements matching "[id^=cinemaFavoriteButton]" are left-aligned at 300x400,800x600,1024x768,1280x720
 	And the link "Maier, Maier und Maier" should redirect to "#!cinema/1"
 
 	
