@@ -23,7 +23,7 @@ node {
         archiveArtifacts artifacts: 'web app/build/libs/*.jar', fingerprint: true
 
         stage 'Run Tests'
-        sh "cd 'web app'; ./gradlew test -Dkinotest.driver=remote --debug"
+        sh "cd 'web app'; ./gradlew test -Dkinotest.driver=remote --debug || true"
         junit 'web app/build/test-results/*.xml'
     } catch (e) {
         // If there was an exception thrown, the build failed
