@@ -49,7 +49,15 @@ After the user set some filters, he should see the informations (movies), which 
 ### 6. Extension Points
 (n/a)
 
+### 7. Function Points
+
+We calculated the function points with the following table from TINY TOOLS. The Use Case "Filter Information" has
+95.92 points.
+
+![functionpoints]
+
 <!-- Link definitions -->
+[functionpoints]: ../TinyTools%20Functionpoints/filter_information_charTable.PNG
 [SRS]: https://github.com/tinf15b4-kino/kino-web/blob/master/documents/SRS.md
 [Flow]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/UC/filter%20information/flow_FilterInformation.png
 [Screenshot]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/UC/filter%20information/screenshot_FilterInformation.png
