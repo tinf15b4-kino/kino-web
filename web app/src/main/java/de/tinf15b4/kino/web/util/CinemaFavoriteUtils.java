@@ -9,7 +9,9 @@ import com.vaadin.ui.themes.BaseTheme;
 
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.favorites.Favorite;
-import de.tinf15b4.kino.data.users.UserBean;
+import de.tinf15b4.kino.web.rest.RestClient;
+import de.tinf15b4.kino.web.rest.RestResponse;
+import de.tinf15b4.kino.web.user.UserBean;
 
 public class CinemaFavoriteUtils {
 

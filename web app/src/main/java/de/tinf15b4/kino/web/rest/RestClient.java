@@ -1,4 +1,4 @@
-package de.tinf15b4.kino.web.util;
+package de.tinf15b4.kino.web.rest;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -279,11 +279,11 @@ public class RestClient {
         return GsonFactory.buildGson().toJson(body).getBytes(Charsets.UTF_8);
     }
 
-    public static String getCinemaPictureUrl(Cinema c) {
-        return "/rest/cinemaPicture?cinemaId=" + c.getId();
+    public String getCinemaPictureUrl(Cinema c) {
+        return baseUrl + "/cinemaPicture?cinemaId=" + c.getId();
     }
 
-    public static String getMoviePictureUrl(Movie m) {
-        return "/rest/moviePicture?movieId=" + m.getId();
+    public String getMoviePictureUrl(Movie m) {
+        return baseUrl + "/moviePicture?movieId=" + m.getId();
     }
 }

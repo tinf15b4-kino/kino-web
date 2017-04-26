@@ -22,13 +22,12 @@ import com.vaadin.ui.VerticalLayout;
 
 import de.tinf15b4.kino.data.movies.Movie;
 import de.tinf15b4.kino.data.movies.MovieFilterData;
-import de.tinf15b4.kino.data.users.UserBean;
 import de.tinf15b4.kino.web.components.AgeControlCheckboxes;
 import de.tinf15b4.kino.web.components.DateTimeFilter;
 import de.tinf15b4.kino.web.components.GenreCheckboxes;
 import de.tinf15b4.kino.web.components.PriceFilter;
-import de.tinf15b4.kino.web.util.RestClient;
-import de.tinf15b4.kino.web.util.RestResponse;
+import de.tinf15b4.kino.web.rest.RestResponse;
+import de.tinf15b4.kino.web.user.UserBean;
 
 @SpringView(name = MovieListView.VIEW_NAME)
 public class MovieListView extends VerticalLayout implements View {
@@ -61,7 +60,7 @@ public class MovieListView extends VerticalLayout implements View {
             HorizontalLayout row = new HorizontalLayout();
             row.setWidth(100, Unit.PERCENTAGE);
 
-            Image image = new Image(null, new ExternalResource(RestClient.getMoviePictureUrl(m)));
+            Image image = new Image(null, new ExternalResource(userBean.getRestClient().getMoviePictureUrl(m)));
 
             image.setHeight("200px");
             row.addComponent(image);

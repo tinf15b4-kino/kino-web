@@ -1,4 +1,4 @@
-package de.tinf15b4.kino.web;
+package de.tinf15b4.kino.api;
 
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
@@ -25,7 +25,7 @@ import de.tinf15b4.kino.data.initializer.DataInitializer;
 @EntityScan(basePackages = "de.tinf15b4.kino.data.*")
 @EnableScheduling
 @EnableJSONDoc
-@ComponentScan({ "de.tinf15b4.kino.data.*", "de.tinf15b4.kino.web", "de.tinf15b4.kino.api.*" })
+@ComponentScan({ "de.tinf15b4.kino.data.*", "de.tinf15b4.kino.api", "de.tinf15b4.kino.api.*" })
 public class KinoWebDataService {
 
     @Bean

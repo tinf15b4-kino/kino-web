@@ -1,14 +1,14 @@
-package de.tinf15b4.kino.data.users;
+package de.tinf15b4.kino.web.user;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 
+import de.tinf15b4.kino.data.users.User;
+import de.tinf15b4.kino.web.rest.RestClient;
+import de.tinf15b4.kino.web.rest.RestResponse;
 import de.tinf15b4.kino.web.ui.SmartCinemaUi;
-import de.tinf15b4.kino.web.util.RestClient;
-import de.tinf15b4.kino.web.util.RestResponse;
 
 @Component
 @SessionScope
@@ -19,15 +19,15 @@ public class UserBean {
     private SmartCinemaUi ui;
     private User currentUser;
 
-    @Value("${local.server.port}")
-    private int port = 0;
+    // default port. Will be overridden by environment variable
+    private static final int PORT = 9090;
 
     @PostConstruct
     public void init() {
         String baseUrl = System.getenv("SMARTCINEMA_API_URL");
 
         if (baseUrl == null)
-            baseUrl = "http://localhost:" + port;
+            baseUrl = "http://localhost:" + PORT;
 
         restClient = new RestClient(baseUrl);
     }
@@ -37,7 +37,7 @@ public class UserBean {
     }
 
     public boolean login(String nameOrMail, String password) {
-        restClient = new RestClient(nameOrMail, password, "http://localhost:" + port);
+        restClient = new RestClient(nameOrMail, password, "http://localhost:" + PORT);
         RestResponse loginResponse = restClient.authorize();
         if (!loginResponse.hasError()) {
             // login was successful

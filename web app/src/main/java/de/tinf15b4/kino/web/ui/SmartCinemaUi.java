@@ -31,7 +31,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.BaseTheme;
 import com.vaadin.ui.themes.ValoTheme;
 
-import de.tinf15b4.kino.data.users.UserBean;
+import de.tinf15b4.kino.web.user.UserBean;
 import de.tinf15b4.kino.web.util.ShortcutUtils;
 import de.tinf15b4.kino.web.views.CinemaListView;
 import de.tinf15b4.kino.web.views.FavoriteListView;

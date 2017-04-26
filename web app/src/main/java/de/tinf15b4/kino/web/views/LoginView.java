@@ -20,7 +20,7 @@ import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
 
-import de.tinf15b4.kino.data.users.UserBean;
+import de.tinf15b4.kino.web.user.UserBean;
 import de.tinf15b4.kino.web.util.ShortcutUtils;
 
 @SpringView(name = LoginView.VIEW_NAME)

@@ -1,4 +1,4 @@
-package de.tinf15b4.kino.data.users;
+package de.tinf15b4.kino.web.user;
 
 public class NoUserLoggedInException extends IllegalStateException {
 

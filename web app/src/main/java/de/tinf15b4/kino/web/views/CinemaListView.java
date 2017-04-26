@@ -18,10 +18,9 @@ import com.vaadin.ui.Link;
 import com.vaadin.ui.VerticalLayout;
 
 import de.tinf15b4.kino.data.cinemas.Cinema;
-import de.tinf15b4.kino.data.users.UserBean;
+import de.tinf15b4.kino.web.rest.RestResponse;
+import de.tinf15b4.kino.web.user.UserBean;
 import de.tinf15b4.kino.web.util.CinemaFavoriteUtils;
-import de.tinf15b4.kino.web.util.RestClient;
-import de.tinf15b4.kino.web.util.RestResponse;
 import de.tinf15b4.kino.web.util.ToggleFavoriteListener;
 
 @SpringView(name = CinemaListView.VIEW_NAME)
@@ -46,7 +45,8 @@ public class CinemaListView extends VerticalLayout implements View {
                 row.setId("cinemaRow_" + c.getId());
 
                 // Picture
-                Component image = new Image(null, new ExternalResource(RestClient.getCinemaPictureUrl(c)));
+                Component image = new Image(null,
+                        new ExternalResource(userBean.getRestClient().getCinemaPictureUrl(c)));
                 image.setId("cinemaImage_" + c.getId());
                 image.setHeight("200px");
                 row.addComponent(image);
