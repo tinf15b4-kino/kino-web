@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 
-import de.tinf15b4.kino.api.rest.RestClient;
-import de.tinf15b4.kino.api.rest.RestResponse;
 import de.tinf15b4.kino.web.ui.SmartCinemaUi;
+import de.tinf15b4.kino.web.util.RestClient;
+import de.tinf15b4.kino.web.util.RestResponse;
 
 @Component
 @SessionScope

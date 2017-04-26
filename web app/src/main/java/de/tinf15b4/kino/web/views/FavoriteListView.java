@@ -20,12 +20,12 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.VerticalLayout;
 
-import de.tinf15b4.kino.api.rest.PictureController;
-import de.tinf15b4.kino.api.rest.RestResponse;
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.favorites.Favorite;
 import de.tinf15b4.kino.data.users.UserBean;
 import de.tinf15b4.kino.web.util.CinemaFavoriteUtils;
+import de.tinf15b4.kino.web.util.RestClient;
+import de.tinf15b4.kino.web.util.RestResponse;
 import de.tinf15b4.kino.web.util.ToggleFavoriteListener;
 
 @SpringView(name = FavoriteListView.VIEW_NAME)
@@ -60,8 +60,7 @@ public class FavoriteListView extends VerticalLayout implements View {
                         row.setId("cinemaRow_" + c.getId());
 
                         // Picture
-                        Component image = new Image(null,
-                                new ExternalResource(PictureController.getCinemaPictureUrl(c)));
+                        Component image = new Image(null, new ExternalResource(RestClient.getCinemaPictureUrl(c)));
                         image.setId("cinemaImage_" + c.getId());
                         image.setHeight("200px");
                         row.addComponent(image);

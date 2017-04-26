@@ -11,11 +11,11 @@ import com.vaadin.ui.Link;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 
-import de.tinf15b4.kino.api.rest.RestResponse;
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.movies.Movie;
 import de.tinf15b4.kino.data.search.SearchResult;
 import de.tinf15b4.kino.data.users.UserBean;
+import de.tinf15b4.kino.web.util.RestResponse;
 
 @SpringView(name = SearchResultsView.VIEW_NAME)
 public class SearchResultsView extends VerticalLayout implements View {

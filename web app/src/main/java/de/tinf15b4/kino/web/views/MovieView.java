@@ -24,12 +24,12 @@ import com.vaadin.ui.Link;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 
-import de.tinf15b4.kino.api.rest.PictureController;
-import de.tinf15b4.kino.api.rest.RestResponse;
 import de.tinf15b4.kino.data.movies.Movie;
 import de.tinf15b4.kino.data.playlists.Playlist;
 import de.tinf15b4.kino.data.ratedmovies.RatedMovie;
 import de.tinf15b4.kino.data.users.UserBean;
+import de.tinf15b4.kino.web.util.RestClient;
+import de.tinf15b4.kino.web.util.RestResponse;
 
 @SpringView(name = MovieView.VIEW_NAME)
 
@@ -59,7 +59,7 @@ public class MovieView extends VerticalLayout implements View {
                 HorizontalLayout content = new HorizontalLayout();
 
                 // Image
-                Component image = new Image(null, new ExternalResource(PictureController.getMoviePictureUrl(m)));
+                Component image = new Image(null, new ExternalResource(RestClient.getMoviePictureUrl(m)));
                 image.setHeight("400px");
                 image.setId("movieImage_" + m.getId());
 
