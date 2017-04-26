@@ -115,14 +115,14 @@ public class MovieView extends VerticalLayout implements View {
                             Panel playtimesPanel = new Panel("Spielplan", playtimes);
                             playtimesPanel.setId("playtimesPanel_" + m.getId());
                             information.addComponent(playtimesPanel);
-                            information.setMargin(new MarginInfo(false, true));
-                            content.addComponent(information);
-                            content.setSizeFull();
-                            content.setExpandRatio(information, 1f);
-                            content.setMargin(true);
-                            content.setSpacing(true);
-                            this.addComponent(content);
                         }
+                        information.setMargin(new MarginInfo(false, true));
+                        content.addComponent(information);
+                        content.setSizeFull();
+                        content.setExpandRatio(information, 1f);
+                        content.setMargin(true);
+                        content.setSpacing(true);
+                        this.addComponent(content);
                     }
                 }
             }
