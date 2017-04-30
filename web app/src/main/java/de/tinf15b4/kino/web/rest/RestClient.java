@@ -43,6 +43,7 @@ public class RestClient {
     private static final String GET_PLAYLIST_CINEMA = "/getPlaylistForCinema?cinemaId=%s&from=%s&to=%s";
     private static final String GET_FAVORITES = "/getFavorites?token=%s";
     private static final String GET_MOVIE = "/getMovie?movieId=%s";
+    private static final String GET_MOVIES = "/getMovies";
     private static final String GET_FILTERED_MOVIES = "/getFilteredMovies";
     private static final String GET_RATING_FOR_MOVIE = "/getAverageRatingForMovie?movieId=%s";
     private static final String GET_RATING_FOR_CINEMA = "/getAverageRatingForCinema?cinemaId=%s";
@@ -148,8 +149,13 @@ public class RestClient {
         return doGetRequest(requestUrl, Movie.class, false);
     }
 
+    public RestResponse getMovies() {
+        String requestUrl = baseUrl + String.format(GET_MOVIES);
+        return doGetRequest(requestUrl, Movie[].class, false);
+    }
+
     public RestResponse getFilteredMovies(MovieFilterData filterData) {
-        String requestUrl = baseUrl + String.format(GET_FILTERED_MOVIES, token);
+        String requestUrl = baseUrl + String.format(GET_FILTERED_MOVIES);
         // HACK:
         // This is a POST request to submit the filterdata, otherwise we would
         // need to add all fields as URL parameters and I dont want to do that
