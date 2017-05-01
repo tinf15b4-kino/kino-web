@@ -11,6 +11,11 @@ public interface ServiceModel<E extends EntityModel> {
 
     Optional<E> save(E e);
 
+    /**
+     * Saves the object but applies various ugly hacks to keep the already assigned id
+     */
+    Optional<E> saveWithId(E e);
+
     void delete(E e);
 
     void deleteAll();

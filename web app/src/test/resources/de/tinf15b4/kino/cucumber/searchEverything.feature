@@ -68,7 +68,7 @@ Feature: Search everything
     And I search for "Lisa"
 
     Then I should see a label containing "Schicke Scheinwand"
-     And I should see a label containing "Maier"
+    And I should see a label containing "Maier"
 
   Scenario: No results
     Given the movies

@@ -63,37 +63,37 @@ public class InternalRestController {
 
     @RequestMapping(value = "rest/insertCinema", method = RequestMethod.POST)
     public ResponseEntity<?> insertCinema(@RequestBody Cinema cinema) {
-        return ResponseEntity.ok(cinemaService.save(cinema));
+        return ResponseEntity.ok(cinemaService.saveWithId(cinema));
     }
 
     @RequestMapping(value = "rest/insertMovie", method = RequestMethod.POST)
     public ResponseEntity<?> inserMovie(@RequestBody Movie movie) {
-        return ResponseEntity.ok(movieService.save(movie));
+        return ResponseEntity.ok(movieService.saveWithId(movie));
     }
 
     @RequestMapping(value = "rest/insertFavorite", method = RequestMethod.POST)
     public ResponseEntity<?> insertFavorite(@RequestBody Favorite favorite) {
-        return ResponseEntity.ok(favoriteService.save(favorite));
+        return ResponseEntity.ok(favoriteService.saveWithId(favorite));
     }
 
     @RequestMapping(value = "rest/insertPlaylist", method = RequestMethod.POST)
     public ResponseEntity<?> insertPlaylist(@RequestBody Playlist playlist) {
-        return ResponseEntity.ok(playlistService.save(playlist));
+        return ResponseEntity.ok(playlistService.saveWithId(playlist));
     }
 
     @RequestMapping(value = "rest/insertRatedCinema", method = RequestMethod.POST)
     public ResponseEntity<?> insertRatedCinema(@RequestBody RatedCinema ratedCinema) {
-        return ResponseEntity.ok(ratedCinemaService.save(ratedCinema));
+        return ResponseEntity.ok(ratedCinemaService.saveWithId(ratedCinema));
     }
 
     @RequestMapping(value = "rest/insertRatedMovie", method = RequestMethod.POST)
     public ResponseEntity<?> insertRatedMovie(@RequestBody RatedMovie ratedMovie) {
-        return ResponseEntity.ok(ratedMovieService.save(ratedMovie));
+        return ResponseEntity.ok(ratedMovieService.saveWithId(ratedMovie));
     }
 
     @RequestMapping(value = "rest/insertUser", method = RequestMethod.POST)
     public ResponseEntity<?> insertCinema(@RequestBody User user) {
-        return ResponseEntity.ok(userService.save(user));
+        return ResponseEntity.ok(userService.saveWithId(user));
     }
 
     @RequestMapping(value = "rest/getAllUsers", method = RequestMethod.GET)
