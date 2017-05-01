@@ -32,6 +32,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -55,6 +56,7 @@ import de.tinf15b4.kino.data.ratedmovies.RatedMovie;
 import de.tinf15b4.kino.data.users.User;
 import de.tinf15b4.kino.web.KinoWebApplication;
 import de.tinf15b4.kino.web.rest.GsonFactory;
+import de.tinf15b4.kino.web.rest.RestApiUrlSource;
 import de.tinf15b4.kino.web.rest.RestClient;
 import de.tinf15b4.kino.web.rest.RestResponse;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
@@ -69,8 +71,8 @@ public class BrowserStepDefinitions {
     @Value("${local.server.port}")
     private int port;
 
-    private String restApiPrivUrl = "http://localhost:9090/rest"; // DEBUG HACK
-    private String restApiPubUrl = "http://localhost:9090";
+    @Autowired
+    private RestApiUrlSource restApiUrlSource;
 
     public BrowserStepDefinitions() throws Exception {
         // These properties can be set on the gradle command line, e.g.
@@ -116,7 +118,7 @@ public class BrowserStepDefinitions {
         mockUser.setName(username);
         mockUser.setPassword("muster");
 
-        doRestCall(restApiPrivUrl + "/insertUser", mockUser, RequestMethod.POST);
+        doRestCall(getRestApiPrivUrl() + "/insertUser", mockUser, RequestMethod.POST);
 
         iOpenTheStartPage();
         waitForLabel("Anmelden");
@@ -129,28 +131,28 @@ public class BrowserStepDefinitions {
     @Given("^the movies$")
     public void withMovies(List<Movie> table) throws Throwable {
         for (Movie m : table)
-            doRestCall(restApiPrivUrl + "/insertMovie", m, RequestMethod.POST);
+            doRestCall(getRestApiPrivUrl() + "/insertMovie", m, RequestMethod.POST);
     }
 
     @Given("^the cinemas")
     public void withCinemas(List<Cinema> table) throws Throwable {
         for (Cinema m : table)
-            doRestCall(restApiPrivUrl + "/insertCinema", m, RequestMethod.POST);
+            doRestCall(getRestApiPrivUrl() + "/insertCinema", m, RequestMethod.POST);
     }
 
     @Given("^the users")
     public void withUsers(List<User> table) throws Throwable {
         for (User m : table)
-            doRestCall(restApiPrivUrl + "/insertUser", m, RequestMethod.POST);
+            doRestCall(getRestApiPrivUrl() + "/insertUser", m, RequestMethod.POST);
     }
 
     @Given("^the rating of User \"([^\\\"]*)\" for Cinema \"([^\\\"]*)\" with (.*) stars and description \"([^\\\"]*)\"$")
     public void withCinemaRating(String userName, String cinemaName, int stars, String desc) {
         // FIXME Selecting by id doesn't seem to work as the ids are regenerated
         // when adding to repo. Seems to be only on my machine though (Marco)
-        RestClient restClient = new RestClient("Max Mustermann", "muster", restApiPubUrl);
+        RestClient restClient = new RestClient("Max Mustermann", "muster", getRestApiPubUrl());
         User user = null;
-        for (User u : doRestCall(restApiPrivUrl + "/getAllUsers", null,
+        for (User u : doRestCall(getRestApiPrivUrl() + "/getAllUsers", null,
                 RequestMethod.GET, User[].class)) {
             if (u.getName().equals(userName))
                 user = u;
@@ -163,16 +165,16 @@ public class BrowserStepDefinitions {
         }
 
         RatedCinema rCinema = new RatedCinema(user, cinema, stars, desc, Calendar.getInstance().getTime());
-        doRestCall(restApiPrivUrl + "/insertRatedCinema", rCinema, RequestMethod.POST);
+        doRestCall(getRestApiPrivUrl() + "/insertRatedCinema", rCinema, RequestMethod.POST);
     }
 
     @Given("^the rating of User \"([^\\\"]*)\" for Movie \"([^\\\"]*)\" with (.*) stars and description \"([^\\\"]*)\"$")
     public void withMovieRating(String userName, String movieName, int stars, String desc) {
         // FIXME Selecting by id doesn't seem to work as the ids are regenerated
         // when adding to repo. Seems to be only on my machine though (Marco)
-        RestClient restClient = new RestClient("Max Mustermann", "muster", restApiPubUrl);
+        RestClient restClient = new RestClient("Max Mustermann", "muster", getRestApiPubUrl());
         User user = null;
-        for (User u : doRestCall(restApiPrivUrl + "/getAllUsers", null,
+        for (User u : doRestCall(getRestApiPrivUrl() + "/getAllUsers", null,
                 RequestMethod.GET, User[].class)) {
             if (u.getName().equals(userName))
                 user = u;
@@ -185,7 +187,16 @@ public class BrowserStepDefinitions {
         }
 
         RatedMovie rMovie = new RatedMovie(user, movie, stars, desc, Calendar.getInstance().getTime());
-        doRestCall(restApiPrivUrl + "/insertRatedMovie", rMovie, RequestMethod.POST);
+        doRestCall(getRestApiPrivUrl() + "/insertRatedMovie", rMovie, RequestMethod.POST);
+    }
+
+    private String getRestApiPrivUrl() {
+        // TODO: change to /rest-private
+        return restApiUrlSource.getUrl() + "/rest";
+    }
+
+    private String getRestApiPubUrl() {
+        return restApiUrlSource.getUrl();
     }
 
     private static class FaveCinemaTableRow {
@@ -195,9 +206,9 @@ public class BrowserStepDefinitions {
 
     @Given("^the favorite cinemas")
     public void withFavoriteCinemas(List<FaveCinemaTableRow> faves) {
-        RestClient restClient = new RestClient("Max Mustermann", "muster", restApiPubUrl);
+        RestClient restClient = new RestClient("Max Mustermann", "muster", getRestApiPubUrl());
         for (FaveCinemaTableRow row : faves) {
-            User[] users = doRestCall(restApiPrivUrl + "/getAllUsers", null,
+            User[] users = doRestCall(getRestApiPrivUrl() + "/getAllUsers", null,
                     RequestMethod.GET, User[].class);
             User findByName = null;
             for (User user : users) {
@@ -208,19 +219,19 @@ public class BrowserStepDefinitions {
             }
             assertNotNull(findByName);
             Favorite f = new Favorite(findByName, (Cinema) restClient.getCinema(row.cinema).getValue());
-            doRestCall(restApiPrivUrl + "/insertFavorite", f, RequestMethod.POST);
+            doRestCall(getRestApiPrivUrl() + "/insertFavorite", f, RequestMethod.POST);
         }
     }
 
     @Given("^movie (.*) is played in cinema (.*) for (.*) cents")
     public void withPlayist(long movieId, long cinemaId, int price) {
         Playlist p = new Playlist();
-        RestClient restClient = new RestClient("Max Mustermann", "muster", restApiPubUrl);
+        RestClient restClient = new RestClient("Max Mustermann", "muster", getRestApiPubUrl());
         p.setCinema((Cinema) restClient.getCinema(cinemaId).getValue());
         p.setMovie((Movie) restClient.getMovie(movieId).getValue());
         p.setPrice(price);
         p.setTime(new Date(new Date().getTime() + 1000L * 3600));
-        doRestCall(restApiPrivUrl + "/insertPlaylist", p, RequestMethod.POST);
+        doRestCall(getRestApiPrivUrl() + "/insertPlaylist", p, RequestMethod.POST);
     }
 
     @When("^I search for \"([^\\\"]*)\"$")
@@ -478,7 +489,7 @@ public class BrowserStepDefinitions {
 
     @Then("the database should have saved cinema (\\d+) as favorite")
     public void favoriteIsInDb(long cinemaId) {
-        RestClient restClient = new RestClient("Max Mustermann", "muster", restApiPubUrl);
+        RestClient restClient = new RestClient("Max Mustermann", "muster", getRestApiPubUrl());
         restClient.authorize();
         RestResponse response = restClient.getFavorite(cinemaId);
         Assert.assertNotNull(response.getValue());
@@ -486,7 +497,7 @@ public class BrowserStepDefinitions {
 
     @Then("the database should not have saved cinema (\\d+) as favorite")
     public void favoriteIsNotInDb(long cinemaId) {
-        RestClient restClient = new RestClient("Max Mustermann", "muster", restApiPubUrl);
+        RestClient restClient = new RestClient("Max Mustermann", "muster", getRestApiPubUrl());
         restClient.authorize();
         RestResponse response = restClient.getFavorite(cinemaId);
         Assert.assertNull(response.getValue());
@@ -546,7 +557,7 @@ public class BrowserStepDefinitions {
 
     @Before
     public void setup() {
-        doRestCall(restApiPrivUrl + "/clearEverything", "JUST DO IT", RequestMethod.POST);
+        doRestCall(getRestApiPrivUrl() + "/clearEverything", "JUST DO IT", RequestMethod.POST);
     }
 
     @After

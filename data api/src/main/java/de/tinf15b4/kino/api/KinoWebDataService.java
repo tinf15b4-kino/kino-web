@@ -1,5 +1,7 @@
 package de.tinf15b4.kino.api;
 
+import java.io.IOException;
+
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -51,6 +53,28 @@ public class KinoWebDataService {
     }
 
     public static void main(String[] args) {
+        // HACK: Passing java system properties is hard, environment variables are easy
+        String port = System.getenv("SMARTCINEMA_DATA_API_LISTEN_ON");
+        if (port != null) {
+            System.setProperty("server.port", port);
+        }
+
+        // HACK: quit whenever stdin is closed
+        if (System.getenv("SMARTCINEMA_DATA_API_KEEPALIVE_PIPE") != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        System.in.read();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        System.exit(0);
+                    }
+                }
+            }).start();
+        }
+
         SpringApplication.run(KinoWebDataService.class, args);
     }
 }
