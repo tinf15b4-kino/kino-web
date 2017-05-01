@@ -68,15 +68,16 @@ public class SecureRestController {
 
         User user = userService.findByName(username);
 
-        if (users.containsKey(username))
-            return ResponseEntity.badRequest().body(RestControllerConstants.USER_LOGGED_IN);
-
         if (user != null && password.equals(user.getPassword())) {
-            SecureRandom random = new SecureRandom();
-            String tokenKey = new BigInteger(256, random).toString(32);
-            Token token = new Token(tokenKey);
-            updateTokenForUser(username, token);
-            return ResponseEntity.ok(tokenKey);
+            if (users.containsKey(user.getName())) {
+                return ResponseEntity.ok(users.get(user.getName()).getToken());
+            } else {
+                SecureRandom random = new SecureRandom();
+                String tokenKey = new BigInteger(256, random).toString(32);
+                Token token = new Token(tokenKey);
+                updateTokenForUser(username, token);
+                return ResponseEntity.ok(tokenKey);
+            }
         } else
             return ResponseEntity.badRequest().body(RestControllerConstants.WRONG_PASSWORD);
     }
