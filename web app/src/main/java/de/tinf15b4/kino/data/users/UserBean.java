@@ -22,14 +22,16 @@ public class UserBean {
     @Value("${local.server.port}")
     private int port = 0;
 
+    private String restApiUrl;
+
     @PostConstruct
     public void init() {
-        String baseUrl = System.getenv("SMARTCINEMA_API_URL");
+        restApiUrl = System.getenv("SMARTCINEMA_API_URL");
 
-        if (baseUrl == null)
-            baseUrl = "http://localhost:" + port;
+        if (restApiUrl == null)
+            restApiUrl = "http://localhost:" + port;
 
-        restClient = new RestClient(baseUrl);
+        restClient = new RestClient(restApiUrl);
     }
 
     public boolean isUserLoggedIn() {
@@ -37,7 +39,7 @@ public class UserBean {
     }
 
     public boolean login(String nameOrMail, String password) {
-        restClient = new RestClient(nameOrMail, password, "http://localhost:" + port);
+        restClient = new RestClient(nameOrMail, password, restApiUrl);
         RestResponse loginResponse = restClient.authorize();
         if (!loginResponse.hasError()) {
             // login was successful
