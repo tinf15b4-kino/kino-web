@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import de.tinf15b4.kino.data.EntityModel;
-
 public class ServiceImplModel<E extends EntityModel, R extends JpaRepository<E, Long>> implements ServiceModel<E> {
 
     @Autowired
@@ -39,6 +37,11 @@ public class ServiceImplModel<E extends EntityModel, R extends JpaRepository<E, 
     @Override
     public void delete(E e) {
         repository.delete(e);
+    }
+
+    @Override
+    public void deleteAll() {
+        repository.deleteAll();
     }
 
     @Override

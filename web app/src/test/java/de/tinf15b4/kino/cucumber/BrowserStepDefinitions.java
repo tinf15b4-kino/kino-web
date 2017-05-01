@@ -4,7 +4,10 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.URL;
@@ -39,6 +42,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.google.common.base.Charsets;
 
 import cucumber.api.java.After;
+import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -52,6 +56,7 @@ import de.tinf15b4.kino.data.users.User;
 import de.tinf15b4.kino.web.KinoWebApplication;
 import de.tinf15b4.kino.web.rest.GsonFactory;
 import de.tinf15b4.kino.web.rest.RestClient;
+import de.tinf15b4.kino.web.rest.RestResponse;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import io.github.bonigarcia.wdm.FirefoxDriverManager;
 
@@ -63,6 +68,9 @@ public class BrowserStepDefinitions {
 
     @Value("${local.server.port}")
     private int port;
+
+    private String restApiPrivUrl = "http://localhost:9090/rest"; // DEBUG HACK
+    private String restApiPubUrl = "http://localhost:9090";
 
     public BrowserStepDefinitions() throws Exception {
         // These properties can be set on the gradle command line, e.g.
@@ -77,22 +85,22 @@ public class BrowserStepDefinitions {
             drvstr = "firefox";
 
         switch (drvstr) {
-        case "firefox":
-            FirefoxDriverManager.getInstance().setup("0.16.0");
-            driver = new FirefoxDriver();
-            break;
-        case "chrome":
-            ChromeDriverManager.getInstance().setup("2.25");
-            driver = new ChromeDriver();
-            break;
-        case "remote":
-            if (remote == null || remote.isEmpty())
-                remote = "http://localhost:4444/wd/hub";
+            case "firefox":
+                FirefoxDriverManager.getInstance().setup("0.16.0");
+                driver = new FirefoxDriver();
+                break;
+            case "chrome":
+                ChromeDriverManager.getInstance().setup("2.25");
+                driver = new ChromeDriver();
+                break;
+            case "remote":
+                if (remote == null || remote.isEmpty())
+                    remote = "http://localhost:4444/wd/hub";
 
-            driver = new RemoteWebDriver(new URL(remote), DesiredCapabilities.firefox());
-            break;
-        default:
-            throw new Exception("Unknown driver '" + drvstr + '"');
+                driver = new RemoteWebDriver(new URL(remote), DesiredCapabilities.firefox());
+                break;
+            default:
+                throw new Exception("Unknown driver '" + drvstr + '"');
         }
     }
 
@@ -108,7 +116,7 @@ public class BrowserStepDefinitions {
         mockUser.setName(username);
         mockUser.setPassword("muster");
 
-        doRestCall("http://localhost:" + port + "/insertUser", mockUser, RequestMethod.POST);
+        doRestCall(restApiPrivUrl + "/insertUser", mockUser, RequestMethod.POST);
 
         iOpenTheStartPage();
         waitForLabel("Anmelden");
@@ -121,29 +129,29 @@ public class BrowserStepDefinitions {
     @Given("^the movies$")
     public void withMovies(List<Movie> table) throws Throwable {
         for (Movie m : table)
-            doRestCall("http://localhost:" + port + "/insertMovie", m, RequestMethod.POST);
+            doRestCall(restApiPrivUrl + "/insertMovie", m, RequestMethod.POST);
     }
 
     @Given("^the cinemas")
     public void withCinemas(List<Cinema> table) throws Throwable {
         for (Cinema m : table)
-            doRestCall("http://localhost:" + port + "/insertCinema", m, RequestMethod.POST);
+            doRestCall(restApiPrivUrl + "/insertCinema", m, RequestMethod.POST);
     }
 
     @Given("^the users")
     public void withUsers(List<User> table) throws Throwable {
         for (User m : table)
-            doRestCall("http://localhost:" + port + "/insertUser", m, RequestMethod.POST);
+            doRestCall(restApiPrivUrl + "/insertUser", m, RequestMethod.POST);
     }
 
     @Given("^the rating of User \"([^\\\"]*)\" for Cinema \"([^\\\"]*)\" with (.*) stars and description \"([^\\\"]*)\"$")
     public void withCinemaRating(String userName, String cinemaName, int stars, String desc) {
         // FIXME Selecting by id doesn't seem to work as the ids are regenerated
         // when adding to repo. Seems to be only on my machine though (Marco)
-        RestClient restClient = new RestClient("Max Mustermann", "muster", "http://localhost:" + port);
+        RestClient restClient = new RestClient("Max Mustermann", "muster", restApiPubUrl);
         User user = null;
-        for (User u : (User[]) doRestCall("http://localhost:" + port + "/getAllUsers", new User[0],
-                RequestMethod.GET)) {
+        for (User u : doRestCall(restApiPrivUrl + "/getAllUsers", null,
+                RequestMethod.GET, User[].class)) {
             if (u.getName().equals(userName))
                 user = u;
         }
@@ -155,17 +163,17 @@ public class BrowserStepDefinitions {
         }
 
         RatedCinema rCinema = new RatedCinema(user, cinema, stars, desc, Calendar.getInstance().getTime());
-        doRestCall("http://localhost:" + port + "/insertRatedCinema", rCinema, RequestMethod.POST);
+        doRestCall(restApiPrivUrl + "/insertRatedCinema", rCinema, RequestMethod.POST);
     }
 
     @Given("^the rating of User \"([^\\\"]*)\" for Movie \"([^\\\"]*)\" with (.*) stars and description \"([^\\\"]*)\"$")
     public void withMovieRating(String userName, String movieName, int stars, String desc) {
         // FIXME Selecting by id doesn't seem to work as the ids are regenerated
         // when adding to repo. Seems to be only on my machine though (Marco)
-        RestClient restClient = new RestClient("Max Mustermann", "muster", "http://localhost:" + port);
+        RestClient restClient = new RestClient("Max Mustermann", "muster", restApiPubUrl);
         User user = null;
-        for (User u : (User[]) doRestCall("http://localhost:" + port + "/getAllUsers", new User[0],
-                RequestMethod.GET)) {
+        for (User u : doRestCall(restApiPrivUrl + "/getAllUsers", null,
+                RequestMethod.GET, User[].class)) {
             if (u.getName().equals(userName))
                 user = u;
         }
@@ -177,7 +185,7 @@ public class BrowserStepDefinitions {
         }
 
         RatedMovie rMovie = new RatedMovie(user, movie, stars, desc, Calendar.getInstance().getTime());
-        doRestCall("http://localhost:" + port + "/insertRatedMovie", rMovie, RequestMethod.POST);
+        doRestCall(restApiPrivUrl + "/insertRatedMovie", rMovie, RequestMethod.POST);
     }
 
     private static class FaveCinemaTableRow {
@@ -187,10 +195,10 @@ public class BrowserStepDefinitions {
 
     @Given("^the favorite cinemas")
     public void withFavoriteCinemas(List<FaveCinemaTableRow> faves) {
-        RestClient restClient = new RestClient("Max Mustermann", "muster", "http://localhost:" + port);
+        RestClient restClient = new RestClient("Max Mustermann", "muster", restApiPubUrl);
         for (FaveCinemaTableRow row : faves) {
-            User[] users = (User[]) doRestCall("http://localhost:" + port + "/getAllUsers", new User[0],
-                    RequestMethod.GET);
+            User[] users = doRestCall(restApiPrivUrl + "/getAllUsers", null,
+                    RequestMethod.GET, User[].class);
             User findByName = null;
             for (User user : users) {
                 if (row.user.equals(user.getName())) {
@@ -200,19 +208,19 @@ public class BrowserStepDefinitions {
             }
             assertNotNull(findByName);
             Favorite f = new Favorite(findByName, (Cinema) restClient.getCinema(row.cinema).getValue());
-            doRestCall("http://localhost:" + port + "/insertFavorite", f, RequestMethod.POST);
+            doRestCall(restApiPrivUrl + "/insertFavorite", f, RequestMethod.POST);
         }
     }
 
     @Given("^movie (.*) is played in cinema (.*) for (.*) cents")
     public void withPlayist(long movieId, long cinemaId, int price) {
         Playlist p = new Playlist();
-        RestClient restClient = new RestClient("Max Mustermann", "muster", "http://localhost:" + port);
+        RestClient restClient = new RestClient("Max Mustermann", "muster", restApiPubUrl);
         p.setCinema((Cinema) restClient.getCinema(cinemaId).getValue());
         p.setMovie((Movie) restClient.getMovie(movieId).getValue());
         p.setPrice(price);
         p.setTime(new Date(new Date().getTime() + 1000L * 3600));
-        doRestCall("http://localhost:" + port + "/insertPlaylist", p, RequestMethod.POST);
+        doRestCall(restApiPrivUrl + "/insertPlaylist", p, RequestMethod.POST);
     }
 
     @When("^I search for \"([^\\\"]*)\"$")
@@ -243,15 +251,15 @@ public class BrowserStepDefinitions {
     public void sendKey(String input) throws Throwable {
         WebElement box = driver.switchTo().activeElement();
         switch (input) {
-        case "RETURN":
-            box.sendKeys(Keys.RETURN);
-            break;
-        case "ENTER":
-            box.sendKeys(Keys.ENTER);
-            break;
-        case "TAB":
-            box.sendKeys(Keys.TAB);
-            break;
+            case "RETURN":
+                box.sendKeys(Keys.RETURN);
+                break;
+            case "ENTER":
+                box.sendKeys(Keys.ENTER);
+                break;
+            case "TAB":
+                box.sendKeys(Keys.TAB);
+                break;
         }
     }
 
@@ -445,7 +453,7 @@ public class BrowserStepDefinitions {
         }
 
         sizes.add(driver.manage().window().getSize()); // restore size at the
-                                                       // end
+        // end
 
         for (Dimension size : sizes) {
             driver.manage().window().setSize(size);
@@ -470,19 +478,25 @@ public class BrowserStepDefinitions {
 
     @Then("the database should have saved cinema (\\d+) as favorite")
     public void favoriteIsInDb(long cinemaId) {
-        RestClient restClient = new RestClient("Max Mustermann", "muster", "http://localhost:" + port);
+        RestClient restClient = new RestClient("Max Mustermann", "muster", restApiPubUrl);
         restClient.authorize();
-        Assert.assertNotNull(restClient.getFavorite(cinemaId));
+        RestResponse response = restClient.getFavorite(cinemaId);
+        Assert.assertNotNull(response.getValue());
     }
 
     @Then("the database should not have saved cinema (\\d+) as favorite")
     public void favoriteIsNotInDb(long cinemaId) {
-        RestClient restClient = new RestClient("Max Mustermann", "muster", "http://localhost:" + port);
+        RestClient restClient = new RestClient("Max Mustermann", "muster", restApiPubUrl);
         restClient.authorize();
-        Assert.assertNull(restClient.getFavorite(cinemaId));
+        RestResponse response = restClient.getFavorite(cinemaId);
+        Assert.assertNull(response.getValue());
     }
 
-    private Object doRestCall(String urlString, Object body, RequestMethod method) {
+    private void doRestCall(String urlString, Object body, RequestMethod method) {
+        doRestCall(urlString, body, method, Void.class);
+    }
+
+    private <TResult> TResult doRestCall(String urlString, Object body, RequestMethod method, Class<TResult> resultClass) {
         try {
             // Create connection
             URL url;
@@ -502,13 +516,24 @@ public class BrowserStepDefinitions {
             }
 
             // Do request
-            connection.connect();
+            try {
+                connection.connect();
 
-            // Get result
-            HttpStatus status = HttpStatus.valueOf(connection.getResponseCode());
-            if (status != HttpStatus.OK)
-                throw new IllegalStateException("REST Service call failed.");
-            return GsonFactory.buildGson().fromJson(connection.getResponseMessage(), body.getClass());
+                // Get result
+                HttpStatus status = HttpStatus.valueOf(connection.getResponseCode());
+                if (status != HttpStatus.OK)
+                    throw new IllegalStateException("REST Service call failed.");
+
+                if (resultClass.equals(Void.class)) {
+                    return null;
+                } else {
+                    try (InputStream is = connection.getInputStream(); Reader r = new InputStreamReader(is)) {
+                        return GsonFactory.buildGson().fromJson(r, resultClass);
+                    }
+                }
+            } finally {
+                connection.disconnect();
+            }
         } catch (IOException e) {
             throw new RuntimeException("Call to REST Service failed. Is there a running instance of Data Api Project?",
                     e);
@@ -517,6 +542,11 @@ public class BrowserStepDefinitions {
 
     private byte[] toJson(Object body) {
         return GsonFactory.buildGson().toJson(body).getBytes(Charsets.UTF_8);
+    }
+
+    @Before
+    public void setup() {
+        doRestCall(restApiPrivUrl + "/clearEverything", "JUST DO IT", RequestMethod.POST);
     }
 
     @After

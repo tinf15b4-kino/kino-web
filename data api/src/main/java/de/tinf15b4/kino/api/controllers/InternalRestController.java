@@ -48,6 +48,19 @@ public class InternalRestController {
     @Autowired
     private UserService userService;
 
+    @RequestMapping(value = "rest/clearEverything", method = RequestMethod.POST)
+    public ResponseEntity<?> clearEverything() {
+        ratedMovieService.deleteAll();
+        ratedCinemaService.deleteAll();
+        playlistService.deleteAll();
+        favoriteService.deleteAll();
+        movieService.deleteAll();
+        cinemaService.deleteAll();
+        userService.deleteAll();
+
+        return ResponseEntity.ok("");
+    }
+
     @RequestMapping(value = "rest/insertCinema", method = RequestMethod.POST)
     public ResponseEntity<?> insertCinema(@RequestBody Cinema cinema) {
         return ResponseEntity.ok(cinemaService.save(cinema));
