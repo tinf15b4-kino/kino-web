@@ -1,8 +1,11 @@
 package de.tinf15b4.kino.data.initializer;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import com.github.javafaker.Address;
 import com.github.javafaker.Faker;
+import com.google.gson.Gson;
 
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.cinemas.CinemaService;
@@ -208,5 +212,85 @@ public class FakeDataInitializer implements DataInitializer {
                 }
             }
         }
+
+        // add movie form theMovieDb API
+        try {
+            String json = readUrl(
+                    "https://api.themoviedb.org/3/movie/550?api_key=9eda0433936b655a246eef78d367b530&language=de-DE");
+
+            Gson gson = new Gson();
+            MovieDb mdb = gson.fromJson(json, MovieDb.class);
+
+            Movie mm = new Movie();
+            mm.setName(mdb.getTitle());
+            mm.setDescription(mdb.getOverview());
+            mm.setLengthMinutes(mdb.getRuntime());
+            mm.setTheMovieDbId(mdb.getId());
+
+            movieService.save(mm);
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
     }
+
+    private static String readUrl(String urlString) throws Exception {
+        BufferedReader reader = null;
+        try {
+            URL url = new URL(urlString);
+            reader = new BufferedReader(new InputStreamReader(url.openStream()));
+            StringBuffer buffer = new StringBuffer();
+            int read;
+            char[] chars = new char[1024];
+            while ((read = reader.read(chars)) != -1)
+                buffer.append(chars, 0, read);
+
+            return buffer.toString();
+        } finally {
+            if (reader != null)
+                reader.close();
+        }
+    }
+}
+
+class MovieDb {
+    int id;
+    String title;
+    String overview;
+    int runtime;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
+    public int getRuntime() {
+        return runtime;
+    }
+
+    public void setRuntime(int runtime) {
+        this.runtime = runtime;
+    }
+
 }
