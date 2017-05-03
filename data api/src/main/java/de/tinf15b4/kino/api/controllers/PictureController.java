@@ -44,7 +44,7 @@ public class PictureController {
     public byte[] getCinemaPicture(
             @ApiQueryParam(name = "cinemaId", description = "Id of the cinema") @RequestParam(name = "cinemaId") long cinemaId) {
         Cinema c = cinemaService.findOne(cinemaId);
-        if (c != null) {
+        if (c != null && c.getImage() != null && c.getImage().length > 0) {
             return c.getImage();
         } else {
             return getDefaultCinemaImage();
@@ -56,7 +56,7 @@ public class PictureController {
     public byte[] getMoviePicture(
             @ApiQueryParam(name = "movieId", description = "Id of the movie") @RequestParam(name = "movieId") long movieId) {
         Movie m = movieService.findOne(movieId);
-        if (m != null) {
+        if (m != null && m.getCover() != null && m.getCover().length > 0) {
             return m.getCover();
         } else {
             return getDefaultMovieCover();

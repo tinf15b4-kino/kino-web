@@ -45,6 +45,8 @@ configurations.all {
 test {
     systemProperty "kinotest.driver", System.getProperty("kinotest.driver")
     systemProperty "kinotest.seleniumHub", System.getProperty("kinotest.seleniumHub")
+
+    environment "SMARTCINEMA_DATA_API_DIR", "${project(':data api').projectDir}"
 }
 
 sourceCompatibility = 1.8
@@ -63,8 +65,7 @@ dependencies {
     compile('com.h2database:h2')
     compile('com.google.guava:guava:21.0')
     compile('com.google.code.gson:gson:2.8.0')
-	compile project(':commons')
-	testCompile project(':data api')
+    compile project(':commons')
     testCompile('org.seleniumhq.selenium:selenium-java')
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('info.cukes:cucumber-java:' + cucumberVersion)

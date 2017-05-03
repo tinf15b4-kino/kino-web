@@ -17,14 +17,14 @@ node {
         //branch name from Jenkins environment variables
         echo "My branch is: ${env.BRANCH_NAME}"
 
-        sh "cd 'web app'; ./gradlew clean assemble"
+        sh "./gradlew clean assemble"
 
         stage 'Archive Jar'
-        archiveArtifacts artifacts: 'web app/build/libs/*.jar', fingerprint: true
+        archiveArtifacts artifacts: '*/build/libs/*.jar', fingerprint: true
 
         stage 'Run Tests'
-        sh "cd 'web app'; ./gradlew test -Dkinotest.driver=remote --debug || true"
-        junit 'web app/build/test-results/*.xml'
+        sh "./gradlew test -Dkinotest.driver=remote --debug || true"
+        junit '*/build/test-results/*.xml'
     } catch (e) {
         // If there was an exception thrown, the build failed
         currentBuild.result = "FAILED"
