@@ -2,14 +2,10 @@ buildscript {
     repositories {
         mavenCentral()
     }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.3.RELEASE")
-    }
 }
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
-apply plugin: 'org.springframework.boot'
 
 jar {
     baseName = 'tinf15b4-kino-data-retrieval'
@@ -35,15 +31,9 @@ repositories {
 }
 
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-web')
-    compile('org.springframework.boot:spring-boot-starter-jetty')
-    compile('org.springframework.boot:spring-boot-devtools')
-    compile('org.springframework.boot:spring-boot-starter-data-jpa')
-    compile('com.h2database:h2')
-    compile('com.google.guava:guava:21.0')
 	compile project(':commons')
-	compile project(':data api')
-    compile('org.seleniumhq.selenium:selenium-java')
+	compile('org.reflections:reflections:0.9.9-RC1')
+    compile('org.seleniumhq.selenium:selenium-java:3.4.0')
     compile('io.github.bonigarcia:webdrivermanager:1.5.+')
 }
 
