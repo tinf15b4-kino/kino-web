@@ -48,7 +48,7 @@ public class InternalRestController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "rest/clearEverything", method = RequestMethod.POST)
+    @RequestMapping(value = "rest-private/clearEverything", method = RequestMethod.POST)
     public ResponseEntity<?> clearEverything() {
         ratedMovieService.deleteAll();
         ratedCinemaService.deleteAll();
@@ -61,42 +61,42 @@ public class InternalRestController {
         return ResponseEntity.ok("");
     }
 
-    @RequestMapping(value = "rest/insertCinema", method = RequestMethod.POST)
+    @RequestMapping(value = "rest-private/insertCinema", method = RequestMethod.POST)
     public ResponseEntity<?> insertCinema(@RequestBody Cinema cinema) {
         return ResponseEntity.ok(cinemaService.saveWithId(cinema));
     }
 
-    @RequestMapping(value = "rest/insertMovie", method = RequestMethod.POST)
+    @RequestMapping(value = "rest-private/insertMovie", method = RequestMethod.POST)
     public ResponseEntity<?> inserMovie(@RequestBody Movie movie) {
         return ResponseEntity.ok(movieService.saveWithId(movie));
     }
 
-    @RequestMapping(value = "rest/insertFavorite", method = RequestMethod.POST)
+    @RequestMapping(value = "rest-private/insertFavorite", method = RequestMethod.POST)
     public ResponseEntity<?> insertFavorite(@RequestBody Favorite favorite) {
         return ResponseEntity.ok(favoriteService.saveWithId(favorite));
     }
 
-    @RequestMapping(value = "rest/insertPlaylist", method = RequestMethod.POST)
+    @RequestMapping(value = "rest-private/insertPlaylist", method = RequestMethod.POST)
     public ResponseEntity<?> insertPlaylist(@RequestBody Playlist playlist) {
         return ResponseEntity.ok(playlistService.saveWithId(playlist));
     }
 
-    @RequestMapping(value = "rest/insertRatedCinema", method = RequestMethod.POST)
+    @RequestMapping(value = "rest-private/insertRatedCinema", method = RequestMethod.POST)
     public ResponseEntity<?> insertRatedCinema(@RequestBody RatedCinema ratedCinema) {
         return ResponseEntity.ok(ratedCinemaService.saveWithId(ratedCinema));
     }
 
-    @RequestMapping(value = "rest/insertRatedMovie", method = RequestMethod.POST)
+    @RequestMapping(value = "rest-private/insertRatedMovie", method = RequestMethod.POST)
     public ResponseEntity<?> insertRatedMovie(@RequestBody RatedMovie ratedMovie) {
         return ResponseEntity.ok(ratedMovieService.saveWithId(ratedMovie));
     }
 
-    @RequestMapping(value = "rest/insertUser", method = RequestMethod.POST)
+    @RequestMapping(value = "rest-private/insertUser", method = RequestMethod.POST)
     public ResponseEntity<?> insertCinema(@RequestBody User user) {
         return ResponseEntity.ok(userService.saveWithId(user));
     }
 
-    @RequestMapping(value = "rest/getAllUsers", method = RequestMethod.GET)
+    @RequestMapping(value = "rest-private/getAllUsers", method = RequestMethod.GET)
     public ResponseEntity<?> getUsers() {
         List<User> users = userService.findAll();
         return ResponseEntity.ok(users.toArray(new User[users.size()]));

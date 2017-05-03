@@ -191,8 +191,7 @@ public class BrowserStepDefinitions {
     }
 
     private String getRestApiPrivUrl() {
-        // TODO: change to /rest-private
-        return restApiUrlSource.getUrl() + "/rest";
+        return restApiUrlSource.getUrl() + "/rest-private";
     }
 
     private String getRestApiPubUrl() {
