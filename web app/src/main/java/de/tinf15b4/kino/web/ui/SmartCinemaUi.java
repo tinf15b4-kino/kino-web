@@ -1,5 +1,12 @@
 package de.tinf15b4.kino.web.ui;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.event.ShortcutAction;
@@ -23,18 +30,14 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.BaseTheme;
 import com.vaadin.ui.themes.ValoTheme;
-import de.tinf15b4.kino.data.users.UserBean;
+
+import de.tinf15b4.kino.web.user.UserBean;
 import de.tinf15b4.kino.web.util.ShortcutUtils;
 import de.tinf15b4.kino.web.views.CinemaListView;
 import de.tinf15b4.kino.web.views.FavoriteListView;
 import de.tinf15b4.kino.web.views.LoginView;
 import de.tinf15b4.kino.web.views.MovieListView;
 import de.tinf15b4.kino.web.views.SearchResultsView;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.annotation.PostConstruct;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 @SuppressWarnings("serial")
 @Theme("smartCinema")
