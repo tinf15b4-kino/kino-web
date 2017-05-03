@@ -198,6 +198,37 @@ public class BrowserStepDefinitions {
         return restApiUrlSource.getUrl();
     }
 
+    private void waitForVaadin() {
+        final String VAADIN_FINISHED_SCRIPT =
+                  "if (window.vaadin == null) {"
+                + "  return true;"
+                + "}"
+                + "var clients = window.vaadin.clients;"
+                + "if (clients) {"
+                + "  for (var client in clients) {"
+                + "    if (clients[client].isActive()) {"
+                + "      return false;"
+                + "    }"
+                + "  }"
+                + "  return true;"
+                + "} else {"
+                +  "  return false;"
+                + "}";
+
+        final int INTERVAL_MS = 50; // milliseconds
+        final int TIMEOUT_S = 10; // seconds
+        for (int i = 0; i < TIMEOUT_S*1000/INTERVAL_MS; ++i) {
+            if ((Boolean) ((JavascriptExecutor)driver).executeScript(VAADIN_FINISHED_SCRIPT))
+                return;
+
+            try {
+                Thread.sleep(INTERVAL_MS);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private static class FaveCinemaTableRow {
         public String user;
         public long cinema;
@@ -241,6 +272,7 @@ public class BrowserStepDefinitions {
 
     @When("^I type \"([^\"]+)\" into \"([^\"]+)\"$")
     public void typeInto(String input, String selector) throws Throwable {
+        waitForVaadin();
         WebElement box = driver.findElement(By.cssSelector(selector));
         // HACK: Focus element with javascript, this is needed on linux firefox
         ((JavascriptExecutor) driver)
@@ -250,6 +282,7 @@ public class BrowserStepDefinitions {
 
     @When("^I type \"([^\"]+)\"$")
     public void type(String input) throws Throwable {
+        waitForVaadin();
         WebElement el = driver.switchTo().activeElement();
         // HACK: Focus element with javascript, this is needed on linux firefox
         ((JavascriptExecutor) driver)
@@ -259,6 +292,7 @@ public class BrowserStepDefinitions {
 
     @When("^I press (RETURN|ENTER|TAB)$")
     public void sendKey(String input) throws Throwable {
+        waitForVaadin();
         WebElement box = driver.switchTo().activeElement();
         switch (input) {
             case "RETURN":
@@ -275,6 +309,7 @@ public class BrowserStepDefinitions {
 
     @Then("^the link \"([^\\\"]*)\" should redirect to \"([^\\\"]*)\"$")
     public void linkShouldRedirect(String linkLabel, String urlTail) throws Throwable {
+        waitForVaadin();
         WebElement link = driver.findElement(By.linkText(linkLabel));
         link.click();
 
@@ -283,6 +318,7 @@ public class BrowserStepDefinitions {
 
     @Then("^the current URL should be \"([^\\\"]*)\"$")
     public void currentUrlShouldBe(String urlTail) throws Throwable {
+        waitForVaadin();
         // HACK: Possibly wait a little bit
         for (int i = 0; i < 100; ++i) {
             if (driver.getCurrentUrl().endsWith(urlTail))
@@ -303,11 +339,13 @@ public class BrowserStepDefinitions {
         driver.get("http://" + InetAddress.getLocalHost().getHostName() + ":" + port + "/");
 
         // sanity check to make sure the page is loaded
+        waitForVaadin();
         driver.findElement(By.xpath("//*[contains(text(), 'smartCinema')]"));
     }
 
     @When("^I click the button labeled \"([^\\\"]*)\"$")
     public void clickButton(String text) throws Throwable {
+        waitForVaadin();
         // FIXME: This is actually shit because it will break when the text
         // contains funny characters
         driver.findElement(
@@ -316,6 +354,7 @@ public class BrowserStepDefinitions {
 
     @When("^I click the menu item labeled \"([^\\\"]*)\"$")
     public void clickMenuitem(String text) throws Throwable {
+        waitForVaadin();
         // FIXME: This is actually shit because it will break when the text
         // contains funny characters
         driver.findElement(
@@ -325,6 +364,7 @@ public class BrowserStepDefinitions {
 
     @When("^I click the menu item labeled \"([^\\\"]*)\" below \"([^\"]+)\"$")
     public void clickMenuitemBelow(String text, String selector) throws Throwable {
+        waitForVaadin();
         // FIXME: This is actually shit because it will break when the text
         // contains funny characters
         driver.findElement(By.cssSelector(selector))
@@ -335,6 +375,7 @@ public class BrowserStepDefinitions {
 
     @When("^I click the button labeled \"([^\\\"]*)\" below \"([^\"]+)\"$")
     public void clickButtonBelow(String text, String selector) throws Throwable {
+        waitForVaadin();
         // FIXME: This is actually shit because it will break when the text
         // contains funny characters
         WebElement button = driver.findElement(By.cssSelector(selector))
@@ -357,11 +398,13 @@ public class BrowserStepDefinitions {
 
     @When("^I click on \"([^\"]+)\"$")
     public void clickOn(String selector) throws Throwable {
+        waitForVaadin();
         driver.findElement(By.cssSelector(selector)).click();
     }
 
     @When("^I click the link labeled \"([^\\\"]*)\"$")
     public void clickLink(String text) throws Throwable {
+        waitForVaadin();
         // FIXME: This is actually shit because it will break when the text
         // contains funny characters
         driver.findElement(By.xpath("//div[contains(@class, 'v-link') and .//span[contains(text(), '" + text + "')]]"))
@@ -370,12 +413,14 @@ public class BrowserStepDefinitions {
 
     @When("^I wait until a label containing \"([^\"]+)\" is visible$")
     public void waitForLabel(String content) throws Throwable {
+        waitForVaadin();
         new WebDriverWait(driver, 10).until(
                 ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[contains(text(), '" + content + "')]")));
     }
 
     @When("^I toggle checkbox filter \"([^\\\"]*)\"$")
     public void addFilter(String filter) {
+        waitForVaadin();
         WebElement checkbox = driver.findElement(
                 By.xpath(".//input[@type = 'checkbox' and ../label[contains(text(), '" + filter + "') ]]"));
         // FIXME: This fails because of stupid label::before covering the
@@ -386,6 +431,7 @@ public class BrowserStepDefinitions {
 
     @When("^I enter \"([^\\\"]*)\" in the (lower-price|upper-price) filter$")
     public void enterFilter(String filterString, String filterId) {
+        waitForVaadin();
         WebElement filterField = driver.findElement(By.id(filterId));
         filterField.clear();
         filterField.sendKeys(filterString);
@@ -398,6 +444,7 @@ public class BrowserStepDefinitions {
 
     @Then("^I should see a label containing \"([^\\\"]*)\"$")
     public void iShouldSeeALabelContaining(String text) throws Throwable {
+        waitForVaadin();
         // FIXME: This is actually shit because it will break when the text
         // contains funny characters
         driver.findElement(By.xpath("//*[contains(text(), '" + text + "')]"));
@@ -405,6 +452,7 @@ public class BrowserStepDefinitions {
 
     @Then("^I should see a label containing \"([^\\\"]*)\" below \"([^\"]+)\"$")
     public void iShouldSeeALabelContainingBelow(String text, String selector) throws Throwable {
+        waitForVaadin();
         // FIXME: This is actually shit because it will break when the text
         // contains funny characters
         driver.findElement(By.cssSelector(selector)).findElement(By.xpath(".//*[contains(text(), '" + text + "')]"));
@@ -412,6 +460,7 @@ public class BrowserStepDefinitions {
 
     @Then("^I should see a button labeled \"([^\\\"]*)\"$")
     public void iShouldSeeAButtonLabeled(String text) throws Throwable {
+        waitForVaadin();
         // FIXME: This is actually shit because it will break when the text
         // contains funny characters
         driver.findElement(By.xpath("//*[contains(@class, 'v-button') and contains(text(), '" + text + "')]"));
@@ -419,6 +468,7 @@ public class BrowserStepDefinitions {
 
     @Then("^I should not see a link labeled \"([^\\\"]*)\"$")
     public void iShouldNotSeeALinkLabeled(String text) throws Throwable {
+        waitForVaadin();
         // FIXME: This is actually shit because it will break when the text
         // contains funny characters
         List<WebElement> els = driver
@@ -428,6 +478,7 @@ public class BrowserStepDefinitions {
 
     @Then("^I should not see a label containing \"([^\"]+)\"$")
     public void iShouldNotSeeALabel(String text) {
+        waitForVaadin();
         // FIXME: This is actually shit because it will break when the text
         // contains funny characters
         List<WebElement> els = driver.findElements(By.xpath("//*[contains(text(), '" + text + "')]"));
