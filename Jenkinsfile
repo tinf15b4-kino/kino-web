@@ -12,6 +12,9 @@ node {
         checkout scm
         sh 'git submodule update --init'
 
+        // Show yellow circle on GitHub
+        setGithubBuildStatus("Started Build", "PENDING")
+
         stage 'Build'
 
         //branch name from Jenkins environment variables
@@ -25,9 +28,16 @@ node {
         stage 'Run Tests'
         sh "./gradlew test -Dkinotest.driver=remote --debug || true"
         junit '*/build/test-results/*.xml'
+
+        // Show checkmark on GitHub
+        setGithubBuildStatus("Finished", "SUCCESS")
     } catch (e) {
         // If there was an exception thrown, the build failed
         currentBuild.result = "FAILED"
+
+        // Show red x on GitHub
+        setGithubBuildStatus("Finished", "FAILURE")
+
         throw e
     } finally {
         // Success or failure, always send notifications
@@ -61,3 +71,22 @@ def notifyBuild(String buildStatus = 'STARTED') {
     slackSend (color: colorCode, message: summary)
 }
 
+def getRepoURL() {
+  sh "git config --get remote.origin.url > .git/remote-url"
+  return readFile(".git/remote-url").trim()
+}
+
+def getCommitSha() {
+  sh "git rev-parse HEAD > .git/current-commit"
+  return readFile(".git/current-commit").trim()
+}
+
+void setGithubBuildStatus(String message, String state) {
+  step([
+      $class: "GitHubCommitStatusSetter",
+      reposSource: [$class: "ManuallyEnteredRepositorySource", url: getRepoURL()],
+      contextSource: [$class: "ManuallyEnteredCommitContextSource", context: getCommitSha()],
+      errorHandlers: [[$class: "ChangingBuildStatusErrorHandler", result: "UNSTABLE"]],
+      statusResultSource: [ $class: "ConditionalStatusResultSource", results: [[$class: "AnyBuildResult", message: message, state: state]] ]
+  ]);
+}
