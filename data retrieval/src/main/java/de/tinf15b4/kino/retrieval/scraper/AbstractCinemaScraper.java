@@ -9,8 +9,6 @@ import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -21,12 +19,8 @@ import org.slf4j.Logger;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Stopwatch;
-import com.google.common.collect.Lists;
-import com.google.gson.Gson;
 
-import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.movies.Movie;
-import de.tinf15b4.kino.data.playlists.Playlist;
 import de.tinf15b4.kino.utils.GsonFactory;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import io.github.bonigarcia.wdm.FirefoxDriverManager;
@@ -44,6 +38,18 @@ public abstract class AbstractCinemaScraper {
     public void scrape() {
         logger = getLogger();
         logger.info(String.format("Initializing Webdriver for scraper: [%s]", cinemaName));
+        initlializeWebdriver();
+
+        logger.info(String.format("Start gathering data from: [%s]", cinemaName));
+        Stopwatch watch = Stopwatch.createStarted();
+        gatherData();
+        logger.info(String.format("Finished gathering data from: [%s] in %s milliseconds", cinemaName,
+                watch.elapsed(TimeUnit.MILLISECONDS)));
+
+        driver.quit();
+    }
+
+    private void initlializeWebdriver() {
         String drvstr = System.getProperty("kinotest.driver");
         String remote = System.getProperty("kinotest.seleniumHub");
 
@@ -75,13 +81,6 @@ public abstract class AbstractCinemaScraper {
         default:
             throw new RuntimeException("Unknown driver '" + drvstr + '"');
         }
-
-        logger.info(String.format("Start gathering data from: [%s]", cinemaName));
-        Stopwatch watch = Stopwatch.createStarted();
-        gatherData();
-        logger.info(String.format("Finished gathering data from: [%s] in %s milliseconds", cinemaName,
-                watch.elapsed(TimeUnit.MILLISECONDS)));
-        driver.quit();
     }
 
     public abstract Logger getLogger();
@@ -99,20 +98,18 @@ public abstract class AbstractCinemaScraper {
         Object contained = getContainedObject(toSave, type);
         if (contained != null)
             return (T) contained;
+        return saveToDatabase(toSave, expectedResult, type);
+    }
+
+    private <T> T saveToDatabase(Object toSave, Class<T> expectedResult, ObjectType type) {
         try {
             // Create connection
-            URL url = new URL(createBaseUrl() + type.getPostUrl());
+            URL url = new URL(getBaseUrl() + type.getPostUrl());
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
 
             // Prepare request
-            connection.setDoOutput(true);
-            connection.setRequestProperty("content-type", "application/json");
-            OutputStream stream = connection.getOutputStream();
-            stream = new DataOutputStream(stream);
-            stream.write(toJson(toSave));
-            stream.flush();
-            stream.close();
+            writeBodyToConnection(toSave, connection);
 
             // Do request
             try {
@@ -126,7 +123,7 @@ public abstract class AbstractCinemaScraper {
                 if (expectedResult.equals(Void.class)) {
                     return null;
                 } else {
-                    try (InputStream is = connection.getInputStream(); Reader r = new InputStreamReader(is)) {
+                    try (Reader r = new InputStreamReader(connection.getInputStream())) {
                         return GsonFactory.buildGson().fromJson(r, expectedResult);
                     }
                 }
@@ -138,12 +135,22 @@ public abstract class AbstractCinemaScraper {
         }
     }
 
+    private void writeBodyToConnection(Object toSave, HttpURLConnection connection) throws IOException {
+        connection.setDoOutput(true);
+        connection.setRequestProperty("content-type", "application/json");
+        OutputStream stream = connection.getOutputStream();
+        stream = new DataOutputStream(stream);
+        stream.write(toJson(toSave));
+        stream.flush();
+        stream.close();
+    }
+
     private Object getContainedObject(Object toSave, ObjectType type) {
         if (type == ObjectType.PLAYLIST)
             return null;
         try {
             // Create connection
-            URL url = new URL(createBaseUrl() + type.getGetUrl());
+            URL url = new URL(getBaseUrl() + type.getGetUrl());
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
@@ -168,7 +175,7 @@ public abstract class AbstractCinemaScraper {
         }
     }
 
-    private String createBaseUrl() {
+    private String getBaseUrl() {
         String envVar = System.getenv("SMARTCINEMA_API_URL");
         if (envVar == null) {
             // use default for local testing
@@ -181,55 +188,4 @@ public abstract class AbstractCinemaScraper {
         return GsonFactory.buildGson().toJson(body).getBytes(Charsets.UTF_8);
     }
 
-    public enum ObjectType {
-        CINEMA("/rest-private/insertCinema", "/rest/getCinemas"), MOVIE("/rest-private/insertMovie",
-                "/rest/getMovies"), PLAYLIST("/rest-private/insertPlaylist", null);
-
-        private String postUrl;
-        private String getUrl;
-
-        private ObjectType(String postUrl, String getUrl) {
-            this.postUrl = postUrl;
-            this.getUrl = getUrl;
-        }
-
-        public Object findObject(Reader r, Object object) {
-            Gson gson = GsonFactory.buildGson();
-            switch (this) {
-            case MOVIE:
-                List<Movie> movies = Lists.newArrayList(gson.fromJson(r, Movie[].class));
-                Optional<Movie> foundMovie = movies.stream()
-                        .filter(movie -> movie != null && movie.getName().equals(((Movie) object).getName())).findAny();
-                return foundMovie.orElse(null);
-            case CINEMA:
-                List<Cinema> cinemas = Lists.newArrayList(gson.fromJson(r, Cinema[].class));
-                Optional<Cinema> foundCinema = cinemas.stream()
-                        .filter(cinema -> cinema != null && cinema.getName().equals(((Cinema) object).getName()))
-                        .findAny();
-                return foundCinema.orElse(null);
-            case PLAYLIST:
-                // not needed
-                break;
-            }
-            return null;
-        }
-
-        public String getGetUrl() {
-            return getUrl;
-        }
-
-        public String getPostUrl() {
-            return postUrl;
-        }
-
-        public static ObjectType forClass(Class<?> clazz) {
-            if (clazz.equals(Movie.class))
-                return MOVIE;
-            if (clazz.equals(Cinema.class))
-                return CINEMA;
-            if (clazz.equals(Playlist.class))
-                return PLAYLIST;
-            throw new IllegalArgumentException("Unknown object to save: " + clazz.getName());
-        }
-    }
 }
