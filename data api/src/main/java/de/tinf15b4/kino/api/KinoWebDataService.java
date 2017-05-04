@@ -104,13 +104,12 @@ public class KinoWebDataService extends WebMvcConfigurerAdapter {
     @Bean
     public CommandLineRunner loadData(DataInitializer initializer) {
         return (args) -> {
-            // initializer.initialize();
+            initializer.initialize();
         };
     }
 
     public static void main(String[] args) {
-        // HACK: Passing java system properties is hard, environment variables
-        // are easy
+        // HACK: Passing java system properties is hard, environment variables are easy
         String port = System.getenv("SMARTCINEMA_DATA_API_LISTEN_ON");
         if (port != null) {
             System.setProperty("server.port", port);
