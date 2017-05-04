@@ -28,18 +28,20 @@ node {
         stage 'Run Tests'
         sh "./gradlew test -Dkinotest.driver=remote --debug || true"
         junit '*/build/test-results/*.xml'
-
-        // Show checkmark on GitHub
-        setGithubBuildStatus("Finished", "SUCCESS")
     } catch (e) {
         // If there was an exception thrown, the build failed
         currentBuild.result = "FAILED"
 
-        // Show red x on GitHub
-        setGithubBuildStatus("Finished", "FAILURE")
-
         throw e
     } finally {
+        if (currentBuild.result == null) {
+            // Show checkmark on GitHub
+            setGithubBuildStatus("Finished", "SUCCESS")
+        } else {
+            // Show red x on GitHub
+            setGithubBuildStatus("Finished", "FAILURE")
+        }
+
         // Success or failure, always send notifications
         notifyBuild(currentBuild.result)
     }
