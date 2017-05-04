@@ -9,6 +9,8 @@ import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -19,6 +21,8 @@ import org.slf4j.Logger;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Stopwatch;
+import com.google.common.collect.Lists;
+import com.google.gson.Gson;
 
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.movies.Movie;
@@ -89,12 +93,15 @@ public abstract class AbstractCinemaScraper {
         // information
     }
 
-    protected <T> T saveObject(Object object, Class<T> expectedResult) {
-        String baseUrl = createBaseUrl();
+    @SuppressWarnings("unchecked")
+    protected <T> T saveObject(Object toSave, Class<T> expectedResult) {
+        ObjectType type = ObjectType.forClass(expectedResult);
+        Object contained = getContainedObject(toSave, type);
+        if (contained != null)
+            return (T) toSave;
         try {
             // Create connection
-            URL url;
-            url = new URL(baseUrl + ObjectType.forClass(expectedResult).getUrlPostfix());
+            URL url = new URL(createBaseUrl() + type.getPostUrl());
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("POST");
 
@@ -103,7 +110,7 @@ public abstract class AbstractCinemaScraper {
             connection.setRequestProperty("content-type", "application/json");
             OutputStream stream = connection.getOutputStream();
             stream = new DataOutputStream(stream);
-            stream.write(toJson(object));
+            stream.write(toJson(toSave));
             stream.flush();
             stream.close();
 
@@ -127,17 +134,43 @@ public abstract class AbstractCinemaScraper {
                 connection.disconnect();
             }
         } catch (IOException e) {
-            throw new RuntimeException("Call to REST Service failed. Is there a running instance of Data Api Project?",
-                    e);
+            throw new RuntimeException("Call to REST Service failed.", e);
         }
+    }
 
+    private Object getContainedObject(Object toSave, ObjectType type) {
+        try {
+            // Create connection
+            URL url = new URL(createBaseUrl() + type.getGetUrl());
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+
+            // Do request
+            try {
+                connection.connect();
+
+                // Get result
+                int status = connection.getResponseCode();
+                if (status != 200) {
+                    throw new IllegalStateException("REST Service call failed.");
+                } else {
+                    try (InputStream is = connection.getInputStream(); Reader r = new InputStreamReader(is)) {
+                        return type.findObject(r, toSave);
+                    }
+                }
+            } finally {
+                connection.disconnect();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Call to REST Service failed.", e);
+        }
     }
 
     private String createBaseUrl() {
         String envVar = System.getenv("SMARTCINEMA_API_URL");
         if (envVar == null) {
             // use default for local testing
-            return "http://localhost:9090/rest-private";
+            return "http://localhost:9090";
         }
         return envVar;
     }
@@ -147,16 +180,44 @@ public abstract class AbstractCinemaScraper {
     }
 
     public enum ObjectType {
-        CINEMA("insertCinema"), MOVIE("insertMovie"), PLAYLIST("insertPlaylist");
+        CINEMA("/rest-private/insertCinema", "/rest/getCinemas"), MOVIE("/rest-private/insertMovie",
+                "/rest/getCinemas"), PLAYLIST("/rest-private/insertPlaylist", null);
 
-        private String urlPostfix;
+        private String postUrl;
+        private String getUrl;
 
-        private ObjectType(String urlPostfix) {
-            this.urlPostfix = urlPostfix;
+        private ObjectType(String postUrl, String getUrl) {
+            this.postUrl = postUrl;
+            this.getUrl = getUrl;
         }
 
-        public String getUrlPostfix() {
-            return urlPostfix;
+        public Object findObject(Reader r, Object object) {
+            Gson gson = GsonFactory.buildGson();
+            switch (this) {
+            case MOVIE:
+                List<Movie> movies = Lists.newArrayList(gson.fromJson(r, Movie[].class));
+                Optional<Movie> foundMovie = movies.stream()
+                        .filter(movie -> movie != null && movie.getName().equals(((Movie) object).getName())).findAny();
+                return foundMovie.orElse(null);
+            case CINEMA:
+                List<Cinema> cinemas = Lists.newArrayList(gson.fromJson(r, Cinema[].class));
+                Optional<Cinema> foundCinema = cinemas.stream()
+                        .filter(cinema -> cinema != null && cinema.getName().equals(((Cinema) object).getName()))
+                        .findAny();
+                return foundCinema.orElse(null);
+            case PLAYLIST:
+                // not needed
+                break;
+            }
+            return null;
+        }
+
+        public String getGetUrl() {
+            return getUrl;
+        }
+
+        public String getPostUrl() {
+            return postUrl;
         }
 
         public static ObjectType forClass(Class<?> clazz) {
