@@ -3,8 +3,9 @@ package de.tinf15b4.kino.retrieval.scraper;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -20,8 +21,7 @@ import de.tinf15b4.kino.data.playlists.Playlist;
 public class KinemathekScraper extends AbstractCinemaScraper {
 
     private static final String KINEMATHEK_URL = "http://kinemathek-karlsruhe.de/programm.php";
-    private List<Movie> movies;
-    private List<Playlist> playtimes;
+    private Cinema cinema;
 
     public KinemathekScraper() {
         super("Kinemathek");
@@ -34,13 +34,16 @@ public class KinemathekScraper extends AbstractCinemaScraper {
 
     @Override
     public void gatherData() {
-        Cinema cinema = new Cinema("Kinemathek", "Kaiserpassage", "6", "76133", "Karlsruhe", "Deutschland", null);
-        movies = new ArrayList<>();
-        playtimes = new ArrayList<>();
+        cinema = getCinema();
 
         driver.get(KINEMATHEK_URL);
         List<WebElement> sections = driver.findElementsByXPath(".//div[contains(@class, 'programm-container')]");
         handleDates(sections);
+    }
+
+    private Cinema getCinema() {
+        return saveObject(new Cinema("Kinemathek", "Kaiserpassage", "6", "76133", "Karlsruhe", "Deutschland", null),
+                Cinema.class);
     }
 
     private void handleDates(List<WebElement> programmsForDate) {
@@ -62,7 +65,17 @@ public class KinemathekScraper extends AbstractCinemaScraper {
             LocalDateTime dateTime = addTimeToDate(timeText, date);
 
             String title = movieElement.findElement(By.xpath(".//div[contains(@class, 'programm-title')]/a")).getText();
-            System.out.println(String.format("Movie [%s] is played at [%s]", title, dateTime));
+            logger.info(String.format("Movie [%s] is played at [%s]", title, dateTime));
+
+            Movie movie = new Movie(title, null, null, 0, null, null);
+            retrieveMovieInformation(movie);
+            movie = saveObject(movie, Movie.class);
+
+            Playlist playlist = new Playlist();
+            playlist.setCinema(cinema);
+            playlist.setMovie(movie);
+            playlist.setTime(Date.from(dateTime.atZone(ZoneId.of("GMT+1")).toInstant()));
+            saveObject(playlist, Playlist.class);
         }
     }
 
@@ -86,5 +99,4 @@ public class KinemathekScraper extends AbstractCinemaScraper {
             return LocalDate.parse(dateText, formatter);
         }
     }
-
 }
