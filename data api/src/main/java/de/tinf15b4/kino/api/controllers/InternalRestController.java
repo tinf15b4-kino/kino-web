@@ -63,37 +63,37 @@ public class InternalRestController {
 
     @RequestMapping(value = "rest-private/insertCinema", method = RequestMethod.POST)
     public ResponseEntity<?> insertCinema(@RequestBody Cinema cinema) {
-        return ResponseEntity.ok(cinemaService.saveWithId(cinema));
+        return ResponseEntity.ok(cinemaService.saveWithId(cinema).orElse(null));
     }
 
     @RequestMapping(value = "rest-private/insertMovie", method = RequestMethod.POST)
     public ResponseEntity<?> inserMovie(@RequestBody Movie movie) {
-        return ResponseEntity.ok(movieService.saveWithId(movie));
+        return ResponseEntity.ok(movieService.saveWithId(movie).orElse(null));
     }
 
     @RequestMapping(value = "rest-private/insertFavorite", method = RequestMethod.POST)
     public ResponseEntity<?> insertFavorite(@RequestBody Favorite favorite) {
-        return ResponseEntity.ok(favoriteService.saveWithId(favorite));
+        return ResponseEntity.ok(favoriteService.saveWithId(favorite).orElse(null));
     }
 
     @RequestMapping(value = "rest-private/insertPlaylist", method = RequestMethod.POST)
     public ResponseEntity<?> insertPlaylist(@RequestBody Playlist playlist) {
-        return ResponseEntity.ok(playlistService.saveWithId(playlist));
+        return ResponseEntity.ok(playlistService.saveWithId(playlist).orElse(null));
     }
 
     @RequestMapping(value = "rest-private/insertRatedCinema", method = RequestMethod.POST)
     public ResponseEntity<?> insertRatedCinema(@RequestBody RatedCinema ratedCinema) {
-        return ResponseEntity.ok(ratedCinemaService.saveWithId(ratedCinema));
+        return ResponseEntity.ok(ratedCinemaService.saveWithId(ratedCinema).orElse(null));
     }
 
     @RequestMapping(value = "rest-private/insertRatedMovie", method = RequestMethod.POST)
     public ResponseEntity<?> insertRatedMovie(@RequestBody RatedMovie ratedMovie) {
-        return ResponseEntity.ok(ratedMovieService.saveWithId(ratedMovie));
+        return ResponseEntity.ok(ratedMovieService.saveWithId(ratedMovie).orElse(null));
     }
 
     @RequestMapping(value = "rest-private/insertUser", method = RequestMethod.POST)
     public ResponseEntity<?> insertCinema(@RequestBody User user) {
-        return ResponseEntity.ok(userService.saveWithId(user));
+        return ResponseEntity.ok(userService.saveWithId(user).orElse(null));
     }
 
     @RequestMapping(value = "rest-private/getAllUsers", method = RequestMethod.GET)

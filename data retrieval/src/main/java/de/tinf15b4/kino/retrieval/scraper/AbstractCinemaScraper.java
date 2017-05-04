@@ -98,7 +98,7 @@ public abstract class AbstractCinemaScraper {
         ObjectType type = ObjectType.forClass(expectedResult);
         Object contained = getContainedObject(toSave, type);
         if (contained != null)
-            return (T) toSave;
+            return (T) contained;
         try {
             // Create connection
             URL url = new URL(createBaseUrl() + type.getPostUrl());
@@ -139,6 +139,8 @@ public abstract class AbstractCinemaScraper {
     }
 
     private Object getContainedObject(Object toSave, ObjectType type) {
+        if (type == ObjectType.PLAYLIST)
+            return null;
         try {
             // Create connection
             URL url = new URL(createBaseUrl() + type.getGetUrl());
@@ -181,7 +183,7 @@ public abstract class AbstractCinemaScraper {
 
     public enum ObjectType {
         CINEMA("/rest-private/insertCinema", "/rest/getCinemas"), MOVIE("/rest-private/insertMovie",
-                "/rest/getCinemas"), PLAYLIST("/rest-private/insertPlaylist", null);
+                "/rest/getMovies"), PLAYLIST("/rest-private/insertPlaylist", null);
 
         private String postUrl;
         private String getUrl;

@@ -66,7 +66,8 @@ public class KinoWebDataService extends WebMvcConfigurerAdapter {
         }
 
         @Override
-        public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+                throws Exception {
             this.resetTimeout();
             return super.preHandle(request, response, handler);
         }
@@ -103,12 +104,13 @@ public class KinoWebDataService extends WebMvcConfigurerAdapter {
     @Bean
     public CommandLineRunner loadData(DataInitializer initializer) {
         return (args) -> {
-            initializer.initialize();
+            // initializer.initialize();
         };
     }
 
     public static void main(String[] args) {
-        // HACK: Passing java system properties is hard, environment variables are easy
+        // HACK: Passing java system properties is hard, environment variables
+        // are easy
         String port = System.getenv("SMARTCINEMA_DATA_API_LISTEN_ON");
         if (port != null) {
             System.setProperty("server.port", port);
