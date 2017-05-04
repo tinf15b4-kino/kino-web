@@ -28,6 +28,7 @@ import de.tinf15b4.kino.data.ratedcinemas.RatedCinema;
 import de.tinf15b4.kino.data.ratedmovies.RatedMovie;
 import de.tinf15b4.kino.data.search.SearchResult;
 import de.tinf15b4.kino.data.users.User;
+import de.tinf15b4.kino.utils.GsonFactory;
 
 public class RestClient {
 

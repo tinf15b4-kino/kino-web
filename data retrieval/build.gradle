@@ -8,7 +8,7 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 
 jar {
-    baseName = 'tinf15b4-kino-commons'
+    baseName = 'tinf15b4-kino-data-retrieval'
     version = '0.0.1-SNAPSHOT'
 }
 
@@ -16,6 +16,9 @@ sourceSets {
     main {
         java {
             srcDir 'src/main/java'
+        }
+        resources {
+            srcDir 'src/main/resources'
         }
     }
 }
@@ -28,6 +31,9 @@ repositories {
 }
 
 dependencies {
-    compile('org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final')
-    compile('com.google.code.gson:gson:2.8.0')
+    compile project(':commons')
+    compile('org.reflections:reflections:0.9.9-RC1')
+    compile('org.seleniumhq.selenium:selenium-java:3.4.0')
+    compile('io.github.bonigarcia:webdrivermanager:1.5.+')
 }
+
