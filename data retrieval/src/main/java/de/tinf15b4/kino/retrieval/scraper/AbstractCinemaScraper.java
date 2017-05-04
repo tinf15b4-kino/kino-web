@@ -84,6 +84,11 @@ public abstract class AbstractCinemaScraper {
 
     public abstract void gatherData();
 
+    protected void retrieveMovieInformation(Movie movie) {
+        // TODO hook theMovieDB here and fill the given movie with its necessary
+        // information
+    }
+
     protected <T> T saveObject(Object object, Class<T> expectedResult) {
         String baseUrl = createBaseUrl();
         try {
