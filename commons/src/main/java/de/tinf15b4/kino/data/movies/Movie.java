@@ -1,5 +1,7 @@
 package de.tinf15b4.kino.data.movies;
 
+import java.util.Arrays;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -105,5 +107,48 @@ public class Movie extends EntityModel implements ImageContainer {
     @Override
     public void doFilter() {
         setCover(null);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((ageControl == null) ? 0 : ageControl.hashCode());
+        result = prime * result + Arrays.hashCode(cover);
+        result = prime * result + ((description == null) ? 0 : description.hashCode());
+        result = prime * result + ((genre == null) ? 0 : genre.hashCode());
+        result = prime * result + (int) (lengthMinutes ^ (lengthMinutes >>> 32));
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Movie other = (Movie) obj;
+        if (ageControl != other.ageControl)
+            return false;
+        if (!Arrays.equals(cover, other.cover))
+            return false;
+        if (description == null) {
+            if (other.description != null)
+                return false;
+        } else if (!description.equals(other.description))
+            return false;
+        if (genre != other.genre)
+            return false;
+        if (lengthMinutes != other.lengthMinutes)
+            return false;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        return true;
     }
 }
