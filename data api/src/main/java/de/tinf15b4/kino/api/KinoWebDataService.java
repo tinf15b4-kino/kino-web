@@ -66,8 +66,7 @@ public class KinoWebDataService extends WebMvcConfigurerAdapter {
         }
 
         @Override
-        public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-                throws Exception {
+        public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
             this.resetTimeout();
             return super.preHandle(request, response, handler);
         }
