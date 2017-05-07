@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.annotations.Type;
+
 import de.tinf15b4.kino.data.EntityModel;
 import de.tinf15b4.kino.data.ImageContainer;
 
@@ -22,12 +24,14 @@ public class Movie extends EntityModel implements ImageContainer {
         String LENGTH_MINUTES = "lengthMinutes";
         String AGE_CONTROL = "ageControl";
         String GENRE = "genre";
+        String TMDB_ID = "tmdbID";
     }
 
     @Column(name = Movie.FieldInfos.NAME, nullable = false)
     private String name;
 
     @Column(name = Movie.FieldInfos.DESCRIPTION)
+    @Type(type = "org.hibernate.type.TextType")
     private String description;
 
     @Column(name = Movie.FieldInfos.COVER, length = Movie.FieldInfos.COVER_LENGTH)
@@ -41,6 +45,9 @@ public class Movie extends EntityModel implements ImageContainer {
 
     @Column(name = Movie.FieldInfos.GENRE)
     private Genre genre;
+
+    @Column(name = Movie.FieldInfos.TMDB_ID)
+    private int tmdbId;
 
     public Movie() {
 
@@ -102,6 +109,14 @@ public class Movie extends EntityModel implements ImageContainer {
 
     public void setAgeControl(AgeControl ageControl) {
         this.ageControl = ageControl;
+    }
+
+    public int getTmdbId() {
+        return tmdbId;
+    }
+
+    public void setTmdbId(int tmdbId) {
+        this.tmdbId = tmdbId;
     }
 
     @Override

@@ -19,8 +19,10 @@ import org.slf4j.Logger;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Stopwatch;
+import com.omertron.themoviedbapi.MovieDbException;
 
 import de.tinf15b4.kino.data.movies.Movie;
+import de.tinf15b4.kino.retrieval.tmdb.TmdbDataRetriever;
 import de.tinf15b4.kino.utils.GsonFactory;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 import io.github.bonigarcia.wdm.FirefoxDriverManager;
@@ -30,9 +32,11 @@ public abstract class AbstractCinemaScraper {
     protected RemoteWebDriver driver;
     protected Logger logger;
     private String cinemaName;
+    private TmdbDataRetriever tmdb;
 
     public AbstractCinemaScraper(String cinemaName) {
         this.cinemaName = cinemaName;
+        tmdb = new TmdbDataRetriever();
     }
 
     public void scrape() {
@@ -87,9 +91,8 @@ public abstract class AbstractCinemaScraper {
 
     public abstract void gatherData();
 
-    protected void retrieveMovieInformation(Movie movie) {
-        // TODO hook theMovieDB here and fill the given movie with its necessary
-        // information
+    protected Movie retrieveMovieInformation(Movie movie) throws MovieDbException {
+        return tmdb.getMovie(movie);
     }
 
     @SuppressWarnings("unchecked")
