@@ -1,17 +1,22 @@
 package de.tinf15b4.kino.retrieval.tmdb;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.http.client.HttpClient;
 import org.yamj.api.common.http.SimpleHttpClientBuilder;
 
 import com.omertron.themoviedbapi.MovieDbException;
+import com.omertron.themoviedbapi.enumeration.ReleaseType;
 import com.omertron.themoviedbapi.enumeration.SearchType;
 import com.omertron.themoviedbapi.methods.TmdbMovies;
 import com.omertron.themoviedbapi.methods.TmdbSearch;
 import com.omertron.themoviedbapi.model.movie.MovieInfo;
+import com.omertron.themoviedbapi.model.movie.ReleaseDate;
+import com.omertron.themoviedbapi.model.movie.ReleaseDates;
 import com.omertron.themoviedbapi.tools.HttpTools;
 
+import de.tinf15b4.kino.data.movies.AgeControl;
 import de.tinf15b4.kino.data.movies.Movie;
 
 public class TmdbDataRetriever {
@@ -31,20 +36,23 @@ public class TmdbDataRetriever {
     }
 
     public Movie getMovie(Movie movie) throws MovieDbException {
-        System.out.println(movie.getName());
         List<MovieInfo> movies = searchInstance.searchMovie(movie.getName(), 1, "de-DE", false, 0, 0, SearchType.NGRAM)
                 .getResults();
 
         if (movies.size() != 0) {
-            MovieInfo mi = movies.get(0);
-        movie = new Movie();
-        movie.setName(mi.getTitle());
-        movie.setDescription(mi.getOverview());
-        // m.setCover(cover);
-        movie.setLengthMinutes(mi.getRuntime());
-        // m.setAgeControl(ageControl);
-        // m.setGenre(genre);
-        movie.setTmdbId(mi.getId());
+            MovieInfo mi = moviesInstance.getMovieInfo(movies.get(0).getId(), "de-DE", "");
+            // MovieInfo mi = moviesInstance.getMovieInfo(550, "de-DE",
+            // "RELEASES");
+            movie = new Movie();
+            movie.setName(mi.getTitle());
+            movie.setDescription(mi.getOverview());
+            movie.setTmdbId(mi.getId());
+            // m.setCover(cover);
+            // movie.setLengthMinutes(mi.getRuntime()); Can't use this one cause
+            // it seems to be broken (returns allways 0)
+            movie.setLengthMinutes(mi.getRuntime());
+            movie.setAgeControl(getAgeControl(mi));
+            // m.setGenre(genre);
         } else {
             throw new MovieDbException(null, "Movie not found");
         }
@@ -52,26 +60,47 @@ public class TmdbDataRetriever {
         return movie;
     }
 
-    public void getMoviexx() {
-        try {
-            tmdbMovies = moviesInstance.getNowPlayingMovies(15, "de-DE").getResults();
+    private AgeControl getAgeControl(MovieInfo mi) throws MovieDbException {
+        // Get all Release Date Information
+        List<ReleaseDates> releases = moviesInstance.getReleaseDates(mi.getId()).getResults();
 
-            Movie m;
-            for (MovieInfo mi : tmdbMovies) {
-                System.out.println(mi.getTitle());
-                m = new Movie();
-                m.setName(mi.getTitle());
-                m.setDescription(mi.getOverview());
-                // m.setCover(cover);
-                m.setLengthMinutes(mi.getRuntime());
-                System.out.println(mi.getRuntime());
-                // m.setAgeControl(ageControl);
-                // m.setGenre(genre);
-                m.setTmdbId(mi.getId());
+        // Get Germany Release Date Information
+        Optional<ReleaseDates> germany = releases.stream().filter(r -> r.getCountry().equals("DE")).findFirst();
+
+        if (germany.isPresent()) {
+            // Get Cinema Release Information
+            Optional<ReleaseDate> cinemaRelease = germany.get().getReleaseDate().stream()
+                    .filter(r -> r.getType() == ReleaseType.THEATRICAL).findFirst();
+
+            if (cinemaRelease.isPresent()) {
+                String age = cinemaRelease.get().getCertification();
+
+                if (!age.equals("")) {
+                    return AgeControl.valueOf("USK" + age);
+                }
             }
-        } catch (MovieDbException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
+        return AgeControl.UNBEKANNT;
     }
+    //
+    // }
+    //
+    // private static String readUrl(String urlString) throws Exception{
+    // BufferedReader reader = null;
+    // try{
+    // URL url = new URL(urlString);
+    // reader = new BufferedReader(new InputStreamReader(url.openStream()));
+    // StringBuffer buffer = new StringBuffer();
+    // int read;
+    // char[] chars = new char[1024];
+    // while((read = reader.read(chars)) != -1){
+    // buffer.append(chars, 0, read);
+    // }
+    // return buffer.toString();
+    // } finally {
+    // if (reader != null){
+    // reader.close();
+    // }
+    // }
+    // }
 }
