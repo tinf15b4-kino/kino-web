@@ -70,6 +70,9 @@ public class FakeDataInitializer implements DataInitializer {
             m.setGenre(Genre.values()[rnd.nextInt(Genre.values().length)]);
             m.setAgeControl(AgeControl.values()[rnd.nextInt(AgeControl.values().length)]);
             m.setTmdbId(i);
+            m.setStudio(faker.university().name());
+            m.setAuthor(faker.name().fullName());
+            m.setDirector(faker.name().fullName());
 
             // Picture
             try {
