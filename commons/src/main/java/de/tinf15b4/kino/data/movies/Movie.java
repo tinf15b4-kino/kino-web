@@ -13,7 +13,8 @@ import de.tinf15b4.kino.data.EntityModel;
 import de.tinf15b4.kino.data.ImageContainer;
 
 @Entity
-@Table(name = "movie", uniqueConstraints = @UniqueConstraint(columnNames = { Movie.FieldInfos.NAME }))
+@Table(name = "movie", uniqueConstraints = { @UniqueConstraint(columnNames = { Movie.FieldInfos.NAME }),
+        @UniqueConstraint(columnNames = { Movie.FieldInfos.TMDB_ID }) })
 public class Movie extends EntityModel implements ImageContainer {
 
     public interface FieldInfos {

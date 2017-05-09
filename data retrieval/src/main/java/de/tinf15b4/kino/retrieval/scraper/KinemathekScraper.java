@@ -37,6 +37,7 @@ public class KinemathekScraper extends AbstractCinemaScraper {
     @Override
     public void gatherData() {
         cinema = getCinema();
+        deletePlaylistFuture(cinema);
 
         driver.get(KINEMATHEK_URL);
         List<WebElement> sections = driver.findElementsByXPath(".//div[contains(@class, 'programm-container')]");

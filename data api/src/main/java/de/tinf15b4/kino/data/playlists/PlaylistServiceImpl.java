@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import de.tinf15b4.kino.data.ServiceImplModel;
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.movies.Movie;
-import de.tinf15b4.kino.data.playlists.Playlist;
 
 @Service
 public class PlaylistServiceImpl extends ServiceImplModel<Playlist, PlaylistRepository> implements PlaylistService {
@@ -23,4 +22,8 @@ public class PlaylistServiceImpl extends ServiceImplModel<Playlist, PlaylistRepo
         return repository.findForMovie(m, from, to);
     }
 
+    @Override
+    public void deleteFutureForCinema(Cinema c) {
+        repository.deleteFutureForCinema(c);
+    }
 }

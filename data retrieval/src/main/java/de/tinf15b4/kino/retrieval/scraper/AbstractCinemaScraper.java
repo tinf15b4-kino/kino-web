@@ -21,6 +21,7 @@ import com.google.common.base.Charsets;
 import com.google.common.base.Stopwatch;
 import com.omertron.themoviedbapi.MovieDbException;
 
+import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.movies.Movie;
 import de.tinf15b4.kino.retrieval.tmdb.TmdbDataRetriever;
 import de.tinf15b4.kino.utils.GsonFactory;
@@ -130,6 +131,33 @@ public abstract class AbstractCinemaScraper {
                         return GsonFactory.buildGson().fromJson(r, expectedResult);
                     }
                 }
+            } finally {
+                connection.disconnect();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Call to REST Service failed.", e);
+        }
+    }
+
+    public void deletePlaylistFuture(Cinema cinema) {
+        try {
+            // Create connection
+            URL url = new URL(getBaseUrl() + "/rest-private/clearPlaylistFutureForCinema");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+
+            // Prepare request
+            writeBodyToConnection(cinema, connection);
+
+            // Do request
+            try {
+                connection.connect();
+
+                // Get result
+                int status = connection.getResponseCode();
+                if (status != 200)
+                    throw new IllegalStateException("REST Service call failed.");
+
             } finally {
                 connection.disconnect();
             }

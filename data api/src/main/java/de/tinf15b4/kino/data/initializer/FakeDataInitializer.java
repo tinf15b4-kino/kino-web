@@ -69,6 +69,7 @@ public class FakeDataInitializer implements DataInitializer {
             m.setLengthMinutes(faker.number().numberBetween(20, 240));
             m.setGenre(Genre.values()[rnd.nextInt(Genre.values().length)]);
             m.setAgeControl(AgeControl.values()[rnd.nextInt(AgeControl.values().length)]);
+            m.setTmdbId(i);
 
             // Picture
             try {
