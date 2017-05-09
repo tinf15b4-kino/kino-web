@@ -32,7 +32,7 @@ Scenario: See the movie list with active genre filter
 	Given the movies 
 		| Id  | Name            | Description | Genre		| TmdbId |
 		| 1   | Donald Duck     | Yo Mama     | Action		| 101    |
-		| 2   | Daisy Duck      | Yo Mama     | Crime	  	| 102    |
+		| 2   | Daisy Duck      | Yo Mama     | Krimi	  	| 102    |
 		| 3   | Weihnachtsmann  | Yo Mama     | Drama	  	| 103    |
 	And the cinemas 
 		| Id  | Name                    |
