@@ -64,6 +64,7 @@ public class TmdbDataRetriever {
                 m.setDescription(mi.getOverview());
                 // m.setCover(cover);
                 m.setLengthMinutes(mi.getRuntime());
+                System.out.println(mi.getRuntime());
                 // m.setAgeControl(ageControl);
                 // m.setGenre(genre);
                 m.setTmdbId(mi.getId());
