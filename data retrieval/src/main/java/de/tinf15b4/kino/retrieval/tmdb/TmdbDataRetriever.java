@@ -17,6 +17,7 @@ import com.omertron.themoviedbapi.model.movie.ReleaseDates;
 import com.omertron.themoviedbapi.tools.HttpTools;
 
 import de.tinf15b4.kino.data.movies.AgeControl;
+import de.tinf15b4.kino.data.movies.Genre;
 import de.tinf15b4.kino.data.movies.Movie;
 
 public class TmdbDataRetriever {
@@ -48,16 +49,41 @@ public class TmdbDataRetriever {
             movie.setDescription(mi.getOverview());
             movie.setTmdbId(mi.getId());
             // m.setCover(cover);
+
             // movie.setLengthMinutes(mi.getRuntime()); Can't use this one cause
             // it seems to be broken (returns allways 0)
             movie.setLengthMinutes(mi.getRuntime());
             movie.setAgeControl(getAgeControl(mi));
-            // m.setGenre(genre);
+            movie.setGenre(getGenre(mi));
+
         } else {
             throw new MovieDbException(null, "Movie not found");
         }
 
         return movie;
+    }
+
+    private Genre getGenre(MovieInfo mi) {
+        // TODO: Bei Gelegenheit umstellen dass ein Film mehere Genres haben
+        // kann
+        List<com.omertron.themoviedbapi.model.Genre> genres = mi.getGenres();
+        if (genres.size() > 0) {
+            String name = genres.get(0).getName();
+
+            switch (name) {
+            case "Komödie":
+                name = "Komoedie";
+                break;
+            case "Science Fiction":
+                name = "ScienceFiction";
+                break;
+            case "TV-Film":
+                name = "TvFilm";
+            }
+
+            return Genre.valueOf(name);
+        }
+        return Genre.Unbekannt;
     }
 
     private AgeControl getAgeControl(MovieInfo mi) throws MovieDbException {
