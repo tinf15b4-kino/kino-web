@@ -92,7 +92,8 @@ public class MovieView extends VerticalLayout implements View {
                     }
 
                     RestResponse playlistResponse = userBean.getRestClient().getPlaylistForMovie(m.getId(), new Date(),
-                            new Date(new Date().getTime() + 1000L * 3600 * 24 * 7));
+                            null);
+//                            new Date(new Date().getTime() + 1000L * 3600 * 24 * 7));
                     if (!playlistResponse.hasError()) {
                         List<Playlist> playlistEntries = Lists.newArrayList((Playlist[]) playlistResponse.getValue());
 
@@ -103,7 +104,7 @@ public class MovieView extends VerticalLayout implements View {
                             playtimes.setSizeFull();
 
                             for (Playlist p : playlistEntries) {
-                                SimpleDateFormat sdf = new SimpleDateFormat("E HH:mm", Locale.GERMANY);
+                                SimpleDateFormat sdf = new SimpleDateFormat("E, dd.MM.yyyy HH:mm", Locale.GERMANY);
                                 NumberFormat pricef = NumberFormat.getCurrencyInstance(Locale.GERMANY);
                                 playtimes.addComponent(new Label(sdf.format(p.getTime())));
                                 playtimes.addComponent(new Link(p.getCinema().getName(), new ExternalResource(

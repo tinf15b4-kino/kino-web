@@ -13,14 +13,29 @@ import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.movies.Movie;
 
 public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
-    @Query("SELECT p FROM Playlist p WHERE p.cinema = :cinema AND p.time > :from AND p.time < :to ORDER BY p.time ASC")
+
+    //@formatter:off
+    
+    @Query("SELECT p "
+            + "FROM Playlist p "
+            + "WHERE p.cinema = :cinema "
+            + "AND (:from is null OR p.time > :from) "
+            + "AND (:to is null OR p.time < :to) "
+            + "ORDER BY p.time ASC")
     List<Playlist> findForCinema(@Param("cinema") Cinema cinema, @Param("from") Date from, @Param("to") Date to);
 
-    @Query("SELECT p FROM Playlist p WHERE p.movie = :movie AND p.time > :from AND p.time < :to ORDER BY p.time ASC")
+    @Query("SELECT p "
+            + "FROM Playlist p "
+            + "WHERE p.movie = :movie "
+            + "AND (:from is null OR p.time > :from) "
+            + "AND (:to is null OR p.time < :to) "
+            + "ORDER BY p.time ASC")
     List<Playlist> findForMovie(@Param("movie") Movie movie, @Param("from") Date from, @Param("to") Date to);
 
     @Modifying
     @Transactional
     @Query("DELETE FROM Playlist WHERE time > CURRENT_DATE AND cinema = :cinema")
     void deleteFutureForCinema(@Param("cinema") Cinema cinema);
+    
+    //@formatter:on
 }
