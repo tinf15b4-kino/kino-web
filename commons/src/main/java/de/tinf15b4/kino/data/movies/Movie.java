@@ -18,7 +18,7 @@ public class Movie extends EntityModel implements ImageContainer {
         String NAME = "name";
         String DESCRIPTION = "description";
         String COVER = "cover";
-        int COVER_LENGTH = 100000;
+        int COVER_LENGTH = 1000000;
         String LENGTH_MINUTES = "lengthMinutes";
         String AGE_CONTROL = "ageControl";
         String GENRE = "genre";
