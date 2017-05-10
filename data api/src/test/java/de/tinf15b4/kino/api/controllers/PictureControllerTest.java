@@ -50,6 +50,16 @@ public class PictureControllerTest {
 
         cinemaPicture = underTest.getCinemaPicture(0);
         assertArrayEquals(image, cinemaPicture);
+
+        // test caching.
+        Mockito.when(underTest.loadDefaultCinemaImage()).thenReturn(null);
+        cinemaPicture = underTest.getCinemaPicture(10);
+        assertArrayEquals(DEFAULT_CINEMA_IMAGE, cinemaPicture);
+
+        cinemaPicture = underTest.getCinemaPicture(9);
+        assertArrayEquals(DEFAULT_CINEMA_IMAGE, cinemaPicture);
+
+        Mockito.verify(underTest).loadDefaultCinemaImage();
     }
 
     @Test
@@ -65,6 +75,16 @@ public class PictureControllerTest {
 
         moviePicture = underTest.getMoviePicture(0);
         assertArrayEquals(image, moviePicture);
+
+        // test caching.
+        Mockito.when(underTest.loadDefaultMovieCover()).thenReturn(null);
+        moviePicture = underTest.getMoviePicture(10);
+        assertArrayEquals(DEFAULT_MOVIE_IMAGE, moviePicture);
+
+        moviePicture = underTest.getMoviePicture(9);
+        assertArrayEquals(DEFAULT_MOVIE_IMAGE, moviePicture);
+
+        Mockito.verify(underTest).loadDefaultMovieCover();
     }
 
 }
