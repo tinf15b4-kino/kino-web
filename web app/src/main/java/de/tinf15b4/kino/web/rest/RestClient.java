@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -30,7 +31,9 @@ import de.tinf15b4.kino.data.search.SearchResult;
 import de.tinf15b4.kino.data.users.User;
 import de.tinf15b4.kino.utils.GsonFactory;
 
-public class RestClient {
+public class RestClient implements Serializable {
+
+    private static final long serialVersionUID = 142015013387782716L;
 
     private static final String AUTHORIZE = "/authorize?username=%s&password=%s";
     private static final String LOGOUT = "/logout?token=%s";
