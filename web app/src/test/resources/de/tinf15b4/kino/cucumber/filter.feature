@@ -40,7 +40,7 @@ Scenario: See the movie list with active genre filter
 	And movie 1 is played in cinema 1 for 100 cents 
 	And movie 2 is played in cinema 1 for 100 cents 
 	And movie 3 is played in cinema 1 for 100 cents 
-	
+	 
 	When I open the start page 
 	And I click the button labeled "Filme" 
 	And I toggle checkbox filter "Action" 
