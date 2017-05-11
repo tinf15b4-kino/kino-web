@@ -90,7 +90,7 @@ public class SmartCinemaUi extends UI {
         panel.setSizeFull();
 
 
-        // Main View (in grid cell 1 1) will get all excess space
+        // Main View (in grid cell 1 2) will get all excess space
         grid.setColumnExpandRatio(1, 2);
         grid.setRowExpandRatio(2, 3);
 
@@ -221,13 +221,12 @@ public class SmartCinemaUi extends UI {
         favoriteBtn.addStyleName(BaseTheme.BUTTON_LINK);
         navigator.addComponent(favoriteBtn);
 
-        Label nothingLabel = new Label("");
-        navigator.addComponent(nothingLabel);
-        navigator.setExpandRatio(nothingLabel, 1f);
+        Button aboutBtn = (Button) (createViewButton("über smartCinema", "aboutView", FontAwesome.HEART));
+        navigator.addComponent(aboutBtn);
+        navigator.setExpandRatio(aboutBtn, 1f);
 
         navigator.setId("navigator");
         navigator.addStyleName(BaseTheme.BUTTON_LINK);
-
 
         return navigator;
     }
