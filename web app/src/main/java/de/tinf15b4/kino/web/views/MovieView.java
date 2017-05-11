@@ -155,16 +155,14 @@ public class MovieView extends VerticalLayout implements View {
 
         for (Playlist p : playlistEntries) {
 
-            if (cinemaList == null || !cinemaList.contains(p.getCinema())) {
+            if (!cinemaList.contains(p.getCinema())) {
                 cinemaList.add(p.getCinema());
             }
         }
 
-        if (!(cinemaList == null)) {
-            for (Cinema c : cinemaList) {
+        for (Cinema c : cinemaList) {
 
-                playlistForm.addComponent(createCinemaRow(c, playlistEntries));
-            }
+            playlistForm.addComponent(createCinemaRow(c, playlistEntries));
         }
 
 
@@ -199,31 +197,28 @@ public class MovieView extends VerticalLayout implements View {
 
         SimpleDateFormat movieTimeFormat = new SimpleDateFormat("HH:mm", Locale.GERMANY);
 
-        GridLayout playTimesTable = new GridLayout(7, 5);
+        HorizontalLayout playTimesTable = new HorizontalLayout();
         playTimesTable.setPrimaryStyleName("playTimesTable");
 
-        // Add weekdays to table
-        for (int i = 0; i<6; i++)
-        {
-            playTimesTable.addComponent(
-                    new Label(currentDate.plusDays(i).format(formattedDate)), i+1, 1);
-        }
-
-        // Add playtimes to table
         for (int i = 0; i<6; i++) {
 
-            int row = 2;
+            // Add weekdays to Table
+            VerticalLayout tmpPlaylistColumn = new VerticalLayout();
+            tmpPlaylistColumn.addComponent(
+                    new Label(currentDate.plusDays(i).format(formattedDate)));
 
+            // Add playtimes to table
             for (Playlist p : pE) {
                 LocalDate playDate = p.getTime().toInstant().atZone(ZoneId.of("GMT+1")).toLocalDate();
-
                 if (currentDate.plusDays(i).isEqual(playDate)) {
                     if (p.getCinema().equals(c)) {
-                        playTimesTable.addComponent(
-                                new Label(movieTimeFormat.format(p.getTime())), i+1, row++);
+                        tmpPlaylistColumn.addComponent(
+                                new Label(movieTimeFormat.format(p.getTime())));
                     }
                 }
             }
+
+            playTimesTable.addComponent(tmpPlaylistColumn);
         }
 
         cinemaRow.addComponent(createCinemaInformation(c, playTimesTable));
@@ -232,7 +227,7 @@ public class MovieView extends VerticalLayout implements View {
         return cinemaRow;
     }
 
-    private VerticalLayout createCinemaInformation(Cinema c, GridLayout playTimesTable) {
+    private VerticalLayout createCinemaInformation(Cinema c, HorizontalLayout playTimesTable) {
         VerticalLayout cinemaInformation = new VerticalLayout();
         cinemaInformation.setPrimaryStyleName("cinemaPlaylistInformation");
 
