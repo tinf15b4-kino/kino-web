@@ -14,6 +14,8 @@ import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.omertron.themoviedbapi.MovieDbException;
+
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.movies.Movie;
 import de.tinf15b4.kino.data.playlists.Playlist;
@@ -45,7 +47,12 @@ public class KurbelScraper extends AbstractCinemaScraper {
         for (WebElement movieElement : movies) {
             String title = movieElement.findElement(By.xpath(".//h2")).getText();
             Movie movie = saveObject(new Movie(title, null, null, 0, null, null), Movie.class);
-            retrieveMovieInformation(movie);
+            try {
+                movie = retrieveMovieInformation(movie);
+            } catch (MovieDbException e) {
+                getLogger().warn("Failed to retrieve data from movie db for " + title);
+                getLogger().warn(e.toString());
+            }
             handlePlaytimes(movie, movieElement);
         }
     }
