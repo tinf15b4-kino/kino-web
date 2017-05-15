@@ -5,6 +5,9 @@ import java.net.URLEncoder;
 
 import javax.annotation.PostConstruct;
 
+import de.tinf15b4.kino.data.cinemas.Cinema;
+import de.tinf15b4.kino.data.movies.Movie;
+import de.tinf15b4.kino.web.rest.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.annotations.Theme;
@@ -273,12 +276,38 @@ public class SmartCinemaUi extends UI {
         navigatorBarRight.setHeight("60px");
         navigatorBarRight.setId("toolBarRight");
 
-        Label navLabelR = new Label();
-        navLabelR.setCaption("");
-
-        navigatorBarRight.addComponent(navLabelR);
+        navigatorBarRight.addComponent(getContentLabel());
 
         return navigatorBarRight;
+    }
+
+    private Label getContentLabel(){
+        Label contentLabel = new Label();
+
+        String uri = Page.getCurrent().getUriFragment();
+
+        if (uri.contains("movies")){
+            contentLabel.setValue("Filme");
+        }
+        else if (uri.contains("movie")) {
+            RestResponse r = userBean.getRestClient().getMovie(Integer.parseInt(uri.substring(7)));
+            Movie m = (Movie) r.getValue();
+            contentLabel.setValue(m.getName());
+        }
+        else if (uri.contains("cinemas")) {
+            contentLabel.setValue("Kinos");
+        }
+        else if (uri.contains("cinema")) {
+            RestResponse r = userBean.getRestClient().getCinema(Integer.parseInt(uri.substring(8)));
+            Cinema c = (Cinema) r.getValue();
+            contentLabel.setValue(c.getName());
+        }
+        else if (uri.contains("favourites")) {
+            contentLabel.setValue("Favoriten");
+        }
+        contentLabel.setId("toolBarLabel");
+
+        return contentLabel;
     }
 
     private Component createViewButton(String readableName, String viewId, FontAwesome icon) {
@@ -294,6 +323,8 @@ public class SmartCinemaUi extends UI {
     private void navigateTo(String viewId) {
         // TODO implement all views
         this.getNavigator().navigateTo(viewId);
+        grid.removeComponent(1, 1);
+        grid.addComponent(createToolBarRight(), 1, 1);
     }
 
     public void update() {

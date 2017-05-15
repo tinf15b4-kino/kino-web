@@ -129,18 +129,21 @@ public class MovieView extends VerticalLayout implements View {
 
         Label userLabel = new Label(rm.getUser().getName());
         userLabel.setPrimaryStyleName("ratingUserName");
+        userLabel.setWidth(null);
         userRow.addComponent(userLabel);
 
         Label ratingsLabel = new Label(rm.getRating() + " / 10 ");
         ratingsLabel.setPrimaryStyleName("ratingsLabel");
         userRow.addComponent(ratingsLabel);
+        userRow.setExpandRatio(ratingsLabel, 1f);
 
         Label dateLabel = new Label(sdf.format(rm.getTime()));
         dateLabel.setPrimaryStyleName("dateLabel");
+        dateLabel.setWidth(null);
         userRow.addComponent(dateLabel);
         userRow.setComponentAlignment(dateLabel, Alignment.TOP_RIGHT);
-        userRow.setExpandRatio(dateLabel, 1f);
         userRow.setPrimaryStyleName("userRow");
+        userRow.setWidth("100%");
 
         HorizontalLayout commentRow = new HorizontalLayout();
         Label commentLabel = new Label(rm.getDescription()) ;

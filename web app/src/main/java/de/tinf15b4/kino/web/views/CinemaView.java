@@ -232,18 +232,21 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
 
         Label userLabel = new Label(rC.getUser().getName());
         userLabel.setPrimaryStyleName("ratingUserName");
+        userLabel.setWidth(null);
         userRow.addComponent(userLabel);
 
         Label ratingsLabel = new Label(rC.getRating() + " / 10 ");
         ratingsLabel.setPrimaryStyleName("ratingsLabel");
         userRow.addComponent(ratingsLabel);
+        userRow.setExpandRatio(ratingsLabel, 1f);
 
         Label dateLabel = new Label(sdf.format(rC.getTime()));
         dateLabel.setPrimaryStyleName("dateLabel");
+        dateLabel.setWidth(null);
         userRow.addComponent(dateLabel);
         userRow.setComponentAlignment(dateLabel, Alignment.TOP_RIGHT);
-        userRow.setExpandRatio(dateLabel, 1f);
         userRow.setPrimaryStyleName("userRow");
+        userRow.setWidth("100%");
 
         HorizontalLayout commentRow = new HorizontalLayout();
         Label commentLabel = new Label(rC.getDescription()) ;
