@@ -24,6 +24,8 @@ import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.omertron.themoviedbapi.MovieDbException;
+
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.movies.AgeControl;
 import de.tinf15b4.kino.data.movies.Movie;
@@ -47,6 +49,8 @@ public class ZkmFilmpalastScraper extends AbstractCinemaScraper {
 
     @Override
     public void gatherData() {
+        deletePlaylistFuture(getCinema());
+
         for (String url : new String[] { ZKM_URL, ZKM_URL_2 }) {
             driver.get(url);
 
@@ -133,6 +137,15 @@ public class ZkmFilmpalastScraper extends AbstractCinemaScraper {
                         movie.setAgeControl(AgeControl.USK18);
 
                     movie.setCover(imgBytes);
+
+                    // Look up additional data from the movie db
+                    try {
+                        movie = retrieveMovieInformation(movie);
+                    } catch (MovieDbException e) {
+                        logger.warn("Could not retrieve movie db information from " + movie.getName());
+                        logger.warn(e.toString());
+                    }
+
                     movie = saveObject(movie, Movie.class);
 
                     // create playlist

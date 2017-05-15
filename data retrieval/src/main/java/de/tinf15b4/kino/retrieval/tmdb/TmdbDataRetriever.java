@@ -132,7 +132,7 @@ public class TmdbDataRetriever {
             String name = genres.get(0).getName();
 
             switch (name) {
-            case "Komödie":
+            case "KomÃ¶die":
                 name = "Komoedie";
                 break;
             case "Science Fiction":
