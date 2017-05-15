@@ -92,7 +92,8 @@ public class MovieView extends VerticalLayout implements View {
                     }
 
                     RestResponse playlistResponse = userBean.getRestClient().getPlaylistForMovie(m.getId(), new Date(),
-                            new Date(new Date().getTime() + 1000L * 3600 * 24 * 7));
+                            null);
+//                            new Date(new Date().getTime() + 1000L * 3600 * 24 * 7));
                     if (!playlistResponse.hasError()) {
                         List<Playlist> playlistEntries = Lists.newArrayList((Playlist[]) playlistResponse.getValue());
 
@@ -103,7 +104,7 @@ public class MovieView extends VerticalLayout implements View {
                             playtimes.setSizeFull();
 
                             for (Playlist p : playlistEntries) {
-                                SimpleDateFormat sdf = new SimpleDateFormat("E HH:mm", Locale.GERMANY);
+                                SimpleDateFormat sdf = new SimpleDateFormat("E, dd.MM.yyyy HH:mm", Locale.GERMANY);
                                 NumberFormat pricef = NumberFormat.getCurrencyInstance(Locale.GERMANY);
                                 playtimes.addComponent(new Label(sdf.format(p.getTime())));
                                 playtimes.addComponent(new Link(p.getCinema().getName(), new ExternalResource(
@@ -184,7 +185,7 @@ public class MovieView extends VerticalLayout implements View {
         Label regie = new Label("Regie");
         regie.setPrimaryStyleName("movieInfoLabel");
         regieRow.addComponent(regie);
-        Label regiePerson = new Label("Jonas Kümmerlin");
+        Label regiePerson = new Label(m.getDirector());
         regiePerson.setPrimaryStyleName("movieInfo");
         regieRow.addComponent(regiePerson);
 
@@ -195,7 +196,7 @@ public class MovieView extends VerticalLayout implements View {
         Label autor = new Label("Autor");
         autor.setPrimaryStyleName("movieInfoLabel");
         autorRow.addComponent(autor);
-        Label autorPerson = new Label("Marco Herglotz");
+        Label autorPerson = new Label(m.getAuthor());
         autorPerson.setPrimaryStyleName("movieInfo");
         autorRow.addComponent(autorPerson);
 
@@ -206,7 +207,7 @@ public class MovieView extends VerticalLayout implements View {
         Label studio = new Label("Studio");
         studio.setPrimaryStyleName("movieInfoLabel");
         studioRow.addComponent(studio);
-        Label studioPerson = new Label("Knabsche Studios");
+        Label studioPerson = new Label(m.getStudio());
         studioPerson.setPrimaryStyleName("movieInfo");
         studioRow.addComponent(studioPerson);
 

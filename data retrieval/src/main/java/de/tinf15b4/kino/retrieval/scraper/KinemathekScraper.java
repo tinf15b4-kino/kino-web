@@ -14,6 +14,8 @@ import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.omertron.themoviedbapi.MovieDbException;
+
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.movies.Movie;
 import de.tinf15b4.kino.data.playlists.Playlist;
@@ -35,6 +37,7 @@ public class KinemathekScraper extends AbstractCinemaScraper {
     @Override
     public void gatherData() {
         cinema = getCinema();
+        deletePlaylistFuture(cinema);
 
         driver.get(KINEMATHEK_URL);
         List<WebElement> sections = driver.findElementsByXPath(".//div[contains(@class, 'programm-container')]");
@@ -65,17 +68,24 @@ public class KinemathekScraper extends AbstractCinemaScraper {
             LocalDateTime dateTime = addTimeToDate(timeText, date);
 
             String title = movieElement.findElement(By.xpath(".//div[contains(@class, 'programm-title')]/a")).getText();
+
             logger.info(String.format("Movie [%s] is played at [%s]", title, dateTime));
 
-            Movie movie = new Movie(title, null, null, 0, null, null);
-            retrieveMovieInformation(movie);
-            movie = saveObject(movie, Movie.class);
 
-            Playlist playlist = new Playlist();
-            playlist.setCinema(cinema);
-            playlist.setMovie(movie);
-            playlist.setTime(Date.from(dateTime.atZone(ZoneId.of("GMT+1")).toInstant()));
-            saveObject(playlist, Playlist.class);
+            Movie movie = new Movie(title, null, null, 0, null, null);
+            try {
+                movie = retrieveMovieInformation(movie);
+                movie = saveObject(movie, Movie.class);
+
+                Playlist playlist = new Playlist();
+                playlist.setCinema(cinema);
+                playlist.setMovie(movie);
+                playlist.setTime(Date.from(dateTime.atZone(ZoneId.of("GMT+1")).toInstant()));
+                saveObject(playlist, Playlist.class);
+            } catch (MovieDbException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
     }
 

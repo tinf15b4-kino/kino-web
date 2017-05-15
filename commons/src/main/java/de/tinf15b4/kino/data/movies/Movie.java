@@ -1,17 +1,18 @@
 package de.tinf15b4.kino.data.movies;
 
-import java.util.Arrays;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.annotations.Type;
+
 import de.tinf15b4.kino.data.EntityModel;
 import de.tinf15b4.kino.data.ImageContainer;
 
 @Entity
-@Table(name = "movie", uniqueConstraints = @UniqueConstraint(columnNames = { Movie.FieldInfos.NAME }))
+@Table(name = "movie", uniqueConstraints = { @UniqueConstraint(columnNames = { Movie.FieldInfos.NAME }),
+        @UniqueConstraint(columnNames = { Movie.FieldInfos.TMDB_ID }) })
 public class Movie extends EntityModel implements ImageContainer {
 
     public interface FieldInfos {
@@ -22,12 +23,17 @@ public class Movie extends EntityModel implements ImageContainer {
         String LENGTH_MINUTES = "lengthMinutes";
         String AGE_CONTROL = "ageControl";
         String GENRE = "genre";
+        String TMDB_ID = "tmdbID";
+        String STUDIO = "studio";
+        String AUTHOR = "author";
+        String DIRECTOR = "director";
     }
 
     @Column(name = Movie.FieldInfos.NAME, nullable = false)
     private String name;
 
     @Column(name = Movie.FieldInfos.DESCRIPTION)
+    @Type(type = "org.hibernate.type.TextType")
     private String description;
 
     @Column(name = Movie.FieldInfos.COVER, length = Movie.FieldInfos.COVER_LENGTH)
@@ -41,6 +47,21 @@ public class Movie extends EntityModel implements ImageContainer {
 
     @Column(name = Movie.FieldInfos.GENRE)
     private Genre genre;
+
+    @Column(name = Movie.FieldInfos.TMDB_ID)
+    private int tmdbId;
+
+    @Column(name = Movie.FieldInfos.STUDIO)
+    @Type(type = "org.hibernate.type.TextType")
+    private String studio;
+
+    @Column(name = Movie.FieldInfos.AUTHOR)
+    @Type(type = "org.hibernate.type.TextType")
+    private String author;
+
+    @Column(name = Movie.FieldInfos.DIRECTOR)
+    @Type(type = "org.hibernate.type.TextType")
+    private String director;
 
     public Movie() {
 
@@ -104,51 +125,40 @@ public class Movie extends EntityModel implements ImageContainer {
         this.ageControl = ageControl;
     }
 
+    public int getTmdbId() {
+        return tmdbId;
+    }
+
+    public void setTmdbId(int tmdbId) {
+        this.tmdbId = tmdbId;
+    }
+
+    public String getStudio() {
+        return studio;
+    }
+
+    public void setStudio(String studio) {
+        this.studio = studio;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getDirector() {
+        return director;
+    }
+
+    public void setDirector(String director) {
+        this.director = director;
+    }
+
     @Override
     public void doFilter() {
         setCover(null);
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result + ((ageControl == null) ? 0 : ageControl.hashCode());
-        result = prime * result + Arrays.hashCode(cover);
-        result = prime * result + ((description == null) ? 0 : description.hashCode());
-        result = prime * result + ((genre == null) ? 0 : genre.hashCode());
-        result = prime * result + (int) (lengthMinutes ^ (lengthMinutes >>> 32));
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (!super.equals(obj))
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Movie other = (Movie) obj;
-        if (ageControl != other.ageControl)
-            return false;
-        if (!Arrays.equals(cover, other.cover))
-            return false;
-        if (description == null) {
-            if (other.description != null)
-                return false;
-        } else if (!description.equals(other.description))
-            return false;
-        if (genre != other.genre)
-            return false;
-        if (lengthMinutes != other.lengthMinutes)
-            return false;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
-        return true;
     }
 }

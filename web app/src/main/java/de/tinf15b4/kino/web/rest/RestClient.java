@@ -136,7 +136,8 @@ public class RestClient {
     }
 
     public RestResponse getPlaylistForCinemas(long cinemaId, Date from, Date to) {
-        String requestUrl = baseUrl + String.format(GET_PLAYLIST_CINEMA, cinemaId, from.getTime(), to.getTime());
+        String requestUrl = baseUrl + String.format(GET_PLAYLIST_CINEMA, cinemaId, (from != null) ? from.getTime() : "",
+                (to != null) ? to.getTime() : "");
         return doGetRequest(requestUrl, Playlist[].class, false);
     }
 
@@ -170,7 +171,9 @@ public class RestClient {
     }
 
     public RestResponse getPlaylistForMovie(long movieId, Date from, Date to) {
-        String requestUrl = baseUrl + String.format(GET_PLAYLIST_MOVIE, movieId, from.getTime(), to.getTime());
+        String requestUrl = baseUrl
+                + String.format(GET_PLAYLIST_MOVIE, movieId, (from != null) ? from.getTime() : "",
+                        (to != null) ? to.getTime() : "");
         return doGetRequest(requestUrl, Playlist[].class, false);
     }
 

@@ -106,7 +106,9 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
                         }
 
                         RestResponse playlistResponse = userBean.getRestClient().getPlaylistForCinemas(c.getId(),
-                                new Date(), new Date(new Date().getTime() + 1000L * 3600 * 24 * 7));
+                                new Date(), null);
+                        // new Date(), new Date(new Date().getTime() + 1000L *
+                        // 3600 * 24 * 7));
                         if (!playlistResponse.hasError()) {
                             List<Playlist> playlistEntries = Lists
                                     .newArrayList((Playlist[]) playlistResponse.getValue());
@@ -118,7 +120,7 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
                                 movies.setSizeFull();
 
                                 for (Playlist p : playlistEntries) {
-                                    SimpleDateFormat sdf = new SimpleDateFormat("E HH:mm", Locale.GERMANY);
+                                    SimpleDateFormat sdf = new SimpleDateFormat("E, dd.MM.yyyy HH:mm", Locale.GERMANY);
                                     NumberFormat pricef = NumberFormat.getCurrencyInstance(Locale.GERMANY);
                                     movies.addComponent(new Label(sdf.format(p.getTime())));
                                     movies.addComponent(new Link(p.getMovie().getName(), new ExternalResource(
