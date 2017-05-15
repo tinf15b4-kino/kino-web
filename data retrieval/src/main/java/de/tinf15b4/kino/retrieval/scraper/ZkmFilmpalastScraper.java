@@ -180,8 +180,38 @@ public class ZkmFilmpalastScraper extends AbstractCinemaScraper {
 
     private Cinema getCinema() {
         if (cinema == null) {
-            cinema = saveObject(new Cinema("Filmpalast am ZKM", "BLABLA", "TODO", "76133",
-                            "Karlsruhe", "Deutschland", null), Cinema.class);
+            driver.navigate().to("http://www.filmpalast.net/information/filmpalast-am-zkm.html");
+
+            // Find pictures
+            WebElement bilderEl = driver.findElementByXPath("//h3[text() = 'Bilder']");
+            WebElement container = bilderEl.findElement(By.xpath(".."));
+            WebElement imgEl = container.findElement(By.cssSelector("img"));
+
+            byte imgBytes[];
+            try {
+                String imgSrc = imgEl.getAttribute("src");
+
+                URL imgUrl = new URI(driver.getCurrentUrl()).resolve(imgSrc).toURL();
+                try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+                    try (InputStream is = imgUrl.openStream()) {
+                        byte[] byteChunk = new byte[4096];
+                        int n;
+
+                        while ((n = is.read(byteChunk)) > 0) {
+                            baos.write(byteChunk, 0, n);
+                        }
+                    }
+
+                    imgBytes = baos.toByteArray();
+                }
+            } catch (URISyntaxException | IOException | NoSuchElementException e) {
+                imgBytes = null;
+            }
+
+            cinema = saveObject(new Cinema("Filmpalast am ZKM", "Brauerstraße", "40", "76135",
+                            "Karlsruhe", "Deutschland", imgBytes), Cinema.class);
+
+            driver.navigate().back();
         }
         return cinema;
     }
