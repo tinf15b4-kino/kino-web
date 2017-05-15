@@ -292,15 +292,26 @@
 }
 
 // Cinema-Detail
-[id^=cinemaNameLabel] {
+#cinemaHeading {
 	font-size: 30px;
 	font-weight:bold;
-	color: #FFFFFF;	
+	color: #FFFFFF;
 }
 
-[id^=cinemaInfoBox] {
-	color: #FFFFFF;
-	padding-left: 20px; 
+#cinemaImage {
+	position: fixed;
+}
+
+#cinemaInformationForm {
+	margin-left: 250px;
+}
+
+#cinemaAdress {
+	margin-bottom: 50px;
+}
+
+#cinemaCityRow, #cinemaStreetRow {
+	font-weight: bold;
 }
 
 // Movie-List
@@ -343,6 +354,14 @@
 	color: #FFFFFF;
 }
 
+#movieDetailImage {
+	position: fixed;
+}
+
+#movieInformationForm {
+	margin-left: 250px;
+}
+
 [id^="yearRow"] {
 	font-weight: bold;
 	padding-top: 10px;
@@ -362,13 +381,13 @@
 	font-weight: bold;
 	color: #b0b0b1;
 	padding-top: 10px;
-	padding-left: 20px;
+	margin-left: 200px;
 }
 
 .movieInfo {
 	font-weight: bold;
 	position: absolute;
-	left: 150px;
+	left: 310px;
 	padding-top: 10px;
 }
 
@@ -381,6 +400,78 @@
 
 [id^="ratingsPanel"] {
 	margin-bottom: 20px;
+}
+
+// Movie playtimes
+
+#playlistHeading {
+	font-size: 25px;
+	font-weight: bold;
+	padding-bottom: 15px;
+	padding-left: 20px;
+}
+
+.cinemaPlaylistName {
+	font-weight: bold;
+	font-size: 18px;
+	padding-bottom: 5px;
+
+}
+
+.cinemaPlaylistRow{
+	padding:5px 5px 5px 5px;
+	transition: all 0.4s;
+}
+
+.cinemaPlaylistRow:hover {
+	filter:brightness(1.1);
+	background-color:#686a6f;
+}
+
+.playTimesTable {
+	padding-top: 10px;
+	padding-left: 13px;
+
+}
+
+.playListColumn {
+	padding-right: 3px;
+	padding-left: 3px;
+}
+
+.dateEntry {
+	font-weight: bold;
+}
+
+.timeEntry {
+	padding: 2px 3px 3px 2px;
+	margin-left: 10px;
+	margin-top: 2px;
+	background-color: blue;
+	border-radius: 5px;
+	background: #194b7d;
+}
+
+.timeEntry:hover {
+	background-color:#4373a4;
+}
+
+// Cinemaplaytimes
+.moviePlaylistName {
+	font-weight: bold;
+	font-size: 18px;
+	padding-bottom: 5px;
+}
+
+
+.moviePlaylistRow {
+	padding:5px 5px 5px 5px;
+	transition: all 0.4s;
+}
+
+.moviePlaylistRow:hover {
+	filter:brightness(1.1);
+	background-color:#686a6f;
 }
 
 // Scrollbar

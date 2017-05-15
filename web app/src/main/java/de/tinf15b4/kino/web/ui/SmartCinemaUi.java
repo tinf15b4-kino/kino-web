@@ -217,12 +217,15 @@ public class SmartCinemaUi extends UI {
         navigator.addComponent(cinemaBtn);
 
         Button favoriteBtn = (Button) (createViewButton("Favoriten", FavoriteListView.VIEW_NAME, FontAwesome.HEART));
-        favoriteBtn.setId("navigatorBtn");
+        favoriteBtn.setId("navigatorBtn_Fav");
         favoriteBtn.addStyleName(BaseTheme.BUTTON_LINK);
         navigator.addComponent(favoriteBtn);
 
-        Button aboutBtn = (Button) (createViewButton("über smartCinema", "aboutView", FontAwesome.HEART));
+        Button aboutBtn = (Button) (createViewButton("über smartCinema", "aboutView", FontAwesome.INFO));
+        aboutBtn.setId("navigatorBtn_About");
+        aboutBtn.addStyleName(BaseTheme.BUTTON_LINK);
         navigator.addComponent(aboutBtn);
+        navigator.setComponentAlignment(aboutBtn, Alignment.BOTTOM_CENTER);
         navigator.setExpandRatio(aboutBtn, 1f);
 
         navigator.setId("navigator");

@@ -57,16 +57,16 @@ public class MovieView extends VerticalLayout implements View {
                 HorizontalLayout content = new HorizontalLayout();
 
                 // Image
-                Component image = new Image(null, new ExternalResource(userBean.getRestClient().getMoviePictureUrl(m)));
-                image.setHeight("400px");
-                image.setId("movieImage_" + m.getId());
+                Component image = new Image(null,
+                        new ExternalResource(userBean.getRestClient().getMoviePictureUrl(m)));
+                image.setWidth("250px");
+                image.setId("movieDetailImage");
 
                 content.addComponent(image);
 
                 // Info-Box
-                VerticalLayout information = new VerticalLayout();
-                information = createInfoBox(m);
-
+                VerticalLayout information = createInfoBox(m);
+                information.setId("movieInformationForm");
 
                 // Ratings
                 RestResponse ratingsResponse = userBean.getRestClient().getRatedMovies(m.getId());
@@ -88,15 +88,15 @@ public class MovieView extends VerticalLayout implements View {
                     if (playlistEntries.size() > 0) {
                         information.addComponent(createPlaylistForm(playlistEntries));
                     }
-
-                    information.setMargin(new MarginInfo(false, true));
-                    content.addComponent(information);
-                    content.setSizeFull();
-                    content.setExpandRatio(information, 1f);
-                    content.setMargin(true);
-                    content.setSpacing(true);
-                    this.addComponent(content);
                 }
+
+                information.setMargin(new MarginInfo(false, true));
+                content.addComponent(information);
+                content.setSizeFull();
+                content.setExpandRatio(information, 1f);
+                content.setMargin(true);
+                content.setSpacing(true);
+                this.addComponent(content);
 
             }
         }
@@ -109,13 +109,13 @@ public class MovieView extends VerticalLayout implements View {
         heading.setId("ratingsHeading");
         ratingsForm.addComponent(heading);
 
-            for (RatedMovie rm : ratedMovies) {
+        for (RatedMovie rm : ratedMovies) {
 
-                ratingsForm.addComponent(createRatingEntry(rm));
+            ratingsForm.addComponent(createRatingEntry(rm));
 
-            }
+        }
 
-            ratingsForm.setId("ratingsForm");
+        ratingsForm.setId("ratingsForm");
 
         return ratingsForm;
     }
@@ -165,25 +165,12 @@ public class MovieView extends VerticalLayout implements View {
             playlistForm.addComponent(createCinemaRow(c, playlistEntries));
         }
 
-
-        /*
-        NumberFormat pricef = NumberFormat.getCurrencyInstance(Locale.GERMANY);
-        playtimes.addComponent(new Label(sdf.format(p.getTime())));
-        playtimes.addComponent(new Link(p.getCinema().getName(), new ExternalResource(
-                "#!" + CinemaView.VIEW_NAME + "/" + p.getCinema().getId())));
-        playtimes.addComponent(new Label(pricef.format(p.getPrice() / 100.0)));
-
-
-        Panel playtimesPanel = new Panel("Spielplan", playtimes);
-        playtimesPanel.setId("playtimesPanel_" + m.getId());
-        information.addComponent(playtimesPanel);
-        */
-
         return  playlistForm;
     }
 
     private HorizontalLayout createCinemaRow (Cinema c, List<Playlist> pE) {
         HorizontalLayout cinemaRow = new HorizontalLayout();
+        cinemaRow.setPrimaryStyleName("cinemaPlaylistRow");
 
         Component cinemaImage = new Image(null,
                 new ExternalResource(userBean.getRestClient().getCinemaPictureUrl(c)));
@@ -204,25 +191,30 @@ public class MovieView extends VerticalLayout implements View {
 
             // Add weekdays to Table
             VerticalLayout tmpPlaylistColumn = new VerticalLayout();
-            tmpPlaylistColumn.addComponent(
-                    new Label(currentDate.plusDays(i).format(formattedDate)));
+            Label dateRow = new Label(currentDate.plusDays(i).format(formattedDate));
+            dateRow.setPrimaryStyleName("dateEntry");
+            tmpPlaylistColumn.addComponent(dateRow);
 
             // Add playtimes to table
             for (Playlist p : pE) {
                 LocalDate playDate = p.getTime().toInstant().atZone(ZoneId.of("GMT+1")).toLocalDate();
                 if (currentDate.plusDays(i).isEqual(playDate)) {
                     if (p.getCinema().equals(c)) {
-                        tmpPlaylistColumn.addComponent(
-                                new Label(movieTimeFormat.format(p.getTime())));
+                        Label timeRow = new Label(movieTimeFormat.format(p.getTime()));
+                        timeRow.setPrimaryStyleName("timeEntry");
+                        tmpPlaylistColumn.addComponent(timeRow);
                     }
                 }
             }
 
+            tmpPlaylistColumn.setPrimaryStyleName("playListColumn");
             playTimesTable.addComponent(tmpPlaylistColumn);
+
         }
 
         cinemaRow.addComponent(createCinemaInformation(c, playTimesTable));
         cinemaRow.setSizeUndefined();
+        cinemaRow.setSpacing(true);
 
         return cinemaRow;
     }
