@@ -118,7 +118,10 @@ public class Movie extends EntityModel implements ImageContainer {
     }
 
     public AgeControl getAgeControl() {
-        return ageControl;
+        if (ageControl != null)
+            return ageControl;
+        else
+            return AgeControl.UNBEKANNT;
     }
 
     public void setAgeControl(AgeControl ageControl) {
