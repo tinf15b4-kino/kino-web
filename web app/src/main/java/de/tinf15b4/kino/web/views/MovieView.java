@@ -121,27 +121,40 @@ public class MovieView extends VerticalLayout implements View {
     }
 
     private VerticalLayout createRatingEntry(RatedMovie rm) {
-
-        VerticalLayout rating = new VerticalLayout();
+        VerticalLayout ratingEntry = new VerticalLayout();
 
         HorizontalLayout userRow = new HorizontalLayout();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMANY);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
 
-        userRow.addComponent(new Label(rm.getUser().getName()));
-        userRow.addComponent(new Label(rm.getRating() + ""));
-        userRow.addComponent(new Label(sdf.format(rm.getTime())));
+        Label userLabel = new Label(rm.getUser().getName());
+        userLabel.setPrimaryStyleName("ratingUserName");
+        userRow.addComponent(userLabel);
+
+        Label ratingsLabel = new Label(rm.getRating() + " / 10 ");
+        ratingsLabel.setPrimaryStyleName("ratingsLabel");
+        userRow.addComponent(ratingsLabel);
+
+        Label dateLabel = new Label(sdf.format(rm.getTime()));
+        dateLabel.setPrimaryStyleName("dateLabel");
+        userRow.addComponent(dateLabel);
+        userRow.setComponentAlignment(dateLabel, Alignment.TOP_RIGHT);
+        userRow.setExpandRatio(dateLabel, 1f);
         userRow.setPrimaryStyleName("userRow");
 
         HorizontalLayout commentRow = new HorizontalLayout();
-        commentRow.addComponent(new Label(rm.getDescription()));
+        Label commentLabel = new Label(rm.getDescription()) ;
+        commentLabel.setPrimaryStyleName("ratingsComment");
+        commentRow.addComponent(commentLabel);
         commentRow.setPrimaryStyleName("commentRow");
 
-        rating.addComponent(userRow);
-        rating.addComponent(commentRow);
-        rating.setPrimaryStyleName("rating");
 
-        return rating;
+        ratingEntry.addComponent(userRow);
+        ratingEntry.addComponent(commentRow);
+        ratingEntry.addComponent(new Label("<hr />", ContentMode.HTML));
+        ratingEntry.setPrimaryStyleName("ratingEntry");
+
+        return ratingEntry;
     }
 
     private VerticalLayout createPlaylistForm(List<Playlist> playlistEntries) {

@@ -381,13 +381,13 @@
 	font-weight: bold;
 	color: #b0b0b1;
 	padding-top: 10px;
-	margin-left: 200px;
+	margin-left: 20px;
 }
 
 .movieInfo {
 	font-weight: bold;
 	position: absolute;
-	left: 310px;
+	left: 400px;
 	padding-top: 10px;
 }
 
@@ -405,7 +405,7 @@
 // Movie playtimes
 
 #playlistHeading {
-	font-size: 25px;
+	font-size: 23px;
 	font-weight: bold;
 	padding-bottom: 15px;
 	padding-left: 20px;
@@ -435,12 +435,14 @@
 }
 
 .playListColumn {
-	padding-right: 3px;
 	padding-left: 3px;
 }
 
 .dateEntry {
+	padding-right: 3px;
 	font-weight: bold;
+	border-right: solid;
+	border-width: 1px;
 }
 
 .timeEntry {
@@ -473,6 +475,42 @@
 	filter:brightness(1.1);
 	background-color:#686a6f;
 }
+
+// Ratings
+
+#ratingsHeading {
+	font-weight: bold;
+	font-size: 23px;
+	padding-left: 20px;
+	padding-bottom: 10px;
+}
+
+.ratingUserName {
+	font-weight: bold;
+	margin-right: 20px;
+}
+
+.ratingsLabel {
+	font-weight: bold;
+}
+
+.dateLabel {
+	font-weight: bold;
+	color: #b0b0b1;
+	position: absolute;
+	left: 850px;
+}
+
+.ratingEntry {
+	margin-bottom: 5px;
+	margin-top: 5px; 
+}
+
+.ratingsComment {
+	max-width: 300px;
+    word-wrap: break-word;
+}
+
 
 // Scrollbar
 ::-webkit-scrollbar {

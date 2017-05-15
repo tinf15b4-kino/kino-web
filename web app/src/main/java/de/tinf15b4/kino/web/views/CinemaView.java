@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.ui.*;
 import de.tinf15b4.kino.data.movies.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,15 +21,6 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.ui.AbstractOrderedLayout;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Image;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Link;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.VerticalLayout;
 
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.playlists.Playlist;
@@ -236,20 +228,34 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
 
         HorizontalLayout userRow = new HorizontalLayout();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMANY);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
 
-        userRow.addComponent(new Label(rC.getUser().getName()));
-        userRow.addComponent(new Label(rC.getRating() + ""));
-        userRow.addComponent(new Label(sdf.format(rC.getTime())));
+        Label userLabel = new Label(rC.getUser().getName());
+        userLabel.setPrimaryStyleName("ratingUserName");
+        userRow.addComponent(userLabel);
+
+        Label ratingsLabel = new Label(rC.getRating() + " / 10 ");
+        ratingsLabel.setPrimaryStyleName("ratingsLabel");
+        userRow.addComponent(ratingsLabel);
+
+        Label dateLabel = new Label(sdf.format(rC.getTime()));
+        dateLabel.setPrimaryStyleName("dateLabel");
+        userRow.addComponent(dateLabel);
+        userRow.setComponentAlignment(dateLabel, Alignment.TOP_RIGHT);
+        userRow.setExpandRatio(dateLabel, 1f);
         userRow.setPrimaryStyleName("userRow");
 
         HorizontalLayout commentRow = new HorizontalLayout();
-        commentRow.addComponent(new Label(rC.getDescription()));
+        Label commentLabel = new Label(rC.getDescription()) ;
+        commentLabel.setPrimaryStyleName("ratingsComment");
+        commentRow.addComponent(commentLabel);
         commentRow.setPrimaryStyleName("commentRow");
+
 
         ratingEntry.addComponent(userRow);
         ratingEntry.addComponent(commentRow);
-        ratingEntry.setPrimaryStyleName("rating");
+        ratingEntry.addComponent(new Label("<hr />", ContentMode.HTML));
+        ratingEntry.setPrimaryStyleName("ratingEntry");
 
         return ratingEntry;
     }
