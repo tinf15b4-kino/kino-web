@@ -1,10 +1,13 @@
 package de.tinf15b4.kino.data.movies;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-public class MovieFilterData {
+public class MovieFilterData implements Serializable {
+
+    private static final long serialVersionUID = 4595301586301276957L;
 
     private Set<AgeControl> ageControl;
     private Set<Genre> genre;
