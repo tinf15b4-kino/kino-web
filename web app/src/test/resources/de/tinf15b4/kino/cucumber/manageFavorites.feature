@@ -15,7 +15,7 @@ Feature: Manage favorites
     # HACK: The page switching has a light delay, and the previous page already contains the same button.
     # therefore, we'll wait until we are definitely on the cinema detail page
     And I wait until an element containing "EpicStreet" appears
-    And I click the button labeled "Favorit" below "#cinemaInfoBox_2"
+    And I click the button labeled "Favorit" below "#cinemaAdress"
 
     Then I should see a label containing "als Favorit markiert"
     And the database should have saved cinema 2 as favorite
@@ -111,7 +111,7 @@ Feature: Manage favorites
     # HACK: The page switching has a light delay, and the previous page already contains the same button.
     # therefore, we'll wait until we are definitely on the cinema detail page
     And I wait until an element containing "EpicStreet" appears
-    And I click the button labeled "Favorit" below "#cinemaInfoBox_2"
+    And I click the button labeled "Favorit" below "#cinemaAdress"
 
     Then I should see a label containing "als Favorit entfernt"
     And the database should not have saved cinema 2 as favorite
@@ -159,7 +159,7 @@ Feature: Manage favorites
     # HACK: The page switching has a light delay, and the previous page already contains the same button.
     # therefore, we'll wait until we are definitely on the cinema detail page
     And I wait until an element containing "EpicStreet" appears
-    And I click the button labeled "Favorit" below "#cinemaInfoBox_2"
+    And I click the button labeled "Favorit" below "#cinemaAdress"
 
     # TODO: The Use-case specification requires us to redirect to the login page
     # instead, but that's not going to be implemented this year

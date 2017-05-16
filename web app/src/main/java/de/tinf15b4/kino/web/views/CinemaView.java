@@ -283,7 +283,7 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
 
         // cityRow
         HorizontalLayout cityRow = new HorizontalLayout();
-        Label cityLabel = new Label(c.getPostcode() + "" + c.getCity());
+        Label cityLabel = new Label(c.getPostcode() + " " + c.getCity());
         cityRow.setId("cinemaCityRow");
         cityRow.addComponent(cityLabel);
         informationForm.addComponent(cityRow);

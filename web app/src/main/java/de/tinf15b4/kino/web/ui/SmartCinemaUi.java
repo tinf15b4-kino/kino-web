@@ -285,25 +285,22 @@ public class SmartCinemaUi extends UI {
         Label contentLabel = new Label();
 
         String uri = Page.getCurrent().getUriFragment();
-
-        if (uri.contains("movies")){
-            contentLabel.setValue("Filme");
-        }
-        else if (uri.contains("movie")) {
-            RestResponse r = userBean.getRestClient().getMovie(Integer.parseInt(uri.substring(7)));
-            Movie m = (Movie) r.getValue();
-            contentLabel.setValue(m.getName());
-        }
-        else if (uri.contains("cinemas")) {
-            contentLabel.setValue("Kinos");
-        }
-        else if (uri.contains("cinema")) {
-            RestResponse r = userBean.getRestClient().getCinema(Integer.parseInt(uri.substring(8)));
-            Cinema c = (Cinema) r.getValue();
-            contentLabel.setValue(c.getName());
-        }
-        else if (uri.contains("favourites")) {
-            contentLabel.setValue("Favoriten");
+        if (uri != null) {
+            if (uri.contains("movies")) {
+                contentLabel.setValue("Filme");
+            } else if (uri.contains("movie")) {
+                RestResponse r = userBean.getRestClient().getMovie(Integer.parseInt(uri.substring(7)));
+                Movie m = (Movie) r.getValue();
+                contentLabel.setValue(m.getName());
+            } else if (uri.contains("cinemas")) {
+                contentLabel.setValue("Kinos");
+            } else if (uri.contains("cinema")) {
+                RestResponse r = userBean.getRestClient().getCinema(Integer.parseInt(uri.substring(8)));
+                Cinema c = (Cinema) r.getValue();
+                contentLabel.setValue(c.getName());
+            } else if (uri.contains("favourites")) {
+                contentLabel.setValue("Favoriten");
+            }
         }
         contentLabel.setId("toolBarLabel");
 
