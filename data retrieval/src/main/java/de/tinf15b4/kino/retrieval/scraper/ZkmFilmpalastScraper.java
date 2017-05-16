@@ -72,7 +72,7 @@ public class ZkmFilmpalastScraper extends AbstractCinemaScraper {
                     movie = saveObject(movie, Movie.class);
 
                     // create playlist
-                    for (WebElement e : el.findElements(By.cssSelector(".programm-table .slot-future a.performance-popover"))) {
+                    for (WebElement e : el.findElements(By.cssSelector(".tab-pane.active .programm-table .slot-future a.performance-popover"))) {
                         String datestr = e.getAttribute("data-original-title");
 
                         // BAD: Hardcode prices
