@@ -3,7 +3,6 @@ package de.tinf15b4.kino.retrieval.tmdb;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.net.URL;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,7 +19,6 @@ import com.omertron.themoviedbapi.methods.TmdbMovies;
 import com.omertron.themoviedbapi.methods.TmdbSearch;
 import com.omertron.themoviedbapi.model.credits.MediaCreditCrew;
 import com.omertron.themoviedbapi.model.movie.MovieInfo;
-import com.omertron.themoviedbapi.model.movie.ProductionCompany;
 import com.omertron.themoviedbapi.model.movie.ReleaseDate;
 import com.omertron.themoviedbapi.model.movie.ReleaseDates;
 import com.omertron.themoviedbapi.tools.HttpTools;
@@ -96,57 +94,30 @@ public class TmdbDataRetriever {
     }
 
     private String getStudio(MovieInfo mi) {
-        String result = "";
-        List<ProductionCompany> list = mi.getProductionCompanies();
-        if (list.size() > 0) {
-            Iterator<ProductionCompany> i = list.iterator();
-            while (i.hasNext()) {
-                ProductionCompany item = i.next();
-                result += item.getName() + (i.hasNext() ? ", " : "");
-            }
-            return result;
-        }
-        return "Keine Angabe";
+        String result = mi.getProductionCompanies().stream().map(pc -> pc.getName()).collect(Collectors.joining(", "));
+        
+        return !result.isEmpty() ? result : "Keine Angabe";
     }
 
     private String getAuthor(MovieInfo mi) throws MovieDbException {
         List<MediaCreditCrew> crew = moviesInstance.getMovieCredits(mi.getId()).getCrew();
 
-        String result = "";
-
-        List<MediaCreditCrew> list = crew.stream()
+        String result = crew.stream()
                 .filter(c -> c.getDepartment().equals("Writing") && c.getJob().equals("Screenplay"))
-                .collect(Collectors.toList());
+                .map(c -> c.getName()).collect(Collectors.joining(", "));
 
-        if (list.size() > 0) {
-            Iterator<MediaCreditCrew> i = list.iterator();
-            while (i.hasNext()) {
-                MediaCreditCrew item = i.next();
-                result += item.getName() + (i.hasNext() ? ", " : "");
-            }
-            return result;
-        }
-        return "Keine Angabe";
+        return !result.isEmpty() ? result : "Keine Angabe";
     }
 
     private String getDirector(MovieInfo mi) throws MovieDbException {
         List<MediaCreditCrew> crew = moviesInstance.getMovieCredits(mi.getId()).getCrew();
 
-        String result = "";
-
-        List<MediaCreditCrew> list = crew.stream()
+        String result = crew.stream()
                 .filter(c -> c.getDepartment().equals("Directing") && c.getJob().equals("Director"))
-                .collect(Collectors.toList());
+                .map(c -> c.getName())
+                .collect(Collectors.joining(", "));
 
-        if (list.size() > 0) {
-            Iterator<MediaCreditCrew> i = list.iterator();
-            while (i.hasNext()) {
-                MediaCreditCrew item = i.next();
-                result += item.getName() + (i.hasNext() ? ", " : "");
-            }
-            return result;
-        }
-        return "Keine Angabe";
+        return !result.isEmpty() ? result : "Keine Angabe";
     }
 
     private Genre getGenre(MovieInfo mi) {
