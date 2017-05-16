@@ -110,7 +110,7 @@ public abstract class AbstractCinemaScraper {
         String remote = System.getProperty("kinotest.seleniumHub");
 
         if (drvstr == null || drvstr.isEmpty())
-            drvstr = "chrome";
+            drvstr = "firefox";
 
         switch (drvstr) {
         case "firefox":
