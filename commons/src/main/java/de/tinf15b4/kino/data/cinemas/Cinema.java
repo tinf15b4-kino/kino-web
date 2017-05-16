@@ -20,7 +20,7 @@ public class Cinema extends EntityModel implements ImageContainer {
         String CITY = "city";
         String COUNTRY = "country";
         String IMAGE = "image";
-        int IMAGE_LENGTH = 100000;
+        int IMAGE_LENGTH = 10000000;
     }
 
     @Column(name = FieldInfos.NAME, nullable = false)

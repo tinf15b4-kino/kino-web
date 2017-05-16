@@ -61,6 +61,13 @@ public class InternalRestController {
         return ResponseEntity.ok("");
     }
 
+    @RequestMapping(value = "rest-private/clearPlaylistFutureForCinema", method = RequestMethod.POST)
+    public ResponseEntity<?> clearPlaylistFutureForCinema(@RequestBody Cinema cinema) {
+        playlistService.deleteFutureForCinema(cinema);
+
+        return ResponseEntity.ok("");
+    }
+
     @RequestMapping(value = "rest-private/insertCinema", method = RequestMethod.POST)
     public ResponseEntity<?> insertCinema(@RequestBody Cinema cinema) {
         return ResponseEntity.ok(cinemaService.saveWithId(cinema).orElse(null));
