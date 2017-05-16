@@ -1,5 +1,7 @@
 package de.tinf15b4.kino.web.views;
 
+import java.io.Serializable;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,7 +84,9 @@ public class CinemaListView extends VerticalLayout implements View {
         return cinemaInfoBox;
     }
 
-    private class FavoriteBtnManager implements ToggleFavoriteListener {
+    private class FavoriteBtnManager implements ToggleFavoriteListener, Serializable {
+        private static final long serialVersionUID = -479933331913052158L;
+
         public Component button = null;
         public VerticalLayout row;
         public long cinemaId;

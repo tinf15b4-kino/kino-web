@@ -1,5 +1,7 @@
 package de.tinf15b4.kino.web.user;
 
+import java.io.Serializable;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +16,13 @@ import de.tinf15b4.kino.web.ui.SmartCinemaUi;
 
 @Component
 @SessionScope
-public class UserBean {
+public class UserBean implements Serializable {
+
+    private static final long serialVersionUID = -666267056021357220L;
 
     private RestClient restClient;
 
-    private SmartCinemaUi ui;
+    private transient SmartCinemaUi ui;
     private User currentUser;
 
     @Autowired

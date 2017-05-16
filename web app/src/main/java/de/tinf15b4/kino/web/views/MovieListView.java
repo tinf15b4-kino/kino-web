@@ -89,9 +89,10 @@ public class MovieListView extends VerticalLayout implements View {
         movieInfoBox.addComponent(l);
         movieInfoBox.setComponentAlignment(l, Alignment.TOP_LEFT);
 
-        movieInfoBox.addComponent(new Label("Länge: " + m.getLengthMinutes() + " Minuten"));
+        movieInfoBox.addComponent(new Label(
+                "Länge: " + ((m.getLengthMinutes() != 0) ? m.getLengthMinutes() + " Minuten" : "Keine Angabe")));
         movieInfoBox.addComponent(new Label("Genre: " + m.getGenre()));
-        movieInfoBox.addComponent(new Label("Altersfreigabe: " + m.getAgeControl()));
+        movieInfoBox.addComponent(new Label("Altersfreigabe: " + m.getAgeControl().getCaption()));
 
         RestResponse avgRatingResponse = userBean.getRestClient().getAverageRatingForMovie(m.getId());
         double avgRating = 0d;

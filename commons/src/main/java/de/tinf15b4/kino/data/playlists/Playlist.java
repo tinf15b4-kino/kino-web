@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import de.tinf15b4.kino.data.EntityModel;
 import de.tinf15b4.kino.data.ImageContainer;
@@ -14,7 +15,8 @@ import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.movies.Movie;
 
 @Entity
-@Table(name = "playlist")
+@Table(name = "playlist", uniqueConstraints = @UniqueConstraint(columnNames = { Playlist.FieldInfos.CINEMA,
+        Playlist.FieldInfos.MOVIE, Playlist.FieldInfos.TIME }))
 public class Playlist extends EntityModel implements ImageContainer {
 
     public interface FieldInfos {

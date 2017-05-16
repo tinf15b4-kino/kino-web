@@ -1,5 +1,7 @@
 package de.tinf15b4.kino.data.users;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -9,10 +11,12 @@ import de.tinf15b4.kino.data.EntityModel;
 
 @Entity
 @Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = { User.FieldInfos.NAME }))
-public class User extends EntityModel {
+public class User extends EntityModel implements Serializable {
     // TODO: Make name or email a primary key, or at least enforce their
     // uniqueness
     // --- Made name unique for now to fit cucumber tests, Simon (17.04.2017)
+
+    private static final long serialVersionUID = -6096242601376594653L;
 
     public interface FieldInfos {
         String NAME = "name";

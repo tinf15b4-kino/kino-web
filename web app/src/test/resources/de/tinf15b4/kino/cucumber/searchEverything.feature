@@ -4,10 +4,10 @@ Feature: Search everything
 
   Scenario: Search in movie titles
     Given the movies
-      | Id  | Name            | Description |
-      | 1   | Donald Duck     | Yo Mama     |
-      | 2   | Daisy Duck      | Yo Mama     |
-      | 3   | Weihnachtsmann  | Yo Mama     |
+      | Id  | Name            | Description | TmdbId |
+      | 1   | Donald Duck     | Yo Mama     | 101    |
+      | 2   | Daisy Duck      | Yo Mama     | 102    |
+      | 3   | Weihnachtsmann  | Yo Mama     | 103    |
 
     When I open the start page
     And I search for "duck"
@@ -30,10 +30,10 @@ Feature: Search everything
 
   Scenario: Search in both cinemas and movies
     Given the movies
-      | Id  | Name            | Description |
-      | 1   | Donald Duck     | Yo Mama     |
-      | 2   | Daisy Maier     | Yo Mama     |
-      | 3   | Weihnachtsmann  | Yo Mama     |
+      | Id  | Name            | Description | TmdbId |
+      | 1   | Donald Duck     | Yo Mama     | 101    |
+      | 2   | Daisy Maier     | Yo Mama     | 102    |
+      | 3   | Weihnachtsmann  | Yo Mama     | 103    |
     And the cinemas
       | Id  | Name                    |
       | 1   | Maier, Maier und Maier  |
@@ -47,10 +47,10 @@ Feature: Search everything
 
   Scenario: Fulltext search in movie descriptions
     Given the movies
-      | Id  | Name            | Description                                       |
-      | 1   | Donald Duck     | O Romeo, Romeo! Wherefore art thou Romeo?         |
-      | 2   | Daisy Maier     | Deine Mama ist so fett, ihr Gürtel heißt Äquator  |
-      | 3   | Lombardi        | Du bist ne Schlampe, ich bin normaler Mensch!     |
+      | Id  | Name            | Description                                       | TmdbId |
+      | 1   | Donald Duck     | O Romeo, Romeo! Wherefore art thou Romeo?         | 101    |
+      | 2   | Daisy Maier     | Deine Mama ist so fett, ihr Gürtel heißt Äquator  | 102    |
+      | 3   | Lombardi        | Du bist ne Schlampe, ich bin normaler Mensch!     | 103    |
 
     When I open the start page
     And I search for "Schlampe"
@@ -72,10 +72,10 @@ Feature: Search everything
 
   Scenario: No results
     Given the movies
-      | Id  | Name            | Description |
-      | 1   | Donald Duck     | Yo Mama     |
-      | 2   | Daisy Maier     | Yo Mama     |
-      | 3   | Weihnachtsmann  | Yo Mama     |
+      | Id  | Name            | Description | TmdbId |
+      | 1   | Donald Duck     | Yo Mama     | 101    |
+      | 2   | Daisy Maier     | Yo Mama     | 102    |
+      | 3   | Weihnachtsmann  | Yo Mama     | 103    |
     And the cinemas
       | Id  | Name                    |
       | 1   | Maier, Maier und Maier  |

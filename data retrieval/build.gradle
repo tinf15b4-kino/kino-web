@@ -35,5 +35,6 @@ dependencies {
     compile('org.reflections:reflections:0.9.9-RC1')
     compile('org.seleniumhq.selenium:selenium-java:3.4.0')
     compile('io.github.bonigarcia:webdrivermanager:1.5.+')
+    compile('com.omertron:themoviedbapi:4.3')
 }
 

@@ -4,18 +4,26 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.when;
 
+import java.util.Optional;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.google.common.base.Strings;
 
 import de.tinf15b4.kino.api.utils.RestControllerConstants;
+import de.tinf15b4.kino.data.cinemas.Cinema;
+import de.tinf15b4.kino.data.cinemas.CinemaService;
+import de.tinf15b4.kino.data.favorites.Favorite;
 import de.tinf15b4.kino.data.favorites.FavoriteService;
 import de.tinf15b4.kino.data.users.User;
 import de.tinf15b4.kino.data.users.UserService;
@@ -30,6 +38,9 @@ public class SecureRestControllerTest extends AbstractRestControllerTest {
 
     @Mock
     private FavoriteService favoriteService;
+
+    @Mock
+    private CinemaService cinemaService;
 
     @Before
     public void init() {
@@ -104,6 +115,14 @@ public class SecureRestControllerTest extends AbstractRestControllerTest {
         ResponseEntity<?> response = underTest.getFavorites(token);
         assertValidResponse(response);
 
+        Mockito.when(cinemaService.findOne(0)).thenReturn(new Cinema());
+        response = underTest.getFavorite(token, 0);
+        assertValidResponse(response);
+
+        Mockito.when(cinemaService.findOne(0)).thenReturn(null);
+        response = underTest.getFavorite(token, 0);
+        assertInvalidResponse(response, HttpStatus.BAD_REQUEST, "not exist");
+
         response = underTest.getUser(token);
         assertValidResponse(response);
     }
@@ -114,7 +133,54 @@ public class SecureRestControllerTest extends AbstractRestControllerTest {
         ResponseEntity<?> response = underTest.getFavorites(token);
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
 
+        response = underTest.getFavorite(token, 0);
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+
         response = underTest.getUser(token);
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+    }
+
+    @Test
+    public void testSaveCallsWithValidToken() throws Exception {
+        String token = (String) underTest.authorize("Mustermann", "muster").getBody();
+        Mockito.when(favoriteService.save(Mockito.any())).thenAnswer(new Answer<Optional<Favorite>>() {
+            @Override
+            public Optional<Favorite> answer(InvocationOnMock invocation) throws Throwable {
+                return Optional.of(invocation.getArgumentAt(0, Favorite.class));
+            }
+        });
+
+        ResponseEntity<?> response = underTest.saveFavorite(token, new Favorite(new User(), new Cinema()));
+        assertValidResponse(response);
+
+        response = underTest.saveFavorite(token, null);
+        assertInvalidResponse(response, HttpStatus.NOT_ACCEPTABLE, "null");
+        Mockito.verify(favoriteService).save(Mockito.any());
+    }
+
+    @Test
+    public void testSaveCallsWithInvalidToken() throws Exception {
+        String token = ((String) underTest.authorize("Mustermann", "muster").getBody()).substring(1);
+        ResponseEntity<?> response = underTest.saveFavorite(token, null);
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+    }
+
+    @Test
+    public void testDeleteCallsWithValidToken() throws Exception {
+        String token = (String) underTest.authorize("Mustermann", "muster").getBody();
+
+        ResponseEntity<?> response = underTest.deleteFavorite(token, new Favorite(new User(), new Cinema()));
+        assertValidResponse(response);
+
+        response = underTest.deleteFavorite(token, null);
+        assertInvalidResponse(response, HttpStatus.NOT_ACCEPTABLE, "null");
+        Mockito.verify(favoriteService).delete(Mockito.any());
+    }
+
+    @Test
+    public void testDeleteCallsWithInvalidToken() throws Exception {
+        String token = ((String) underTest.authorize("Mustermann", "muster").getBody()).substring(1);
+        ResponseEntity<?> response = underTest.deleteFavorite(token, null);
         assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
     }
 

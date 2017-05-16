@@ -115,11 +115,12 @@ public class GeneralRestController {
     @RequestMapping(value = "rest/getPlaylistForCinema", method = RequestMethod.GET)
     public ResponseEntity<?> getPlaylistForCinema(
             @ApiQueryParam(name = "cinemaId", description = "Id of the cinema") @RequestParam(name = "cinemaId") long cinemaId,
-            @ApiQueryParam(name = "from", description = "Start date in milliseconds from epoch") @RequestParam(name = "from") long from,
-            @ApiQueryParam(name = "to", description = "End date in milliseconds from epoch") @RequestParam(name = "to") long to) {
+            @ApiQueryParam(name = "from", description = "Start date in milliseconds from epoch") @RequestParam(name = "from", required = false) Long from,
+            @ApiQueryParam(name = "to", description = "End date in milliseconds from epoch") @RequestParam(name = "to", required = false) Long to) {
         Cinema cinema = cinemaService.findOne(cinemaId);
         if (cinema != null) {
-            List<Playlist> playlists = playlistService.findForCinema(cinema, new Date(from), new Date(to));
+            List<Playlist> playlists = playlistService.findForCinema(cinema, (from != null) ? new Date(from) : null,
+                    (to != null) ? new Date(to) : null);
             filterImages(playlists);
             return ResponseEntity.ok(playlists.toArray(new Playlist[0]));
         }
@@ -131,11 +132,12 @@ public class GeneralRestController {
     @RequestMapping(value = "rest/getPlaylistForMovie", method = RequestMethod.GET)
     public ResponseEntity<?> getPlaylistForMovie(
             @ApiQueryParam(name = "movieId", description = "Id of the movie") @RequestParam(name = "movieId") long movieId,
-            @ApiQueryParam(name = "from", description = "Start date in milliseconds from epoch") @RequestParam(name = "from") long from,
-            @ApiQueryParam(name = "to", description = "End date in milliseconds from epoch") @RequestParam(name = "to") long to) {
+            @ApiQueryParam(name = "from", description = "Start date in milliseconds from epoch") @RequestParam(name = "from", required = false) Long from,
+            @ApiQueryParam(name = "to", description = "End date in milliseconds from epoch") @RequestParam(name = "to", required = false) Long to) {
         Movie movie = movieService.findOne(movieId);
         if (movie != null) {
-            List<Playlist> playlists = playlistService.findForMovie(movie, new Date(from), new Date(to));
+            List<Playlist> playlists = playlistService.findForMovie(movie, (from != null) ? new Date(from) : null,
+                    (to != null) ? new Date(to) : null);
             filterImages(playlists);
             return ResponseEntity.ok(playlists.toArray(new Playlist[0]));
         }

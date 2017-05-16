@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -30,7 +31,9 @@ import de.tinf15b4.kino.data.search.SearchResult;
 import de.tinf15b4.kino.data.users.User;
 import de.tinf15b4.kino.utils.GsonFactory;
 
-public class RestClient {
+public class RestClient implements Serializable {
+
+    private static final long serialVersionUID = 142015013387782716L;
 
     private static final String AUTHORIZE = "/authorize?username=%s&password=%s";
     private static final String LOGOUT = "/logout?token=%s";
@@ -136,7 +139,8 @@ public class RestClient {
     }
 
     public RestResponse getPlaylistForCinemas(long cinemaId, Date from, Date to) {
-        String requestUrl = baseUrl + String.format(GET_PLAYLIST_CINEMA, cinemaId, from.getTime(), to.getTime());
+        String requestUrl = baseUrl + String.format(GET_PLAYLIST_CINEMA, cinemaId, (from != null) ? from.getTime() : "",
+                (to != null) ? to.getTime() : "");
         return doGetRequest(requestUrl, Playlist[].class, false);
     }
 
@@ -170,7 +174,9 @@ public class RestClient {
     }
 
     public RestResponse getPlaylistForMovie(long movieId, Date from, Date to) {
-        String requestUrl = baseUrl + String.format(GET_PLAYLIST_MOVIE, movieId, from.getTime(), to.getTime());
+        String requestUrl = baseUrl
+                + String.format(GET_PLAYLIST_MOVIE, movieId, (from != null) ? from.getTime() : "",
+                        (to != null) ? to.getTime() : "");
         return doGetRequest(requestUrl, Playlist[].class, false);
     }
 
