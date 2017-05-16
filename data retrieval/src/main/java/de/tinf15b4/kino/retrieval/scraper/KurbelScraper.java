@@ -36,6 +36,7 @@ public class KurbelScraper extends AbstractCinemaScraper {
     @Override
     public void gatherData() {
         cinema = getCinema();
+        deletePlaylistFuture(cinema);
         driver.get("http://www.kurbel-karlsruhe.de/index.php");
         driver.findElementByXPath(".//a[contains(text(), 'Programm/Tickets')]").click();
         handleMovies();

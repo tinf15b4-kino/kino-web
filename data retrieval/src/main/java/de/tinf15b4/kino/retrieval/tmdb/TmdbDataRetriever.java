@@ -1,9 +1,14 @@
 package de.tinf15b4.kino.retrieval.tmdb;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import javax.imageio.ImageIO;
 
 import org.apache.http.client.HttpClient;
 import org.yamj.api.common.http.SimpleHttpClientBuilder;
@@ -28,6 +33,7 @@ public class TmdbDataRetriever {
 
     private List<MovieInfo> tmdbMovies;
     private final static String API_KEY = "9eda0433936b655a246eef78d367b530";
+    private final static String IMAGE_URL = "http://image.tmdb.org/t/p/w500";
     private HttpClient httpClient;
     private HttpTools httpTools;
     private TmdbMovies moviesInstance;
@@ -53,7 +59,7 @@ public class TmdbDataRetriever {
             movie.setDescription(mi.getOverview());
             movie.setTmdbId(mi.getId());
             movie.setStudio(getStudio(mi));
-            // m.setCover(cover);
+            movie.setCover(getImage(mi));
 
             // movie.setLengthMinutes(mi.getRuntime()); Can't use this one cause
             // it seems to be broken (returns allways 0)
@@ -68,6 +74,29 @@ public class TmdbDataRetriever {
         }
 
         return movie;
+    }
+
+    private byte[] getImage(MovieInfo mi) {
+
+        try {
+
+            byte[] imageInByte;
+            System.out.println(IMAGE_URL + mi.getPosterPath());
+            BufferedImage originalImage = ImageIO
+                    .read(new URL(IMAGE_URL + mi.getPosterPath()));
+
+            // convert BufferedImage to byte array
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(originalImage, "jpg", baos);
+            baos.flush();
+            imageInByte = baos.toByteArray();
+            baos.close();
+
+            return imageInByte;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     private String getStudio(MovieInfo mi) {
@@ -169,25 +198,4 @@ public class TmdbDataRetriever {
         }
         return AgeControl.UNBEKANNT;
     }
-    //
-    // }
-    //
-    // private static String readUrl(String urlString) throws Exception{
-    // BufferedReader reader = null;
-    // try{
-    // URL url = new URL(urlString);
-    // reader = new BufferedReader(new InputStreamReader(url.openStream()));
-    // StringBuffer buffer = new StringBuffer();
-    // int read;
-    // char[] chars = new char[1024];
-    // while((read = reader.read(chars)) != -1){
-    // buffer.append(chars, 0, read);
-    // }
-    // return buffer.toString();
-    // } finally {
-    // if (reader != null){
-    // reader.close();
-    // }
-    // }
-    // }
 }
