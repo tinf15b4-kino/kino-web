@@ -93,7 +93,6 @@ public class MovieView extends VerticalLayout implements View {
 
                     RestResponse playlistResponse = userBean.getRestClient().getPlaylistForMovie(m.getId(), new Date(),
                             null);
-//                            new Date(new Date().getTime() + 1000L * 3600 * 24 * 7));
                     if (!playlistResponse.hasError()) {
                         List<Playlist> playlistEntries = Lists.newArrayList((Playlist[]) playlistResponse.getValue());
 
