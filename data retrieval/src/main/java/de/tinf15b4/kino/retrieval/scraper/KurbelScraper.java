@@ -50,8 +50,8 @@ public class KurbelScraper extends AbstractCinemaScraper {
             try {
                 movie = retrieveMovieInformation(movie);
             } catch (MovieDbException e) {
-                getLogger().warn("Failed to retrieve data from movie db for " + title);
-                getLogger().warn(e.toString());
+                logger.warn("Failed to retrieve data from movie db for " + title);
+                logger.warn(e.toString());
             }
             handlePlaytimes(movie, movieElement);
         }

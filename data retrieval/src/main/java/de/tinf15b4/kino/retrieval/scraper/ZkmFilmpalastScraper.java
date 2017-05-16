@@ -31,8 +31,6 @@ import de.tinf15b4.kino.data.playlists.Playlist;
 public class ZkmFilmpalastScraper extends AbstractCinemaScraper {
     private static final String ZKM_URL = "http://www.filmpalast.net/programm.html";
     private static final String ZKM_URL_2 = "http://www.filmpalast.net/programm-folgewoche.html";
-    private static final Logger logger = LoggerFactory.getLogger(ZkmFilmpalastScraper.class);
-
     private Cinema cinema;
 
     public ZkmFilmpalastScraper() {
@@ -41,7 +39,7 @@ public class ZkmFilmpalastScraper extends AbstractCinemaScraper {
 
     @Override
     public Logger getLogger() {
-        return logger;
+        return LoggerFactory.getLogger(ZkmFilmpalastScraper.class);
     }
 
     @Override
