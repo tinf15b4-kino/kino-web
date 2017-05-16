@@ -1,7 +1,7 @@
 package de.tinf15b4.kino.data.movies;
 
 public enum Genre {
-    Action("Action"), Abenteuer("Abenteuer"), Animation("Animation"), Komoedie("Komödie"), Krimi(
+    Action("Action"), Abenteuer("Abenteuer"), Animation("Animation"), Komoedie("KomÃ¶die"), Krimi(
             "Krimi"), Dokumentarfilm("Dokumentarfilm"), Drama("Drama"), Familie("Familie"), Fantasy(
                     "Fantasy"), Historie("Historie"), Horror("Horror"), Musik("Musik"), Mystery("Mystery"), Liebesfilm(
                             "Liebesfilm"), ScienceFiction("Science Fiction"), TvFilm(

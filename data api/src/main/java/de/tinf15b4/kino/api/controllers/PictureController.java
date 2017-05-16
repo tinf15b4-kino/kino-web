@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.common.annotations.VisibleForTesting;
+
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.cinemas.CinemaService;
 import de.tinf15b4.kino.data.movies.Movie;
@@ -65,17 +67,18 @@ public class PictureController {
 
     private byte[] getDefaultCinemaImage() {
         if (defaultCinemaImage == null)
-            loadDefaultCinemaImage();
+            defaultCinemaImage = loadDefaultCinemaImage();
         return defaultCinemaImage;
     }
 
     private byte[] getDefaultMovieCover() {
         if (defaultMovieCover == null)
-            loadDefaultMovieCover();
+            defaultMovieCover = loadDefaultMovieCover();
         return defaultMovieCover;
     }
 
-    private void loadDefaultCinemaImage() {
+    @VisibleForTesting
+    byte[] loadDefaultCinemaImage() {
         try {
             BufferedImage originalImage = ImageIO
                     .read(this.getClass().getResourceAsStream("/images/defaultCinema.jpg"));
@@ -84,14 +87,16 @@ public class PictureController {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(originalImage, "jpg", baos);
             baos.flush();
-            defaultCinemaImage = baos.toByteArray();
+            byte[] buffer = baos.toByteArray();
             baos.close();
+            return buffer;
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            throw new RuntimeException("Failed to load default cinema image from disk", e);
         }
     }
 
-    private void loadDefaultMovieCover() {
+    @VisibleForTesting
+    byte[] loadDefaultMovieCover() {
         try {
             BufferedImage originalImage = ImageIO.read(this.getClass().getResourceAsStream("/images/defaultMovie.jpg"));
 
@@ -99,10 +104,11 @@ public class PictureController {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(originalImage, "jpg", baos);
             baos.flush();
-            defaultMovieCover = baos.toByteArray();
+            byte[] buffer = baos.toByteArray();
             baos.close();
+            return buffer;
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            throw new RuntimeException("Failed to load default movie image from disk", e);
         }
     }
 }

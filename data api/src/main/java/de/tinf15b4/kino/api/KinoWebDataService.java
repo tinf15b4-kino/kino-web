@@ -1,5 +1,6 @@
 package de.tinf15b4.kino.api;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -22,12 +23,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.google.gson.Gson;
+
 import de.tinf15b4.kino.data.initializer.DataInitializer;
+import de.tinf15b4.kino.utils.GsonFactory;
 
 @SpringBootApplication
 @Configuration
@@ -105,6 +111,21 @@ public class KinoWebDataService extends WebMvcConfigurerAdapter {
         return (args) -> {
             initializer.initialize();
         };
+    }
+
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(createGsonHttpMessageConverter());
+        super.configureMessageConverters(converters);
+    }
+
+    private GsonHttpMessageConverter createGsonHttpMessageConverter() {
+        Gson gson = GsonFactory.buildGson();
+
+        GsonHttpMessageConverter gsonConverter = new GsonHttpMessageConverter();
+        gsonConverter.setGson(gson);
+
+        return gsonConverter;
     }
 
     public static void main(String[] args) {
