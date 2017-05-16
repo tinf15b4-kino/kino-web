@@ -31,7 +31,6 @@ import de.tinf15b4.kino.data.movies.Movie;
 
 public class TmdbDataRetriever {
 
-    private List<MovieInfo> tmdbMovies;
     private final static String API_KEY = "9eda0433936b655a246eef78d367b530";
     private final static String IMAGE_URL = "http://image.tmdb.org/t/p/w500";
     private HttpClient httpClient;
@@ -52,8 +51,6 @@ public class TmdbDataRetriever {
 
         if (movies.size() != 0) {
             MovieInfo mi = moviesInstance.getMovieInfo(movies.get(0).getId(), "de-DE", "");
-            // MovieInfo mi = moviesInstance.getMovieInfo(550, "de-DE",
-            // "RELEASES");
             movie = new Movie();
             movie.setName(mi.getTitle());
             movie.setDescription(mi.getOverview());
@@ -81,7 +78,6 @@ public class TmdbDataRetriever {
         try {
 
             byte[] imageInByte;
-            System.out.println(IMAGE_URL + mi.getPosterPath());
             BufferedImage originalImage = ImageIO
                     .read(new URL(IMAGE_URL + mi.getPosterPath()));
 
