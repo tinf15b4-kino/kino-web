@@ -12,8 +12,10 @@ import java.time.Year;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.By;
@@ -22,20 +24,17 @@ import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.omertron.themoviedbapi.MovieDbException;
-
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.movies.Movie;
 import de.tinf15b4.kino.data.playlists.Playlist;
 
 public class ZkmFilmpalastScraper extends AbstractCinemaScraper {
+
     private static final String ZKM_URL = "http://www.filmpalast.net/programm.html";
     private static final String ZKM_URL_2 = "http://www.filmpalast.net/programm-folgewoche.html";
-    private Cinema cinema;
 
-    public ZkmFilmpalastScraper() {
-        super("Filmpalast am ZKM");
-    }
+    private List<Playlist> playlists;
+    private List<Movie> movies;
 
     @Override
     public Logger getLogger() {
@@ -43,8 +42,9 @@ public class ZkmFilmpalastScraper extends AbstractCinemaScraper {
     }
 
     @Override
-    public void gatherData() {
-        deletePlaylistFuture(getCinema());
+    public GatheringResult gatherData() {
+        movies = new ArrayList<>();
+        playlists = new ArrayList<>();
 
         for (String url : new String[] { ZKM_URL, ZKM_URL_2 }) {
             driver.get(url);
@@ -60,19 +60,11 @@ public class ZkmFilmpalastScraper extends AbstractCinemaScraper {
                 if (!title.trim().equals("")) {
                     Movie movie = new Movie();
                     movie.setName(title);
-
-                    // Look up additional data from the movie db
-                    try {
-                        movie = retrieveMovieInformation(movie);
-                    } catch (MovieDbException e) {
-                        logger.warn("Could not retrieve movie db information from " + movie.getName());
-                        logger.warn(e.toString());
-                    }
-
-                    movie = saveObject(movie, Movie.class);
+                    movies.add(movie);
 
                     // create playlist
-                    for (WebElement e : el.findElements(By.cssSelector(".tab-pane.active .programm-table .slot-future a.performance-popover"))) {
+                    for (WebElement e : el.findElements(
+                            By.cssSelector(".tab-pane.active .programm-table .slot-future a.performance-popover"))) {
                         String datestr = e.getAttribute("data-original-title");
 
                         // BAD: Hardcode prices
@@ -87,55 +79,55 @@ public class ZkmFilmpalastScraper extends AbstractCinemaScraper {
 
                         LocalDateTime d = LocalDateTime.parse(datestr,
                                 new DateTimeFormatterBuilder().appendPattern("E d.M. H:m 'Uhr'")
-                                .parseDefaulting(ChronoField.YEAR, Year.now().getValue()).toFormatter());
+                                        .parseDefaulting(ChronoField.YEAR, Year.now().getValue()).toFormatter());
 
                         Playlist playlist = new Playlist();
-                        playlist.setCinema(getCinema());
+                        playlist.setCinema(cinema);
                         playlist.setMovie(movie);
                         playlist.setTime(Date.from(d.atZone(ZoneId.of("Europe/Berlin")).toInstant()));
                         playlist.setPrice(priceMap.get(d.getDayOfWeek()));
-                        saveObject(playlist, Playlist.class);
+                        playlists.add(playlist);
                     }
                 }
             }
         }
+        return new GatheringResult(movies, playlists);
     }
 
-    private Cinema getCinema() {
-        if (cinema == null) {
-            driver.navigate().to("http://www.filmpalast.net/information/filmpalast-am-zkm.html");
+    @Override
+    protected Cinema getCinema() {
+        driver.navigate().to("http://www.filmpalast.net/information/filmpalast-am-zkm.html");
 
-            // Find pictures
-            WebElement bilderEl = driver.findElementByXPath("//h3[text() = 'Bilder']");
-            WebElement container = bilderEl.findElement(By.xpath(".."));
-            WebElement imgEl = container.findElement(By.cssSelector("img"));
+        // Find pictures
+        WebElement bilderEl = driver.findElementByXPath("//h3[text() = 'Bilder']");
+        WebElement container = bilderEl.findElement(By.xpath(".."));
+        WebElement imgEl = container.findElement(By.cssSelector("img"));
 
-            byte imgBytes[];
-            try {
-                String imgSrc = imgEl.getAttribute("src");
+        byte imgBytes[];
+        try {
+            String imgSrc = imgEl.getAttribute("src");
 
-                URL imgUrl = new URI(driver.getCurrentUrl()).resolve(imgSrc).toURL();
-                try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-                    try (InputStream is = imgUrl.openStream()) {
-                        byte[] byteChunk = new byte[4096];
-                        int n;
+            URL imgUrl = new URI(driver.getCurrentUrl()).resolve(imgSrc).toURL();
+            try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+                try (InputStream is = imgUrl.openStream()) {
+                    byte[] byteChunk = new byte[4096];
+                    int n;
 
-                        while ((n = is.read(byteChunk)) > 0) {
-                            baos.write(byteChunk, 0, n);
-                        }
+                    while ((n = is.read(byteChunk)) > 0) {
+                        baos.write(byteChunk, 0, n);
                     }
-
-                    imgBytes = baos.toByteArray();
                 }
-            } catch (URISyntaxException | IOException | NoSuchElementException e) {
-                imgBytes = null;
+
+                imgBytes = baos.toByteArray();
             }
-
-            cinema = saveObject(new Cinema("Filmpalast am ZKM", "Brauerstraße", "40", "76135",
-                            "Karlsruhe", "Deutschland", imgBytes), Cinema.class);
-
-            driver.navigate().back();
+        } catch (URISyntaxException | IOException | NoSuchElementException e) {
+            imgBytes = null;
         }
+
+        Cinema cinema = new Cinema("Filmpalast am ZKM", "Brauerstraße", "40", "76135", "Karlsruhe", "Deutschland",
+                imgBytes);
+
+        driver.navigate().back();
         return cinema;
     }
 }

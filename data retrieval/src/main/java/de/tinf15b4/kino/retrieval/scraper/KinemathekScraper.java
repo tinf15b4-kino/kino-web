@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -14,8 +15,6 @@ import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.omertron.themoviedbapi.MovieDbException;
-
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.movies.Movie;
 import de.tinf15b4.kino.data.playlists.Playlist;
@@ -23,11 +22,9 @@ import de.tinf15b4.kino.data.playlists.Playlist;
 public class KinemathekScraper extends AbstractCinemaScraper {
 
     private static final String KINEMATHEK_URL = "http://kinemathek-karlsruhe.de/programm.php";
-    private Cinema cinema;
 
-    public KinemathekScraper() {
-        super("Kinemathek");
-    }
+    private List<Movie> movies;
+    private List<Playlist> playlists;
 
     @Override
     public Logger getLogger() {
@@ -35,18 +32,19 @@ public class KinemathekScraper extends AbstractCinemaScraper {
     }
 
     @Override
-    public void gatherData() {
-        cinema = getCinema();
-        deletePlaylistFuture(cinema);
+    protected GatheringResult gatherData() {
+        movies = new ArrayList<>();
+        playlists = new ArrayList<>();
 
         driver.get(KINEMATHEK_URL);
         List<WebElement> sections = driver.findElementsByXPath(".//div[contains(@class, 'programm-container')]");
         handleDates(sections);
+        return new GatheringResult(movies, playlists);
     }
 
-    private Cinema getCinema() {
-        return saveObject(new Cinema("Kinemathek", "Kaiserpassage", "6", "76133", "Karlsruhe", "Deutschland", null),
-                Cinema.class);
+    @Override
+    protected Cinema getCinema() {
+        return new Cinema("Kinemathek", "Kaiserpassage", "6", "76133", "Karlsruhe", "Deutschland", null);
     }
 
     private void handleDates(List<WebElement> programmsForDate) {
@@ -71,21 +69,14 @@ public class KinemathekScraper extends AbstractCinemaScraper {
 
             logger.info(String.format("Movie [%s] is played at [%s]", title, dateTime));
 
-
             Movie movie = new Movie(title, null, null, 0, null, null);
-            try {
-                movie = retrieveMovieInformation(movie);
-                movie = saveObject(movie, Movie.class);
+            movies.add(movie);
 
-                Playlist playlist = new Playlist();
-                playlist.setCinema(cinema);
-                playlist.setMovie(movie);
-                playlist.setTime(Date.from(dateTime.atZone(ZoneId.of("GMT+1")).toInstant()));
-                saveObject(playlist, Playlist.class);
-            } catch (MovieDbException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            Playlist playlist = new Playlist();
+            playlist.setCinema(cinema);
+            playlist.setMovie(movie);
+            playlist.setTime(Date.from(dateTime.atZone(ZoneId.of("GMT+1")).toInstant()));
+            playlists.add(playlist);
         }
     }
 
