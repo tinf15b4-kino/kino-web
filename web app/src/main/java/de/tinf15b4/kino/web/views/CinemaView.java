@@ -107,8 +107,6 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
 
                         RestResponse playlistResponse = userBean.getRestClient().getPlaylistForCinemas(c.getId(),
                                 new Date(), null);
-                        // new Date(), new Date(new Date().getTime() + 1000L *
-                        // 3600 * 24 * 7));
                         if (!playlistResponse.hasError()) {
                             List<Playlist> playlistEntries = Lists
                                     .newArrayList((Playlist[]) playlistResponse.getValue());
