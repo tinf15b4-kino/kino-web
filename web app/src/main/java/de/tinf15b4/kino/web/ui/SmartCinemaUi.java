@@ -5,6 +5,9 @@ import java.net.URLEncoder;
 
 import javax.annotation.PostConstruct;
 
+import de.tinf15b4.kino.data.cinemas.Cinema;
+import de.tinf15b4.kino.data.movies.Movie;
+import de.tinf15b4.kino.web.rest.RestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.annotations.Theme;
@@ -90,7 +93,7 @@ public class SmartCinemaUi extends UI {
         panel.setSizeFull();
 
 
-        // Main View (in grid cell 1 1) will get all excess space
+        // Main View (in grid cell 1 2) will get all excess space
         grid.setColumnExpandRatio(1, 2);
         grid.setRowExpandRatio(2, 3);
 
@@ -125,7 +128,8 @@ public class SmartCinemaUi extends UI {
         search.addComponent(searchField);
         search.addComponent(searchButton);
         searchButton.addClickListener(
-                e -> getNavigator().navigateTo(SearchResultsView.VIEW_NAME + "/" + searchField.getValue()));
+                e -> getNavigator().navigateTo(
+                        SearchResultsView.VIEW_NAME + "/" + searchField.getValue()));
         ShortcutUtils.registerScopedShortcut(searchPanel, searchButton, ShortcutAction.KeyCode.ENTER);
 
         searchPanel.setContent(search);
@@ -217,17 +221,19 @@ public class SmartCinemaUi extends UI {
         navigator.addComponent(cinemaBtn);
 
         Button favoriteBtn = (Button) (createViewButton("Favoriten", FavoriteListView.VIEW_NAME, FontAwesome.HEART));
-        favoriteBtn.setId("navigatorBtn");
+        favoriteBtn.setId("navigatorBtn_Fav");
         favoriteBtn.addStyleName(BaseTheme.BUTTON_LINK);
         navigator.addComponent(favoriteBtn);
 
-        Label nothingLabel = new Label("");
-        navigator.addComponent(nothingLabel);
-        navigator.setExpandRatio(nothingLabel, 1f);
+        Button aboutBtn = (Button) (createViewButton("über smartCinema", "aboutView", FontAwesome.INFO));
+        aboutBtn.setId("navigatorBtn_About");
+        aboutBtn.addStyleName(BaseTheme.BUTTON_LINK);
+        navigator.addComponent(aboutBtn);
+        navigator.setComponentAlignment(aboutBtn, Alignment.BOTTOM_CENTER);
+        navigator.setExpandRatio(aboutBtn, 1f);
 
         navigator.setId("navigator");
         navigator.addStyleName(BaseTheme.BUTTON_LINK);
-
 
         return navigator;
     }
@@ -264,12 +270,35 @@ public class SmartCinemaUi extends UI {
         navigatorBarRight.setHeight("60px");
         navigatorBarRight.setId("toolBarRight");
 
-        Label navLabelR = new Label();
-        navLabelR.setCaption("");
-
-        navigatorBarRight.addComponent(navLabelR);
+        navigatorBarRight.addComponent(getContentLabel());
 
         return navigatorBarRight;
+    }
+
+    private Label getContentLabel(){
+        Label contentLabel = new Label();
+
+        String uri = Page.getCurrent().getUriFragment();
+        if (uri != null) {
+            if (uri.contains("movies")) {
+                contentLabel.setValue("Filme");
+            } else if (uri.contains("movie")) {
+                RestResponse r = userBean.getRestClient().getMovie(Integer.parseInt(uri.substring(7)));
+                Movie m = (Movie) r.getValue();
+                contentLabel.setValue(m.getName());
+            } else if (uri.contains("cinemas")) {
+                contentLabel.setValue("Kinos");
+            } else if (uri.contains("cinema")) {
+                RestResponse r = userBean.getRestClient().getCinema(Integer.parseInt(uri.substring(8)));
+                Cinema c = (Cinema) r.getValue();
+                contentLabel.setValue(c.getName());
+            } else if (uri.contains("favourites")) {
+                contentLabel.setValue("Favoriten");
+            }
+        }
+        contentLabel.setId("toolBarLabel");
+
+        return contentLabel;
     }
 
     private Component createViewButton(String readableName, String viewId, FontAwesome icon) {
@@ -285,6 +314,8 @@ public class SmartCinemaUi extends UI {
     private void navigateTo(String viewId) {
         // TODO implement all views
         this.getNavigator().navigateTo(viewId);
+        grid.removeComponent(1, 1);
+        grid.addComponent(createToolBarRight(), 1, 1);
     }
 
     public void update() {

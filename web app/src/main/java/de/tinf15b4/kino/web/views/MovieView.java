@@ -2,10 +2,22 @@ package de.tinf15b4.kino.web.views;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import com.vaadin.server.WebBrowser;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.VerticalLayout;
+import de.tinf15b4.kino.data.cinemas.Cinema;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Lists;
@@ -15,14 +27,6 @@ import com.vaadin.server.ExternalResource;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Image;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Link;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.VerticalLayout;
 
 import de.tinf15b4.kino.data.movies.Movie;
 import de.tinf15b4.kino.data.playlists.Playlist;
@@ -59,73 +63,198 @@ public class MovieView extends VerticalLayout implements View {
 
                 // Image
                 Component image = new Image(null, new ExternalResource(userBean.getRestClient().getMoviePictureUrl(m)));
-                image.setHeight("400px");
-                image.setId("movieImage_" + m.getId());
+                image.setWidth("250px");
+                image.setId("movieDetailImage");
 
                 content.addComponent(image);
 
                 // Info-Box
-                VerticalLayout information = new VerticalLayout();
-                information = createInfoBox(m);
+                VerticalLayout information = createInfoBox(m);
+                information.setId("movieInformationForm");
 
+                // Ratings
                 RestResponse ratingsResponse = userBean.getRestClient().getRatedMovies(m.getId());
                 if (!ratingsResponse.hasError()) {
                     List<RatedMovie> ratedMovies = Lists.newArrayList((RatedMovie[]) ratingsResponse.getValue());
 
                     if (ratedMovies.size() > 0) {
-                        GridLayout ratings = new GridLayout(4, 1);
-                        ratings.setMargin(true);
-                        ratings.setSpacing(true);
-                        ratings.setSizeFull();
-
-                        for (RatedMovie rm : ratedMovies) {
-                            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.GERMANY);
-                            ratings.addComponent(new Label(rm.getUser().getName()));
-                            ratings.addComponent(new Label(rm.getRating() + ""));
-                            ratings.addComponent(new Label(sdf.format(rm.getTime())));
-                            ratings.addComponent(new Label(rm.getDescription()));
-                        }
-
-                        Panel ratingsPanel = new Panel("Bewertungen", ratings);
-                        ratingsPanel.setId("ratingsPanel_" + m.getId());
-                        information.addComponent(ratingsPanel);
+                        VerticalLayout ratingsForm = createRatingsForm(ratedMovies);
+                        information.addComponent(ratingsForm);
                     }
+                }
 
-                    RestResponse playlistResponse = userBean.getRestClient().getPlaylistForMovie(m.getId(), new Date(),
-                            null);
-                    if (!playlistResponse.hasError()) {
-                        List<Playlist> playlistEntries = Lists.newArrayList((Playlist[]) playlistResponse.getValue());
+                // Playlist
+                RestResponse playlistResponse = userBean.getRestClient().getPlaylistForMovie(m.getId(), new Date(),
+                        new Date(new Date().getTime() + 1000L * 3600 * 24 * 7));
+                if (!playlistResponse.hasError()) {
+                    List<Playlist> playlistEntries = Lists.newArrayList((Playlist[]) playlistResponse.getValue());
 
-                        if (playlistEntries.size() > 0) {
-                            GridLayout playtimes = new GridLayout(3, 1);
-                            playtimes.setMargin(true);
-                            playtimes.setSpacing(true);
-                            playtimes.setSizeFull();
+                    if (playlistEntries.size() > 0) {
+                        information.addComponent(createPlaylistForm(playlistEntries));
+                    }
+                }
 
-                            for (Playlist p : playlistEntries) {
-                                SimpleDateFormat sdf = new SimpleDateFormat("E, dd.MM.yyyy HH:mm", Locale.GERMANY);
-                                NumberFormat pricef = NumberFormat.getCurrencyInstance(Locale.GERMANY);
-                                playtimes.addComponent(new Label(sdf.format(p.getTime())));
-                                playtimes.addComponent(new Link(p.getCinema().getName(), new ExternalResource(
-                                        "#!" + CinemaView.VIEW_NAME + "/" + p.getCinema().getId())));
-                                playtimes.addComponent(new Label(pricef.format(p.getPrice() / 100.0)));
-                            }
+                information.setMargin(new MarginInfo(false, true));
+                content.addComponent(information);
+                content.setSizeFull();
+                content.setExpandRatio(information, 1f);
+                content.setMargin(true);
+                content.setSpacing(true);
+                this.addComponent(content);
 
-                            Panel playtimesPanel = new Panel("Spielplan", playtimes);
-                            playtimesPanel.setId("playtimesPanel_" + m.getId());
-                            information.addComponent(playtimesPanel);
-                        }
-                        information.setMargin(new MarginInfo(false, true));
-                        content.addComponent(information);
-                        content.setSizeFull();
-                        content.setExpandRatio(information, 1f);
-                        content.setMargin(true);
-                        content.setSpacing(true);
-                        this.addComponent(content);
+            }
+        }
+    }
+
+    private VerticalLayout createRatingsForm(List<RatedMovie> ratedMovies) {
+        VerticalLayout ratingsForm = new VerticalLayout();
+
+        Label heading = new Label("Bewertungen");
+        heading.setId("ratingsHeading");
+        ratingsForm.addComponent(heading);
+
+        for (RatedMovie rm : ratedMovies) {
+
+            ratingsForm.addComponent(createRatingEntry(rm));
+
+        }
+
+        ratingsForm.setId("ratingsForm");
+
+        return ratingsForm;
+    }
+
+    private VerticalLayout createRatingEntry(RatedMovie rm) {
+        VerticalLayout ratingEntry = new VerticalLayout();
+
+        HorizontalLayout userRow = new HorizontalLayout();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
+
+        Label userLabel = new Label(rm.getUser().getName());
+        userLabel.setPrimaryStyleName("ratingUserName");
+        userLabel.setWidth(null);
+        userRow.addComponent(userLabel);
+
+        Label ratingsLabel = new Label(rm.getRating() + " / 10 ");
+        ratingsLabel.setPrimaryStyleName("ratingsLabel");
+        userRow.addComponent(ratingsLabel);
+        userRow.setExpandRatio(ratingsLabel, 1f);
+
+        Label dateLabel = new Label(sdf.format(rm.getTime()));
+        dateLabel.setPrimaryStyleName("dateLabel");
+        dateLabel.setWidth(null);
+        userRow.addComponent(dateLabel);
+        userRow.setComponentAlignment(dateLabel, Alignment.TOP_RIGHT);
+        userRow.setPrimaryStyleName("userRow");
+        userRow.setWidth("100%");
+
+        HorizontalLayout commentRow = new HorizontalLayout();
+        Label commentLabel = new Label(rm.getDescription()) ;
+        commentLabel.setPrimaryStyleName("ratingsComment");
+        commentRow.addComponent(commentLabel);
+        commentRow.setPrimaryStyleName("commentRow");
+
+
+        ratingEntry.addComponent(userRow);
+        ratingEntry.addComponent(commentRow);
+        ratingEntry.addComponent(new Label("<hr />", ContentMode.HTML));
+        ratingEntry.setPrimaryStyleName("ratingEntry");
+
+        return ratingEntry;
+    }
+
+    private VerticalLayout createPlaylistForm(List<Playlist> playlistEntries) {
+        VerticalLayout playlistForm = new VerticalLayout();
+
+        Label playlistHeading = new Label("Spielplan");
+        playlistHeading.setId("playlistHeading");
+        playlistForm.addComponent(playlistHeading);
+
+        List<Cinema> cinemaList = new ArrayList<>();
+
+        for (Playlist p : playlistEntries) {
+
+            if (!cinemaList.contains(p.getCinema())) {
+                cinemaList.add(p.getCinema());
+            }
+        }
+
+        for (Cinema c : cinemaList) {
+
+            playlistForm.addComponent(createCinemaRow(c, playlistEntries));
+        }
+
+        return  playlistForm;
+    }
+
+    private HorizontalLayout createCinemaRow (Cinema c, List<Playlist> pE) {
+        HorizontalLayout cinemaRow = new HorizontalLayout();
+        cinemaRow.setPrimaryStyleName("cinemaPlaylistRow");
+
+        Component cinemaImage = new Image(null,
+                new ExternalResource(userBean.getRestClient().getCinemaPictureUrl(c)));
+        cinemaImage.setHeight("200px");
+        cinemaImage.setPrimaryStyleName("cinemaPlaylistImage");
+        cinemaRow.addComponent(cinemaImage);
+
+        LocalDate currentDate= LocalDate.now();
+
+        DateTimeFormatter formattedDate = DateTimeFormatter.ofPattern("EE dd.MM", Locale.GERMAN);
+
+        SimpleDateFormat movieTimeFormat = new SimpleDateFormat("HH:mm", Locale.GERMANY);
+
+        HorizontalLayout playTimesTable = new HorizontalLayout();
+        playTimesTable.setPrimaryStyleName("playTimesTable");
+
+        for (int i = 0; i<6; i++) {
+
+            // Add weekdays to Table
+            VerticalLayout tmpPlaylistColumn = new VerticalLayout();
+            Label dateRow = new Label(currentDate.plusDays(i).format(formattedDate));
+            dateRow.setPrimaryStyleName("dateEntry");
+            tmpPlaylistColumn.addComponent(dateRow);
+
+            // Add playtimes to table
+            for (Playlist p : pE) {
+                LocalDate playDate = p.getTime().toInstant().atZone(ZoneId.of("GMT+1")).toLocalDate();
+                if (currentDate.plusDays(i).isEqual(playDate)) {
+                    if (p.getCinema().equals(c)) {
+                        Label timeRow = new Label(movieTimeFormat.format(p.getTime()));
+                        timeRow.setPrimaryStyleName("timeEntry");
+                        tmpPlaylistColumn.addComponent(timeRow);
                     }
                 }
             }
+
+            tmpPlaylistColumn.setPrimaryStyleName("playListColumn");
+            playTimesTable.addComponent(tmpPlaylistColumn);
+
         }
+
+        cinemaRow.addComponent(createCinemaInformation(c, playTimesTable));
+        cinemaRow.setSizeUndefined();
+        cinemaRow.setSpacing(true);
+
+        return cinemaRow;
+    }
+
+    private VerticalLayout createCinemaInformation(Cinema c, HorizontalLayout playTimesTable) {
+        VerticalLayout cinemaInformation = new VerticalLayout();
+        cinemaInformation.setPrimaryStyleName("cinemaPlaylistInformation");
+
+        Label cinemaName = new Label(c.getName());
+        cinemaName.setPrimaryStyleName("cinemaPlaylistName");
+        cinemaInformation.addComponent(cinemaName);
+
+        playTimesTable.setSizeUndefined();
+     
+        cinemaInformation.addComponent(playTimesTable);
+        cinemaInformation.setSizeUndefined();
+        cinemaInformation.setExpandRatio(playTimesTable, 1f);
+
+
+        return cinemaInformation;
     }
 
     private VerticalLayout createInfoBox(Movie m) {
