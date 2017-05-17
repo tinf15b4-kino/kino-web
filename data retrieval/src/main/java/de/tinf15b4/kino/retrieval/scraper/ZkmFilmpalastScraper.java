@@ -37,12 +37,12 @@ public class ZkmFilmpalastScraper extends AbstractCinemaScraper {
     private List<Movie> movies;
 
     @Override
-    public Logger getLogger() {
+    protected Logger getLogger() {
         return LoggerFactory.getLogger(ZkmFilmpalastScraper.class);
     }
 
     @Override
-    public GatheringResult gatherData() {
+    protected GatheringResult gatherData() {
         movies = new ArrayList<>();
         playlists = new ArrayList<>();
 
