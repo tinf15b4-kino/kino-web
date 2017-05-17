@@ -11,7 +11,12 @@ import java.util.List;
 import java.util.Locale;
 
 import com.vaadin.server.WebBrowser;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.VerticalLayout;
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -57,8 +62,7 @@ public class MovieView extends VerticalLayout implements View {
                 HorizontalLayout content = new HorizontalLayout();
 
                 // Image
-                Component image = new Image(null,
-                        new ExternalResource(userBean.getRestClient().getMoviePictureUrl(m)));
+                Component image = new Image(null, new ExternalResource(userBean.getRestClient().getMoviePictureUrl(m)));
                 image.setWidth("250px");
                 image.setId("movieDetailImage");
 

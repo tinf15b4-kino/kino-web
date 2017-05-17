@@ -196,20 +196,17 @@ public class SmartCinemaUi extends UI {
         movieLabel.setId("navHeadings_Movie");
         navigator.addComponent(movieLabel);
 
-        Button movieBtn = (Button) (createViewButton(
-                "Filme", MovieListView.VIEW_NAME, FontAwesome.PLAY));
+        Button movieBtn = (Button) (createViewButton("Filme", MovieListView.VIEW_NAME, FontAwesome.PLAY));
         movieBtn.setId("navigatorBtn_Movie");
         movieBtn.addStyleName(BaseTheme.BUTTON_LINK);
         navigator.addComponent(movieBtn);
 
-        Button newMovieBtn = (Button) (createViewButton(
-                "Neu im Kino", "new", FontAwesome.EXCLAMATION_CIRCLE));
+        Button newMovieBtn = (Button) (createViewButton("Neu im Kino", "new", FontAwesome.EXCLAMATION_CIRCLE));
         newMovieBtn.setId("navigatorBtn_New");
         newMovieBtn.addStyleName(BaseTheme.BUTTON_LINK);
         navigator.addComponent(newMovieBtn);
 
-        Button soonBtn = (Button) (createViewButton(
-                "Demnächst", "coming_soon", FontAwesome.HISTORY));
+        Button soonBtn = (Button) (createViewButton("Demnächst", "coming_soon", FontAwesome.HISTORY));
         soonBtn.setId("navigatorBtn_Soon");
         soonBtn.addStyleName(BaseTheme.BUTTON_LINK);
         navigator.addComponent(soonBtn);
@@ -218,20 +215,17 @@ public class SmartCinemaUi extends UI {
         cinemaLabel.setId("navHeadings_Cinemas");
         navigator.addComponent(cinemaLabel);
 
-        Button cinemaBtn = (Button) (createViewButton(
-                "Kinos", CinemaListView.VIEW_NAME, FontAwesome.VIDEO_CAMERA));
+        Button cinemaBtn = (Button) (createViewButton("Kinos", CinemaListView.VIEW_NAME, FontAwesome.VIDEO_CAMERA));
         cinemaBtn.setId("navigatorBtn_Cinemas");
         cinemaBtn.addStyleName(BaseTheme.BUTTON_LINK);
         navigator.addComponent(cinemaBtn);
 
-        Button favoriteBtn = (Button) (createViewButton(
-                "Favoriten", FavoriteListView.VIEW_NAME, FontAwesome.HEART));
+        Button favoriteBtn = (Button) (createViewButton("Favoriten", FavoriteListView.VIEW_NAME, FontAwesome.HEART));
         favoriteBtn.setId("navigatorBtn_Fav");
         favoriteBtn.addStyleName(BaseTheme.BUTTON_LINK);
         navigator.addComponent(favoriteBtn);
 
-        Button aboutBtn = (Button) (createViewButton(
-                "über smartCinema", "aboutView", FontAwesome.INFO));
+        Button aboutBtn = (Button) (createViewButton("über smartCinema", "aboutView", FontAwesome.INFO));
         aboutBtn.setId("navigatorBtn_About");
         aboutBtn.addStyleName(BaseTheme.BUTTON_LINK);
         navigator.addComponent(aboutBtn);
