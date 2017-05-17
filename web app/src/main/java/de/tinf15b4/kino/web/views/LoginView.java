@@ -62,8 +62,6 @@ public class LoginView extends Panel implements View {
         l.setId("loginForm");
         l.setSizeFull();
 
-
-
         ShortcutUtils.registerScopedShortcut(this, login, ShortcutAction.KeyCode.ENTER);
 
         this.setContent(l);
@@ -95,5 +93,4 @@ public class LoginView extends Panel implements View {
             }
         }
     }
-
 }
