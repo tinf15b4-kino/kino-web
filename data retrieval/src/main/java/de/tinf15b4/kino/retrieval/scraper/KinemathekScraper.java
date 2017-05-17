@@ -27,7 +27,7 @@ public class KinemathekScraper extends AbstractCinemaScraper {
     private List<Playlist> playlists;
 
     @Override
-    public Logger getLogger() {
+    protected Logger getLogger() {
         return LoggerFactory.getLogger(KinemathekScraper.class);
     }
 
@@ -75,7 +75,7 @@ public class KinemathekScraper extends AbstractCinemaScraper {
             Playlist playlist = new Playlist();
             playlist.setCinema(cinema);
             playlist.setMovie(movie);
-            playlist.setTime(Date.from(dateTime.atZone(ZoneId.of("GMT+1")).toInstant()));
+            playlist.setTime(Date.from(dateTime.atZone(ZoneId.of("GMT+2")).toInstant()));
             playlists.add(playlist);
         }
     }
