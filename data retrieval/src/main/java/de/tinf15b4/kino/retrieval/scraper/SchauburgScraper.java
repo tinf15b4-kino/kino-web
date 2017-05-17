@@ -70,7 +70,7 @@ public class SchauburgScraper extends AbstractCinemaScraper {
                 Playlist playlist = new Playlist();
                 playlist.setCinema(cinema);
                 playlist.setMovie(movie);
-                playlist.setTime(Date.from(dateTime.atZone(ZoneId.of("GMT+2")).toInstant()));
+                playlist.setTime(Date.from(dateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant()));
                 playlists.add(playlist);
             }
         }

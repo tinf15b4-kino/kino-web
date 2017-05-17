@@ -49,7 +49,10 @@ public abstract class AbstractCinemaScraper {
         logger.info(String.format("Initializing Webdriver for scraper: [%s]", cinema.getName()));
         initlializeWebdriver();
 
-        cinema = saveObject(getCinema(), Cinema.class);
+        cinema = getCinema();
+        if (cinema == null)
+            throw new RuntimeException("Subclasses have to override this method and return a valid cinema");
+        cinema = saveObject(cinema, Cinema.class);
 
         logger.info(String.format("Start gathering data from: [%s]", cinema.getName()));
         Stopwatch watch = Stopwatch.createStarted();
