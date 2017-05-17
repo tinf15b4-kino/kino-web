@@ -65,10 +65,26 @@ public class GeneralRestControllerTest extends AbstractRestControllerTest {
     }
 
     @Test
+    public void testGetCallsWithValidIdsAndUnsetDates() throws Exception {
+        ResponseEntity<?> response = underTest.getPlaylistForCinema(0L, null, null);
+        assertValidResponse(response);
+        response = underTest.getPlaylistForMovie(0L, null, null);
+        assertValidResponse(response);
+    }
+
+    @Test
     public void testGetCallsWithInvalidIdsAndValidDates() throws Exception {
         ResponseEntity<?> response = underTest.getPlaylistForCinema(-1L, 0L, 0L);
         assertInvalidResponse(response, HttpStatus.BAD_REQUEST, RestControllerConstants.INVALID_ID);
         response = underTest.getPlaylistForMovie(10L, 0L, 0L);
+        assertInvalidResponse(response, HttpStatus.BAD_REQUEST, RestControllerConstants.INVALID_ID);
+    }
+
+    @Test
+    public void testGetCallsWithInvalidIdsAndUnsetDates() throws Exception {
+        ResponseEntity<?> response = underTest.getPlaylistForCinema(-1L, null, null);
+        assertInvalidResponse(response, HttpStatus.BAD_REQUEST, RestControllerConstants.INVALID_ID);
+        response = underTest.getPlaylistForMovie(10L, null, null);
         assertInvalidResponse(response, HttpStatus.BAD_REQUEST, RestControllerConstants.INVALID_ID);
     }
 

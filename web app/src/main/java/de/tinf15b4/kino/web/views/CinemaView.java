@@ -96,7 +96,6 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
 
                         if (playlistEntries.size() > 0) {
                             informationForm.addComponent(createPlaylistForm(playlistEntries));
-
                         }
                     }
 

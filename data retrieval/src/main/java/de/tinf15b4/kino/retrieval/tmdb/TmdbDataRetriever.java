@@ -1,9 +1,13 @@
 package de.tinf15b4.kino.retrieval.tmdb;
 
-import java.util.Iterator;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import javax.imageio.ImageIO;
 
 import org.apache.http.client.HttpClient;
 import org.yamj.api.common.http.SimpleHttpClientBuilder;
@@ -15,7 +19,6 @@ import com.omertron.themoviedbapi.methods.TmdbMovies;
 import com.omertron.themoviedbapi.methods.TmdbSearch;
 import com.omertron.themoviedbapi.model.credits.MediaCreditCrew;
 import com.omertron.themoviedbapi.model.movie.MovieInfo;
-import com.omertron.themoviedbapi.model.movie.ProductionCompany;
 import com.omertron.themoviedbapi.model.movie.ReleaseDate;
 import com.omertron.themoviedbapi.model.movie.ReleaseDates;
 import com.omertron.themoviedbapi.tools.HttpTools;
@@ -26,8 +29,8 @@ import de.tinf15b4.kino.data.movies.Movie;
 
 public class TmdbDataRetriever {
 
-    private List<MovieInfo> tmdbMovies;
     private final static String API_KEY = "9eda0433936b655a246eef78d367b530";
+    private final static String IMAGE_URL = "http://image.tmdb.org/t/p/w500";
     private HttpClient httpClient;
     private HttpTools httpTools;
     private TmdbMovies moviesInstance;
@@ -46,14 +49,12 @@ public class TmdbDataRetriever {
 
         if (movies.size() != 0) {
             MovieInfo mi = moviesInstance.getMovieInfo(movies.get(0).getId(), "de-DE", "");
-            // MovieInfo mi = moviesInstance.getMovieInfo(550, "de-DE",
-            // "RELEASES");
             movie = new Movie();
             movie.setName(mi.getTitle());
             movie.setDescription(mi.getOverview());
             movie.setTmdbId(mi.getId());
             movie.setStudio(getStudio(mi));
-            // m.setCover(cover);
+            movie.setCover(getImage(mi));
 
             // movie.setLengthMinutes(mi.getRuntime()); Can't use this one cause
             // it seems to be broken (returns allways 0)
@@ -70,58 +71,53 @@ public class TmdbDataRetriever {
         return movie;
     }
 
-    private String getStudio(MovieInfo mi) {
-        String result = "";
-        List<ProductionCompany> list = mi.getProductionCompanies();
-        if (list.size() > 0) {
-            Iterator<ProductionCompany> i = list.iterator();
-            while (i.hasNext()) {
-                ProductionCompany item = i.next();
-                result += item.getName() + (i.hasNext() ? ", " : "");
-            }
-            return result;
+    private byte[] getImage(MovieInfo mi) {
+
+        try {
+
+            byte[] imageInByte;
+            BufferedImage originalImage = ImageIO
+                    .read(new URL(IMAGE_URL + mi.getPosterPath()));
+
+            // convert BufferedImage to byte array
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(originalImage, "jpg", baos);
+            baos.flush();
+            imageInByte = baos.toByteArray();
+            baos.close();
+
+            return imageInByte;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null;
         }
-        return "Keine Angabe";
+    }
+
+    private String getStudio(MovieInfo mi) {
+        String result = mi.getProductionCompanies().stream().map(pc -> pc.getName()).collect(Collectors.joining(", "));
+        
+        return !result.isEmpty() ? result : "Keine Angabe";
     }
 
     private String getAuthor(MovieInfo mi) throws MovieDbException {
         List<MediaCreditCrew> crew = moviesInstance.getMovieCredits(mi.getId()).getCrew();
 
-        String result = "";
-
-        List<MediaCreditCrew> list = crew.stream()
+        String result = crew.stream()
                 .filter(c -> c.getDepartment().equals("Writing") && c.getJob().equals("Screenplay"))
-                .collect(Collectors.toList());
+                .map(c -> c.getName()).collect(Collectors.joining(", "));
 
-        if (list.size() > 0) {
-            Iterator<MediaCreditCrew> i = list.iterator();
-            while (i.hasNext()) {
-                MediaCreditCrew item = i.next();
-                result += item.getName() + (i.hasNext() ? ", " : "");
-            }
-            return result;
-        }
-        return "Keine Angabe";
+        return !result.isEmpty() ? result : "Keine Angabe";
     }
 
     private String getDirector(MovieInfo mi) throws MovieDbException {
         List<MediaCreditCrew> crew = moviesInstance.getMovieCredits(mi.getId()).getCrew();
 
-        String result = "";
-
-        List<MediaCreditCrew> list = crew.stream()
+        String result = crew.stream()
                 .filter(c -> c.getDepartment().equals("Directing") && c.getJob().equals("Director"))
-                .collect(Collectors.toList());
+                .map(c -> c.getName())
+                .collect(Collectors.joining(", "));
 
-        if (list.size() > 0) {
-            Iterator<MediaCreditCrew> i = list.iterator();
-            while (i.hasNext()) {
-                MediaCreditCrew item = i.next();
-                result += item.getName() + (i.hasNext() ? ", " : "");
-            }
-            return result;
-        }
-        return "Keine Angabe";
+        return !result.isEmpty() ? result : "Keine Angabe";
     }
 
     private Genre getGenre(MovieInfo mi) {
@@ -169,25 +165,4 @@ public class TmdbDataRetriever {
         }
         return AgeControl.UNBEKANNT;
     }
-    //
-    // }
-    //
-    // private static String readUrl(String urlString) throws Exception{
-    // BufferedReader reader = null;
-    // try{
-    // URL url = new URL(urlString);
-    // reader = new BufferedReader(new InputStreamReader(url.openStream()));
-    // StringBuffer buffer = new StringBuffer();
-    // int read;
-    // char[] chars = new char[1024];
-    // while((read = reader.read(chars)) != -1){
-    // buffer.append(chars, 0, read);
-    // }
-    // return buffer.toString();
-    // } finally {
-    // if (reader != null){
-    // reader.close();
-    // }
-    // }
-    // }
 }

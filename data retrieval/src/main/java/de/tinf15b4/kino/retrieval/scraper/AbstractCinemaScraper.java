@@ -9,6 +9,7 @@ import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -23,6 +24,7 @@ import com.omertron.themoviedbapi.MovieDbException;
 
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.movies.Movie;
+import de.tinf15b4.kino.data.playlists.Playlist;
 import de.tinf15b4.kino.retrieval.tmdb.TmdbDataRetriever;
 import de.tinf15b4.kino.utils.GsonFactory;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
@@ -32,27 +34,87 @@ public abstract class AbstractCinemaScraper {
 
     protected RemoteWebDriver driver;
     protected Logger logger;
-    private String cinemaName;
     private TmdbDataRetriever tmdb;
 
-    public AbstractCinemaScraper(String cinemaName) {
-        this.cinemaName = cinemaName;
+    protected Cinema cinema;
+
+    public AbstractCinemaScraper() {
         tmdb = new TmdbDataRetriever();
+        cinema = new Cinema();
+        cinema.setName("UNKNOWN");
     }
 
     public void scrape() {
         logger = getLogger();
-        logger.info(String.format("Initializing Webdriver for scraper: [%s]", cinemaName));
+        logger.info(String.format("Initializing Webdriver for scraper: [%s]", cinema.getName()));
         initlializeWebdriver();
 
-        logger.info(String.format("Start gathering data from: [%s]", cinemaName));
+        cinema = getCinema();
+        if (cinema == null)
+            throw new RuntimeException("Subclasses have to override this method and return a valid cinema");
+        cinema = saveObject(cinema, Cinema.class);
+
+        logger.info(String.format("Start gathering data from: [%s]", cinema.getName()));
         Stopwatch watch = Stopwatch.createStarted();
-        gatherData();
-        logger.info(String.format("Finished gathering data from: [%s] in %s milliseconds", cinemaName,
+        GatheringResult result = gatherData();
+        logger.info(String.format("Finished gathering data from: [%s] in %s milliseconds", cinema.getName(),
                 watch.elapsed(TimeUnit.MILLISECONDS)));
 
         driver.quit();
+        logger.info(String.format("Closing driver for scraper: [%s]", cinema.getName()));
+
+        // get information for and save movies
+        // we also adjust the corresponding playlists here
+        processMovies(result);
+
+        // Reset playlist
+        logger.info(String.format("Resetting playlist for scraper: [%s]", cinema.getName()));
+        deletePlaylistFuture(cinema);
+
+        // adjust the cinema in playlist and save it
+        logger.info(String.format("Saving playlist for scraper: [%s]", cinema.getName()));
+        processPlaylists(result);
+
     }
+
+    private void processPlaylists(GatheringResult result) {
+        for (Playlist playlist : result.getPlaylists()) {
+            playlist.setCinema(cinema);
+            Playlist p = saveObject(playlist, Playlist.class);
+            logger.info(String.format("Movie %s is played at %s in %s", p.getMovie().getName(), p.getTime(),
+                    p.getCinema().getName()));
+        }
+    }
+
+    private void processMovies(GatheringResult result) {
+        for (Movie movie : result.getMovies()) {
+            Movie filledMovie = retrieveMovieInformation(movie);
+            if (filledMovie != null) {
+                filledMovie = saveObject(filledMovie, Movie.class);
+                for (Playlist playlist : result.getPlaylists()) {
+                    // We want to compare for the specific instance here as its
+                    // the only thing we have
+                    if (playlist.getMovie() == movie) {
+                        playlist.setMovie(filledMovie);
+                    }
+                }
+            } else {
+                Iterator<Playlist> iterator = result.getPlaylists().iterator();
+                while (iterator.hasNext()) {
+                    Playlist playlist = iterator.next();
+                    if (playlist.getMovie() == movie) {
+                        iterator.remove();
+                    }
+                }
+            }
+        }
+    }
+
+    protected abstract Logger getLogger();
+
+    protected abstract GatheringResult gatherData();
+
+    protected abstract Cinema getCinema();
 
     private void initlializeWebdriver() {
         String drvstr = System.getProperty("kinotest.driver");
@@ -65,12 +127,12 @@ public abstract class AbstractCinemaScraper {
         case "firefox":
             FirefoxDriverManager.getInstance().setup("0.16.0");
             driver = new FirefoxDriver();
-            logger.info(String.format("Firefox driver initialized for scraper: [%s]", cinemaName));
+            logger.info(String.format("Firefox driver initialized for scraper: [%s]", cinema.getName()));
             break;
         case "chrome":
             ChromeDriverManager.getInstance().setup("2.25");
             driver = new ChromeDriver();
-            logger.info(String.format("Chrome driver initialized for scraper: [%s]", cinemaName));
+            logger.info(String.format("Chrome driver initialized for scraper: [%s]", cinema.getName()));
             break;
         case "remote":
             if (remote == null || remote.isEmpty())
@@ -78,7 +140,7 @@ public abstract class AbstractCinemaScraper {
 
             try {
                 driver = new RemoteWebDriver(new URL(remote), DesiredCapabilities.firefox());
-                logger.info(String.format("Remote driver initialized for scraper: [%s]", cinemaName));
+                logger.info(String.format("Remote driver initialized for scraper: [%s]", cinema.getName()));
             } catch (MalformedURLException e) {
                 throw new RuntimeException("Maformed URL: [" + remote + "]", e);
             }
@@ -88,16 +150,20 @@ public abstract class AbstractCinemaScraper {
         }
     }
 
-    public abstract Logger getLogger();
-
-    public abstract void gatherData();
-
-    protected Movie retrieveMovieInformation(Movie movie) throws MovieDbException {
-        return tmdb.getMovie(movie);
+    private Movie retrieveMovieInformation(Movie movie) {
+        try {
+            return tmdb.getMovie(movie);
+        } catch (MovieDbException e) {
+            // Movie DB does not know this movie for some reason. Basically this
+            // means we won't show it
+            logger.warn(
+                    String.format("TheMovieDB does not know movie [%s]. We skip this movie for now.", movie.getName()));
+            return null;
+        }
     }
 
     @SuppressWarnings("unchecked")
-    protected <T> T saveObject(Object toSave, Class<T> expectedResult) {
+    private <T> T saveObject(Object toSave, Class<T> expectedResult) {
         ObjectType type = ObjectType.forClass(expectedResult);
         Object contained = getContainedObject(toSave, type);
         if (contained != null)
@@ -139,7 +205,7 @@ public abstract class AbstractCinemaScraper {
         }
     }
 
-    public void deletePlaylistFuture(Cinema cinema) {
+    private void deletePlaylistFuture(Cinema cinema) {
         try {
             // Create connection
             URL url = new URL(getBaseUrl() + "/rest-private/clearPlaylistFutureForCinema");
