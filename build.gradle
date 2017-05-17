@@ -1,0 +1,30 @@
+apply plugin: 'org.sonarqube'
+
+allprojects {
+  ext.baseVersion = "0.1"
+  ext.snapshotVersion = true
+
+  group = "org.sonarqube"
+  version = "$baseVersion" + (snapshotVersion ? "-SNAPSHOT" : "")
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectName", "Java :: MultiModules Project :: Gradle SonarQube Plugin"
+        property "sonar.projectKey", "org.sonarqube:java-gradle-multimodules"
+		property "sonar.host.url", "http://193.196.7.25"
+    }
+}
+
+subprojects {
+  apply plugin: 'java'
+}
+
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+    classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.4"
+  }
+}
