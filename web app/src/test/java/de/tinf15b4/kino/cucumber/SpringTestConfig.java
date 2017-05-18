@@ -89,7 +89,7 @@ public class SpringTestConfig {
         }
 
         if (!dataApiStarted) {
-            throw new RuntimeException("DEBUG: Temporary data api server did not start on port " + "port");
+            throw new RuntimeException("DEBUG: Temporary data api server did not start on port " + port);
         }
         System.err.println("DEBUG: Started temporary data api server on port " + port);
         startedServerUrl = "http://localhost:" + port;
