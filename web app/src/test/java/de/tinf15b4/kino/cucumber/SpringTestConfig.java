@@ -20,6 +20,7 @@ import de.tinf15b4.kino.web.rest.RestApiUrlSource;
 @TestConfiguration
 public class SpringTestConfig {
     private static String startedServerUrl = null;
+
     private static void startServer() throws Exception {
         if (startedServerUrl != null)
             return;
@@ -57,8 +58,13 @@ public class SpringTestConfig {
         pb.redirectInput(ProcessBuilder.Redirect.PIPE);
         pb.environment().put("SMARTCINEMA_DATA_API_LISTEN_ON", "" + port);
         pb.environment().put("SMARTCINEMA_DATA_API_KEEPALIVE_PIPE", "yeah");
+
+        //use inmemory
+        pb.environment().put("spring.datasource.url", "");
+        pb.environment().put("spring.jpa.hibernate.ddl-auto", "create-drop");
         Process p = pb.start();
 
+        boolean dataApiStarted = false;
         for (int i = 0; i < 60; ++i) {
             System.err.println("DEBUG: Waiting for temporary data api server to come online (port " + port + ")");
 
@@ -69,8 +75,10 @@ public class SpringTestConfig {
                     try (InputStream is = conn.getInputStream(); BufferedReader r = new BufferedReader(new InputStreamReader(is))) {
                         String result = r.lines().parallel().collect(Collectors.joining("\n"));
 
-                        if (result.trim().equals("pong"))
+                        if (result.trim().equals("pong")) {
+                            dataApiStarted = true;
                             break;
+                        }
                     }
                 } finally {
                     conn.disconnect();
@@ -82,6 +90,9 @@ public class SpringTestConfig {
             Thread.sleep(1000);
         }
 
+        if (!dataApiStarted) {
+            throw new RuntimeException("DEBUG: Temporary data api server did not start on port " + port);
+        }
         System.err.println("DEBUG: Started temporary data api server on port " + port);
         startedServerUrl = "http://localhost:" + port;
     }
