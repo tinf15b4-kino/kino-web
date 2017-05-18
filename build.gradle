@@ -1,30 +1,102 @@
-apply plugin: 'org.sonarqube'
-
-allprojects {
-  ext.baseVersion = "0.1"
-  ext.snapshotVersion = true
-
-  group = "org.sonarqube"
-  version = "$baseVersion" + (snapshotVersion ? "-SNAPSHOT" : "")
-}
-
-sonarqube {
-    properties {
-        property "sonar.projectName", "Java :: MultiModules Project :: Gradle SonarQube Plugin"
-        property "sonar.projectKey", "org.sonarqube:java-gradle-multimodules"
-		property "sonar.host.url", "http://193.196.7.25"
-    }
-}
-
-subprojects {
-  apply plugin: 'java'
-}
-
 buildscript {
   repositories {
-    mavenCentral()
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
   }
   dependencies {
     classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.4"
   }
 }
+
+apply plugin: 'org.sonarqube'
+
+sonarqube {
+    properties {
+    	property "sonar.projectName", "SmartCinema"
+		property "sonar.host.url", "http://193.196.7.25/"
+		property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.jacoco.reportPath", "$rootProject.projectDir/jacoco/jacocoTest.exec"
+        property "sonar.sources", "src/main/java"
+        property "sonar.tests", "src/test/java"
+    }
+}
+
+allprojects {
+	apply plugin: 'java'
+	apply plugin: 'jacoco'	
+	
+	repositories {
+    	mavenCentral()
+	}
+	
+	jacoco {
+		toolVersion = "0.7.9"
+	}
+}
+
+clean {
+	def file = new File("$rootProject.projectDir/jacoco/jacocoTest.exec")
+	if(file.exists()){
+		delete file
+	}
+}
+
+subprojects {
+    
+    sonarqube {
+	    properties {
+	        property "sonar.jacoco.reportPath", "$rootProject.projectDir/jacoco/jacocoTest.exec"
+	    }
+	}
+
+	test.finalizedBy jacocoTestReport
+	
+	dependencies {
+    	testCompile('junit:junit:4.12')
+	}
+	
+	test {
+		jacoco {
+			append = true
+			destinationFile = file("$rootProject.projectDir/jacoco/jacocoTest.exec")
+		}
+	}
+	
+	jacocoTestReport {
+        reports {
+            html.enabled = false
+            xml.enabled = false
+            csv.enabled = false
+        }
+    }
+}
+
+task jacocoRootReport(type: JacocoReport) {
+	
+    // Gather execution data from all subprojects
+    // (change this if you e.g. want to calculate unit test/integration test coverage separately)
+    // executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+    
+    executionData file("$rootProject.projectDir/jacoco/jacocoTest.exec")
+
+    // Add all relevant sourcesets from the subprojects 
+    subprojects.each {
+       sourceSets it.sourceSets.main
+    }
+    
+    jacocoTestReport {
+        reports {
+            html.enabled = true
+        	html.destination "$buildDir/jacoco"
+            xml.enabled = true
+            csv.enabled = true
+        }
+    }
+}
+
+build.dependsOn {
+    subprojects.build
+}
+
+build.finalizedBy jacocoRootReport

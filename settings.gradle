@@ -1,1 +1,3 @@
-include 'commons', 'data api', 'web app', 'data retrieval'
+rootProject.name='SmartCinema'
+
+include 'commons', 'data-api', 'web-app', 'data-retrieval'
