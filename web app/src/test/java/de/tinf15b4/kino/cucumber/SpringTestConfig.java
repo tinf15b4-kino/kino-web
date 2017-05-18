@@ -68,7 +68,7 @@ public class SpringTestConfig {
                         + "/build/libs/tinf15b4-kino-data-api-0.0.1-SNAPSHOT.jar"),
                 new String[] {
                         "--server.port="+port,
-                        "--spring.datasource.url=jdbc:h2:mem:",
+                        "--spring.datasource.url=jdbc:h2:mem:testdb",
                         "--spring.jpa.hibernate.ddl-auto=create-drop" });
 
         Thread runThread = new Thread(runner);
