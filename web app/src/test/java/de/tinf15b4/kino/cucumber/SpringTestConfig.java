@@ -20,9 +20,13 @@ import de.tinf15b4.kino.web.rest.RestApiUrlSource;
 @TestConfiguration
 public class SpringTestConfig {
     private static String startedServerUrl = null;
+
     private static void startServer() throws Exception {
         if (startedServerUrl != null)
             return;
+
+        System.setProperty("spring.datasource.url", "jdbc:h2:file:~/smartCinemaDataBase/smartcinemaTest");
+        System.setProperty("spring.jpa.hibernate.ddl-auto", "create-drop");
 
         String datadir = System.getenv("SMARTCINEMA_DATA_API_DIR");
         if (datadir == null) {
