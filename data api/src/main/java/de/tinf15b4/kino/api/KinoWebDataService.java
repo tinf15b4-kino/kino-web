@@ -12,7 +12,6 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.jsondoc.spring.boot.starter.EnableJSONDoc;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -32,7 +31,6 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.google.gson.Gson;
 
-import de.tinf15b4.kino.data.initializer.DataInitializer;
 import de.tinf15b4.kino.utils.GsonFactory;
 
 @SpringBootApplication
@@ -106,12 +104,14 @@ public class KinoWebDataService extends WebMvcConfigurerAdapter {
         }
     }
 
-    @Bean
-    public CommandLineRunner loadData(DataInitializer initializer) {
-        return (args) -> {
-            initializer.initialize();
-        };
-    }
+    // DON'T enable those lines if you use an existing database. The fake initializer will cause exceptions when writing
+    // to a filled database
+    // @Bean
+    // public CommandLineRunner loadData(DataInitializer initializer) {
+    // return (args) -> {
+    // initializer.initialize();
+    // };
+    // }
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
