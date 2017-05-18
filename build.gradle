@@ -66,8 +66,6 @@ subprojects {
 			append = false
 			destinationFile = file("$jacocoPath/jacoco_$project.name" + ".exec")
 		}
-		
-		ignoreFailures = true
 	}
 	
 	test.finalizedBy jacocoTestReport
