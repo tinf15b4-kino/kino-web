@@ -1,6 +1,7 @@
 package de.tinf15b4.kino.utils;
 
 import java.lang.reflect.Type;
+import java.util.Base64;
 import java.util.Date;
 
 import com.google.gson.Gson;
@@ -20,9 +21,21 @@ public class GsonFactory {
 
 		builder.registerTypeAdapter(Date.class, new DateDeserializer());
 		builder.registerTypeAdapter(Date.class, new DateSerializer());
+		builder.registerTypeHierarchyAdapter(byte[].class, new ByteArrayToBase64TypeAdapter());
 
 		Gson gson = builder.create();
 		return gson;
+	}
+
+	private static class ByteArrayToBase64TypeAdapter implements JsonSerializer<byte[]>, JsonDeserializer<byte[]> {
+		public byte[] deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+			return Base64.getDecoder().decode(json.getAsString());
+		}
+
+		public JsonElement serialize(byte[] src, Type typeOfSrc, JsonSerializationContext context) {
+			String base64 = Base64.getEncoder().encodeToString(src);
+			return new JsonPrimitive(base64);
+		}
 	}
 
 	private static class DateDeserializer implements JsonDeserializer<Date> {

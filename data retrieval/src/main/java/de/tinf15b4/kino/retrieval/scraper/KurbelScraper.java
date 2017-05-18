@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -20,23 +21,23 @@ import de.tinf15b4.kino.data.playlists.Playlist;
 
 public class KurbelScraper extends AbstractCinemaScraper {
 
-    private Cinema cinema;
-
-    public KurbelScraper() {
-        super("Die Kurbel");
-    }
+    private static final String KURBEL_URL = "http://www.kurbel-karlsruhe.de/index.php?show=week";
+    private List<Movie> movies;
+    private List<Playlist> playlists;
 
     @Override
-    public Logger getLogger() {
+    protected Logger getLogger() {
         return LoggerFactory.getLogger(KurbelScraper.class);
     }
 
     @Override
-    public void gatherData() {
-        cinema = getCinema();
-        driver.get("http://www.kurbel-karlsruhe.de/index.php");
-        driver.findElementByXPath(".//a[contains(text(), 'Programm/Tickets')]").click();
+    protected GatheringResult gatherData() {
+        movies = new ArrayList<>();
+        playlists = new ArrayList<>();
+
+        driver.get(KURBEL_URL);
         handleMovies();
+        return new GatheringResult(movies, playlists);
     }
 
     private void handleMovies() {
@@ -44,8 +45,8 @@ public class KurbelScraper extends AbstractCinemaScraper {
                 .findElementsByXPath(".//div[contains(@class, 'film_box')]//div[contains(@id, 'mitte')]");
         for (WebElement movieElement : movies) {
             String title = movieElement.findElement(By.xpath(".//h2")).getText();
-            Movie movie = saveObject(new Movie(title, null, null, 0, null, null), Movie.class);
-            retrieveMovieInformation(movie);
+            Movie movie = new Movie(title, null, null, 0, null, null);
+            this.movies.add(movie);
             handlePlaytimes(movie, movieElement);
         }
     }
@@ -67,8 +68,8 @@ public class KurbelScraper extends AbstractCinemaScraper {
                 Playlist playlist = new Playlist();
                 playlist.setCinema(cinema);
                 playlist.setMovie(movie);
-                playlist.setTime(Date.from(dateTime.atZone(ZoneId.of("GMT+1")).toInstant()));
-                saveObject(playlist, Playlist.class);
+                playlist.setTime(Date.from(dateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant()));
+                playlists.add(playlist);
             }
 
         }
@@ -96,9 +97,9 @@ public class KurbelScraper extends AbstractCinemaScraper {
         }
     }
 
-    private Cinema getCinema() {
-        return saveObject(new Cinema("Die Kurbel", "Kaiserpassage", "6", "76133", "Karlsruhe", "Deutschland", null),
-                Cinema.class);
+    @Override
+    protected Cinema getCinema() {
+        return new Cinema("Die Kurbel", "Kaiserpassage", "6", "76133", "Karlsruhe", "Deutschland", null);
     }
 
 }

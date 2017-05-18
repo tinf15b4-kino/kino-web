@@ -30,7 +30,7 @@ public enum ObjectType {
         case MOVIE:
             List<Movie> movies = Lists.newArrayList(gson.fromJson(r, Movie[].class));
             Optional<Movie> foundMovie = movies.stream()
-                    .filter(movie -> movie != null && movie.getName().equals(((Movie) object).getName())).findAny();
+                    .filter(movie -> movie != null && movie.getTmdbId() == ((Movie) object).getTmdbId()).findAny();
             return foundMovie.orElse(null);
         case CINEMA:
             List<Cinema> cinemas = Lists.newArrayList(gson.fromJson(r, Cinema[].class));

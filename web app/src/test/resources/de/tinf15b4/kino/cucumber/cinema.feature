@@ -32,7 +32,7 @@ Scenario: See the cinema information
 	Then the current URL should be "#!cinema/2"
 	And I should see a label containing "Schicke Schummerwand"
 	And I should see a label containing "EpicStreet 23"
-	And I should see a label containing "12345 Timbuktu, SOMEWHERE"
+	And I should see a label containing "12345 Timbuktu"
 	
 	
 Scenario: See the cinema rating 

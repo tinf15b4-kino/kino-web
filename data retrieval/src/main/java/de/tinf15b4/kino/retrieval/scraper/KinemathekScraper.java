@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -21,29 +22,29 @@ import de.tinf15b4.kino.data.playlists.Playlist;
 public class KinemathekScraper extends AbstractCinemaScraper {
 
     private static final String KINEMATHEK_URL = "http://kinemathek-karlsruhe.de/programm.php";
-    private Cinema cinema;
 
-    public KinemathekScraper() {
-        super("Kinemathek");
-    }
+    private List<Movie> movies;
+    private List<Playlist> playlists;
 
     @Override
-    public Logger getLogger() {
+    protected Logger getLogger() {
         return LoggerFactory.getLogger(KinemathekScraper.class);
     }
 
     @Override
-    public void gatherData() {
-        cinema = getCinema();
+    protected GatheringResult gatherData() {
+        movies = new ArrayList<>();
+        playlists = new ArrayList<>();
 
         driver.get(KINEMATHEK_URL);
         List<WebElement> sections = driver.findElementsByXPath(".//div[contains(@class, 'programm-container')]");
         handleDates(sections);
+        return new GatheringResult(movies, playlists);
     }
 
-    private Cinema getCinema() {
-        return saveObject(new Cinema("Kinemathek", "Kaiserpassage", "6", "76133", "Karlsruhe", "Deutschland", null),
-                Cinema.class);
+    @Override
+    protected Cinema getCinema() {
+        return new Cinema("Kinemathek", "Kaiserpassage", "6", "76133", "Karlsruhe", "Deutschland", null);
     }
 
     private void handleDates(List<WebElement> programmsForDate) {
@@ -65,17 +66,17 @@ public class KinemathekScraper extends AbstractCinemaScraper {
             LocalDateTime dateTime = addTimeToDate(timeText, date);
 
             String title = movieElement.findElement(By.xpath(".//div[contains(@class, 'programm-title')]/a")).getText();
+
             logger.info(String.format("Movie [%s] is played at [%s]", title, dateTime));
 
             Movie movie = new Movie(title, null, null, 0, null, null);
-            retrieveMovieInformation(movie);
-            movie = saveObject(movie, Movie.class);
+            movies.add(movie);
 
             Playlist playlist = new Playlist();
             playlist.setCinema(cinema);
             playlist.setMovie(movie);
-            playlist.setTime(Date.from(dateTime.atZone(ZoneId.of("GMT+1")).toInstant()));
-            saveObject(playlist, Playlist.class);
+            playlist.setTime(Date.from(dateTime.atZone(ZoneId.of("Europe/Berlin")).toInstant()));
+            playlists.add(playlist);
         }
     }
 

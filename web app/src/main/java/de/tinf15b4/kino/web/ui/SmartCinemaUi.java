@@ -11,6 +11,7 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.navigator.Navigator;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.ClassResource;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
@@ -31,6 +32,9 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.BaseTheme;
 import com.vaadin.ui.themes.ValoTheme;
 
+import de.tinf15b4.kino.data.cinemas.Cinema;
+import de.tinf15b4.kino.data.movies.Movie;
+import de.tinf15b4.kino.web.rest.RestResponse;
 import de.tinf15b4.kino.web.user.UserBean;
 import de.tinf15b4.kino.web.util.ShortcutUtils;
 import de.tinf15b4.kino.web.views.CinemaListView;
@@ -54,6 +58,8 @@ public class SmartCinemaUi extends UI {
     private HorizontalLayout header;
 
     private GridLayout grid;
+
+    private boolean loginEnabled;
 
     @PostConstruct
     public void postInit() {
@@ -89,13 +95,28 @@ public class SmartCinemaUi extends UI {
         grid.addComponent(layout, 1, 2);
         panel.setSizeFull();
 
-
-        // Main View (in grid cell 1 1) will get all excess space
+        // Main View (in grid cell 1 2) will get all excess space
         grid.setColumnExpandRatio(1, 2);
         grid.setRowExpandRatio(2, 3);
 
         Navigator nav = new Navigator(this, panel);
         nav.addProvider(viewProvider);
+        nav.addViewChangeListener(new ViewChangeListener() {
+
+            @Override
+            public boolean beforeViewChange(ViewChangeEvent event) {
+                if (event.getNewView().getClass().equals(LoginView.class)) {
+                    setLoginButtonEnabled(false);
+                } else {
+                    setLoginButtonEnabled(true);
+                }
+                return true;
+            }
+
+            @Override
+            public void afterViewChange(ViewChangeEvent event) {
+            }
+        });
     }
 
     private Component createHeader() {
@@ -173,6 +194,8 @@ public class SmartCinemaUi extends UI {
             header.setComponentAlignment(login, Alignment.MIDDLE_RIGHT);
             login.addStyleName(BaseTheme.BUTTON_LINK);
             login.setId("loginLogoutBtn");
+
+            login.setEnabled(loginEnabled);
         }
         header.setExpandRatio(searchPanel, 1);
 
@@ -188,7 +211,7 @@ public class SmartCinemaUi extends UI {
         navigator.setSizeUndefined();
         navigator.setHeight("100%");
 
-        Label movieLabel =  new Label("FILME");
+        Label movieLabel = new Label("FILME");
         movieLabel.setId("navHeadings_Movie");
         navigator.addComponent(movieLabel);
 
@@ -217,17 +240,19 @@ public class SmartCinemaUi extends UI {
         navigator.addComponent(cinemaBtn);
 
         Button favoriteBtn = (Button) (createViewButton("Favoriten", FavoriteListView.VIEW_NAME, FontAwesome.HEART));
-        favoriteBtn.setId("navigatorBtn");
+        favoriteBtn.setId("navigatorBtn_Fav");
         favoriteBtn.addStyleName(BaseTheme.BUTTON_LINK);
         navigator.addComponent(favoriteBtn);
 
-        Label nothingLabel = new Label("");
-        navigator.addComponent(nothingLabel);
-        navigator.setExpandRatio(nothingLabel, 1f);
+        Button aboutBtn = (Button) (createViewButton("über smartCinema", "aboutView", FontAwesome.INFO));
+        aboutBtn.setId("navigatorBtn_About");
+        aboutBtn.addStyleName(BaseTheme.BUTTON_LINK);
+        navigator.addComponent(aboutBtn);
+        navigator.setComponentAlignment(aboutBtn, Alignment.BOTTOM_CENTER);
+        navigator.setExpandRatio(aboutBtn, 1f);
 
         navigator.setId("navigator");
         navigator.addStyleName(BaseTheme.BUTTON_LINK);
-
 
         return navigator;
     }
@@ -254,7 +279,6 @@ public class SmartCinemaUi extends UI {
         navigatorBarLeft.addComponent(foldBtn);
         navigatorBarLeft.setComponentAlignment(foldBtn, Alignment.MIDDLE_RIGHT);
 
-
         return navigatorBarLeft;
     }
 
@@ -264,12 +288,37 @@ public class SmartCinemaUi extends UI {
         navigatorBarRight.setHeight("60px");
         navigatorBarRight.setId("toolBarRight");
 
-        Label navLabelR = new Label();
-        navLabelR.setCaption("");
-
-        navigatorBarRight.addComponent(navLabelR);
+        navigatorBarRight.addComponent(getContentLabel());
 
         return navigatorBarRight;
+    }
+
+    private Label getContentLabel() {
+        Label contentLabel = new Label();
+
+        String uri = Page.getCurrent().getUriFragment();
+        if (uri != null) {
+            if (uri.startsWith("!movies")) {
+                contentLabel.setValue("Filme");
+            } else if (uri.startsWith("!movie")) {
+                RestResponse r = userBean.getRestClient().getMovie(Integer.parseInt(uri.substring(7)));
+                Movie m = (Movie) r.getValue();
+                contentLabel.setValue(m.getName());
+            } else if (uri.startsWith("!cinemas")) {
+                contentLabel.setValue("Kinos");
+            } else if (uri.startsWith("!cinema")) {
+                RestResponse r = userBean.getRestClient().getCinema(Integer.parseInt(uri.substring(8)));
+                Cinema c = (Cinema) r.getValue();
+                contentLabel.setValue(c.getName());
+            } else if (uri.startsWith("!favourites")) {
+                contentLabel.setValue("Favoriten");
+            } else if (uri.startsWith("!login")) {
+                contentLabel.setValue("Anmelden");
+            }
+        }
+        contentLabel.setId("toolBarLabel");
+
+        return contentLabel;
     }
 
     private Component createViewButton(String readableName, String viewId, FontAwesome icon) {
@@ -285,10 +334,18 @@ public class SmartCinemaUi extends UI {
     private void navigateTo(String viewId) {
         // TODO implement all views
         this.getNavigator().navigateTo(viewId);
+        grid.removeComponent(1, 1);
+        grid.addComponent(createToolBarRight(), 1, 1);
     }
 
     public void update() {
         grid.removeComponent(header);
         grid.addComponent(createHeader(), 0, 0, 1, 0);
     }
+
+    public void setLoginButtonEnabled(boolean enabled) {
+        loginEnabled = enabled;
+        update();
+    }
+
 }

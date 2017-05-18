@@ -1,12 +1,12 @@
 package de.tinf15b4.kino.api;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.jsondoc.spring.boot.starter.EnableJSONDoc;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -17,9 +17,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import de.tinf15b4.kino.data.initializer.DataInitializer;
+import com.google.gson.Gson;
+
+import de.tinf15b4.kino.utils.GsonFactory;
 
 @SpringBootApplication
 @Configuration
@@ -28,7 +33,7 @@ import de.tinf15b4.kino.data.initializer.DataInitializer;
 @EnableScheduling
 @EnableJSONDoc
 @ComponentScan({ "de.tinf15b4.kino.data.*", "de.tinf15b4.kino.api", "de.tinf15b4.kino.api.*" })
-public class KinoWebDataService {
+public class KinoWebDataService extends WebMvcConfigurerAdapter {
 
     @Bean
     public EmbeddedServletContainerFactory servletContainer() {
@@ -45,11 +50,28 @@ public class KinoWebDataService {
         }
     }
 
-    @Bean
-    public CommandLineRunner loadData(DataInitializer initializer) {
-        return (args) -> {
-            initializer.initialize();
-        };
+    // DON'T enable those lines if you use an existing database. The fake initializer will cause exceptions when writing
+    // to a filled database
+    // @Bean
+    // public CommandLineRunner loadData(DataInitializer initializer) {
+    // return (args) -> {
+    // initializer.initialize();
+    // };
+    // }
+
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(createGsonHttpMessageConverter());
+        super.configureMessageConverters(converters);
+    }
+
+    private GsonHttpMessageConverter createGsonHttpMessageConverter() {
+        Gson gson = GsonFactory.buildGson();
+
+        GsonHttpMessageConverter gsonConverter = new GsonHttpMessageConverter();
+        gsonConverter.setGson(gson);
+
+        return gsonConverter;
     }
 
     public static void main(String[] args) {
