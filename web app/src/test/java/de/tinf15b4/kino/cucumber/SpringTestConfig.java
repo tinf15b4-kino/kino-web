@@ -58,7 +58,9 @@ public class SpringTestConfig {
         pb.redirectInput(ProcessBuilder.Redirect.PIPE);
         pb.environment().put("SMARTCINEMA_DATA_API_LISTEN_ON", "" + port);
         pb.environment().put("SMARTCINEMA_DATA_API_KEEPALIVE_PIPE", "yeah");
-        pb.environment().put("spring.datasource.url", "jdbc:h2:file:~/smartCinemaDataBase/smartcinemaTest");
+
+        //use inmemory
+        pb.environment().put("spring.datasource.url", "");
         pb.environment().put("spring.jpa.hibernate.ddl-auto", "create-drop");
         Process p = pb.start();
 
