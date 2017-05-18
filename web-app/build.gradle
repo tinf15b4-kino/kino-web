@@ -1,24 +1,14 @@
 buildscript {
-    repositories {
-        mavenCentral()
-    }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.3.RELEASE")
     }
 }
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 
 project.ext {
     cucumberVersion = '1.2.5'
     seleniumVersion = '3.4.0'
-}
-
-jar {
-    baseName = 'tinf15b4-kino-web'
-    version = '0.0.1-SNAPSHOT'
 }
 
 sourceSets {
@@ -47,13 +37,6 @@ test {
     systemProperty "kinotest.seleniumHub", System.getProperty("kinotest.seleniumHub")
 
     environment "SMARTCINEMA_DATA_API_DIR", "${project(':data-api').projectDir}"
-}
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-repositories {
-    mavenCentral()
 }
 
 dependencies {

@@ -1,30 +1,36 @@
 buildscript {
-  repositories {
-    maven {
-      url "https://plugins.gradle.org/m2/"
+    repositories {
+        mavenCentral()
     }
-  }
-  dependencies {
-    classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.4"
-  }
+	
+    dependencies {
+      classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.4'
+    }
 }
 
 apply plugin: 'org.sonarqube'
 
+ext.baseVersion = "0.0.1"
+ext.snapshotVersion = true
+version = "$baseVersion" + (snapshotVersion ? "-SNAPSHOT" : "")
+
+def jacocoPath = "$rootProject.buildDir/jacoco"
+def jacocoFinal = "$jacocoPath/jacoco_final.exec"
+
 sonarqube {
     properties {
-    	property "sonar.projectName", "SmartCinema"
-		property "sonar.host.url", "http://193.196.7.25/"
-		property "sonar.sourceEncoding", "UTF-8"
-        property "sonar.jacoco.reportPath", "$rootProject.projectDir/jacoco/jacocoTest.exec"
-        property "sonar.sources", "src/main/java"
-        property "sonar.tests", "src/test/java"
+        property "sonar.projectName", "SmartCinema"
+		property "sonar.projectKey", "de.tinf15b4.kino"
+		property "sonar.host.url", "https://sonarqube.com"
+		property "sonar.organization", "w-i-z-o-github"
+		property "sonar.login", "83443694951edac265b6e5c703bc1bf23d560c68"
+		property "sonar.jacoco.reportPaths", "$jacocoFinal"
     }
 }
 
 allprojects {
-	apply plugin: 'java'
 	apply plugin: 'jacoco'	
+	apply plugin: 'java'
 	
 	repositories {
     	mavenCentral()
@@ -35,22 +41,21 @@ allprojects {
 	}
 }
 
-clean {
-	def file = new File("$rootProject.projectDir/jacoco/jacocoTest.exec")
-	if(file.exists()){
-		delete file
-	}
-}
-
 subprojects {
-    
-    sonarqube {
-	    properties {
-	        property "sonar.jacoco.reportPath", "$rootProject.projectDir/jacoco/jacocoTest.exec"
-	    }
+	buildscript {
+		repositories {
+			mavenCentral()
+		}
 	}
-
-	test.finalizedBy jacocoTestReport
+	apply plugin: 'eclipse'
+	
+	jar {
+		baseName = 'tinf15b4-kino-$project.name'
+		version = '0.0.1-SNAPSHOT'
+	}
+	
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
 	
 	dependencies {
     	testCompile('junit:junit:4.12')
@@ -58,10 +63,14 @@ subprojects {
 	
 	test {
 		jacoco {
-			append = true
-			destinationFile = file("$rootProject.projectDir/jacoco/jacocoTest.exec")
+			append = false
+			destinationFile = file("$jacocoPath/jacoco_$project.name" + ".exec")
 		}
+		
+		ignoreFailures = true
 	}
+	
+	test.finalizedBy jacocoTestReport
 	
 	jacocoTestReport {
         reports {
@@ -72,26 +81,25 @@ subprojects {
     }
 }
 
-task jacocoRootReport(type: JacocoReport) {
+task jacocoMerge(type: JacocoMerge){
+	executionData fileTree(file("$jacocoPath")).include("**/*.exec")
 	
-    // Gather execution data from all subprojects
-    // (change this if you e.g. want to calculate unit test/integration test coverage separately)
-    // executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
-    
-    executionData file("$rootProject.projectDir/jacoco/jacocoTest.exec")
+	destinationFile=file("$jacocoFinal")
+}
 
-    // Add all relevant sourcesets from the subprojects 
+task jacocoFinalHtmlReport(type: JacocoReport) {
+    executionData file("$jacocoFinal")
+	
+	// Add all relevant sourcesets from the subprojects 
     subprojects.each {
        sourceSets it.sourceSets.main
     }
     
-    jacocoTestReport {
         reports {
-            html.enabled = true
-        	html.destination "$buildDir/jacoco"
-            xml.enabled = true
-            csv.enabled = true
-        }
+            html.destination "$jacocoPath/report"
+            xml.enabled = false
+            csv.enabled = false
+
     }
 }
 
@@ -99,4 +107,5 @@ build.dependsOn {
     subprojects.build
 }
 
-build.finalizedBy jacocoRootReport
+build.finalizedBy jacocoMerge
+jacocoMerge.finalizedBy jacocoFinalHtmlReport
