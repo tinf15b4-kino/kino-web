@@ -10,6 +10,12 @@ apply plugin: 'eclipse'
 jar {
     baseName = 'tinf15b4-kino-data-retrieval'
     version = '0.0.1-SNAPSHOT'
+    manifest {
+        attributes 'Main-Class': 'de.tinf15b4.kino.retrieval.KinoDataRetrieval'
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
 sourceSets {
