@@ -1,34 +1,15 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-	
-    dependencies {
-      classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.4'
-    }
-}
-
-apply plugin: 'org.sonarqube'
-
-ext.baseVersion = "0.0.1"
-ext.snapshotVersion = true
-version = "$baseVersion" + (snapshotVersion ? "-SNAPSHOT" : "")
-
+// ##### Define Variables #####
 def jacocoPath = "$rootProject.buildDir/jacoco"
 def jacocoFinal = "$jacocoPath/jacoco_final.exec"
 
-sonarqube {
-    properties {
-        property "sonar.projectName", "SmartCinema"
-		property "sonar.projectKey", "de.tinf15b4.kino"
-		property "sonar.host.url", "https://sonarqube.com"
-		property "sonar.organization", "w-i-z-o-github"
-		property "sonar.login", "83443694951edac265b6e5c703bc1bf23d560c68"
-		property "sonar.jacoco.reportPaths", "$jacocoFinal"
-    }
-}
-
+// ##### Configuration of all projects #####
 allprojects {
+	buildscript {
+		repositories {
+			mavenCentral()
+		}
+	}
+
 	apply plugin: 'jacoco'	
 	apply plugin: 'java'
 	
@@ -41,12 +22,8 @@ allprojects {
 	}
 }
 
+// ##### Configuration of Sub-Projects
 subprojects {
-	buildscript {
-		repositories {
-			mavenCentral()
-		}
-	}
 	apply plugin: 'eclipse'
 	
 	jar {
@@ -61,16 +38,13 @@ subprojects {
     	testCompile('junit:junit:4.12')
 	}
 	
+	// Jacoco-Configuration
 	test {
 		jacoco {
 			append = false
 			destinationFile = file("$jacocoPath/jacoco_$project.name" + ".exec")
 		}
-		
-		ignoreFailures = true
 	}
-	
-	test.finalizedBy jacocoTestReport
 	
 	jacocoTestReport {
         reports {
@@ -79,14 +53,49 @@ subprojects {
             csv.enabled = false
         }
     }
+	
+	// Run jacocoTestReport when Test are finished
+	test.finalizedBy jacocoTestReport
 }
 
+// ##### Configuration of Root-Project #####
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+		
+    dependencies {
+    	classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.4'
+    }
+}
+
+apply plugin: 'org.sonarqube'
+
+ext.baseVersion = "0.0.1"
+ext.snapshotVersion = true
+version = "$baseVersion" + (snapshotVersion ? "-SNAPSHOT" : "")
+
+// General Sonarqube Configuration
+sonarqube {
+    properties {
+        property "sonar.projectName", "SmartCinema"
+		property "sonar.projectKey", "de.tinf15b4.kino"
+		property "sonar.host.url", "https://sonarqube.com"
+		property "sonar.organization", "w-i-z-o-github"
+		property "sonar.login", "83443694951edac265b6e5c703bc1bf23d560c68"
+		property "sonar.jacoco.reportPaths", "$jacocoFinal"
+    }
+}
+
+// Merge Jacoco-Files from Subprojects
 task jacocoMerge(type: JacocoMerge){
 	executionData fileTree(file("$jacocoPath")).include("**/*.exec")
 	
 	destinationFile=file("$jacocoFinal")
 }
 
+// Create HTML-Report for merged Jacoco-Files
+// This is for local use, not needed for Sonarqube
 task jacocoFinalHtmlReport(type: JacocoReport) {
     executionData file("$jacocoFinal")
 	
@@ -103,9 +112,11 @@ task jacocoFinalHtmlReport(type: JacocoReport) {
     }
 }
 
+// Build of root-Project is finished, after all Subprojects are built
 build.dependsOn {
     subprojects.build
 }
 
+// Run jacocoMerge when root-Build is finished
 build.finalizedBy jacocoMerge
 jacocoMerge.finalizedBy jacocoFinalHtmlReport
