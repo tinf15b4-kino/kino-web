@@ -203,7 +203,7 @@ public class SmartCinemaUi extends UI {
     }
 
     private void userClicked() {
-        // TODO Do stuff, probably navigate to account details
+        navigateTo(AccountView.VIEW_NAME);
     }
 
     private Component createNavigator() {

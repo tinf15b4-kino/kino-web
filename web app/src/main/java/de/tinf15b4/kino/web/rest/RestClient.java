@@ -43,6 +43,7 @@ public class RestClient implements Serializable {
     private static final String GET_FAVORITE = "/getFavorite?token=%s&cinemaId=%s";
     private static final String SAVE_FAVORITE = "/saveFavorite?token=%s";
     private static final String DELETE_FAVORITE = "/deleteFavorite?token=%s";
+    private static final String SAVE_USER = "/saveUser?token=%s";
     private static final String GET_RATED_CINEMAS = "/getRatedCinemas?cinemaId=%s";
     private static final String GET_PLAYLIST_CINEMA = "/getPlaylistForCinema?cinemaId=%s&from=%s&to=%s";
     private static final String GET_FAVORITES = "/getFavorites?token=%s";
@@ -131,6 +132,11 @@ public class RestClient implements Serializable {
     public RestResponse deleteFavorite(Favorite favorite) {
         String requestUrl = baseUrl + String.format(DELETE_FAVORITE, token);
         return doDeleteRequest(requestUrl, favorite, true);
+    }
+
+    public RestResponse saveUser(User user) {
+        String requestUrl = baseUrl + String.format(SAVE_USER, token);
+        return doPostRequest(requestUrl, User.class, user, true);
     }
 
     public RestResponse getRatedCinemas(long cinemaId) {

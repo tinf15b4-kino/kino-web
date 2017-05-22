@@ -179,6 +179,43 @@ public class SecureRestController {
         return ResponseEntity.ok(RestControllerConstants.DELETE_SUCCESSFUL);
     }
 
+    @ApiMethod(description = "Saves the given user for the given token")
+    @ApiErrors(apierrors = { @ApiError(code = "401", description = "Token was invalid"),
+            @ApiError(code = "406", description = "user was null or invalid") })
+    @RequestMapping(value = "rest/saveUser", method = RequestMethod.POST)
+    public ResponseEntity<?> saveUser(
+            @ApiQueryParam(name = "token", description = "Authentication token for the current user") @RequestParam(name = "token") String token,
+            @ApiBodyObject(clazz = User.class) @RequestBody User user) {
+        ResponseEntity<?> response = checkToken(token);
+        if (response.getStatusCode() != HttpStatus.OK)
+            return response;
+        if (user == null)
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(RestControllerConstants.NOT_NULL);
+        if (user.getPassword() == null || user.getPassword().length() < 3)
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(RestControllerConstants.INVALID_USERDATA);
+        if (user.getEmail() == null ||
+                user.getEmail().length() < 5 ||
+                !user.getEmail().contains(".") ||
+                !user.getEmail().contains("@"))
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(RestControllerConstants.INVALID_USERDATA);
+        Optional<User> updated = userService.save(user);
+        Token userToken = new Token(token);
+        String oldUserName = tokens.get(userToken);
+
+        if (oldUserName != null){
+            tokens.remove(userToken);
+            tokens.put(userToken, user.getName());
+            users.remove(oldUserName);
+            users.put(user.getName(), userToken);
+        }
+
+        if (updated.isPresent()) {
+            return ResponseEntity.ok(updated.get());
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(RestControllerConstants.INTERNAL_SERVER_ERROR);
+    }
+
     private ResponseEntity<?> checkToken(String tokenKey) {
         if (!Strings.isNullOrEmpty(tokenKey)) {
             Token token = new Token(tokenKey);
