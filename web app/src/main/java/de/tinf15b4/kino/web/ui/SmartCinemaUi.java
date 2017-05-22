@@ -5,6 +5,12 @@ import java.net.URLEncoder;
 
 import javax.annotation.PostConstruct;
 
+import de.tinf15b4.kino.web.views.AccountView;
+import de.tinf15b4.kino.web.views.CinemaListView;
+import de.tinf15b4.kino.web.views.FavoriteListView;
+import de.tinf15b4.kino.web.views.LoginView;
+import de.tinf15b4.kino.web.views.MovieListView;
+import de.tinf15b4.kino.web.views.SearchResultsView;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.annotations.Theme;
@@ -37,11 +43,6 @@ import de.tinf15b4.kino.data.movies.Movie;
 import de.tinf15b4.kino.web.rest.RestResponse;
 import de.tinf15b4.kino.web.user.UserBean;
 import de.tinf15b4.kino.web.util.ShortcutUtils;
-import de.tinf15b4.kino.web.views.CinemaListView;
-import de.tinf15b4.kino.web.views.FavoriteListView;
-import de.tinf15b4.kino.web.views.LoginView;
-import de.tinf15b4.kino.web.views.MovieListView;
-import de.tinf15b4.kino.web.views.SearchResultsView;
 
 @SuppressWarnings("serial")
 @Theme("smartCinema")
@@ -314,6 +315,8 @@ public class SmartCinemaUi extends UI {
                 contentLabel.setValue("Favoriten");
             } else if (uri.startsWith("!login")) {
                 contentLabel.setValue("Anmelden");
+            } else if (uri.startsWith("!account")) {
+                contentLabel.setValue("Profil bearbeiten");
             }
         }
         contentLabel.setId("toolBarLabel");

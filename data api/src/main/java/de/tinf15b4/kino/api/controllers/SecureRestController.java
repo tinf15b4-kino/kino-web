@@ -191,12 +191,15 @@ public class SecureRestController {
             return response;
         if (user == null)
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(RestControllerConstants.NOT_NULL);
-        if (user.getPassword() == null || user.getPassword().length() < 3)
+        if (user.getPassword() == null || user.getPassword().length() < 7 || user.getPassword().length() > 99)
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(RestControllerConstants.INVALID_USERDATA);
+        if (user.getName() == null || user.getName().length() < 3 || user.getName().length() > 99)
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(RestControllerConstants.INVALID_USERDATA);
         if (user.getEmail() == null ||
                 user.getEmail().length() < 5 ||
                 !user.getEmail().contains(".") ||
-                !user.getEmail().contains("@"))
+                !user.getEmail().contains("@") ||
+                user.getEmail().length() > 99)
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(RestControllerConstants.INVALID_USERDATA);
         Optional<User> updated = userService.save(user);
         Token userToken = new Token(token);

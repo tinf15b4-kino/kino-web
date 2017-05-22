@@ -1,8 +1,11 @@
 package de.tinf15b4.kino.web.views;
 
 import com.google.common.base.Strings;
+import com.vaadin.event.ShortcutAction;
+import com.vaadin.event.ShortcutListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.UserError;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Button;
@@ -18,6 +21,7 @@ import de.tinf15b4.kino.data.users.User;
 import de.tinf15b4.kino.web.rest.RestResponse;
 import de.tinf15b4.kino.web.ui.SmartCinemaUi;
 import de.tinf15b4.kino.web.user.UserBean;
+import de.tinf15b4.kino.web.util.ShortcutUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.UnsupportedEncodingException;
@@ -34,8 +38,6 @@ public class AccountView extends VerticalLayout implements View {
     @Autowired
     private UserBean userBean;
 
-    private String redirectTo;
-
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
         this.setMargin(true);
@@ -48,26 +50,21 @@ public class AccountView extends VerticalLayout implements View {
             this.getUI().getNavigator().navigateTo(StartView.VIEW_NAME);
         } else {
 
-            redirectTo = null;
-            if (event.getParameters() != null && !event.getParameters().isEmpty()) {
-                try {
-                    redirectTo = URLDecoder.decode(event.getParameters(), "UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    // Well, I guess then we won't redirect. Tough luck.
-                }
-            }
-
             User currentUser = (User) response.getValue();
 
             FormLayout userForm = new FormLayout();
             userForm.setId("accountForm");
 
-            TextField userField = new TextField("Benutzername");
+            TextField userField = new TextField();
+            userField.setCaption("Benutzername");
+            userField.setIcon(FontAwesome.USER);
             userField.setRequired(true);
             userField.setValue(currentUser.getName());
             userForm.addComponent(userField);
 
-            TextField emailField = new TextField("E-Mail");
+            TextField emailField = new TextField();
+            emailField.setCaption("E-Mail");
+            emailField.setIcon(FontAwesome.ENVELOPE);
             emailField.setRequired(true);
             emailField.setValue(currentUser.getEmail());
             userForm.addComponent(emailField);
@@ -79,12 +76,13 @@ public class AccountView extends VerticalLayout implements View {
             HorizontalLayout oldPwRow = new HorizontalLayout();
             PasswordField oldPwField = new PasswordField();
             oldPwField.setCaption("Altes Passwort");
+            oldPwField.setIcon(FontAwesome.LOCK);
             oldPwRow.addComponent(oldPwField);
             userForm.addComponent(oldPwRow);
 
             HorizontalLayout newPwRow = new HorizontalLayout();
             PasswordField newPwField = new PasswordField();
-            newPwField.setCaption("Neues Passwort");
+            newPwField.setCaption("Neues Passwort (mind. 8 Zeichen)");
             newPwRow.addComponent(newPwField);
             userForm.addComponent(newPwRow);
 
@@ -105,6 +103,13 @@ public class AccountView extends VerticalLayout implements View {
 
             userForm.addComponent(saveButton);
             saveButton.addStyleName(ValoTheme.BUTTON_PRIMARY);
+
+            saveButton.addShortcutListener(new ShortcutListener(null, ShortcutAction.KeyCode.ENTER, null) {
+                @Override
+                public void handleAction(Object sender, Object target) {
+                    saveButton.click();
+                }
+            });
 
 
             this.addComponent(userForm);
@@ -134,24 +139,37 @@ public class AccountView extends VerticalLayout implements View {
 
             // change userName
             if (!userName.equals(currentUser.getName())){
-                if (userName.length() > 2){
-                    changeUsername = true;
+                if (userName.length() > 99) {
+                    userField.setComponentError(new UserError("Der angegebene Benutzername ist zu lang"));
+                    valid = false;
                 }
                 else {
-                    userField.setComponentError(new UserError("Bitte Überprüfen Sie die Eingabe"));
-                    valid = false;
+                    if (userName.length() > 2){
+                        changeUsername = true;
+                    }
+                    else {
+                        userField.setComponentError(new UserError("Bitte überprüfen Sie die Eingabe"));
+                        valid = false;
+                    }
                 }
             }
 
             // change email
             if (!email.equals(currentUser.getEmail())){
-                if (email.contains("@") && email.contains(".") && email.length() > 6){
-
-                    changeEmail = true;
+                if (email.length() > 99) {
+                    emailField.setComponentError(new UserError("Die angegebene E-Mailadresse" +
+                            " ist zu lang"));
+                    valid = false;
                 }
                 else{
-                    emailField.setComponentError(new UserError("Bitte Überprüfen Sie die Eingabe"));
-                    valid = false;
+                    if (email.contains("@") && email.contains(".") && email.length() > 6){
+
+                        changeEmail = true;
+                    }
+                    else{
+                        emailField.setComponentError(new UserError("Bitte überprüfen Sie die Eingabe"));
+                        valid = false;
+                    }
                 }
             }
 
@@ -163,16 +181,20 @@ public class AccountView extends VerticalLayout implements View {
                     valid = false;
                 }
                 else if (Strings.isNullOrEmpty(newPw)){
-                    newPwField.setComponentError(new UserError("Wenn Sie das Passwort ändern möchsten," +
+                    newPwField.setComponentError(new UserError("Wenn Sie das Passwort ändern möchten," +
                             " müssen Sie ein neues Passwort angeben"));
                     valid = false;
                 }
                 else if (!oldPw.equals(currentUser.getPassword())){
-                    oldPwField.setComponentError(new UserError("Das eingegbene Passwort ist Falsch"));
+                    oldPwField.setComponentError(new UserError("Das angegbene Passwort ist falsch"));
+                    valid = false;
+                }
+                else if (newPw.length() > 99){
+                    newPwField.setComponentError(new UserError("Das angegebene Passwort ist zu lang"));
                     valid = false;
                 }
                 else if (!newPw.equals(newCheckPw)){
-                    newPwField.setComponentError(new UserError("Die Angegebenen Passwörter stimmen" +
+                    newPwField.setComponentError(new UserError("Die angegebenen Passwörter stimmen" +
                             " nicht überein"));
                     valid = false;
                 }
@@ -196,7 +218,13 @@ public class AccountView extends VerticalLayout implements View {
                 }
                 if (changePw){
                     currentUser.setPassword(newPw);
+
+                    // clear Passwords after succesful change
+                    oldPwField.clear();
+                    newPwField.clear();
+                    newPwCheckField.clear();
                 }
+
 
                 RestResponse userResponse = userBean.getRestClient().saveUser(currentUser);
                 if (!userResponse.hasError()) {
