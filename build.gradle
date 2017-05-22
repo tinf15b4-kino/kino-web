@@ -44,6 +44,8 @@ subprojects {
 			append = false
 			destinationFile = file("$jacocoPath/jacoco_$project.name" + ".exec")
 		}
+		
+		ignoreFailures = true
 	}
 	
 	jacocoTestReport {
@@ -112,11 +114,9 @@ task jacocoFinalHtmlReport(type: JacocoReport) {
     }
 }
 
-// Build of root-Project is finished, after all Subprojects are built
-build.dependsOn {
-    subprojects.build
+// Make sure jacocoMerge runs before sonarqube
+tasks.sonarqube.dependsOn jacocoFinalHtmlReport
+jacocoFinalHtmlReport.dependsOn jacocoMerge
+jacocoMerge.dependsOn {
+	subprojects.test
 }
-
-// Run jacocoMerge when root-Build is finished
-build.finalizedBy jacocoMerge
-jacocoMerge.finalizedBy jacocoFinalHtmlReport
