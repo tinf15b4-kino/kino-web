@@ -36,7 +36,7 @@ test {
     systemProperty "kinotest.driver", System.getProperty("kinotest.driver")
     systemProperty "kinotest.seleniumHub", System.getProperty("kinotest.seleniumHub")
 
-    environment "SMARTCINEMA_DATA_API_DIR", "${project(':data-api').projectDir}"
+    environment "SMARTCINEMA_DATA_API_DIR", "${project(':data api').projectDir}"
 }
 
 dependencies {
@@ -56,4 +56,10 @@ dependencies {
     testCompile('info.cukes:cucumber-spring:' + cucumberVersion)
     testCompile('junit:junit')
     testCompile('io.github.bonigarcia:webdrivermanager:1.5.+')
+}
+
+sonarqube {
+    properties {
+        property "sonar.moduleKey", "web-app"
+    }
 }

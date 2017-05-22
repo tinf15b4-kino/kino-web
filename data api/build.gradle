@@ -35,3 +35,9 @@ dependencies {
 bootRun {
     standardInput = System.in
 }
+
+sonarqube {
+    properties {
+        property "sonar.moduleKey", "data-api"
+    }
+}

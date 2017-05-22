@@ -17,3 +17,8 @@ dependencies {
     compile('com.omertron:themoviedbapi:4.3')
 }
 
+sonarqube {
+    properties {
+        property "sonar.moduleKey", "data-retrieval"
+    }
+}
