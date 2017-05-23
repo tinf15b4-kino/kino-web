@@ -515,6 +515,16 @@
     word-wrap: break-word;
 }
 
+// Account Management
+
+#accountForm {
+	margin-left: 30%;
+}
+
+#pwLabel {
+	font-weight: bold;
+	font-size: 22px;
+}
 
 // Scrollbar
 ::-webkit-scrollbar {

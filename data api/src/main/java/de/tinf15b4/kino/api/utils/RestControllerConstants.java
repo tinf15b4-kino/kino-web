@@ -10,5 +10,6 @@ public class RestControllerConstants {
     public static final String INVALID_ID = "Id does not exist";
     public static final String DELETE_SUCCESSFUL = "Deleted successfully";
     public static final String INTERNAL_SERVER_ERROR = "Internal Server Error";
+    public static final String INVALID_USERDATA = "Invalid value(s) of User-data ";
 
 }

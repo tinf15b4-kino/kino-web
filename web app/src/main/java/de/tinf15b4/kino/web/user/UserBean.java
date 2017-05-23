@@ -23,7 +23,6 @@ public class UserBean implements Serializable {
     private RestClient restClient;
 
     private transient SmartCinemaUi ui;
-    private User currentUser;
 
     @Autowired
     private RestApiUrlSource restApiUrl;
@@ -35,7 +34,7 @@ public class UserBean implements Serializable {
     }
 
     public boolean isUserLoggedIn() {
-        return currentUser != null;
+        return getCurrentUser() != null;
     }
 
     public boolean login(String nameOrMail, String password) {
@@ -46,7 +45,6 @@ public class UserBean implements Serializable {
             RestResponse userResponse = restClient.getUser();
             if (!userResponse.hasError()) {
                 // which should always be the case
-                currentUser = (User) userResponse.getValue();
                 ui.update();
                 return true;
             }
@@ -55,14 +53,13 @@ public class UserBean implements Serializable {
     }
 
     public boolean logout() {
-        if (currentUser == null) {
+        if (getCurrentUser() == null) {
             // Nobody is logged in. This should never happen as there should be
             // no option to hit logout in this case
             throw new NoUserLoggedInException("There is no user logged in. Logout failed");
         } else {
             RestResponse response = restClient.logout();
             if (!response.hasError()) {
-                currentUser = null;
                 ui.update();
                 return true;
             }
@@ -71,7 +68,12 @@ public class UserBean implements Serializable {
     }
 
     public User getCurrentUser() {
-        return currentUser;
+        RestResponse currentUser = restClient.getUser();
+        if (currentUser.hasError()) {
+            return null;
+        } else {
+            return (User) currentUser.getValue();
+        }
     }
 
     public void setUi(SmartCinemaUi ui) {

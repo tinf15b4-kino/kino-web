@@ -37,6 +37,7 @@ import de.tinf15b4.kino.data.movies.Movie;
 import de.tinf15b4.kino.web.rest.RestResponse;
 import de.tinf15b4.kino.web.user.UserBean;
 import de.tinf15b4.kino.web.util.ShortcutUtils;
+import de.tinf15b4.kino.web.views.AccountView;
 import de.tinf15b4.kino.web.views.CinemaListView;
 import de.tinf15b4.kino.web.views.FavoriteListView;
 import de.tinf15b4.kino.web.views.LoginView;
@@ -203,7 +204,7 @@ public class SmartCinemaUi extends UI {
     }
 
     private void userClicked() {
-        // TODO Do stuff, probably navigate to account details
+        navigateTo(AccountView.VIEW_NAME);
     }
 
     private Component createNavigator() {
@@ -314,6 +315,8 @@ public class SmartCinemaUi extends UI {
                 contentLabel.setValue("Favoriten");
             } else if (uri.startsWith("!login")) {
                 contentLabel.setValue("Anmelden");
+            } else if (uri.startsWith("!account")) {
+                contentLabel.setValue("Profil bearbeiten");
             }
         }
         contentLabel.setId("toolBarLabel");
