@@ -1,11 +1,5 @@
 package de.tinf15b4.kino.api.controllers;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import org.jsondoc.core.annotation.Api;
 import org.jsondoc.core.annotation.ApiAuthNone;
 import org.jsondoc.core.annotation.ApiMethod;
@@ -25,6 +19,7 @@ import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.cinemas.CinemaService;
 import de.tinf15b4.kino.data.movies.Movie;
 import de.tinf15b4.kino.data.movies.MovieService;
+import de.tinf15b4.kino.utils.ImageLoader;
 
 @Api(name = "Picture services", description = "Offers all methods needed to retrieve pictures from the database", visibility = ApiVisibility.PUBLIC, stage = ApiStage.BETA)
 @ApiVersion(since = "0.0.1")
@@ -79,36 +74,11 @@ public class PictureController {
 
     @VisibleForTesting
     byte[] loadDefaultCinemaImage() {
-        try {
-            BufferedImage originalImage = ImageIO
-                    .read(this.getClass().getResourceAsStream("/images/defaultCinema.jpg"));
-
-            // convert BufferedImage to byte array
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(originalImage, "jpg", baos);
-            baos.flush();
-            byte[] buffer = baos.toByteArray();
-            baos.close();
-            return buffer;
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to load default cinema image from disk", e);
-        }
+        return new ImageLoader().getImage(this.getClass().getResource("/images/defaultCinema.jpg"), "jpg");
     }
 
     @VisibleForTesting
     byte[] loadDefaultMovieCover() {
-        try {
-            BufferedImage originalImage = ImageIO.read(this.getClass().getResourceAsStream("/images/defaultMovie.jpg"));
-
-            // convert BufferedImage to byte array
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(originalImage, "jpg", baos);
-            baos.flush();
-            byte[] buffer = baos.toByteArray();
-            baos.close();
-            return buffer;
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to load default movie image from disk", e);
-        }
+        return new ImageLoader().getImage(this.getClass().getResource("/images/defaultMovie.jpg"), "jpg");
     }
 }
