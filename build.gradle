@@ -27,7 +27,7 @@ subprojects {
 	apply plugin: 'eclipse'
 	
 	jar {
-		baseName = 'tinf15b4-kino-$project.name'
+		baseName = "tinf15b4-kino-${project.name.replace(" ","-")}"
 		version = '0.0.1-SNAPSHOT'
 	}
 	
