@@ -27,9 +27,9 @@ import de.tinf15b4.kino.utils.ImageLoader;
 
 public class TmdbDataRetriever {
 
-    private final String API_KEY = "9eda0433936b655a246eef78d367b530";
-    private final String IMAGE_URL = "http://image.tmdb.org/t/p/w500";
-    private final String NO_INFORMATION = "Keine Angabe";
+    private static final String API_KEY = "9eda0433936b655a246eef78d367b530";
+    private static final String IMAGE_URL = "http://image.tmdb.org/t/p/w500";
+    private static final String NO_INFORMATION = "Keine Angabe";
     private HttpClient httpClient;
     private HttpTools httpTools;
     private TmdbMovies moviesInstance;
@@ -123,6 +123,7 @@ public class TmdbDataRetriever {
                 break;
             case "TV-Film":
                 name = "TvFilm";
+                break;
             default:
                 // there is no need to change the name
             }
