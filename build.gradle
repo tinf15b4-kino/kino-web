@@ -10,8 +10,8 @@ allprojects {
 		}
 	}
 
-	apply plugin: 'jacoco'	
-	apply plugin: 'java'
+	apply plugin: "jacoco"	
+	apply plugin: "java"
 	
 	repositories {
     	mavenCentral()
@@ -24,18 +24,18 @@ allprojects {
 
 // ##### Configuration of Sub-Projects
 subprojects {
-	apply plugin: 'eclipse'
+	apply plugin: "eclipse"
 	
 	jar {
 		baseName = "tinf15b4-kino-${project.name.replace(" ","-")}"
-		version = '0.0.1-SNAPSHOT'
+		version = "0.0.1-SNAPSHOT"
 	}
 	
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8
 	
 	dependencies {
-    	testCompile('junit:junit:4.12')
+    	testCompile("junit:junit:4.12")
 	}
 	
 	// Jacoco-Configuration
@@ -65,11 +65,11 @@ buildscript {
 	}
 		
     dependencies {
-    	classpath 'org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.4'
+    	classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.4"
     }
 }
 
-apply plugin: 'org.sonarqube'
+apply plugin: "org.sonarqube"
 
 ext.baseVersion = "0.0.1"
 ext.snapshotVersion = true

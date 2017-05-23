@@ -1,6 +1,6 @@
 jar {
     manifest {
-        attributes 'Main-Class': 'de.tinf15b4.kino.retrieval.KinoDataRetrieval'
+        attributes "Main-Class": "de.tinf15b4.kino.retrieval.KinoDataRetrieval"
     }
     from {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
@@ -10,20 +10,20 @@ jar {
 sourceSets {
     main {
         java {
-            srcDir 'src/main/java'
+            srcDir "src/main/java"
         }
         resources {
-            srcDir 'src/main/resources'
+            srcDir "src/main/resources"
         }
     }
 }
 
 dependencies {
-    compile project(':commons')
-    compile('org.reflections:reflections:0.9.9-RC1')
-    compile('org.seleniumhq.selenium:selenium-java:3.4.0')
-    compile('io.github.bonigarcia:webdrivermanager:1.5.+')
-    compile('com.omertron:themoviedbapi:4.3')
+    compile project(":commons")
+    compile("org.reflections:reflections:0.9.9-RC1")
+    compile("org.seleniumhq.selenium:selenium-java:3.4.0")
+    compile("io.github.bonigarcia:webdrivermanager:1.5.+")
+    compile("com.omertron:themoviedbapi:4.3")
 }
 
 sonarqube {

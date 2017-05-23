@@ -1,3 +1,3 @@
-rootProject.name='SmartCinema'
+rootProject.name="SmartCinema"
 
-include 'commons', 'data api', 'web app', 'data retrieval'
+include "commons", "data api", "web app", "data retrieval"
