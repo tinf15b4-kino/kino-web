@@ -100,7 +100,7 @@ public class FakeDataInitializer implements DataInitializer {
         User u = new User();
         u.setName("Max Mustermann");
         u.setEmail("max.mustermann@example.com");
-        u.setPassword("muster");
+        u.setPassword("muster123");
         userService.save(u);
 
         // Some more fake users
