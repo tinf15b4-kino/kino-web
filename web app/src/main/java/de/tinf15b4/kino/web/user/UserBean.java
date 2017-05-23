@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
 
-import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
@@ -72,8 +71,7 @@ public class UserBean implements Serializable {
         RestResponse currentUser = restClient.getUser();
         if (currentUser.hasError()) {
             return null;
-        }
-        else{
+        } else {
             return (User) currentUser.getValue();
         }
     }

@@ -21,11 +21,7 @@ import de.tinf15b4.kino.data.users.User;
 import de.tinf15b4.kino.web.rest.RestResponse;
 import de.tinf15b4.kino.web.ui.SmartCinemaUi;
 import de.tinf15b4.kino.web.user.UserBean;
-import de.tinf15b4.kino.web.util.ShortcutUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 
 
 @SpringView(name = AccountView.VIEW_NAME)
@@ -117,8 +113,8 @@ public class AccountView extends VerticalLayout implements View {
     }
 
     private void trySave(TextField userField, TextField emailField, PasswordField oldPwField, PasswordField newPwField,
-                         PasswordField newPwCheckField, User currentUser){
-        if (userBean.isUserLoggedIn()){
+                         PasswordField newPwCheckField, User currentUser) {
+        if (userBean.isUserLoggedIn()) {
 
             String userName = userField.getValue();
             String email = emailField.getValue();
@@ -138,16 +134,14 @@ public class AccountView extends VerticalLayout implements View {
             newPwCheckField.setComponentError(null);
 
             // change userName
-            if (!userName.equals(currentUser.getName())){
+            if (!userName.equals(currentUser.getName())) {
                 if (userName.length() > 99) {
                     userField.setComponentError(new UserError("Der angegebene Benutzername ist zu lang"));
                     valid = false;
-                }
-                else {
-                    if (userName.length() > 2){
+                } else {
+                    if (userName.length() > 2) {
                         changeUsername = true;
-                    }
-                    else {
+                    } else {
                         userField.setComponentError(new UserError("Bitte überprüfen Sie die Eingabe"));
                         valid = false;
                     }
@@ -155,18 +149,16 @@ public class AccountView extends VerticalLayout implements View {
             }
 
             // change email
-            if (!email.equals(currentUser.getEmail())){
+            if (!email.equals(currentUser.getEmail())) {
                 if (email.length() > 99) {
                     emailField.setComponentError(new UserError("Die angegebene E-Mailadresse" +
                             " ist zu lang"));
                     valid = false;
-                }
-                else{
-                    if (email.contains("@") && email.contains(".") && email.length() > 6){
+                } else {
+                    if (email.contains("@") && email.contains(".") && email.length() > 6) {
 
                         changeEmail = true;
-                    }
-                    else{
+                    } else {
                         emailField.setComponentError(new UserError("Bitte überprüfen Sie die Eingabe"));
                         valid = false;
                     }
@@ -174,35 +166,29 @@ public class AccountView extends VerticalLayout implements View {
             }
 
             // change PW
-            if (!Strings.isNullOrEmpty(oldPw) || !Strings.isNullOrEmpty(newPw)){
-                if (Strings.isNullOrEmpty(oldPw)){
+            if (!Strings.isNullOrEmpty(oldPw) || !Strings.isNullOrEmpty(newPw)) {
+                if (Strings.isNullOrEmpty(oldPw)) {
                     oldPwField.setComponentError(new UserError("Wenn Sie das Passwort ändern möchten," +
                             " müssen Sie das alte Passwort angeben"));
                     valid = false;
-                }
-                else if (Strings.isNullOrEmpty(newPw)){
+                } else if (Strings.isNullOrEmpty(newPw)) {
                     newPwField.setComponentError(new UserError("Wenn Sie das Passwort ändern möchten," +
                             " müssen Sie ein neues Passwort angeben"));
                     valid = false;
-                }
-                else if (!oldPw.equals(currentUser.getPassword())){
+                } else if (!oldPw.equals(currentUser.getPassword())) {
                     oldPwField.setComponentError(new UserError("Das angegbene Passwort ist falsch"));
                     valid = false;
-                }
-                else if (newPw.length() > 99){
+                } else if (newPw.length() > 99) {
                     newPwField.setComponentError(new UserError("Das angegebene Passwort ist zu lang"));
                     valid = false;
-                }
-                else if (!newPw.equals(newCheckPw)){
+                } else if (!newPw.equals(newCheckPw)) {
                     newPwField.setComponentError(new UserError("Die angegebenen Passwörter stimmen" +
                             " nicht überein"));
                     valid = false;
-                }
-                else if (oldPw.equals(currentUser.getPassword())){
+                } else if (oldPw.equals(currentUser.getPassword())) {
                     if (newPw.length() > 7) {
                         changePw = true;
-                    }
-                    else {
+                    } else {
                         newPwField.setComponentError(new UserError("Das angegebene Passwort ist zu kurz"));
                         valid = false;
                     }
@@ -210,13 +196,13 @@ public class AccountView extends VerticalLayout implements View {
             }
 
             if (valid) {
-                if (changeUsername){
+                if (changeUsername) {
                     currentUser.setName(userName);
                 }
-                if (changeEmail){
+                if (changeEmail) {
                     currentUser.setEmail(email);
                 }
-                if (changePw){
+                if (changePw) {
                     currentUser.setPassword(newPw);
 
                     // clear Passwords after succesful change
@@ -230,8 +216,7 @@ public class AccountView extends VerticalLayout implements View {
                 if (!userResponse.hasError()) {
                     ((SmartCinemaUi) getUI()).update();
                     Notification.show("Die Änderungen wurden erfolgreich übernommen", Notification.Type.HUMANIZED_MESSAGE);
-                }
-                else {
+                } else {
                     Notification.show(userResponse.getErrorMsg(), Notification.Type.ERROR_MESSAGE);
                 }
             }

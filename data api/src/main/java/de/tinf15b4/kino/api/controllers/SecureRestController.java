@@ -205,16 +205,17 @@ public class SecureRestController {
         Token userToken = new Token(token);
         String oldUserName = tokens.get(userToken);
 
-        if (oldUserName != null){
-            tokens.remove(userToken);
-            tokens.put(userToken, user.getName());
-            users.remove(oldUserName);
-            users.put(user.getName(), userToken);
-        }
 
         if (updated.isPresent()) {
+            if (oldUserName != null) {
+                tokens.remove(userToken);
+                tokens.put(userToken, user.getName());
+                users.remove(oldUserName);
+                users.put(user.getName(), userToken);
+            }
             return ResponseEntity.ok(updated.get());
         }
+        
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(RestControllerConstants.INTERNAL_SERVER_ERROR);
     }
