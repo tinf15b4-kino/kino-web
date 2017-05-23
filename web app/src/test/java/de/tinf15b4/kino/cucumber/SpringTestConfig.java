@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.ServerSocket;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.springframework.boot.test.context.TestConfiguration;
@@ -20,6 +21,7 @@ import de.tinf15b4.kino.web.rest.RestApiUrlSource;
 @TestConfiguration
 public class SpringTestConfig {
     private static String startedServerUrl = null;
+
     private static void startServer() throws Exception {
         if (startedServerUrl != null)
             return;
@@ -44,21 +46,36 @@ public class SpringTestConfig {
             port = s.getLocalPort();
         }
 
+        // assemble the jar file by running gradle
         String command[];
         if (System.getProperty("os.name").startsWith("Windows")) {
-            command = new String[] { "..\\gradlew.bat", "bootRun" };
+            command = new String[] { "..\\gradlew.bat", "assemble" };
         } else {
-            command = new String[] { "../gradlew", "bootRun" };
+            command = new String[] { "../gradlew", "assemble" };
         }
         ProcessBuilder pb = new ProcessBuilder(command);
         pb.directory(new File(datadir));
         pb.redirectError(ProcessBuilder.Redirect.INHERIT);
         pb.redirectOutput(ProcessBuilder.Redirect.INHERIT);
-        pb.redirectInput(ProcessBuilder.Redirect.PIPE);
-        pb.environment().put("SMARTCINEMA_DATA_API_LISTEN_ON", "" + port);
-        pb.environment().put("SMARTCINEMA_DATA_API_KEEPALIVE_PIPE", "yeah");
         Process p = pb.start();
+        if (!p.waitFor(60, TimeUnit.SECONDS)) {
+            throw new Exception("Could not create jar file for test server");
+        }
 
+        // start jar file from class loader
+        Runnable runner = new InProcJarRunner(new URL(
+                new File(datadir).toURI().toURL().toString()
+                        + "/build/libs/tinf15b4-kino-data-api-0.0.1-SNAPSHOT.jar"),
+                new String[] {
+                        "--server.port="+port,
+                        "--spring.datasource.url=jdbc:h2:mem:testdb",
+                        "--spring.jpa.hibernate.ddl-auto=create-drop" });
+
+        Thread runThread = new Thread(runner);
+        runThread.setDaemon(true);
+        runThread.start();
+
+        boolean dataApiStarted = false;
         for (int i = 0; i < 60; ++i) {
             System.err.println("DEBUG: Waiting for temporary data api server to come online (port " + port + ")");
 
@@ -69,8 +86,10 @@ public class SpringTestConfig {
                     try (InputStream is = conn.getInputStream(); BufferedReader r = new BufferedReader(new InputStreamReader(is))) {
                         String result = r.lines().parallel().collect(Collectors.joining("\n"));
 
-                        if (result.trim().equals("pong"))
+                        if (result.trim().equals("pong")) {
+                            dataApiStarted = true;
                             break;
+                        }
                     }
                 } finally {
                     conn.disconnect();
@@ -82,6 +101,9 @@ public class SpringTestConfig {
             Thread.sleep(1000);
         }
 
+        if (!dataApiStarted) {
+            throw new RuntimeException("DEBUG: Temporary data api server did not start on port " + port);
+        }
         System.err.println("DEBUG: Started temporary data api server on port " + port);
         startedServerUrl = "http://localhost:" + port;
     }

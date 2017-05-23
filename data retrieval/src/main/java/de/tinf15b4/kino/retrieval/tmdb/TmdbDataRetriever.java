@@ -3,6 +3,7 @@ package de.tinf15b4.kino.retrieval.tmdb;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.net.URL;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,6 +49,11 @@ public class TmdbDataRetriever {
                 .getResults();
 
         if (movies.size() != 0) {
+            // reorder results by year
+            // We want the movie from the most recent year (e.g. the 2017 version of "Die Schöne und das Biest"),
+            // but for movies from the same year, we want the movie db to decide ("Alien: Covenant" vs the Rick and Morty clip)
+            movies.sort(Comparator.comparing((MovieInfo m) -> m.getReleaseDate().substring(0,Math.min(m.getReleaseDate().length(), 4))).reversed());
+
             MovieInfo mi = moviesInstance.getMovieInfo(movies.get(0).getId(), "de-DE", "");
             movie = new Movie();
             movie.setName(mi.getTitle());

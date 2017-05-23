@@ -1,3 +1,12 @@
+jar {
+    manifest {
+        attributes 'Main-Class': 'de.tinf15b4.kino.retrieval.KinoDataRetrieval'
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
 sourceSets {
     main {
         java {
