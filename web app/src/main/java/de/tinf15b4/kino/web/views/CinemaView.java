@@ -1,6 +1,5 @@
 package de.tinf15b4.kino.web.views;
 
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -10,19 +9,25 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.ui.*;
-import de.tinf15b4.kino.data.movies.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Lists;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.ExternalResource;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.ui.AbstractOrderedLayout;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.VerticalLayout;
 
 import de.tinf15b4.kino.data.cinemas.Cinema;
+import de.tinf15b4.kino.data.movies.Movie;
 import de.tinf15b4.kino.data.playlists.Playlist;
 import de.tinf15b4.kino.data.ratedcinemas.RatedCinema;
 import de.tinf15b4.kino.web.rest.RestResponse;
@@ -40,6 +45,7 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
     private UserBean userBean;
 
     private Component favoriteButton;
+
     private Cinema c;
 
     @Override
@@ -60,12 +66,10 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
                     HorizontalLayout content = new HorizontalLayout();
 
                     // image
-                    Component image = new Image(null,
-                            new ExternalResource(userBean.getRestClient().getCinemaPictureUrl(c)));
+                    Component image = new Image(null, new ExternalResource(userBean.getRestClient().getCinemaPictureUrl(c)));
                     image.setWidth("250px");
                     image.setId("cinemaImage");
                     content.addComponent(image);
-
 
                     // Information
                     VerticalLayout informationForm = new VerticalLayout();
@@ -73,12 +77,10 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
 
                     informationForm.addComponent(createCinemaInformation(c));
 
-
                     // ratings
                     RestResponse ratedCinemaResponse = userBean.getRestClient().getRatedCinemas(c.getId());
                     if (!ratedCinemaResponse.hasError()) {
-                        List<RatedCinema> ratedCinemas = Lists
-                                .newArrayList((RatedCinema[]) ratedCinemaResponse.getValue());
+                        List<RatedCinema> ratedCinemas = Lists.newArrayList((RatedCinema[]) ratedCinemaResponse.getValue());
 
                         if (ratedCinemas.size() > 0) {
                             VerticalLayout ratingsForm = createRatingsForm(ratedCinemas);
@@ -86,13 +88,11 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
                         }
                     }
 
-
                     // playtimes
-                    RestResponse playlistResponse = userBean.getRestClient().getPlaylistForCinemas(c.getId(),
-                            new Date(), new Date(new Date().getTime() + 1000L * 3600 * 24 * 7));
+                    RestResponse playlistResponse = userBean.getRestClient().getPlaylistForCinemas(c.getId(), new Date(),
+                            new Date(new Date().getTime() + 1000L * 3600 * 24 * 7));
                     if (!playlistResponse.hasError()) {
-                        List<Playlist> playlistEntries = Lists
-                                .newArrayList((Playlist[]) playlistResponse.getValue());
+                        List<Playlist> playlistEntries = Lists.newArrayList((Playlist[]) playlistResponse.getValue());
 
                         if (playlistEntries.size() > 0) {
                             informationForm.addComponent(createPlaylistForm(playlistEntries));
@@ -111,13 +111,12 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
         }
     }
 
-    private VerticalLayout createPlaylistForm(List<Playlist> playlistEntries){
+    private VerticalLayout createPlaylistForm(List<Playlist> playlistEntries) {
         VerticalLayout playlistForm = new VerticalLayout();
 
         Label playlistHeading = new Label("Spielplan");
         playlistHeading.setId("playlistHeading");
         playlistForm.addComponent(playlistHeading);
-
 
         List<Movie> movieList = new ArrayList<>();
 
@@ -133,20 +132,19 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
             playlistForm.addComponent(createMovieRow(m, playlistEntries));
         }
 
-        return  playlistForm;
+        return playlistForm;
     }
 
-    private HorizontalLayout createMovieRow(Movie m, List<Playlist> pE){
+    private HorizontalLayout createMovieRow(Movie m, List<Playlist> pE) {
         HorizontalLayout movieRow = new HorizontalLayout();
         movieRow.setPrimaryStyleName("moviePlaylistRow");
 
-        Component movieImage = new Image(null,
-                new ExternalResource(userBean.getRestClient().getMoviePictureUrl(m)));
+        Component movieImage = new Image(null, new ExternalResource(userBean.getRestClient().getMoviePictureUrl(m)));
         movieImage.setHeight("200px");
         movieImage.setPrimaryStyleName("moviePlaylistImage");
         movieRow.addComponent(movieImage);
 
-        LocalDate currentDate= LocalDate.now();
+        LocalDate currentDate = LocalDate.now();
 
         DateTimeFormatter formattedDate = DateTimeFormatter.ofPattern("EE dd.MM", Locale.GERMAN);
 
@@ -155,7 +153,7 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
         HorizontalLayout playTimesTable = new HorizontalLayout();
         playTimesTable.setPrimaryStyleName("playTimesTable");
 
-        for (int i = 0; i<6; i++) {
+        for (int i = 0; i < 6; i++) {
 
             // Add weekdays to Table
             VerticalLayout tmpPlaylistColumn = new VerticalLayout();
@@ -187,7 +185,7 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
         return movieRow;
     }
 
-    private VerticalLayout createMovieInformation(Movie m, HorizontalLayout playTimesTable){
+    private VerticalLayout createMovieInformation(Movie m, HorizontalLayout playTimesTable) {
         VerticalLayout movieInformation = new VerticalLayout();
         movieInformation.setPrimaryStyleName("moviePlaylistInformation");
 
@@ -201,11 +199,10 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
         movieInformation.setSizeUndefined();
         movieInformation.setExpandRatio(playTimesTable, 1f);
 
-
         return movieInformation;
     }
 
-    private VerticalLayout createRatingsForm( List<RatedCinema> ratedCinemas){
+    private VerticalLayout createRatingsForm(List<RatedCinema> ratedCinemas) {
         VerticalLayout ratingsForm = new VerticalLayout();
         ratingsForm.setId("cinemaRatingsForm");
 
@@ -213,7 +210,7 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
         heading.setId("ratingsHeading");
         ratingsForm.addComponent(heading);
 
-        for (RatedCinema rC : ratedCinemas){
+        for (RatedCinema rC : ratedCinemas) {
 
             ratingsForm.addComponent(createRatingEntry(rC));
 
@@ -223,7 +220,7 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
 
     }
 
-    private VerticalLayout createRatingEntry(RatedCinema rC){
+    private VerticalLayout createRatingEntry(RatedCinema rC) {
         VerticalLayout ratingEntry = new VerticalLayout();
 
         HorizontalLayout userRow = new HorizontalLayout();
@@ -249,11 +246,10 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
         userRow.setWidth("100%");
 
         HorizontalLayout commentRow = new HorizontalLayout();
-        Label commentLabel = new Label(rC.getDescription()) ;
+        Label commentLabel = new Label(rC.getDescription());
         commentLabel.setPrimaryStyleName("ratingsComment");
         commentRow.addComponent(commentLabel);
         commentRow.setPrimaryStyleName("commentRow");
-
 
         ratingEntry.addComponent(userRow);
         ratingEntry.addComponent(commentRow);

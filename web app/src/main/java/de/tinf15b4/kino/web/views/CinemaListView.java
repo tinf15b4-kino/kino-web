@@ -47,8 +47,7 @@ public class CinemaListView extends VerticalLayout implements View {
                 row.setId("cinemaRow_" + c.getId());
 
                 // Picture
-                Component image = new Image(null,
-                        new ExternalResource(userBean.getRestClient().getCinemaPictureUrl(c)));
+                Component image = new Image(null, new ExternalResource(userBean.getRestClient().getCinemaPictureUrl(c)));
                 image.setId("cinemaImage_" + c.getId());
                 image.setHeight("200px");
                 row.addComponent(image);
@@ -87,9 +86,9 @@ public class CinemaListView extends VerticalLayout implements View {
     private class FavoriteBtnManager implements ToggleFavoriteListener, Serializable {
         private static final long serialVersionUID = -479933331913052158L;
 
-        public Component button = null;
-        public VerticalLayout row;
-        public long cinemaId;
+        private Component button = null;
+        private VerticalLayout row;
+        private long cinemaId;
 
         @Override
         public void favoriteRemoved() {

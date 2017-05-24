@@ -65,7 +65,7 @@ public class ServiceImplModel<E extends EntityModel, R extends JpaRepository<E, 
                 entityManager.detach(e);
 
                 // adjust the id
-                entityManager.createNativeQuery("UPDATE " + table + " SET id = " + oldid + " WHERE id = " + newid).executeUpdate();
+                entityManager.createNativeQuery(String.format("UPDATE %s SET id = %s WHERE id = %s", table, oldid, newid)).executeUpdate();
 
                 // retrieve it again from the database
                 e = repository.findOne(oldid);

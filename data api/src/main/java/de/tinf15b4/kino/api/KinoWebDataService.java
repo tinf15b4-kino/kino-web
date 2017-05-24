@@ -7,6 +7,8 @@ import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.jsondoc.spring.boot.starter.EnableJSONDoc;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -34,6 +36,8 @@ import de.tinf15b4.kino.utils.GsonFactory;
 @EnableJSONDoc
 @ComponentScan({ "de.tinf15b4.kino.data.*", "de.tinf15b4.kino.api", "de.tinf15b4.kino.api.*" })
 public class KinoWebDataService extends WebMvcConfigurerAdapter {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(KinoWebDataService.class);
 
     @Bean
     public EmbeddedServletContainerFactory servletContainer() {
@@ -89,7 +93,7 @@ public class KinoWebDataService extends WebMvcConfigurerAdapter {
                     try {
                         System.in.read();
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        LOGGER.error("IO Exception occured", e);
                     } finally {
                         System.exit(0);
                     }

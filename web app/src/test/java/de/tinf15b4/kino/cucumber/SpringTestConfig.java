@@ -63,12 +63,9 @@ public class SpringTestConfig {
         }
 
         // start jar file from class loader
-        Runnable runner = new InProcJarRunner(new URL(
-                new File(datadir).toURI().toURL().toString()
-                        + "/build/libs/tinf15b4-kino-data-api-0.0.1-SNAPSHOT.jar"),
-                new String[] {
-                        "--server.port="+port,
-                        "--spring.datasource.url=jdbc:h2:mem:testdb",
+        Runnable runner = new InProcJarRunner(
+                new URL(new File(datadir).toURI().toURL().toString() + "/build/libs/tinf15b4-kino-data-api-0.0.1-SNAPSHOT.jar"),
+                new String[] { "--server.port=" + port, "--spring.datasource.url=jdbc:h2:mem:testdb",
                         "--spring.jpa.hibernate.ddl-auto=create-drop" });
 
         Thread runThread = new Thread(runner);
@@ -116,6 +113,8 @@ public class SpringTestConfig {
             startServer();
 
             return new RestApiUrlSource() {
+                private static final long serialVersionUID = 159966804607373727L;
+
                 @Override
                 public String getUrl() {
                     return SpringTestConfig.startedServerUrl;
@@ -123,6 +122,8 @@ public class SpringTestConfig {
             };
         } else {
             return new RestApiUrlSource() {
+                private static final long serialVersionUID = -3749192421080351086L;
+
                 @Override
                 public String getUrl() {
                     return System.getenv("SMARTCINEMA_API_URL");
