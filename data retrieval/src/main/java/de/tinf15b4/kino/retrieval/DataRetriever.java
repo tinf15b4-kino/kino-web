@@ -5,10 +5,14 @@ import java.util.List;
 import java.util.Set;
 
 import org.reflections.Reflections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import de.tinf15b4.kino.retrieval.scraper.AbstractCinemaScraper;
 
 public class DataRetriever {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataRetriever.class);
 
     private List<AbstractCinemaScraper> scrapers;
 
@@ -25,13 +29,13 @@ public class DataRetriever {
             try {
                 scrapers.add(clazz.newInstance());
             } catch (InstantiationException | IllegalAccessException e) {
-                e.printStackTrace();
+                LOGGER.error("Loading scrapers failed", e);
             }
         }
     }
 
     public void runScrapers() {
-        scrapers.forEach(scraper -> scraper.scrape());
+        scrapers.forEach(AbstractCinemaScraper::scrape);
     }
 
 }

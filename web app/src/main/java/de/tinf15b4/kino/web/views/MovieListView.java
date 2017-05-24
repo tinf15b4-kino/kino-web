@@ -128,5 +128,6 @@ public class MovieListView extends VerticalLayout implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
+        //do nothing
     }
 }

@@ -7,12 +7,13 @@ import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.jsondoc.spring.boot.starter.EnableJSONDoc;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.jetty.JettyEmbeddedServletContainerFactory;
-import org.springframework.boot.context.embedded.jetty.JettyServerCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -35,10 +36,12 @@ import de.tinf15b4.kino.utils.GsonFactory;
 @ComponentScan({ "de.tinf15b4.kino.data.*", "de.tinf15b4.kino.api", "de.tinf15b4.kino.api.*" })
 public class KinoWebDataService extends WebMvcConfigurerAdapter {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(KinoWebDataService.class);
+
     @Bean
     public EmbeddedServletContainerFactory servletContainer() {
         JettyEmbeddedServletContainerFactory jetty = new JettyEmbeddedServletContainerFactory();
-        jetty.addServerCustomizers((JettyServerCustomizer) server -> jettyEnableInherit(server));
+        jetty.addServerCustomizers(KinoWebDataService::jettyEnableInherit);
         return jetty;
     }
 
@@ -83,16 +86,13 @@ public class KinoWebDataService extends WebMvcConfigurerAdapter {
 
         // HACK: quit whenever stdin is closed
         if (System.getenv("SMARTCINEMA_DATA_API_KEEPALIVE_PIPE") != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        System.in.read();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } finally {
-                        System.exit(0);
-                    }
+            new Thread(() -> {
+                try {
+                    System.in.read();
+                } catch (IOException e) {
+                    LOGGER.error("IO Exception occured", e);
+                } finally {
+                    System.exit(0);
                 }
             }).start();
         }

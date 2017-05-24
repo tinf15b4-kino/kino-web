@@ -100,10 +100,10 @@ public class UniversumCityScraper extends AbstractCinemaScraper {
     private LocalDate parseDate(String dateText) {
         // TODO what does the website do at silvester? Currently there are
         // no years visible
-        dateText = dateText + LocalDate.now().getYear();
+        String formattedDateText = dateText + LocalDate.now().getYear();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         formatter = formatter.withLocale(Locale.GERMAN);
-        return LocalDate.parse(dateText, formatter);
+        return LocalDate.parse(formattedDateText, formatter);
     }
 
 }

@@ -16,9 +16,14 @@ import de.tinf15b4.kino.data.users.User;
         Favorite.FieldInfos.CINEMA }))
 public class Favorite extends EntityModel implements ImageContainer {
 
-    public interface FieldInfos {
-        String USER = "user";
-        String CINEMA = "cinema";
+    static class FieldInfos {
+        private FieldInfos() {
+            // Just used to hide the public constructor
+            // Sonarqube seems to like that
+        }
+
+        public static final String USER = "user";
+        public static final String CINEMA = "cinema";
     }
 
     @ManyToOne

@@ -16,10 +16,14 @@ import de.tinf15b4.kino.data.users.User;
         Reminder.FieldInfos.MOVIE }))
 public class Reminder extends EntityModel implements ImageContainer {
 
-    public interface FieldInfos {
-        String USER = "user";
-        String MOVIE = "movie";
+    static class FieldInfos {
+        private FieldInfos() {
+            // Just used to hide the public constructor
+            // Sonarqube seems to like that
+        }
 
+        public static final String USER = "user";
+        public static final String MOVIE = "movie";
     }
 
     @ManyToOne

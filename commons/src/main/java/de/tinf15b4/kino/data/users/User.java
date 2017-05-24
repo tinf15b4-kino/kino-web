@@ -18,11 +18,16 @@ public class User extends EntityModel implements Serializable {
 
     private static final long serialVersionUID = -6096242601376594653L;
 
-    public interface FieldInfos {
-        String NAME = "name";
-        String EMAIL = "email";
-        String PASSWORD = "password";
-        String FAVORITE_LOCATION = "favLocation";
+    static class FieldInfos {
+        private FieldInfos() {
+            // Just used to hide the public constructor
+            // Sonarqube seems to like that
+        }
+
+        public static final String NAME = "name";
+        public static final String EMAIL = "email";
+        public static final String PASSWORD = "password";
+        public static final String FAVORITE_LOCATION = "favLocation";
     }
 
     @Column(name = User.FieldInfos.NAME, nullable = false)

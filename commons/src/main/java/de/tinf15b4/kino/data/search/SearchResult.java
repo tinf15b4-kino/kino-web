@@ -20,11 +20,11 @@ public class SearchResult implements ImageContainer {
     }
 
     public boolean hasMovies() {
-        return movies.size() > 0;
+        return !movies.isEmpty();
     }
 
     public boolean hasCinemas() {
-        return cinemas.size() > 0;
+        return !cinemas.isEmpty();
     }
 
     public SearchResult(List<Cinema> cinemas, List<Movie> movies) {
@@ -34,7 +34,7 @@ public class SearchResult implements ImageContainer {
 
     @Override
     public void doFilter() {
-        cinemas.stream().forEach(c -> ((ImageContainer) c).doFilter());
-        movies.stream().forEach(m -> ((ImageContainer) m).doFilter());
+        cinemas.stream().forEach(Cinema::doFilter);
+        movies.stream().forEach(Movie::doFilter);
     }
 }

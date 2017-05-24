@@ -1,5 +1,7 @@
 package de.tinf15b4.kino.web.rest;
 
-public interface RestApiUrlSource {
+import java.io.Serializable;
+
+public interface RestApiUrlSource extends Serializable {
     String getUrl();
 }

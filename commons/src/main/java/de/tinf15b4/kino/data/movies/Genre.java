@@ -1,12 +1,12 @@
 package de.tinf15b4.kino.data.movies;
 
 public enum Genre {
-    Action("Action"), Abenteuer("Abenteuer"), Animation("Animation"), Komoedie("Komödie"), Krimi(
-            "Krimi"), Dokumentarfilm("Dokumentarfilm"), Drama("Drama"), Familie("Familie"), Fantasy(
-                    "Fantasy"), Historie("Historie"), Horror("Horror"), Musik("Musik"), Mystery("Mystery"), Liebesfilm(
-                            "Liebesfilm"), ScienceFiction("Science Fiction"), TvFilm(
-                                    "TV-Film"), Thriller("Thriller"), Kriegsfilm(
-                                            "Kriegsfilm"), Western("Western"), Unbekannt("Unbekannt");
+    ACTION("Action"), ABENTEUER("Abenteuer"), ANIMATION("Animation"), KOMOEDIE("Komödie"), KRIMI(
+            "Krimi"), DOKUMENTARFILM("Dokumentarfilm"), DRAMA("Drama"), FAMILIE("Familie"), FANTASY(
+                    "Fantasy"), HISTORIE("Historie"), HORROR("Horror"), MUSIK("Musik"), MYSTERY("Mystery"), LIEBESFILM(
+                            "Liebesfilm"), SCIENCEFICTION("Science Fiction"), TVFILM(
+                                    "TV-Film"), THRILLER("Thriller"), KRIEGSFILM(
+                                            "Kriegsfilm"), WESTERN("Western"), UNBEKANNT("Unbekannt");
 
     private final String translation;
 

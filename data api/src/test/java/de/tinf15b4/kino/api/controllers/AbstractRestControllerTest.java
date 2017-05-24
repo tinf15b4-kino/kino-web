@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-public class AbstractRestControllerTest {
+public abstract class AbstractRestControllerTest {
 
     protected void assertInvalidResponse(ResponseEntity<?> response, HttpStatus expected, String containedError) {
         assertEquals(expected, response.getStatusCode());

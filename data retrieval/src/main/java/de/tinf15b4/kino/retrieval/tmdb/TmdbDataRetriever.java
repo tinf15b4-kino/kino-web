@@ -130,7 +130,7 @@ public class TmdbDataRetriever {
 
             return Genre.valueOf(name);
         }
-        return Genre.Unbekannt;
+        return Genre.UNBEKANNT;
     }
 
     private AgeControl getAgeControl(MovieInfo mi) throws MovieDbException {

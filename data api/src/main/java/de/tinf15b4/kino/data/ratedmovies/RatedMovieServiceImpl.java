@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import de.tinf15b4.kino.data.ServiceImplModel;
 import de.tinf15b4.kino.data.movies.Movie;
-import de.tinf15b4.kino.data.ratedmovies.RatedMovie;
 
 @Service
 public class RatedMovieServiceImpl extends ServiceImplModel<RatedMovie, RatedMovieRepository>
@@ -21,7 +20,7 @@ public class RatedMovieServiceImpl extends ServiceImplModel<RatedMovie, RatedMov
     public double getAverageRatingForMovie(Movie m) {
         List<Double> ratings = repository.getAverageRatingForMovie(m);
 
-        if (ratings.size() == 0)
+        if (ratings.isEmpty())
             return 0.0;
         else
             return ratings.get(0);

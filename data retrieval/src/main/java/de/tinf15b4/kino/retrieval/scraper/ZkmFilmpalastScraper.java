@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,9 +33,6 @@ public class ZkmFilmpalastScraper extends AbstractCinemaScraper {
     private static final String ZKM_URL = "http://www.filmpalast.net/programm.html";
     private static final String ZKM_URL_2 = "http://www.filmpalast.net/programm-folgewoche.html";
 
-    private List<Playlist> playlists;
-    private List<Movie> movies;
-
     @Override
     protected Logger getLogger() {
         return LoggerFactory.getLogger(ZkmFilmpalastScraper.class);
@@ -43,8 +40,8 @@ public class ZkmFilmpalastScraper extends AbstractCinemaScraper {
 
     @Override
     protected GatheringResult gatherData() {
-        movies = new ArrayList<>();
-        playlists = new ArrayList<>();
+        List<Movie> movies = new ArrayList<>();
+        List<Playlist> playlists = new ArrayList<>();
 
         for (String url : new String[] { ZKM_URL, ZKM_URL_2 }) {
             driver.get(url);
@@ -68,7 +65,7 @@ public class ZkmFilmpalastScraper extends AbstractCinemaScraper {
                         String datestr = e.getAttribute("data-original-title");
 
                         // BAD: Hardcode prices
-                        Map<DayOfWeek, Integer> priceMap = new HashMap<>();
+                        Map<DayOfWeek, Integer> priceMap = new EnumMap<>(DayOfWeek.class);
                         priceMap.put(DayOfWeek.MONDAY, 850);
                         priceMap.put(DayOfWeek.TUESDAY, 650);
                         priceMap.put(DayOfWeek.WEDNESDAY, 850);
@@ -103,7 +100,7 @@ public class ZkmFilmpalastScraper extends AbstractCinemaScraper {
         WebElement container = bilderEl.findElement(By.xpath(".."));
         WebElement imgEl = container.findElement(By.cssSelector("img"));
 
-        byte imgBytes[];
+        byte[] imgBytes;
         try {
             String imgSrc = imgEl.getAttribute("src");
 

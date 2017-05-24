@@ -8,13 +8,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import de.tinf15b4.kino.data.cinemas.Cinema;
-import de.tinf15b4.kino.data.favorites.Favorite;
 import de.tinf15b4.kino.data.users.User;
 
 @Repository
 public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
-
-    // List<Favorite> findByIdUser(User user);
 
     @Query("SELECT f FROM Favorite f WHERE f.user = :user ORDER BY f.cinema.name")
     List<Favorite> findFavoritesByUser(@Param("user") User user);

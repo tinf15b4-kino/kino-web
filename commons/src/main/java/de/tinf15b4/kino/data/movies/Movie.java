@@ -15,18 +15,23 @@ import de.tinf15b4.kino.data.ImageContainer;
         @UniqueConstraint(columnNames = { Movie.FieldInfos.TMDB_ID }) })
 public class Movie extends EntityModel implements ImageContainer {
 
-    public interface FieldInfos {
-        String NAME = "name";
-        String DESCRIPTION = "description";
-        String COVER = "cover";
-        int COVER_LENGTH = 1000000;
-        String LENGTH_MINUTES = "lengthMinutes";
-        String AGE_CONTROL = "ageControl";
-        String GENRE = "genre";
-        String TMDB_ID = "tmdbID";
-        String STUDIO = "studio";
-        String AUTHOR = "author";
-        String DIRECTOR = "director";
+    static class FieldInfos {
+        private FieldInfos() {
+            // Just used to hide the public constructor
+            // Sonarqube seems to like that
+        }
+
+        public static final String NAME = "name";
+        public static final String DESCRIPTION = "description";
+        public static final String COVER = "cover";
+        public static final int COVER_LENGTH = 1000000;
+        public static final String LENGTH_MINUTES = "lengthMinutes";
+        public static final String AGE_CONTROL = "ageControl";
+        public static final String GENRE = "genre";
+        public static final String TMDB_ID = "tmdbID";
+        public static final String STUDIO = "studio";
+        public static final String AUTHOR = "author";
+        public static final String DIRECTOR = "director";
     }
 
     @Column(name = Movie.FieldInfos.NAME, nullable = false)

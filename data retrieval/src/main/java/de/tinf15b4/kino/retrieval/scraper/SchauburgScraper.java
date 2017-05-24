@@ -87,14 +87,13 @@ public class SchauburgScraper extends AbstractCinemaScraper {
         if (dateText.contains("Heute")) {
             return LocalDate.now();
         } else {
-            dateText = dateText.substring(4, dateText.length());
-            dateText = dateText.substring(0, 6);
             // TODO what does the website do at silvester? Currently there are
             // no years visible
-            dateText = dateText + LocalDate.now().getYear();
+            String formattedDateText = dateText.substring(4, dateText.length()).substring(0, 6)
+                    + LocalDate.now().getYear();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
             formatter = formatter.withLocale(Locale.GERMAN);
-            return LocalDate.parse(dateText, formatter);
+            return LocalDate.parse(formattedDateText, formatter);
         }
     }
 

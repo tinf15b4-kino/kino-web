@@ -195,16 +195,12 @@ public class SecureRestController {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(RestControllerConstants.INVALID_USERDATA);
         if (user.getName() == null || user.getName().length() < 3 || user.getName().length() > 99)
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(RestControllerConstants.INVALID_USERDATA);
-        if (user.getEmail() == null ||
-                user.getEmail().length() < 5 ||
-                !user.getEmail().contains(".") ||
-                !user.getEmail().contains("@") ||
-                user.getEmail().length() > 99)
+        if (user.getEmail() == null || user.getEmail().length() < 5 || !user.getEmail().contains(".")
+                || !user.getEmail().contains("@") || user.getEmail().length() > 99)
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(RestControllerConstants.INVALID_USERDATA);
         Optional<User> updated = userService.save(user);
         Token userToken = new Token(token);
         String oldUserName = tokens.get(userToken);
-
 
         if (updated.isPresent()) {
             if (oldUserName != null) {
@@ -215,7 +211,7 @@ public class SecureRestController {
             }
             return ResponseEntity.ok(updated.get());
         }
-        
+
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(RestControllerConstants.INTERNAL_SERVER_ERROR);
     }
@@ -223,8 +219,8 @@ public class SecureRestController {
     private ResponseEntity<?> checkToken(String tokenKey) {
         if (!Strings.isNullOrEmpty(tokenKey)) {
             Token token = new Token(tokenKey);
-            String username;
-            if (token.isValid() && !Strings.isNullOrEmpty(username = tokens.get(token))) {
+            if (token.isValid() && !Strings.isNullOrEmpty(tokens.get(token))) {
+                String username = tokens.get(token);
                 updateTokenForUser(username, token);
                 return ResponseEntity.ok(username);
             } else {

@@ -36,7 +36,6 @@ public class ServiceImplModel<E extends EntityModel, R extends JpaRepository<E, 
             return Optional.ofNullable(repository.save(e));
 
         } catch (DataIntegrityViolationException ex) {
-            // ex.printStackTrace();
             return Optional.empty();
         }
     }
@@ -53,24 +52,24 @@ public class ServiceImplModel<E extends EntityModel, R extends JpaRepository<E, 
 
         Optional<E> oe = save(e);
         if (oe.isPresent()) {
-            e = oe.get();
+            E updated = oe.get();
 
-            long newid = e.getId();
+            long newid = updated.getId();
 
             if (newid != oldid && oldid != 0) {
-                String table = e.getClass().getAnnotation(Table.class).name();
+                String table = updated.getClass().getAnnotation(Table.class).name();
 
                 // detach old entity
                 entityManager.flush();
-                entityManager.detach(e);
+                entityManager.detach(updated);
 
                 // adjust the id
-                entityManager.createNativeQuery("UPDATE " + table + " SET id = " + oldid + " WHERE id = " + newid).executeUpdate();
+                entityManager.createNativeQuery(String.format("UPDATE %s SET id = %s WHERE id = %s", table, oldid, newid)).executeUpdate();
 
                 // retrieve it again from the database
-                e = repository.findOne(oldid);
+                E saved = repository.findOne(oldid);
 
-                oe = Optional.ofNullable(e);
+                oe = Optional.ofNullable(saved);
             }
         }
 
