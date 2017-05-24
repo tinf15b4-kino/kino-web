@@ -83,6 +83,7 @@ sonarqube {
 		property "sonar.host.url", "https://sonarqube.com"
 		property "sonar.organization", "w-i-z-o-github"
 		property "sonar.login", "83443694951edac265b6e5c703bc1bf23d560c68"
+		property "sonar.branch", branchName()
 		property "sonar.jacoco.reportPaths", "$jacocoFinal"
     }
 }
@@ -118,3 +119,13 @@ jacocoFinalHtmlReport.dependsOn jacocoMerge
 jacocoMerge.dependsOn {
 	subprojects.test
 }
+
+def branchName() {
+	def branch = ""
+    def proc = "git rev-parse --abbrev-ref HEAD".execute()
+    proc.in.eachLine { line -> branch = line }
+    proc.err.eachLine { line -> println line }
+    proc.waitFor()
+	branch
+}
+
