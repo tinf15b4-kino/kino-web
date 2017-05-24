@@ -19,12 +19,17 @@ import de.tinf15b4.kino.data.users.User;
         RatedMovie.FieldInfos.MOVIE }))
 public class RatedMovie extends EntityModel implements ImageContainer {
 
-    public interface FieldInfos {
-        String USER = "user";
-        String MOVIE = "movie";
-        String RATING = "rating";
-        String DESCRIPTION = "description";
-        String TIME = "time";
+    static class FieldInfos {
+        private FieldInfos() {
+            // Just used to hide the public constructor
+            // Sonarqube seems to like that
+        }
+
+        public static final String USER = "user";
+        public static final String MOVIE = "movie";
+        public static final String RATING = "rating";
+        public static final String DESCRIPTION = "description";
+        public static final String TIME = "time";
     }
 
     @ManyToOne

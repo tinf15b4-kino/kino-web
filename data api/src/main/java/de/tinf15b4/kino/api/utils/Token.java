@@ -9,17 +9,17 @@ public class Token {
     private static final int TOKEN_TIMEOUT = 10;
 
     private long expireTime;
-    private String token;
+    private String tokenString;
 
     public Token(String token) {
-        this.token = token;
+        this.tokenString = token;
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.MINUTE, TOKEN_TIMEOUT);
         expireTime = cal.getTimeInMillis();
     }
 
     public String getToken() {
-        return token;
+        return tokenString;
     }
 
     public boolean isValid() {
@@ -35,7 +35,7 @@ public class Token {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((token == null) ? 0 : token.hashCode());
+        result = prime * result + ((tokenString == null) ? 0 : tokenString.hashCode());
         return result;
     }
 
@@ -48,10 +48,10 @@ public class Token {
         if (getClass() != obj.getClass())
             return false;
         Token other = (Token) obj;
-        if (token == null) {
-            if (other.token != null)
+        if (tokenString == null) {
+            if (other.tokenString != null)
                 return false;
-        } else if (!token.equals(other.token))
+        } else if (!tokenString.equals(other.tokenString))
             return false;
         return true;
     }

@@ -15,6 +15,11 @@ import de.tinf15b4.kino.web.user.UserBean;
 
 public class CinemaFavoriteUtils {
 
+    private CinemaFavoriteUtils() {
+        // Just used to hide the public constructor
+        // Sonarqube seems to like that
+    }
+
     public static Component createFavoriteButton(long cinemaId, UserBean userBean, ToggleFavoriteListener listener) {
         if (!userBean.isUserLoggedIn() || !isCinemaFavorite(cinemaId, userBean.getRestClient())) {
             // create button

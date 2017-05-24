@@ -116,6 +116,7 @@ public class SmartCinemaUi extends UI {
 
             @Override
             public void afterViewChange(ViewChangeEvent event) {
+                // we dont do anything here
             }
         });
     }

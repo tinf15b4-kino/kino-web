@@ -69,26 +69,10 @@ public class MovieView extends VerticalLayout implements View {
                 information.setId("movieInformationForm");
 
                 // Ratings
-                RestResponse ratingsResponse = userBean.getRestClient().getRatedMovies(m.getId());
-                if (!ratingsResponse.hasError()) {
-                    List<RatedMovie> ratedMovies = Lists.newArrayList((RatedMovie[]) ratingsResponse.getValue());
-
-                    if (ratedMovies.size() > 0) {
-                        VerticalLayout ratingsForm = createRatingsForm(ratedMovies);
-                        information.addComponent(ratingsForm);
-                    }
-                }
+                createRatingsSection(m, information);
 
                 // Playlist
-                RestResponse playlistResponse = userBean.getRestClient().getPlaylistForMovie(m.getId(), new Date(),
-                        new Date(new Date().getTime() + 1000L * 3600 * 24 * 7));
-                if (!playlistResponse.hasError()) {
-                    List<Playlist> playlistEntries = Lists.newArrayList((Playlist[]) playlistResponse.getValue());
-
-                    if (playlistEntries.size() > 0) {
-                        information.addComponent(createPlaylistForm(playlistEntries));
-                    }
-                }
+                createPlaylistSection(m, information);
 
                 information.setMargin(new MarginInfo(false, true));
                 content.addComponent(information);
@@ -102,6 +86,30 @@ public class MovieView extends VerticalLayout implements View {
         }
     }
 
+    private void createPlaylistSection(Movie m, VerticalLayout information) {
+        RestResponse playlistResponse = userBean.getRestClient().getPlaylistForMovie(m.getId(), new Date(),
+                new Date(new Date().getTime() + 1000L * 3600 * 24 * 7));
+        if (!playlistResponse.hasError()) {
+            List<Playlist> playlistEntries = Lists.newArrayList((Playlist[]) playlistResponse.getValue());
+
+            if (!playlistEntries.isEmpty()) {
+                information.addComponent(createPlaylistForm(playlistEntries));
+            }
+        }
+    }
+
+    private void createRatingsSection(Movie m, VerticalLayout information) {
+        RestResponse ratingsResponse = userBean.getRestClient().getRatedMovies(m.getId());
+        if (!ratingsResponse.hasError()) {
+            List<RatedMovie> ratedMovies = Lists.newArrayList((RatedMovie[]) ratingsResponse.getValue());
+
+            if (!ratedMovies.isEmpty()) {
+                VerticalLayout ratingsForm = createRatingsForm(ratedMovies);
+                information.addComponent(ratingsForm);
+            }
+        }
+    }
+
     private VerticalLayout createRatingsForm(List<RatedMovie> ratedMovies) {
         VerticalLayout ratingsForm = new VerticalLayout();
 
@@ -110,9 +118,7 @@ public class MovieView extends VerticalLayout implements View {
         ratingsForm.addComponent(heading);
 
         for (RatedMovie rm : ratedMovies) {
-
             ratingsForm.addComponent(createRatingEntry(rm));
-
         }
 
         ratingsForm.setId("ratingsForm");
@@ -122,9 +128,7 @@ public class MovieView extends VerticalLayout implements View {
 
     private VerticalLayout createRatingEntry(RatedMovie ratedMovie) {
         VerticalLayout ratingEntry = new VerticalLayout();
-
         HorizontalLayout userRow = new HorizontalLayout();
-
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
 
         Label userLabel = new Label(ratedMovie.getUser().getName());
@@ -169,14 +173,12 @@ public class MovieView extends VerticalLayout implements View {
         List<Cinema> cinemaList = new ArrayList<>();
 
         for (Playlist p : playlistEntries) {
-
             if (!cinemaList.contains(p.getCinema())) {
                 cinemaList.add(p.getCinema());
             }
         }
 
         for (Cinema c : cinemaList) {
-
             playlistForm.addComponent(createCinemaRow(c, playlistEntries));
         }
 
@@ -239,7 +241,7 @@ public class MovieView extends VerticalLayout implements View {
         double avgRating = 0d;
         if (!avgRatingResponse.hasError())
             avgRating = (Double) avgRatingResponse.getValue();
-        Label rating = new Label("" + avgRating);
+        Label rating = new Label(Double.toString(avgRating));
         rating.setId("rating_" + movie.getId());
         rating.setWidth(null);
         yearRow.addComponent(rating);

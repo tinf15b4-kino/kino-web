@@ -7,7 +7,6 @@ import static org.mockito.Mockito.when;
 import java.util.Optional;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -75,15 +74,6 @@ public class SecureRestControllerTest extends AbstractRestControllerTest {
         ResponseEntity<?> response = underTest.authorize("", "");
         assertEquals(HttpStatus.NOT_ACCEPTABLE, response.getStatusCode());
         assertEquals(RestControllerConstants.NOT_NULL, response.getBody());
-    }
-
-    @Test
-    @Ignore
-    public void testLoginTwice() throws Exception {
-        ResponseEntity<?> response1 = underTest.authorize("Mustermann", "muster");
-        assertValidResponse(response1);
-        ResponseEntity<?> response2 = underTest.authorize("Mustermann", "muster");
-        assertEquals(HttpStatus.BAD_REQUEST, response2.getStatusCode());
     }
 
     @Test

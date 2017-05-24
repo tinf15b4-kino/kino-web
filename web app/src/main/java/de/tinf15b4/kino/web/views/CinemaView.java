@@ -77,27 +77,10 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
                     informationForm.addComponent(createCinemaInformation(c));
 
                     // ratings
-                    RestResponse ratedCinemaResponse = userBean.getRestClient().getRatedCinemas(c.getId());
-                    if (!ratedCinemaResponse.hasError()) {
-                        List<RatedCinema> ratedCinemas = Lists
-                                .newArrayList((RatedCinema[]) ratedCinemaResponse.getValue());
-
-                        if (ratedCinemas.size() > 0) {
-                            VerticalLayout ratingsForm = createRatingsForm(ratedCinemas);
-                            informationForm.addComponent(ratingsForm);
-                        }
-                    }
+                    createRatingSection(informationForm);
 
                     // playtimes
-                    RestResponse playlistResponse = userBean.getRestClient().getPlaylistForCinemas(c.getId(),
-                            new Date(), new Date(new Date().getTime() + 1000L * 3600 * 24 * 7));
-                    if (!playlistResponse.hasError()) {
-                        List<Playlist> playlistEntries = Lists.newArrayList((Playlist[]) playlistResponse.getValue());
-
-                        if (playlistEntries.size() > 0) {
-                            informationForm.addComponent(createPlaylistForm(playlistEntries));
-                        }
-                    }
+                    createPlaylistSection(informationForm);
 
                     informationForm.setMargin(new MarginInfo(false, true));
                     content.addComponent(informationForm);
@@ -107,6 +90,31 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
                     content.setSpacing(true);
                     this.addComponent(content);
                 }
+            }
+        }
+    }
+
+    private void createPlaylistSection(VerticalLayout informationForm) {
+        RestResponse playlistResponse = userBean.getRestClient().getPlaylistForCinemas(c.getId(),
+                new Date(), new Date(new Date().getTime() + 1000L * 3600 * 24 * 7));
+        if (!playlistResponse.hasError()) {
+            List<Playlist> playlistEntries = Lists.newArrayList((Playlist[]) playlistResponse.getValue());
+
+            if (!playlistEntries.isEmpty()) {
+                informationForm.addComponent(createPlaylistForm(playlistEntries));
+            }
+        }
+    }
+
+    private void createRatingSection(VerticalLayout informationForm) {
+        RestResponse ratedCinemaResponse = userBean.getRestClient().getRatedCinemas(c.getId());
+        if (!ratedCinemaResponse.hasError()) {
+            List<RatedCinema> ratedCinemas = Lists
+                    .newArrayList((RatedCinema[]) ratedCinemaResponse.getValue());
+
+            if (!ratedCinemas.isEmpty()) {
+                VerticalLayout ratingsForm = createRatingsForm(ratedCinemas);
+                informationForm.addComponent(ratingsForm);
             }
         }
     }

@@ -32,6 +32,8 @@ import io.github.bonigarcia.wdm.FirefoxDriverManager;
 
 public abstract class AbstractCinemaScraper {
 
+    private static final String REST_CALL_FAILED = "Call to REST Service failed";
+
     protected RemoteWebDriver driver;
     protected Logger logger;
     private TmdbDataRetriever tmdb;
@@ -108,12 +110,12 @@ public abstract class AbstractCinemaScraper {
     }
 
     private void saveAndUpdatePlaylists(GatheringResult result, Movie movie, Movie filledMovie) {
-        filledMovie = saveObject(filledMovie, Movie.class);
+        Movie savedMovie = saveObject(filledMovie, Movie.class);
         for (Playlist playlist : result.getPlaylists()) {
             // We want to compare for the specific instance here as its
             // the only thing we have
             if (playlist.getMovie() == movie) {
-                playlist.setMovie(filledMovie);
+                playlist.setMovie(savedMovie);
             }
         }
     }
@@ -150,11 +152,11 @@ public abstract class AbstractCinemaScraper {
                 driver = new RemoteWebDriver(new URL(remote), DesiredCapabilities.firefox());
                 logger.info("Remote driver initialized for scraper: [%s]", cinema.getName());
             } catch (MalformedURLException e) {
-                throw new RuntimeException("Maformed URL: [" + remote + "]", e);
+                throw new IllegalArgumentException("Maformed URL: [" + remote + "]", e);
             }
             break;
         default:
-            throw new RuntimeException("Unknown driver '" + drvstr + '"');
+            throw new IllegalArgumentException("Unknown driver '" + drvstr + '"');
         }
     }
 
@@ -195,7 +197,7 @@ public abstract class AbstractCinemaScraper {
                 // Get result
                 int status = connection.getResponseCode();
                 if (status != 200) {
-                    throw new IllegalStateException("REST Service call failed.");
+                    throw new IllegalStateException(REST_CALL_FAILED);
                 } else {
                     try (Reader r = new InputStreamReader(connection.getInputStream())) {
                         return GsonFactory.buildGson().fromJson(r, expectedResult);
@@ -205,7 +207,7 @@ public abstract class AbstractCinemaScraper {
                 connection.disconnect();
             }
         } catch (IOException e) {
-            throw new RuntimeException("Call to REST Service failed.", e);
+            throw new IllegalStateException(REST_CALL_FAILED, e);
         }
     }
 
@@ -226,13 +228,13 @@ public abstract class AbstractCinemaScraper {
                 // Get result
                 int status = connection.getResponseCode();
                 if (status != 200)
-                    throw new IllegalStateException("REST Service call failed.");
+                    throw new IllegalStateException(REST_CALL_FAILED);
 
             } finally {
                 connection.disconnect();
             }
         } catch (IOException e) {
-            throw new RuntimeException("Call to REST Service failed.", e);
+            throw new IllegalStateException(REST_CALL_FAILED, e);
         }
     }
 
@@ -262,7 +264,7 @@ public abstract class AbstractCinemaScraper {
                 // Get result
                 int status = connection.getResponseCode();
                 if (status != 200) {
-                    throw new IllegalStateException("REST Service call failed.");
+                    throw new IllegalStateException(REST_CALL_FAILED);
                 } else {
                     try (InputStream is = connection.getInputStream(); Reader r = new InputStreamReader(is)) {
                         return type.findObject(r, toSave);
@@ -272,7 +274,7 @@ public abstract class AbstractCinemaScraper {
                 connection.disconnect();
             }
         } catch (IOException e) {
-            throw new RuntimeException("Call to REST Service failed.", e);
+            throw new IllegalStateException(REST_CALL_FAILED, e);
         }
     }
 

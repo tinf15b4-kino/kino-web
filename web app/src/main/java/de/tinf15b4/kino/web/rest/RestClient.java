@@ -35,6 +35,8 @@ public class RestClient implements Serializable {
 
     private static final long serialVersionUID = 142015013387782716L;
 
+    private static final String ENCODING = "UTF-8";
+
     private static final String AUTHORIZE = "/authorize?username=%s&password=%s";
     private static final String LOGOUT = "/logout?token=%s";
     private static final String GET_USER = "/getUser?token=%s";
@@ -78,9 +80,9 @@ public class RestClient implements Serializable {
 
     public RestResponse authorize() {
         try {
-            URLEncoder.encode(userNameOrEmail, "UTF-8");
-            String requestUrl = baseUrl + String.format(AUTHORIZE, URLEncoder.encode(userNameOrEmail, "UTF-8"),
-                    URLEncoder.encode(password, "UTF-8"));
+            URLEncoder.encode(userNameOrEmail, "ENCODING");
+            String requestUrl = baseUrl + String.format(AUTHORIZE, URLEncoder.encode(userNameOrEmail, ENCODING),
+                    URLEncoder.encode(password, ENCODING));
             authorized = true;
             RestResponse response = doGetRequest(requestUrl, String.class, false);
             if (response.hasError()) {
@@ -90,7 +92,7 @@ public class RestClient implements Serializable {
             }
             return response;
         } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(INTERNAL_SERVER_ERROR, e);
+            throw new IllegalArgumentException(INTERNAL_SERVER_ERROR, e);
         }
     }
 
@@ -180,9 +182,8 @@ public class RestClient implements Serializable {
     }
 
     public RestResponse getPlaylistForMovie(long movieId, Date from, Date to) {
-        String requestUrl = baseUrl
-                + String.format(GET_PLAYLIST_MOVIE, movieId, (from != null) ? from.getTime() : "",
-                        (to != null) ? to.getTime() : "");
+        String requestUrl = baseUrl + String.format(GET_PLAYLIST_MOVIE, movieId, (from != null) ? from.getTime() : "",
+                (to != null) ? to.getTime() : "");
         return doGetRequest(requestUrl, Playlist[].class, false);
     }
 
@@ -264,12 +265,13 @@ public class RestClient implements Serializable {
                 authorize();
                 if (token != null)
                     return doRestCall(url, expectedResult, method, body, needAuthorization);
+                throw new IllegalStateException(INTERNAL_SERVER_ERROR);
             default:
                 String error = parseString(connection.getErrorStream());
                 return new RestResponse(error, status, null);
             }
         } catch (IOException e) {
-            throw new RuntimeException(INTERNAL_SERVER_ERROR, e);
+            throw new IllegalArgumentException(INTERNAL_SERVER_ERROR, e);
         }
     }
 
@@ -282,7 +284,7 @@ public class RestClient implements Serializable {
             return result.toString();
         } catch (NullPointerException e) {
             // URL must have been wrong. We got an error, but there is no stream
-            throw new RuntimeException("URL does not exist", e);
+            throw new IllegalArgumentException("URL does not exist", e);
         }
     }
 
@@ -290,7 +292,7 @@ public class RestClient implements Serializable {
         try {
             return new URL(urlString);
         } catch (MalformedURLException e) {
-            throw new RuntimeException(INTERNAL_SERVER_ERROR, e);
+            throw new IllegalArgumentException(INTERNAL_SERVER_ERROR, e);
         }
     }
 

@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import de.tinf15b4.kino.retrieval.scraper.AbstractCinemaScraper;
 
 public class DataRetriever {
-    
+
     private static final Logger LOGGER = LoggerFactory.getLogger(DataRetriever.class);
 
     private List<AbstractCinemaScraper> scrapers;
@@ -35,7 +35,7 @@ public class DataRetriever {
     }
 
     public void runScrapers() {
-        scrapers.forEach(scraper -> scraper.scrape());
+        scrapers.forEach(AbstractCinemaScraper::scrape);
     }
 
 }

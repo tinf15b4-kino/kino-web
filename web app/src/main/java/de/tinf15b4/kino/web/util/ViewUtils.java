@@ -25,6 +25,11 @@ import de.tinf15b4.kino.web.views.CinemaView;
 
 public class ViewUtils {
 
+    private ViewUtils() {
+        // Just used to hide the public constructor
+        // Sonarqube seems to like that
+    }
+
     public static HorizontalLayout createCinemaRow(Cinema c, UserBean userBean) {
         HorizontalLayout row = new HorizontalLayout();
         row.setWidth(100, Unit.PERCENTAGE);
@@ -62,7 +67,7 @@ public class ViewUtils {
 
             // Add playtimes to table
             for (Playlist p : playlists) {
-                LocalDate playDate = p.getTime().toInstant().atZone(ZoneId.of("GMT+2")).toLocalDate();
+                LocalDate playDate = p.getTime().toInstant().atZone(ZoneId.of("Europe/Berlin")).toLocalDate();
                 if (currentDate.plusDays(i).isEqual(playDate) && p.getCinema().equals(cinema)) {
                     Label timeRow = new Label(movieTimeFormat.format(p.getTime()));
                     timeRow.setPrimaryStyleName("timeEntry");

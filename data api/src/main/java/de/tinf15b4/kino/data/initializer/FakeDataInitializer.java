@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,9 @@ import de.tinf15b4.kino.utils.ImageLoader;
 
 @Service
 public class FakeDataInitializer implements DataInitializer {
+    
+    private static final Logger LOGGER = LoggerFactory.getLogger(FakeDataInitializer.class);
+    
     @Autowired
     private CinemaService cinemaService;
 
@@ -144,8 +149,8 @@ public class FakeDataInitializer implements DataInitializer {
                             faker.date().between(new Date(), new Date(new Date().getTime() + 1000L * 3600 * 24 * 7)));
 
                     if (!ratedCinemaService.save(rc).isPresent()) {
-                        System.out.println(String.format("Rating for User: %s and Cinema: %s already exist",
-                                rc.getUser().getName(), rc.getCinema().getName()));
+                        LOGGER.warn("Rating for User: %s and Cinema: %s already exist",
+                                rc.getUser().getName(), rc.getCinema().getName());
                     }
                 }
             }
@@ -170,8 +175,8 @@ public class FakeDataInitializer implements DataInitializer {
                             faker.date().between(new Date(), new Date(new Date().getTime() + 1000L * 3600 * 24 * 7)));
 
                     if (!ratedMovieService.save(rm).isPresent()) {
-                        System.out.println(String.format("Rating for User: \"%s\" and Movie: \"%s\" already exist",
-                                rm.getUser().getName(), rm.getMovie().getName()));
+                        LOGGER.warn("Rating for User: \"%s\" and Movie: \"%s\" already exist",
+                                rm.getUser().getName(), rm.getMovie().getName());
                     }
                 }
             }

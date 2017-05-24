@@ -42,7 +42,7 @@ public class PriceFilter extends VerticalLayout {
             Number number = format.parse(value);
             return Math.round(number.floatValue() * 100);
         } catch (ParseException e) {
-
+            //do nothing here
         }
         return 0;
     }

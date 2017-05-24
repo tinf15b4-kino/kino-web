@@ -16,15 +16,20 @@ public class Cinema extends EntityModel implements ImageContainer, Serializable 
 
     private static final long serialVersionUID = -7984776023686706282L;
 
-    public interface FieldInfos {
-        String NAME = "name";
-        String STREET = "street";
-        String HNR = "hnr";
-        String POSTCODE = "postcode";
-        String CITY = "city";
-        String COUNTRY = "country";
-        String IMAGE = "image";
-        int IMAGE_LENGTH = 10000000;
+    static class FieldInfos {
+        private FieldInfos() {
+            // Just used to hide the public constructor
+            // Sonarqube seems to like that
+        }
+
+        public static final String NAME = "name";
+        public static final String STREET = "street";
+        public static final String HNR = "hnr";
+        public static final String POSTCODE = "postcode";
+        public static final String CITY = "city";
+        public static final String COUNTRY = "country";
+        public static final String IMAGE = "image";
+        public static final int IMAGE_LENGTH = 10000000;
     }
 
     @Column(name = FieldInfos.NAME, nullable = false)
@@ -62,7 +67,7 @@ public class Cinema extends EntityModel implements ImageContainer, Serializable 
     }
 
     public String getAddress() {
-        return String.format("%s %s\n%s %s, %S", street, hnr, postcode, city, country);
+        return String.format("%s %s%n%s %s, %S", street, hnr, postcode, city, country);
     }
 
     public String getName() {

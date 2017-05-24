@@ -67,7 +67,7 @@ public class KinemathekScraper extends AbstractCinemaScraper {
 
             String title = movieElement.findElement(By.xpath(".//div[contains(@class, 'programm-title')]/a")).getText();
 
-            logger.info(String.format("Movie [%s] is played at [%s]", title, dateTime));
+            logger.info("Movie [%s] is played at [%s]", title, dateTime);
 
             Movie movie = new Movie(title, null, null, 0, null, null);
             movies.add(movie);
@@ -91,13 +91,12 @@ public class KinemathekScraper extends AbstractCinemaScraper {
         if (dateText.equals("heute")) {
             return LocalDate.now();
         } else {
-            dateText = dateText.substring(3, dateText.length());
             // TODO what does the website do at silvester? Currently there are
             // no years visible
-            dateText = dateText + " " + LocalDate.now().getYear();
+            String formattedDateText = dateText.substring(3, dateText.length()) + " " + LocalDate.now().getYear();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd. MMMM yyyy");
             formatter = formatter.withLocale(Locale.GERMAN);
-            return LocalDate.parse(dateText, formatter);
+            return LocalDate.parse(formattedDateText, formatter);
         }
     }
 }

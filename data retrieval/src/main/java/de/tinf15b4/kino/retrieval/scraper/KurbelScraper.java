@@ -41,9 +41,9 @@ public class KurbelScraper extends AbstractCinemaScraper {
     }
 
     private void handleMovies() {
-        List<WebElement> movies = driver
+        List<WebElement> movieElements = driver
                 .findElementsByXPath(".//div[contains(@class, 'film_box')]//div[contains(@id, 'mitte')]");
-        for (WebElement movieElement : movies) {
+        for (WebElement movieElement : movieElements) {
             String title = movieElement.findElement(By.xpath(".//h2")).getText();
             Movie movie = new Movie(title, null, null, 0, null, null);
             this.movies.add(movie);
@@ -86,14 +86,12 @@ public class KurbelScraper extends AbstractCinemaScraper {
         if (dateText.trim().equals("Heute")) {
             return LocalDate.now();
         } else {
-            dateText = dateText.trim();
-            dateText = dateText.substring(3, dateText.length());
             // TODO what does the website do at silvester? Currently there are
             // no years visible
-            dateText = dateText + LocalDate.now().getYear();
+            String formattedDateText = dateText.trim().substring(3, dateText.length()) + LocalDate.now().getYear();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
             formatter = formatter.withLocale(Locale.GERMAN);
-            return LocalDate.parse(dateText, formatter);
+            return LocalDate.parse(formattedDateText, formatter);
         }
     }
 

@@ -19,11 +19,16 @@ import de.tinf15b4.kino.data.movies.Movie;
         Playlist.FieldInfos.MOVIE, Playlist.FieldInfos.TIME }))
 public class Playlist extends EntityModel implements ImageContainer {
 
-    public interface FieldInfos {
-        String CINEMA = "cinema";
-        String MOVIE = "movie";
-        String TIME = "time";
-        String PRICE = "price";
+    static class FieldInfos {
+        private FieldInfos() {
+            // Just used to hide the public constructor
+            // Sonarqube seems to like that
+        }
+
+        public static final String CINEMA = "cinema";
+        public static final String MOVIE = "movie";
+        public static final String TIME = "time";
+        public static final String PRICE = "price";
     }
 
     @ManyToOne
