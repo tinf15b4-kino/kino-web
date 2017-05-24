@@ -1,0 +1,120 @@
+// ##### Define Variables #####
+def jacocoPath = "$rootProject.buildDir/jacoco"
+def jacocoFinal = "$jacocoPath/jacoco_final.exec"
+
+// ##### Configuration of all projects #####
+allprojects {
+	buildscript {
+		repositories {
+			mavenCentral()
+		}
+	}
+
+	apply plugin: "jacoco"	
+	apply plugin: "java"
+	
+	repositories {
+    	mavenCentral()
+	}
+	
+	jacoco {
+		toolVersion = "0.7.9"
+	}
+}
+
+// ##### Configuration of Sub-Projects
+subprojects {
+	apply plugin: "eclipse"
+	
+	jar {
+		baseName = "tinf15b4-kino-${project.name.replace(" ","-")}"
+		version = "0.0.1-SNAPSHOT"
+	}
+	
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
+	
+	dependencies {
+    	testCompile("junit:junit:4.12")
+	}
+	
+	// Jacoco-Configuration
+	test {
+		jacoco {
+			append = false
+			destinationFile = file("$jacocoPath/jacoco_$project.name" + ".exec")
+		}
+	}
+	
+	jacocoTestReport {
+        reports {
+            html.enabled = false
+            xml.enabled = false
+            csv.enabled = false
+        }
+    }
+	
+	// Run jacocoTestReport when Test are finished
+	test.finalizedBy jacocoTestReport
+}
+
+// ##### Configuration of Root-Project #####
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+		
+    dependencies {
+    	classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.4"
+    }
+}
+
+apply plugin: "org.sonarqube"
+
+ext.baseVersion = "0.0.1"
+ext.snapshotVersion = true
+version = "$baseVersion" + (snapshotVersion ? "-SNAPSHOT" : "")
+
+// General Sonarqube Configuration
+sonarqube {
+    properties {
+        property "sonar.projectName", "SmartCinema"
+		property "sonar.projectKey", "de.tinf15b4.kino"
+		property "sonar.host.url", "https://sonarqube.com"
+		property "sonar.organization", "w-i-z-o-github"
+		property "sonar.login", "83443694951edac265b6e5c703bc1bf23d560c68"
+		property "sonar.jacoco.reportPaths", "$jacocoFinal"
+    }
+}
+
+// Merge Jacoco-Files from Subprojects
+task jacocoMerge(type: JacocoMerge){
+	executionData fileTree(file("$jacocoPath")).include("**/*.exec")
+	
+	destinationFile=file("$jacocoFinal")
+}
+
+// Create HTML-Report for merged Jacoco-Files
+// This is for local use, not needed for Sonarqube
+task jacocoFinalHtmlReport(type: JacocoReport) {
+    executionData file("$jacocoFinal")
+	
+	// Add all relevant sourcesets from the subprojects 
+    subprojects.each {
+       sourceSets it.sourceSets.main
+    }
+    
+        reports {
+            html.destination "$jacocoPath/report"
+            xml.enabled = false
+            csv.enabled = false
+
+    }
+}
+
+// Make sure jacocoMerge runs before sonarqube
+tasks.sonarqube.dependsOn jacocoFinalHtmlReport
+jacocoFinalHtmlReport.dependsOn jacocoMerge
+jacocoMerge.dependsOn {
+	subprojects.test
+}

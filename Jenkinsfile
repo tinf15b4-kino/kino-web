@@ -25,8 +25,13 @@ node {
         stage 'Archive Jar'
         archiveArtifacts artifacts: '*/build/libs/*.jar', fingerprint: true
 
-        stage 'Run Tests'
-        sh "./gradlew test -Dkinotest.driver=remote --debug || true"
+        if ("${env.BRANCH_NAME}" == "develop" || "${env.BRANCH_NAME}" == "TESB416-270") {
+            stage 'Run Tests (with SonarQube)'
+            sh "./gradlew clean && ./gradlew sonarqube -Dkinotest.driver=remote --debug || true"
+        } else {
+            stage 'Run Tests'
+            sh "./gradlew test -Dkinotest.driver=remote --debug || true"
+        }
         junit '*/build/test-results/*.xml'
     } catch (e) {
         // If there was an exception thrown, the build failed

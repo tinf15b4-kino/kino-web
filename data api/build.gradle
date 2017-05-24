@@ -1,53 +1,43 @@
 buildscript {
-    repositories {
-        mavenCentral()
-    }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.3.RELEASE")
     }
 }
 
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'org.springframework.boot'
+apply plugin: "org.springframework.boot"
 
-jar {
-    baseName = 'tinf15b4-kino-data-api'
-    version = '0.0.1-SNAPSHOT'
-}
 
 sourceSets {
     main {
         java {
-            srcDir 'src/main/java'
+            srcDir "src/main/java"
         }
         resources {
-            srcDir 'src/main/resources'
+            srcDir "src/main/resources"
         }
     }
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-web')
-    compile('org.springframework.boot:spring-boot-starter-jetty')
-    compile('org.springframework.boot:spring-boot-devtools')
-    compile('org.springframework.boot:spring-boot-starter-data-jpa')
-    compile('com.h2database:h2')
-    compile('com.github.javafaker:javafaker:0.10')
-    compile('org.jsondoc:spring-boot-starter-jsondoc:1.2.17')
-	compile('org.jsondoc:jsondoc-ui-webjar:1.2.17')
-	compile project(':commons')
-    testCompile('junit:junit')
-    testCompile('org.mockito:mockito-core:1.10.19')
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-jetty")
+    compile("org.springframework.boot:spring-boot-devtools")
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    compile("com.h2database:h2")
+    compile("com.github.javafaker:javafaker:0.10")
+    compile("org.jsondoc:spring-boot-starter-jsondoc:1.2.17")
+    compile("org.jsondoc:jsondoc-ui-webjar:1.2.17")
+    compile project(":commons")
+    testCompile("junit:junit")
+    testCompile("org.mockito:mockito-core:1.10.19")
 }
 
 bootRun {
     standardInput = System.in
+}
+
+sonarqube {
+    properties {
+        property "sonar.moduleKey", "data-api"
+    }
 }
