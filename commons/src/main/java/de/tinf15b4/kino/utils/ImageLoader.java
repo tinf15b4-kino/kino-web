@@ -19,14 +19,12 @@ public class ImageLoader {
             return getImage(new URL(url), pictureFormat);
         } catch (IOException e) {
             logger.warn(String.format("Unable to convert the given String [%s] into an URL", url), e);
-            return null;
+            return new byte[0];
         }
     }
 
     public byte[] getImage(URL url, String pictureFormat) {
-
         try {
-
             byte[] imageInByte;
             BufferedImage originalImage = ImageIO.read(url);
 
@@ -40,7 +38,7 @@ public class ImageLoader {
             return imageInByte;
         } catch (IOException e) {
             logger.warn(String.format("Unable to load Picture from given URL [%s]", url), e);
-            return null;
+            return new byte[0];
         }
     }
 }

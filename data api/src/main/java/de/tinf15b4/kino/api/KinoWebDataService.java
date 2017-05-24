@@ -87,16 +87,13 @@ public class KinoWebDataService extends WebMvcConfigurerAdapter {
 
         // HACK: quit whenever stdin is closed
         if (System.getenv("SMARTCINEMA_DATA_API_KEEPALIVE_PIPE") != null) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        System.in.read();
-                    } catch (IOException e) {
-                        LOGGER.error("IO Exception occured", e);
-                    } finally {
-                        System.exit(0);
-                    }
+            new Thread(() -> {
+                try {
+                    System.in.read();
+                } catch (IOException e) {
+                    LOGGER.error("IO Exception occured", e);
+                } finally {
+                    System.exit(0);
                 }
             }).start();
         }

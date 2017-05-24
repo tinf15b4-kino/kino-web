@@ -1,5 +1,7 @@
 package de.tinf15b4.kino.web.views;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.google.common.base.Strings;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.event.ShortcutListener;
@@ -17,17 +19,15 @@ import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
+
 import de.tinf15b4.kino.data.users.User;
 import de.tinf15b4.kino.web.rest.RestResponse;
 import de.tinf15b4.kino.web.ui.SmartCinemaUi;
 import de.tinf15b4.kino.web.user.UserBean;
-import org.springframework.beans.factory.annotation.Autowired;
-
 
 @SpringView(name = AccountView.VIEW_NAME)
 
 public class AccountView extends VerticalLayout implements View {
-
 
     public static final String VIEW_NAME = "account";
 
@@ -88,14 +88,8 @@ public class AccountView extends VerticalLayout implements View {
             newPwCheckRow.addComponent(newPwCheckField);
             userForm.addComponent(newPwCheckRow);
 
-
-            Button saveButton = new Button("Speichern", e -> trySave(
-                    userField,
-                    emailField,
-                    oldPwField,
-                    newPwField,
-                    newPwCheckField,
-                    currentUser));
+            Button saveButton = new Button("Speichern",
+                    e -> trySave(userField, emailField, oldPwField, newPwField, newPwCheckField, currentUser));
 
             userForm.addComponent(saveButton);
             saveButton.addStyleName(ValoTheme.BUTTON_PRIMARY);
@@ -107,13 +101,12 @@ public class AccountView extends VerticalLayout implements View {
                 }
             });
 
-
             this.addComponent(userForm);
         }
     }
 
     private void trySave(TextField userField, TextField emailField, PasswordField oldPwField, PasswordField newPwField,
-                         PasswordField newPwCheckField, User currentUser) {
+            PasswordField newPwCheckField, User currentUser) {
         if (userBean.isUserLoggedIn()) {
 
             String userName = userField.getValue();
@@ -135,91 +128,116 @@ public class AccountView extends VerticalLayout implements View {
 
             // change userName
             if (!userName.equals(currentUser.getName())) {
-                if (userName.length() > 99) {
-                    userField.setComponentError(new UserError("Der angegebene Benutzername ist zu lang"));
-                    valid = false;
+                String errorMsg = checkUsername(userName);
+                if (Strings.isNullOrEmpty(errorMsg)) {
+                    changeUsername = true;
                 } else {
-                    if (userName.length() > 2) {
-                        changeUsername = true;
-                    } else {
-                        userField.setComponentError(new UserError("Bitte überprüfen Sie die Eingabe"));
-                        valid = false;
-                    }
+                    userField.setComponentError(new UserError(errorMsg));
+                    valid = false;
                 }
             }
 
             // change email
             if (!email.equals(currentUser.getEmail())) {
-                if (email.length() > 99) {
-                    emailField.setComponentError(new UserError("Die angegebene E-Mailadresse" +
-                            " ist zu lang"));
-                    valid = false;
+                String errorMsg = checkEmail(email);
+                if (Strings.isNullOrEmpty(errorMsg)) {
+                    changeEmail = true;
                 } else {
-                    if (email.contains("@") && email.contains(".") && email.length() > 6) {
-
-                        changeEmail = true;
-                    } else {
-                        emailField.setComponentError(new UserError("Bitte überprüfen Sie die Eingabe"));
-                        valid = false;
-                    }
+                    emailField.setComponentError(new UserError(errorMsg));
+                    valid = false;
                 }
             }
 
             // change PW
             if (!Strings.isNullOrEmpty(oldPw) || !Strings.isNullOrEmpty(newPw)) {
-                if (Strings.isNullOrEmpty(oldPw)) {
-                    oldPwField.setComponentError(new UserError("Wenn Sie das Passwort ändern möchten," +
-                            " müssen Sie das alte Passwort angeben"));
-                    valid = false;
-                } else if (Strings.isNullOrEmpty(newPw)) {
-                    newPwField.setComponentError(new UserError("Wenn Sie das Passwort ändern möchten," +
-                            " müssen Sie ein neues Passwort angeben"));
-                    valid = false;
-                } else if (!oldPw.equals(currentUser.getPassword())) {
-                    oldPwField.setComponentError(new UserError("Das angegbene Passwort ist falsch"));
-                    valid = false;
-                } else if (newPw.length() > 99) {
-                    newPwField.setComponentError(new UserError("Das angegebene Passwort ist zu lang"));
-                    valid = false;
-                } else if (!newPw.equals(newCheckPw)) {
-                    newPwField.setComponentError(new UserError("Die angegebenen Passwörter stimmen" +
-                            " nicht überein"));
-                    valid = false;
-                } else if (oldPw.equals(currentUser.getPassword())) {
-                    if (newPw.length() > 7) {
+                String oldPwErrorMsg = checkOldPassword(oldPw, currentUser);
+                if (Strings.isNullOrEmpty(oldPwErrorMsg)) {
+                    String newPwErrorMsg = checkNewPassword(newPw, newCheckPw);
+                    if (Strings.isNullOrEmpty(newPwErrorMsg)) {
                         changePw = true;
                     } else {
-                        newPwField.setComponentError(new UserError("Das angegebene Passwort ist zu kurz"));
+                        newPwField.setComponentError(new UserError(newPwErrorMsg));
                         valid = false;
                     }
+                } else {
+                    oldPwField.setComponentError(new UserError(oldPwErrorMsg));
+                    valid = false;
                 }
             }
 
             if (valid) {
-                if (changeUsername) {
-                    currentUser.setName(userName);
-                }
-                if (changeEmail) {
-                    currentUser.setEmail(email);
-                }
-                if (changePw) {
-                    currentUser.setPassword(newPw);
-
-                    // clear Passwords after succesful change
-                    oldPwField.clear();
-                    newPwField.clear();
-                    newPwCheckField.clear();
-                }
-
-
-                RestResponse userResponse = userBean.getRestClient().saveUser(currentUser);
-                if (!userResponse.hasError()) {
-                    ((SmartCinemaUi) getUI()).update();
-                    Notification.show("Die Änderungen wurden erfolgreich übernommen", Notification.Type.HUMANIZED_MESSAGE);
-                } else {
-                    Notification.show(userResponse.getErrorMsg(), Notification.Type.ERROR_MESSAGE);
-                }
+                performChange(currentUser, userName, email, newPw, changeUsername, changeEmail, changePw);
+                // clear Passwords after change (no matter whether successful or not)
+                oldPwField.clear();
+                newPwField.clear();
+                newPwCheckField.clear();
             }
         }
+    }
+
+    private void performChange(User currentUser, String userName, String email, String newPw, boolean changeUsername,
+            boolean changeEmail, boolean changePw) {
+        if (changeUsername) {
+            currentUser.setName(userName);
+        }
+        if (changeEmail) {
+            currentUser.setEmail(email);
+        }
+        if (changePw) {
+            currentUser.setPassword(newPw);
+
+        }
+
+        RestResponse userResponse = userBean.getRestClient().saveUser(currentUser);
+        if (!userResponse.hasError()) {
+            ((SmartCinemaUi) getUI()).update();
+            Notification.show("Die Änderungen wurden erfolgreich übernommen", Notification.Type.HUMANIZED_MESSAGE);
+        } else {
+            Notification.show(userResponse.getErrorMsg(), Notification.Type.ERROR_MESSAGE);
+        }
+    }
+
+    private String checkUsername(String userName) {
+        if (userName.length() > 99) {
+            return "Der angegebene Benutzername ist zu lang";
+        } else {
+            if (userName.length() <= 2) {
+                return "Bitte überprüfen Sie die Eingabe";
+            }
+        }
+        return "";
+    }
+
+    private String checkEmail(String email) {
+        if (email.length() > 99) {
+            return "Die angegebene E-Mailadresse" + " ist zu lang";
+        } else {
+            if (!email.contains("@") && !email.contains(".") && email.length() <= 6) {
+                return "Bitte überprüfen Sie die Eingabe";
+            }
+        }
+        return "";
+    }
+
+    private String checkOldPassword(String oldPw, User currentUser) {
+        if (Strings.isNullOrEmpty(oldPw)) {
+            return "Wenn Sie das Passwort ändern möchten, müssen Sie das alte Passwort angeben";
+        } else if (!oldPw.equals(currentUser.getPassword())) {
+            return "Das angegbene Passwort ist falsch";
+        }
+        return "";
+    }
+
+    private String checkNewPassword(String newPw, String newCheckPw) {
+        if (Strings.isNullOrEmpty(newPw)) {
+            return "Wenn Sie das Passwort ändern möchten, müssen Sie ein neues Passwort angeben";
+        } else if (newPw.length() > 99) {
+            return "Das angegebene Passwort ist zu lang";
+        } else if (!newPw.equals(newCheckPw)) {
+            return "Die angegebenen Passwörter stimmen nicht überein";
+        } else if (newPw.length() <= 7) {
+            return "Das angegebene Passwort ist zu kurz";
+        }
+        return "";
     }
 }
