@@ -18,7 +18,7 @@ public class GenreCheckboxes extends VerticalLayout {
 
     public GenreCheckboxes(MovieListView view, MovieFilterData filterData) {
         selected = new HashSet<>();
-        addComponent(new Label("Altersfreigabe"));
+        addComponent(new Label("Genre"));
         for (Genre genre : Genre.values()) {
             CheckBox box = new CheckBox(genre.toString(), false);
             addComponent(box);
