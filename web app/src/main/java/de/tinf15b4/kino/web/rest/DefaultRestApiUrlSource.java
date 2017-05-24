@@ -6,7 +6,10 @@ import org.springframework.web.context.annotation.ApplicationScope;
 @Component
 @ApplicationScope
 public class DefaultRestApiUrlSource implements RestApiUrlSource {
-    public static int PORT = 9090;
+
+    private static final long serialVersionUID = 4476430176881271243L;
+
+    private static final int PORT = 9090;
 
     @Override
     public String getUrl() {

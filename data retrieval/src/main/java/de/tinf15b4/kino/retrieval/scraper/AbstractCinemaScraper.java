@@ -81,8 +81,7 @@ public abstract class AbstractCinemaScraper {
         for (Playlist playlist : result.getPlaylists()) {
             playlist.setCinema(cinema);
             Playlist p = saveObject(playlist, Playlist.class);
-            logger.info(String.format("Movie %s is played at %s in %s", p.getMovie().getName(), p.getTime(),
-                    p.getCinema().getName()));
+            logger.info(String.format("Movie %s is played at %s in %s", p.getMovie().getName(), p.getTime(), p.getCinema().getName()));
         }
     }
 
@@ -156,8 +155,7 @@ public abstract class AbstractCinemaScraper {
         } catch (MovieDbException e) {
             // Movie DB does not know this movie for some reason. Basically this
             // means we won't show it
-            logger.warn(
-                    String.format("TheMovieDB does not know movie [%s]. We skip this movie for now.", movie.getName()));
+            logger.warn(String.format("TheMovieDB does not know movie [%s]. We skip this movie for now.", movie.getName()));
             return null;
         }
     }
@@ -187,11 +185,8 @@ public abstract class AbstractCinemaScraper {
 
                 // Get result
                 int status = connection.getResponseCode();
-                if (status != 200)
+                if (status != 200) {
                     throw new IllegalStateException("REST Service call failed.");
-
-                if (expectedResult.equals(Void.class)) {
-                    return null;
                 } else {
                     try (Reader r = new InputStreamReader(connection.getInputStream())) {
                         return GsonFactory.buildGson().fromJson(r, expectedResult);

@@ -1,5 +1,7 @@
 package de.tinf15b4.kino.data.cinemas;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -10,7 +12,9 @@ import de.tinf15b4.kino.data.ImageContainer;
 
 @Entity
 @Table(name = "cinema", uniqueConstraints = @UniqueConstraint(columnNames = { Cinema.FieldInfos.NAME }))
-public class Cinema extends EntityModel implements ImageContainer {
+public class Cinema extends EntityModel implements ImageContainer, Serializable {
+
+    private static final long serialVersionUID = -7984776023686706282L;
 
     public interface FieldInfos {
         String NAME = "name";
