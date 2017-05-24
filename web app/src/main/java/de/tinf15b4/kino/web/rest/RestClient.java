@@ -80,7 +80,7 @@ public class RestClient implements Serializable {
 
     public RestResponse authorize() {
         try {
-            URLEncoder.encode(userNameOrEmail, "ENCODING");
+            URLEncoder.encode(userNameOrEmail, ENCODING);
             String requestUrl = baseUrl + String.format(AUTHORIZE, URLEncoder.encode(userNameOrEmail, ENCODING),
                     URLEncoder.encode(password, ENCODING));
             authorized = true;
