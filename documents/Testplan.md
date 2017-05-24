@@ -187,7 +187,7 @@ For example:
 - [Test results master](https://jenkins.genosse-einhorn.de/job/SmartCinema%20Web%20App%20MULTIBRANCH/job/master/lastSuccessfulBuild/testReport/)
 - [Test results develop](https://jenkins.genosse-einhorn.de/job/SmartCinema%20Web%20App%20MULTIBRANCH/job/develop/lastSuccessfulBuild/testReport/)
 
-Also we integrated Sonarqube into our testing workflow. Every push onto the develop-branch will trigger a Sonarqube update. On our [Sonarqube-Page](https://sonarqube.com/dashboard?id=de.tinf15b4.kino) are many information and metrics related to our code provided. 
+Also we integrated Sonarqube into our testing workflow. Every push onto the develop-branch will trigger a Sonarqube update. On our [Sonarqube-Page](https://sonarqube.com/dashboard?id=de.tinf15b4.kino%3AHEAD) are many information and metrics related to our code provided. 
 
 ## 9. Environmental Needs
 
