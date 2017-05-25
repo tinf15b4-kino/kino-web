@@ -51,7 +51,7 @@ public class UniversumCityScraper extends AbstractCinemaScraper {
     private List<LocalDate> handleDates() {
         List<LocalDate> dates = new ArrayList<>();
         List<WebElement> dateElements = driver
-                .findElements(By.xpath(".//table[contains(@class, 'week_nav')]//td/a/time"));
+                .findElements(By.xpath(".//table[contains(@class, 'week_nav')]//td//time"));
         for (WebElement dateElement : dateElements) {
             String dateText = dateElement.getText();
             dates.add(parseDate(dateText));
