@@ -48,7 +48,7 @@ public abstract class AbstractCinemaScraper {
 
     public void scrape() {
         logger = getLogger();
-        logger.info("Initializing Webdriver for scraper: [%s]", cinema.getName());
+        logger.info("Initializing Webdriver for scraper: [{}]", cinema.getName());
         initlializeWebdriver();
 
         cinema = getCinema();
@@ -56,25 +56,25 @@ public abstract class AbstractCinemaScraper {
             throw new IllegalStateException("Subclasses have to override this method and return a valid cinema");
         cinema = saveObject(cinema, Cinema.class);
 
-        logger.info("Start gathering data from: [%s]", cinema.getName());
+        logger.info("Start gathering data from: [{}]", cinema.getName());
         Stopwatch watch = Stopwatch.createStarted();
         GatheringResult result = gatherData();
-        logger.info("Finished gathering data from: [%s] in %s milliseconds", cinema.getName(),
+        logger.info("Finished gathering data from: [{}] in {} milliseconds", cinema.getName(),
                 watch.elapsed(TimeUnit.MILLISECONDS));
 
         driver.quit();
-        logger.info("Closing driver for scraper: [%s]", cinema.getName());
+        logger.info("Closing driver for scraper: [{}]", cinema.getName());
 
         // get information for and save movies
         // we also adjust the corresponding playlists here
         processMovies(result);
 
         // Reset playlist
-        logger.info("Resetting playlist for scraper: [%s]", cinema.getName());
+        logger.info("Resetting playlist for scraper: [{}]", cinema.getName());
         deletePlaylistFuture(cinema);
 
         // adjust the cinema in playlist and save it
-        logger.info("Saving playlist for scraper: [%s]", cinema.getName());
+        logger.info("Saving playlist for scraper: [{}]", cinema.getName());
         processPlaylists(result);
 
     }
@@ -83,7 +83,7 @@ public abstract class AbstractCinemaScraper {
         for (Playlist playlist : result.getPlaylists()) {
             playlist.setCinema(cinema);
             Playlist p = saveObject(playlist, Playlist.class);
-            logger.info("Movie %s is played at %s in %s", p.getMovie().getName(), p.getTime(), p.getCinema().getName());
+            logger.info("Movie {} is played at {} in {}", p.getMovie().getName(), p.getTime(), p.getCinema().getName());
         }
     }
 
@@ -137,12 +137,12 @@ public abstract class AbstractCinemaScraper {
         case "firefox":
             FirefoxDriverManager.getInstance().setup("0.16.0");
             driver = new FirefoxDriver();
-            logger.info("Firefox driver initialized for scraper: [%s]", cinema.getName());
+            logger.info("Firefox driver initialized for scraper: [{}]", cinema.getName());
             break;
         case "chrome":
             ChromeDriverManager.getInstance().setup("2.25");
             driver = new ChromeDriver();
-            logger.info("Chrome driver initialized for scraper: [%s]", cinema.getName());
+            logger.info("Chrome driver initialized for scraper: [{}]", cinema.getName());
             break;
         case "remote":
             if (remote == null || remote.isEmpty())
@@ -150,7 +150,7 @@ public abstract class AbstractCinemaScraper {
 
             try {
                 driver = new RemoteWebDriver(new URL(remote), DesiredCapabilities.firefox());
-                logger.info("Remote driver initialized for scraper: [%s]", cinema.getName());
+                logger.info("Remote driver initialized for scraper: [{}]", cinema.getName());
             } catch (MalformedURLException e) {
                 throw new IllegalArgumentException("Maformed URL: [" + remote + "]", e);
             }
@@ -166,7 +166,7 @@ public abstract class AbstractCinemaScraper {
         } catch (MovieDbException e) {
             // Movie DB does not know this movie for some reason. Basically this
             // means we won't show it
-            logger.warn("TheMovieDB does not know movie [%s]. We skip this movie for now.", movie.getName());
+            logger.warn("TheMovieDB does not know movie [{}]. We skip this movie for now.", movie.getName());
             return null;
         }
     }
