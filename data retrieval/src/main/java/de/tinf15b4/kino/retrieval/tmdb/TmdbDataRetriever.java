@@ -1,5 +1,6 @@
 package de.tinf15b4.kino.retrieval.tmdb;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -112,25 +113,10 @@ public class TmdbDataRetriever {
         // kann
         List<com.omertron.themoviedbapi.model.Genre> genres = mi.getGenres();
         if (!genres.isEmpty()) {
-            String name = genres.get(0).getName();
-
-            switch (name) {
-            case "Komödie":
-                name = "Komoedie";
-                break;
-            case "Science Fiction":
-                name = "ScienceFiction";
-                break;
-            case "TV-Film":
-                name = "TvFilm";
-                break;
-            default:
-                // there is no need to change the name
-            }
-
-            return Genre.valueOf(name);
+            return Arrays.stream(Genre.values()).filter(g -> g.toString().equalsIgnoreCase(genres.get(0).getName())).findAny().get();
+        } else {
+            return Genre.UNBEKANNT;
         }
-        return Genre.UNBEKANNT;
     }
 
     private AgeControl getAgeControl(MovieInfo mi) throws MovieDbException {
