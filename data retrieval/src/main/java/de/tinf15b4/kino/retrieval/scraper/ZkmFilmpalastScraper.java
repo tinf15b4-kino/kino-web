@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.openqa.selenium.By;
@@ -76,7 +77,7 @@ public class ZkmFilmpalastScraper extends AbstractCinemaScraper {
 
                         LocalDateTime d = LocalDateTime.parse(datestr,
                                 new DateTimeFormatterBuilder().appendPattern("E d.M. H:m 'Uhr'")
-                                        .parseDefaulting(ChronoField.YEAR, Year.now().getValue()).toFormatter());
+                                        .parseDefaulting(ChronoField.YEAR, Year.now().getValue()).toFormatter(Locale.GERMANY));
 
                         Playlist playlist = new Playlist();
                         playlist.setCinema(cinema);
