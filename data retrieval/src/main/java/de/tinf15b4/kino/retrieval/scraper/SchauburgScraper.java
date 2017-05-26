@@ -61,7 +61,7 @@ public class SchauburgScraper extends AbstractCinemaScraper {
         for (WebElement movieElement : movieElements) {
             for (WebElement movieRow : movieElement.findElements(By.xpath(".//tr"))) {
                 String timeText = movieRow.findElement(By.xpath(".//td[1]")).getText();
-                String title = movieRow.findElement(By.xpath(".//td[2]/a")).getText();
+                String title = movieRow.findElement(By.xpath(".//td[2]/*[1]")).getText();
                 LocalDateTime dateTime = addTimeToDate(timeText, dates.get(movieElements.indexOf(movieElement)));
 
                 Movie movie = new Movie(title, null, null, 0, null, null);

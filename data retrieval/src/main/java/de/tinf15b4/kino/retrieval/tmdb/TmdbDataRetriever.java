@@ -1,7 +1,10 @@
 package de.tinf15b4.kino.retrieval.tmdb;
 
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -35,6 +38,38 @@ public class TmdbDataRetriever {
     private TmdbMovies moviesInstance;
     private TmdbSearch searchInstance;
 
+    private Map<String, CachedResult> cache = new HashMap<>();
+
+    private interface CachedResult {
+        Movie get() throws MovieDbException;
+    }
+
+    private static class CachedSuccess implements CachedResult {
+        private Movie movie;
+
+        public CachedSuccess(Movie movie) {
+            this.movie = movie;
+        }
+
+        @Override
+        public Movie get() throws MovieDbException {
+            return movie;
+        }
+    }
+
+    private static class CachedError implements CachedResult {
+        private MovieDbException exception;
+
+        public CachedError(MovieDbException exception) {
+            this.exception = exception;
+        }
+
+        @Override
+        public Movie get() throws MovieDbException {
+            throw exception;
+        }
+    }
+
     public TmdbDataRetriever() {
         httpClient = new SimpleHttpClientBuilder().build();
         httpTools = new HttpTools(httpClient);
@@ -43,6 +78,22 @@ public class TmdbDataRetriever {
     }
 
     public Movie getMovie(Movie movie) throws MovieDbException {
+        String movieName = movie.getName();
+        if (cache.containsKey(movieName)) {
+            return cache.get(movieName).get();
+        } else {
+            try {
+                Movie retval = getMovieFromDb(movie);
+                cache.put(movieName, new CachedSuccess(retval));
+                return retval;
+            } catch (MovieDbException e) {
+                cache.put(movieName, new CachedError(e));
+                throw e;
+            }
+        }
+    }
+
+    public Movie getMovieFromDb(Movie movie) throws MovieDbException {
         List<MovieInfo> movies = searchInstance.searchMovie(movie.getName(), 1, "de-DE", false, 0, 0, SearchType.NGRAM)
                 .getResults();
 
@@ -112,25 +163,10 @@ public class TmdbDataRetriever {
         // kann
         List<com.omertron.themoviedbapi.model.Genre> genres = mi.getGenres();
         if (!genres.isEmpty()) {
-            String name = genres.get(0).getName();
-
-            switch (name) {
-            case "Komödie":
-                name = "Komoedie";
-                break;
-            case "Science Fiction":
-                name = "ScienceFiction";
-                break;
-            case "TV-Film":
-                name = "TvFilm";
-                break;
-            default:
-                // there is no need to change the name
-            }
-
-            return Genre.valueOf(name);
+            return Arrays.stream(Genre.values()).filter(g -> g.toString().equalsIgnoreCase(genres.get(0).getName())).findAny().get();
+        } else {
+            return Genre.UNBEKANNT;
         }
-        return Genre.UNBEKANNT;
     }
 
     private AgeControl getAgeControl(MovieInfo mi) throws MovieDbException {
