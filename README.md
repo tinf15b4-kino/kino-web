@@ -12,3 +12,9 @@
 [![LOC](https://sonarqube.com/api/badges/measure?key=de.tinf15b4.kino%3AHEAD&metric=ncloc)](https://sonarqube.com/component_measures/domain/Size?id=de.tinf15b4.kino%3AHEAD)
 [![Issues](https://sonarqube.com/api/badges/measure?key=de.tinf15b4.kino%3AHEAD&metric=violations)](https://sonarqube.com/component_issues?id=de.tinf15b4.kino%3AHEAD#resolved=false)
 
+### Docker
+
+[![Docker Stars](https://img.shields.io/docker/stars/smartcinema/smartcinema.svg)](https://hub.docker.com/r/smartcinema/smartcinema/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/smartcinema/smartcinema.svg)](https://hub.docker.com/r/smartcinema/smartcinema/)
+[![Docker Automated buil](https://img.shields.io/docker/automated/smartcinema/smartcinema.svg)](https://hub.docker.com/r/smartcinema/smartcinema/)
+[![Docker Build Statu](https://img.shields.io/docker/build/smartcinema/smartcinema.svg)](https://hub.docker.com/r/smartcinema/smartcinema/)
