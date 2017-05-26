@@ -163,7 +163,7 @@ public class TmdbDataRetriever {
         // kann
         List<com.omertron.themoviedbapi.model.Genre> genres = mi.getGenres();
         if (!genres.isEmpty()) {
-            return Arrays.stream(Genre.values()).filter(g -> g.toString().equalsIgnoreCase(genres.get(0).getName())).findAny().get();
+            return Arrays.stream(Genre.values()).filter(g -> g.toString().equalsIgnoreCase(genres.get(0).getName())).findAny().orElse(Genre.UNBEKANNT);
         } else {
             return Genre.UNBEKANNT;
         }
