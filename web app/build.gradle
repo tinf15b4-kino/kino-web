@@ -48,6 +48,7 @@ dependencies {
     compile("com.h2database:h2")
     compile("com.google.guava:guava:21.0")
     compile("com.google.code.gson:gson:2.8.0")
+    compile("org.mitre.dsmiley.httpproxy:smiley-http-proxy-servlet:1.9")
     compile project(":commons")
     testCompile("org.seleniumhq.selenium:selenium-java")
     testCompile("org.springframework.boot:spring-boot-starter-test")

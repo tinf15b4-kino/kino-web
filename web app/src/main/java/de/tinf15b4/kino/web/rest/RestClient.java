@@ -301,10 +301,13 @@ public class RestClient implements Serializable {
     }
 
     public String getCinemaPictureUrl(Cinema c) {
-        return baseUrl + "/cinemaPicture?cinemaId=" + c.getId();
+        // NOTE: This is a URL accessible by the browser, not the internal URL because the
+        // REST API might be firewalled and not publicly accessible. We assume that a reverse
+        // proxy is running so that the public REST API is always accessible on /rest/*
+        return "/rest/cinemaPicture?cinemaId=" + c.getId();
     }
 
     public String getMoviePictureUrl(Movie m) {
-        return baseUrl + "/moviePicture?movieId=" + m.getId();
+        return "/rest/moviePicture?movieId=" + m.getId();
     }
 }
