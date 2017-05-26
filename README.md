@@ -37,3 +37,4 @@
 [![Prod API](https://img.shields.io/website-up-down-green-red/https/smartcinema.tinf15b4.de.svg?label=production%20api)](https://smartcinema.tinf15b4.de/rest/ping)
 [![Dev Website](https://img.shields.io/website-up-down-green-red/https/smartcinema-dev.tinf15b4.de.svg?label=development%20web%20app)](https://smartcinema-dev.tinf15b4.de)
 [![Dev API](https://img.shields.io/website-up-down-green-red/https/smartcinema-dev.tinf15b4.de.svg?label=development%20api)](https://smartcinema-dev.tinf15b4.de/rest/ping)
+![](https://img.shields.io/badge/developer%20sanity-lost-red.svg)
