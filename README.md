@@ -18,6 +18,7 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/smartcinema/smartcinema.svg)](https://hub.docker.com/r/smartcinema/smartcinema/)
 [![Docker Automated buil](https://img.shields.io/docker/automated/smartcinema/smartcinema.svg)](https://hub.docker.com/r/smartcinema/smartcinema/)
 [![Docker Build Statu](https://img.shields.io/docker/build/smartcinema/smartcinema.svg)](https://hub.docker.com/r/smartcinema/smartcinema/)
+[![](https://images.microbadger.com/badges/image/smartcinema/smartcinema.svg)](https://microbadger.com/images/smartcinema/smartcinema "Get your own image badge on microbadger.com")
 
 ### GitHub
 
