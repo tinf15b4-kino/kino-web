@@ -2,6 +2,7 @@ package de.tinf15b4.kino.smartcinema;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -45,6 +47,15 @@ public class MovieListFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(() -> refresh());
         refresh();
 
+        movieList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
+                intent.putExtra("movie", (Movie)movieList.getItemAtPosition(position));
+                startActivity(intent);
+            }
+        });
+
         return v;
     }
 
@@ -64,12 +75,12 @@ public class MovieListFragment extends Fragment {
 
                 if (response.isSuccessful()) {
 
-                    final ArrayList<String> list = new ArrayList<String>();
+                    final ArrayList<Movie> list = new ArrayList<>();
                     for (Movie m : response.body()) {
-                        list.add(m.name);
+                        list.add(m);
                     }
 
-                    final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+                    final ArrayAdapter<Movie> adapter = new ArrayAdapter<>(getContext(),
                             R.layout.movie_list_entry, list);
 
                     movieList.setAdapter(adapter);
