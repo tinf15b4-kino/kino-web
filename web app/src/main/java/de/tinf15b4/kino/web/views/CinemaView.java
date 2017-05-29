@@ -149,7 +149,7 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
 
         Component movieImage = new Image(null,
                 new ExternalResource(userBean.getRestClient().getMoviePictureUrl(movie)));
-        movieImage.setHeight("200px");
+        movieImage.setWidth("200px");
         movieImage.setPrimaryStyleName("moviePlaylistImage");
         movieRow.addComponent(movieImage);
 

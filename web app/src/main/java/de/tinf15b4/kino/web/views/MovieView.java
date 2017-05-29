@@ -191,7 +191,7 @@ public class MovieView extends VerticalLayout implements View {
 
         Component cinemaImage = new Image(null,
                 new ExternalResource(userBean.getRestClient().getCinemaPictureUrl(cinema)));
-        cinemaImage.setHeight("200px");
+        cinemaImage.setWidth("200px");
         cinemaImage.setPrimaryStyleName("cinemaPlaylistImage");
         cinemaRow.addComponent(cinemaImage);
 
