@@ -411,18 +411,22 @@
 }
 
 // Movie playtimes
-
 #playlistHeading {
 	font-size: 23px;
 	font-weight: bold;
 	padding-bottom: 15px;
 }
 
-.cinemaPlaylistName {
+[id^=cinemaPlaylistLink] {
 	font-weight: bold;
 	font-size: 18px;
 	padding-bottom: 5px;
+	text-decoration: none;
+	color: #ffffff;
+}
 
+[id^=cinemaPlaylistLink]:hover {
+	color: #194b7d;
 }
 
 .cinemaPlaylistRow{
@@ -466,12 +470,17 @@
 }
 
 // Cinemaplaytimes
-.moviePlaylistName {
+[id^=moviePlaylistLink] {
 	font-weight: bold;
 	font-size: 18px;
 	padding-bottom: 5px;
+	text-decoration: none;
+	color: #ffffff;
 }
 
+[id^=moviePlaylistLink]:hover {
+	color: #194b7d;
+}
 
 .moviePlaylistRow {
 	padding:5px 5px 5px 5px;
@@ -484,7 +493,6 @@
 }
 
 // Ratings
-
 #ratingsHeading {
 	font-weight: bold;
 	font-size: 23px;
@@ -516,7 +524,6 @@
 }
 
 // Account Management
-
 #accountForm {
 	margin-left: 30%;
 }

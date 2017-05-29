@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import com.vaadin.ui.Link;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Lists;
@@ -166,9 +167,9 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
         VerticalLayout movieInformation = new VerticalLayout();
         movieInformation.setPrimaryStyleName("moviePlaylistInformation");
 
-        Label movieName = new Label(movie.getName());
-        movieName.setPrimaryStyleName("moviePlaylistName");
-        movieInformation.addComponent(movieName);
+        Link movieLink = new Link(movie.getName(), new ExternalResource("#!" + MovieView.VIEW_NAME + "/" + movie.getId()));
+        movieLink.setPrimaryStyleName("moviePlaylistLink_" + movie.getId());
+        movieInformation.addComponent(movieLink);
 
         playTimesTable.setSizeUndefined();
 

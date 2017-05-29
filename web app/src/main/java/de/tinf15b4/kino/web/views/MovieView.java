@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import com.vaadin.ui.Link;
+import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Lists;
@@ -208,9 +210,9 @@ public class MovieView extends VerticalLayout implements View {
         VerticalLayout cinemaInformation = new VerticalLayout();
         cinemaInformation.setPrimaryStyleName("cinemaPlaylistInformation");
 
-        Label cinemaName = new Label(cinema.getName());
-        cinemaName.setPrimaryStyleName("cinemaPlaylistName");
-        cinemaInformation.addComponent(cinemaName);
+        Link cinemaLink = new Link(cinema.getName(), new ExternalResource("#!" + CinemaView.VIEW_NAME + "/" + cinema.getId()));
+        cinemaLink.setId("cinemaPlaylistLink_" + cinema.getId());
+        cinemaInformation.addComponent(cinemaLink);
 
         playTimesTable.setSizeUndefined();
 
