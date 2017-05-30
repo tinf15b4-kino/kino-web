@@ -5,6 +5,7 @@ import java.net.URLDecoder;
 
 import javax.annotation.PostConstruct;
 
+import de.tinf15b4.kino.web.ui.SmartCinemaUi;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.event.ShortcutAction;
@@ -38,6 +39,9 @@ public class LoginView extends Panel implements View {
     @PostConstruct
     public void init() {
         setSizeFull();
+
+        SmartCinemaUi.panel.setScrollLeft(0);
+        SmartCinemaUi.panel.setScrollTop(0);
 
         FormLayout l = new FormLayout();
         l.setMargin(true);

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.vaadin.ui.Link;
+import de.tinf15b4.kino.web.ui.SmartCinemaUi;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Lists;
@@ -53,6 +54,10 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
         this.setSpacing(true);
 
         this.removeAllComponents();
+
+        SmartCinemaUi.panel.setScrollLeft(0);
+        SmartCinemaUi.panel.setScrollTop(0);
+
         if (event.getParameters() != null) {
             String idStr = event.getParameters();
             long id = Long.parseLong(idStr);

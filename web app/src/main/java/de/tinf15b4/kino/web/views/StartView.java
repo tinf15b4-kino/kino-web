@@ -4,6 +4,7 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.VerticalLayout;
+import de.tinf15b4.kino.web.ui.SmartCinemaUi;
 
 @SpringView(name = StartView.VIEW_NAME)
 public class StartView extends VerticalLayout implements View {
@@ -14,6 +15,10 @@ public class StartView extends VerticalLayout implements View {
     @Override
     public void enter(ViewChangeEvent event) {
         // TODO
+
+        SmartCinemaUi.panel.setScrollLeft(0);
+        SmartCinemaUi.panel.setScrollTop(0);
+
     }
 
 }

@@ -60,6 +60,8 @@ public class SmartCinemaUi extends UI {
 
     private GridLayout grid;
 
+    public static Panel panel = new Panel();
+
     private boolean loginEnabled;
 
     @PostConstruct
@@ -89,7 +91,6 @@ public class SmartCinemaUi extends UI {
         // Main area
         HorizontalLayout layout = new HorizontalLayout();
         layout.setSizeFull();
-        Panel panel = new Panel();
         panel.addStyleName(ValoTheme.PANEL_BORDERLESS);
         layout.addComponent(panel);
         layout.setId("layout");
@@ -340,6 +341,8 @@ public class SmartCinemaUi extends UI {
         this.getNavigator().navigateTo(viewId);
         grid.removeComponent(1, 1);
         grid.addComponent(createToolBarRight(), 1, 1);
+        panel.setScrollTop(0);
+        panel.setScrollLeft(0);
     }
 
     public void update() {

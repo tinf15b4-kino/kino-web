@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import de.tinf15b4.kino.web.ui.SmartCinemaUi;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Lists;
@@ -33,6 +34,10 @@ public class FavoriteListView extends VerticalLayout implements View {
 
     @PostConstruct
     private void init() {
+        SmartCinemaUi.panel.setScrollLeft(0);
+        SmartCinemaUi.panel.setScrollTop(0);
+
+
         if (userBean.isUserLoggedIn()) {
             RestResponse response = userBean.getRestClient().getAllFavorites();
             if (!response.hasError()) {
