@@ -111,6 +111,8 @@ public class SmartCinemaUi extends UI {
                 } else {
                     setLoginButtonEnabled(true);
                 }
+                panel.setScrollTop(0);
+                panel.setScrollLeft(0);
                 return true;
             }
 
