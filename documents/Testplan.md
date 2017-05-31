@@ -100,7 +100,14 @@ n/a
 n/a
 
 #### 5.2.6 Load Testing
-n/a
+| | |
+|-|-|
+| **Technique Objective:** | Verify appropriate behavior and response time under high load. |
+| **Technique:** | Swamp endpoints with concurrent requests. Observe CPU load on server and measure response times. Commands are entered manually on the console or can alternatively be automated with a shell script. |
+| **Oracles:** | We assume that the endpoints we test actually do the advertised work. |
+| **Required Tools:** | - Apache Bench tool `ab` |
+| **Success Criteria:** | `ab` reports success responses only with mean response time < 100ms |
+| **Special Considerations:** | n/a |
 
 #### 5.2.7 Stress Testing
 n/a
