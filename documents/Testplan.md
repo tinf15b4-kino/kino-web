@@ -83,7 +83,7 @@ n/a
 | | |
 |-|-|
 | **Technique Objective:** | Exercise target-of-test functionality, including navigation, data entry, processing, and retrieval to observe and log target behavior. |
-| **Technique:** | Execute each use-case scenario’s individual use-case flows or functions and features, using valid and invalid data, to verify that:  <br>- the expected results occur when valid data is used <br> - the appropriate error or warning messages are displayed when 	invalid data is used <br> - each business rule is properly applied |
+| **Technique:** | Execute each use-case scenarioÂ’s individual use-case flows or functions and features, using valid and invalid data, to verify that:  <br>- the expected results occur when valid data is used <br> - the appropriate error or warning messages are displayed when 	invalid data is used <br> - each business rule is properly applied |
 | **Oracles:** | We assume  all tests to pass. |
 | **Required Tools:** | - Selenium Driver <br> - Cucumber extension for Eclipse/IntelliJ |
 | **Success Criteria:** | A cucumber file for each Use-Case that test every possible path. |
