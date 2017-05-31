@@ -1,6 +1,5 @@
 package de.tinf15b4.kino.web.views;
 
-import de.tinf15b4.kino.web.ui.SmartCinemaUi;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.navigator.View;
@@ -29,9 +28,6 @@ public class SearchResultsView extends VerticalLayout implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
-        SmartCinemaUi.panel.setScrollLeft(0);
-        SmartCinemaUi.panel.setScrollTop(0);
-
         String searchTerm = event.getParameters();
 
         RestResponse response = userBean.getRestClient().search(searchTerm);

@@ -2,7 +2,6 @@ package de.tinf15b4.kino.web.views;
 
 import javax.annotation.PostConstruct;
 
-import de.tinf15b4.kino.web.ui.SmartCinemaUi;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.navigator.View;
@@ -29,10 +28,6 @@ public class CinemaListView extends VerticalLayout implements View {
     public void init() {
         this.setMargin(true);
         this.setSpacing(true);
-
-        SmartCinemaUi.panel.setScrollLeft(0);
-        SmartCinemaUi.panel.setScrollTop(0);
-
 
         RestResponse cinemaResponse = userBean.getRestClient().getCinemas();
         if (!cinemaResponse.hasError()) {

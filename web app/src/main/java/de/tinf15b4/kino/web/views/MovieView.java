@@ -8,7 +8,6 @@ import java.util.Locale;
 
 import com.vaadin.ui.Link;
 import com.vaadin.ui.themes.ValoTheme;
-import de.tinf15b4.kino.web.ui.SmartCinemaUi;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Lists;
@@ -49,10 +48,6 @@ public class MovieView extends VerticalLayout implements View {
         this.setSpacing(true);
 
         this.removeAllComponents();
-
-        SmartCinemaUi.panel.setScrollLeft(0);
-        SmartCinemaUi.panel.setScrollTop(0);
-
         if (event.getParameters() != null) {
             String idStr = event.getParameters();
             long id = Long.parseLong(idStr);

@@ -1,6 +1,5 @@
 package de.tinf15b4.kino.web.views;
 
-import com.vaadin.server.Scrollable;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.base.Strings;
@@ -40,8 +39,7 @@ public class AccountView extends VerticalLayout implements View {
         this.setMargin(true);
         this.setSpacing(true);
 
-        SmartCinemaUi.panel.setScrollLeft(0);
-        SmartCinemaUi.panel.setScrollTop(0);
+        this.removeAllComponents();
 
         RestResponse response = userBean.getRestClient().getUser();
         if (response.hasError()) {
