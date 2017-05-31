@@ -127,6 +127,16 @@ n/a
 #### 5.2.12 Installation Testing
 n/a
 
+#### 5.2.13 Unit Testing
+
+|                         |                                                     |
+|-------------------------|-----------------------------------------------------|
+| Technique Objective:    | Testing the functionality of the code               |
+| Technique:              | Test using unit tests.                              |
+| Oracles:                | The tests are successful if all assertions are true |
+| Required Tools:         | JUnit                                               |
+| Success Criteria:       | All tests pass                                      |
+| Special Considerations: |                                                     |
 
 ## 6. Entry and Exit Criteria
 
