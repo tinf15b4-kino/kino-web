@@ -83,7 +83,7 @@ n/a
 | | |
 |-|-|
 | **Technique Objective:** | Exercise target-of-test functionality, including navigation, data entry, processing, and retrieval to observe and log target behavior. |
-| **Technique:** | Execute each use-case scenario’s individual use-case flows or functions and features, using valid and invalid data, to verify that:  <br>- the expected results occur when valid data is used <br> - the appropriate error or warning messages are displayed when 	invalid data is used <br> - each business rule is properly applied |
+| **Technique:** | Execute each use-case scenarioÂ’s individual use-case flows or functions and features, using valid and invalid data, to verify that:  <br>- the expected results occur when valid data is used <br> - the appropriate error or warning messages are displayed when 	invalid data is used <br> - each business rule is properly applied |
 | **Oracles:** | We assume  all tests to pass. |
 | **Required Tools:** | - Selenium Driver <br> - Cucumber extension for Eclipse/IntelliJ |
 | **Success Criteria:** | A cucumber file for each Use-Case that test every possible path. |
@@ -100,7 +100,14 @@ n/a
 n/a
 
 #### 5.2.6 Load Testing
-n/a
+| | |
+|-|-|
+| **Technique Objective:** | Verify appropriate behavior and response time under high load. |
+| **Technique:** | Swamp endpoints with concurrent requests. Observe CPU load on server and measure response times. Commands are entered manually on the console or can alternatively be automated with a shell script. |
+| **Oracles:** | We assume that the endpoints we test actually do the advertised work. |
+| **Required Tools:** | - Apache Bench tool `ab` |
+| **Success Criteria:** | `ab` reports success responses only with mean response time < 100ms |
+| **Special Considerations:** | n/a |
 
 #### 5.2.7 Stress Testing
 n/a
@@ -120,6 +127,16 @@ n/a
 #### 5.2.12 Installation Testing
 n/a
 
+#### 5.2.13 Unit Testing
+
+|                         |                                                     |
+|-------------------------|-----------------------------------------------------|
+| Technique Objective:    | Testing the functionality of the code               |
+| Technique:              | Test using unit tests.                              |
+| Oracles:                | The tests are successful if all assertions are true |
+| Required Tools:         | JUnit                                               |
+| Success Criteria:       | All tests pass                                      |
+| Special Considerations: |                                                     |
 
 ## 6. Entry and Exit Criteria
 
