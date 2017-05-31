@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="de.tinf15b4.kino.smartcinema.MovieDetailsActivity"
+    tools:showIn="@layout/activity_movie_details">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TableRow>
+                <TextView android:text="Länge" android:padding="16dp"/>
+                <TextView  android:padding="16dp" android:id="@+id/movie_length" android:layout_width="wrap_content"/>
+            </TableRow>
+            <TableRow>
+                <TextView android:text="Genre" android:padding="16dp"/>
+                <TextView android:id="@+id/movie_genre" android:padding="16dp" android:layout_width="wrap_content"/>
+            </TableRow>
+            <TableRow>
+                <TextView android:text="Regie" android:padding="16dp"/>
+                <TextView android:id="@+id/movie_director" android:padding="16dp" android:layout_width="wrap_content"/>
+            </TableRow>
+            <TableRow>
+                <TextView android:text="Autor" android:padding="16dp"/>
+                <TextView android:id="@+id/movie_author" android:padding="16dp" android:layout_width="wrap_content"/>
+            </TableRow>
+            <TableRow>
+                <TextView android:text="Studio" android:padding="16dp"/>
+                <TextView android:id="@+id/movie_studio" android:padding="16dp" android:layout_width="wrap_content"/>
+            </TableRow>
+        </TableLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:id="@+id/movie_details_description"
+            android:text="@string/large_text" />
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>
