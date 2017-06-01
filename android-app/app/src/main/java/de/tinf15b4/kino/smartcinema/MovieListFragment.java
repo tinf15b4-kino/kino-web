@@ -63,7 +63,7 @@ public class MovieListFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Filme");
+        getActivity().setTitle("Filme");
     }
 
     private void refresh() {

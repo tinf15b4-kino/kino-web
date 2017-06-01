@@ -49,7 +49,7 @@ public class CinemaListFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Kinos");
+        getActivity().setTitle("Kinos");
     }
 
     private void refresh() {
