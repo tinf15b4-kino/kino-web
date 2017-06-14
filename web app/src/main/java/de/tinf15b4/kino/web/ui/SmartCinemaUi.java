@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 
 import javax.annotation.PostConstruct;
 
+import de.tinf15b4.kino.web.views.RegisterView;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.annotations.Theme;
@@ -177,7 +178,7 @@ public class SmartCinemaUi extends UI {
             header.setComponentAlignment(user, Alignment.MIDDLE_RIGHT);
             header.setComponentAlignment(logout, Alignment.MIDDLE_RIGHT);
         } else {
-            Button register = new Button("Registrieren", e -> navigateTo("register"));
+            Button register = new Button("Registrieren", e -> navigateTo(RegisterView.VIEW_NAME));
             register.setId("registerUserBtn");
             register.addStyleName(BaseTheme.BUTTON_LINK);
 
@@ -320,6 +321,8 @@ public class SmartCinemaUi extends UI {
                 contentLabel.setValue("Anmelden");
             } else if (uri.startsWith("!account")) {
                 contentLabel.setValue("Profil bearbeiten");
+            } else if (uri.startsWith("!register")) {
+                contentLabel.setValue("Registrierung");
             }
         }
         contentLabel.setId("toolBarLabel");
