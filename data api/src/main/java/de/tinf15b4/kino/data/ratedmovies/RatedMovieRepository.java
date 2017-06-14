@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import de.tinf15b4.kino.data.movies.Movie;
-import de.tinf15b4.kino.data.ratedmovies.RatedMovie;
 import de.tinf15b4.kino.data.users.User;
 
 public interface RatedMovieRepository extends JpaRepository<RatedMovie, Long> {
@@ -19,4 +18,7 @@ public interface RatedMovieRepository extends JpaRepository<RatedMovie, Long> {
 
     @Query("SELECT avg(rm.rating) FROM RatedMovie rm WHERE rm.movie = :movie GROUP BY rm.movie")
     List<Double> getAverageRatingForMovie(@Param("movie") Movie movie);
+
+    @Query("SELECT rm FROM RatedMovie rm WHERE rm.user = :user AND rm.movie = :movie ORDER BY rm.time ASC")
+    RatedMovie findRatingByMovieAndUser(@Param("user") User user, @Param("movie") Movie movie);
 }

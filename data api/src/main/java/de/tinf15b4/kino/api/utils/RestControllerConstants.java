@@ -17,5 +17,6 @@ public class RestControllerConstants {
     public static final String INTERNAL_SERVER_ERROR = "Interner Serverfehler";
     public static final String INVALID_USERDATA = "Ungültige Werte in Benutzerdaten";
     public static final String USER_EXISTS = "Benutzername bereits vergeben";
+    public static final String ALREADY_RATED = "Sie haben bereits eine Bewertung abgegeben";
 
 }

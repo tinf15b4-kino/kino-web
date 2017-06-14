@@ -35,6 +35,10 @@ import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.cinemas.CinemaService;
 import de.tinf15b4.kino.data.favorites.Favorite;
 import de.tinf15b4.kino.data.favorites.FavoriteService;
+import de.tinf15b4.kino.data.ratedcinemas.RatedCinema;
+import de.tinf15b4.kino.data.ratedcinemas.RatedCinemaService;
+import de.tinf15b4.kino.data.ratedmovies.RatedMovie;
+import de.tinf15b4.kino.data.ratedmovies.RatedMovieService;
 import de.tinf15b4.kino.data.users.User;
 import de.tinf15b4.kino.data.users.UserService;
 
@@ -55,6 +59,12 @@ public class SecureRestController {
 
     @Autowired
     private CinemaService cinemaService;
+
+    @Autowired
+    private RatedCinemaService ratedCinemaService;
+
+    @Autowired
+    private RatedMovieService ratedMovieService;
 
     @ApiMethod(description = "Attempts to log in the given user")
     @ApiErrors(apierrors = { @ApiError(code = "406", description = "username or password were null or empty"),
@@ -155,6 +165,52 @@ public class SecureRestController {
         if (favorite == null)
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(RestControllerConstants.NOT_NULL);
         Optional<Favorite> updated = favoriteService.save(favorite);
+        if (updated.isPresent()) {
+            updated.get().doFilter();
+            return ResponseEntity.ok(updated.get());
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(RestControllerConstants.INTERNAL_SERVER_ERROR);
+    }
+
+    @ApiMethod(description = "Saves the given rated cinema")
+    @ApiErrors(apierrors = { @ApiError(code = "401", description = "Token was invalid"),
+            @ApiError(code = "406", description = "rated cinema was null or user has already rated the cinema") })
+    @RequestMapping(value = "rest/saveRatedCinema", method = RequestMethod.POST)
+    public ResponseEntity<?> saveRatedCinema(
+            @ApiQueryParam(name = "token", description = "Authentication token for the current user") @RequestParam(name = "token") String token,
+            @ApiBodyObject(clazz = RatedCinema.class) @RequestBody RatedCinema ratedCinema) {
+        ResponseEntity<?> response = checkToken(token);
+        if (response.getStatusCode() != HttpStatus.OK)
+            return response;
+        if (ratedCinema == null)
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(RestControllerConstants.NOT_NULL);
+        if (ratedCinemaService.findRatingByCinemaAndUser(ratedCinema.getUser(), ratedCinema.getCinema()) != null)
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(RestControllerConstants.ALREADY_RATED);
+        Optional<RatedCinema> updated = ratedCinemaService.save(ratedCinema);
+        if (updated.isPresent()) {
+            updated.get().doFilter();
+            return ResponseEntity.ok(updated.get());
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(RestControllerConstants.INTERNAL_SERVER_ERROR);
+    }
+
+    @ApiMethod(description = "Saves the given rated movie")
+    @ApiErrors(apierrors = { @ApiError(code = "401", description = "Token was invalid"),
+            @ApiError(code = "406", description = "rated movie was null or user has already rated the movie") })
+    @RequestMapping(value = "rest/saveRatedMovie", method = RequestMethod.POST)
+    public ResponseEntity<?> saveRatedMovie(
+            @ApiQueryParam(name = "token", description = "Authentication token for the current user") @RequestParam(name = "token") String token,
+            @ApiBodyObject(clazz = RatedMovie.class) @RequestBody RatedMovie ratedMovie) {
+        ResponseEntity<?> response = checkToken(token);
+        if (response.getStatusCode() != HttpStatus.OK)
+            return response;
+        if (ratedMovie == null)
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(RestControllerConstants.NOT_NULL);
+        if (ratedMovieService.findRatingByMovieAndUser(ratedMovie.getUser(), ratedMovie.getMovie()) != null)
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(RestControllerConstants.ALREADY_RATED);
+        Optional<RatedMovie> updated = ratedMovieService.save(ratedMovie);
         if (updated.isPresent()) {
             updated.get().doFilter();
             return ResponseEntity.ok(updated.get());

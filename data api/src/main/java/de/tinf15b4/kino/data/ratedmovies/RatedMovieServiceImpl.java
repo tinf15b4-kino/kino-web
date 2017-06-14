@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import de.tinf15b4.kino.data.ServiceImplModel;
 import de.tinf15b4.kino.data.movies.Movie;
+import de.tinf15b4.kino.data.users.User;
 
 @Service
 public class RatedMovieServiceImpl extends ServiceImplModel<RatedMovie, RatedMovieRepository>
@@ -24,6 +25,11 @@ public class RatedMovieServiceImpl extends ServiceImplModel<RatedMovie, RatedMov
             return 0.0;
         else
             return ratings.get(0);
+    }
+
+    @Override
+    public RatedMovie findRatingByMovieAndUser(User u, Movie c) {
+        return repository.findRatingByMovieAndUser(u, c);
     }
 
 }

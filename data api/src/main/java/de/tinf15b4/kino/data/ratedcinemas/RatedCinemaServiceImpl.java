@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import de.tinf15b4.kino.data.ServiceImplModel;
 import de.tinf15b4.kino.data.cinemas.Cinema;
-import de.tinf15b4.kino.data.ratedcinemas.RatedCinema;
+import de.tinf15b4.kino.data.users.User;
 
 @Service
 public class RatedCinemaServiceImpl extends ServiceImplModel<RatedCinema, RatedCinemaRepository>
@@ -15,5 +15,10 @@ public class RatedCinemaServiceImpl extends ServiceImplModel<RatedCinema, RatedC
     @Override
     public List<RatedCinema> findRatingsByCinema(Cinema c) {
         return repository.findRatingsByCinema(c);
+    }
+
+    @Override
+    public RatedCinema findRatingByCinemaAndUser(User u, Cinema c) {
+        return repository.findRatingByCinemaAndUser(u, c);
     }
 }

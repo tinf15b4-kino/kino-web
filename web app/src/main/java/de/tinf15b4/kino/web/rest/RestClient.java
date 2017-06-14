@@ -58,6 +58,8 @@ public class RestClient implements Serializable {
     private static final String GET_RATED_MOVIES = "/getRatedMovies?movieId=%s";
     private static final String GET_PLAYLIST_MOVIE = "/getPlaylistForMovie?movieId=%s&from=%s&to=%s";
     private static final String GET_SEARCH_RESULT = "/getSearchResult?term=%s";
+    private static final String SAVE_RATED_CINEMA = "/saveRatedCinema?token=%s";
+    private static final String SAVE_RATED_MOVIE = "/saveRatedMovie?token=%s";
 
     private static final String MISSING_AUTHORIZATION = "Token invalid or expired";
     private static final String INTERNAL_SERVER_ERROR = "Internal Server Error";
@@ -153,11 +155,13 @@ public class RestClient implements Serializable {
     }
 
     public RestResponse saveRatedCinema(RatedCinema ratedCinema) {
-        return null;
+        String requestUrl = baseUrl + String.format(SAVE_RATED_CINEMA, token);
+        return doPostRequest(requestUrl, RatedCinema.class, ratedCinema, true);
     }
 
-    public RestResponse saveRatedMovie(RatedMovie rated) {
-        return null;
+    public RestResponse saveRatedMovie(RatedMovie ratedMovie) {
+        String requestUrl = baseUrl + String.format(SAVE_RATED_MOVIE, token);
+        return doPostRequest(requestUrl, RatedMovie.class, ratedMovie, true);
     }
 
     public RestResponse getPlaylistForCinemas(long cinemaId, Date from, Date to) {

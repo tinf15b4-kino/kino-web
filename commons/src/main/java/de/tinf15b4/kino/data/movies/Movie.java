@@ -1,5 +1,6 @@
 package de.tinf15b4.kino.data.movies;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -18,7 +19,9 @@ import de.tinf15b4.kino.data.users.User;
 @Entity
 @Table(name = "movie", uniqueConstraints = { @UniqueConstraint(columnNames = { Movie.FieldInfos.NAME }),
         @UniqueConstraint(columnNames = { Movie.FieldInfos.TMDB_ID }) })
-public class Movie extends EntityModel implements ImageContainer, IRateable<RatedMovie> {
+public class Movie extends EntityModel implements ImageContainer, Serializable, IRateable<RatedMovie> {
+
+    private static final long serialVersionUID = -549343007165971463L;
 
     static class FieldInfos {
         private FieldInfos() {

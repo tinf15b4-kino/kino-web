@@ -1,5 +1,6 @@
 package de.tinf15b4.kino.web.components;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.vaadin.ui.Button;
@@ -15,27 +16,23 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 import de.tinf15b4.kino.data.ratedcinemas.IRateable;
+import de.tinf15b4.kino.data.users.User;
 import de.tinf15b4.kino.web.rest.RestResponse;
 import de.tinf15b4.kino.web.user.UserBean;
 
-public class RatingDialog<Rated> {
+public class RatingDialog<Rated> implements Serializable {
 
-    private Window dialog;
-    private UserBean userBean;
-    private IRateable<Rated> rateable;
-    private Saver<Rated> saver;
+    private static final long serialVersionUID = 8954699169695925477L;
 
     public void openDialog(UI ui, UserBean userBean, IRateable<Rated> rateable, Saver<Rated> saver) {
-        this.userBean = userBean;
-        this.rateable = rateable;
-        this.saver = saver;
-        dialog = new Window("Bewertung abgeben");
+        Window dialog = new Window("Bewertung abgeben");
         dialog.setModal(true);
-        dialog.setContent(createContent());
+        dialog.setClosable(false);
+        dialog.setContent(createContent(dialog, userBean, rateable, saver));
         ui.addWindow(dialog);
     }
 
-    private Component createContent() {
+    private Component createContent(Window dialog, UserBean userBean, IRateable<Rated> rateable, Saver<Rated> saver) {
         VerticalLayout mainLayout = new VerticalLayout();
 
         Label ratingLabel = new Label("Bewertungstext");
@@ -46,7 +43,7 @@ public class RatingDialog<Rated> {
         mainLayout.addComponent(row);
 
         Label starLabel = new Label("Bewertung");
-        Slider slider = new Slider(0, 5);
+        Slider slider = new Slider(0, 10);
         row = new HorizontalLayout();
         row.addComponent(starLabel);
         row.addComponent(slider);
@@ -58,15 +55,22 @@ public class RatingDialog<Rated> {
         buttons.addComponent(cancel);
 
         Button finish = new Button("Senden");
-        finish.addClickListener(e -> trySave(rating.getValue(), (int) slider.getValue().doubleValue(), saver));
+        finish.addClickListener(e -> trySave(rating.getValue(), (int) slider.getValue().doubleValue(), saver, userBean,
+                rateable, dialog));
         buttons.addComponent(finish);
 
         mainLayout.addComponent(buttons);
         return mainLayout;
     }
 
-    private void trySave(String rating, int stars, Saver<Rated> saver) {
-        Rated rated = rateable.createRating(userBean.getCurrentUser(), stars, rating, new Date());
+    private void trySave(String rating, int stars, Saver<Rated> saver, UserBean userBean, IRateable<Rated> rateable,
+            Window dialog) {
+        User currentUser = userBean.getCurrentUser();
+        if (currentUser == null) {
+            Notification.show("Sie müssen sich anmelden um Bewertungen abzugeben", Type.WARNING_MESSAGE);
+            return;
+        }
+        Rated rated = rateable.createRating(currentUser, stars, rating, new Date());
 
         RestResponse response = saver.save(rated);
         if (!response.hasError()) {
