@@ -152,6 +152,10 @@ public class RestClient implements Serializable {
         return doGetRequest(requestUrl, RatedCinema[].class, false);
     }
 
+    public RestResponse saveRatedCinema(RatedCinema ratedCinema) {
+        return null;
+    }
+
     public RestResponse getPlaylistForCinemas(long cinemaId, Date from, Date to) {
         String requestUrl = baseUrl
                 + String.format(GET_PLAYLIST_CINEMA, cinemaId, (from != null) ? from.getTime() : "", (to != null) ? to.getTime() : "");
@@ -312,4 +316,5 @@ public class RestClient implements Serializable {
     public String getMoviePictureUrl(Movie m) {
         return "/rest/moviePicture?movieId=" + m.getId();
     }
+
 }
