@@ -111,7 +111,7 @@ public class SecureRestControllerTest extends AbstractRestControllerTest {
 
         Mockito.when(cinemaService.findOne(0)).thenReturn(null);
         response = underTest.getFavorite(token, 0);
-        assertInvalidResponse(response, HttpStatus.BAD_REQUEST, "not exist");
+        assertInvalidResponse(response, HttpStatus.BAD_REQUEST, RestControllerConstants.INVALID_ID);
 
         response = underTest.getUser(token);
         assertValidResponse(response);
