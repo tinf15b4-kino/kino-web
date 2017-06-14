@@ -156,6 +156,10 @@ public class RestClient implements Serializable {
         return null;
     }
 
+    public RestResponse saveRatedMovie(RatedMovie rated) {
+        return null;
+    }
+
     public RestResponse getPlaylistForCinemas(long cinemaId, Date from, Date to) {
         String requestUrl = baseUrl
                 + String.format(GET_PLAYLIST_CINEMA, cinemaId, (from != null) ? from.getTime() : "", (to != null) ? to.getTime() : "");
