@@ -1,5 +1,7 @@
 package de.tinf15b4.kino.web.views;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.google.common.base.Strings;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.event.ShortcutListener;
@@ -17,14 +19,17 @@ import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
+
 import de.tinf15b4.kino.data.users.User;
 import de.tinf15b4.kino.web.rest.RestResponse;
 import de.tinf15b4.kino.web.ui.SmartCinemaUi;
 import de.tinf15b4.kino.web.user.UserBean;
-import org.springframework.beans.factory.annotation.Autowired;
+import de.tinf15b4.kino.web.util.AccountInformationChecker;
 
 @SpringView(name = RegisterView.VIEW_NAME)
 public class RegisterView extends VerticalLayout implements View {
+
+    private static final long serialVersionUID = -6175454774705626446L;
 
     public static final String VIEW_NAME = "register";
 
@@ -69,13 +74,14 @@ public class RegisterView extends VerticalLayout implements View {
         newPwCheckRow.addComponent(newPwCheckField);
         userForm.addComponent(newPwCheckRow);
 
-        Button registerButton = new Button("Registrieren",
-                e -> tryRegister(userField, emailField, newPwField, newPwCheckField));
+        Button registerButton = new Button("Registrieren", e -> tryRegister(userField, emailField, newPwField, newPwCheckField));
 
         userForm.addComponent(registerButton);
         registerButton.addStyleName(ValoTheme.BUTTON_PRIMARY);
 
         registerButton.addShortcutListener(new ShortcutListener(null, ShortcutAction.KeyCode.ENTER, null) {
+            private static final long serialVersionUID = -2495910429680009083L;
+
             @Override
             public void handleAction(Object sender, Object target) {
                 registerButton.click();
@@ -85,8 +91,7 @@ public class RegisterView extends VerticalLayout implements View {
         this.addComponent(userForm);
     }
 
-    private void tryRegister(TextField userField, TextField emailField, PasswordField newPwField,
-                             PasswordField newPwCheckField) {
+    private void tryRegister(TextField userField, TextField emailField, PasswordField newPwField, PasswordField newPwCheckField) {
 
         String userName = userField.getValue();
         String email = emailField.getValue();
@@ -95,28 +100,27 @@ public class RegisterView extends VerticalLayout implements View {
 
         boolean valid = true;
 
-
         userField.setComponentError(null);
         emailField.setComponentError(null);
         newPwField.setComponentError(null);
         newPwCheckField.setComponentError(null);
 
         // userName
-        String userNameErrorMsg = checkUsername(userName);
+        String userNameErrorMsg = AccountInformationChecker.checkUsername(userName);
         if (!Strings.isNullOrEmpty(userNameErrorMsg)) {
             userField.setComponentError(new UserError(userNameErrorMsg));
             valid = false;
         }
 
         // email
-        String emailErrorMsg = checkEmail(email);
+        String emailErrorMsg = AccountInformationChecker.checkEmail(email);
         if (!Strings.isNullOrEmpty(emailErrorMsg)) {
             emailField.setComponentError(new UserError(emailErrorMsg));
             valid = false;
         }
 
         // PW
-        String pwErrorMsg = checkNewPassword(newPw, newCheckPw);
+        String pwErrorMsg = AccountInformationChecker.checkNewPassword(newPw, newCheckPw);
         if (!Strings.isNullOrEmpty(pwErrorMsg)) {
             newPwField.setComponentError(new UserError(pwErrorMsg));
             valid = false;
@@ -130,41 +134,6 @@ public class RegisterView extends VerticalLayout implements View {
         }
     }
 
-    private String checkUsername(String userName) {
-        if (userName.length() > 99) {
-            return "Der angegebene Benutzername ist zu lang";
-        } else {
-            if (userName.length() <= 2) {
-                return "Bitte überprüfen Sie die Eingabe";
-            }
-        }
-        return "";
-    }
-
-    private String checkEmail(String email) {
-        if (email.length() > 99) {
-            return "Die angegebene E-Mailadresse ist zu lang";
-        } else {
-            if (!email.contains("@") && !email.contains(".") && email.length() <= 6) {
-                return "Bitte überprüfen Sie die Eingabe";
-            }
-        }
-        return "";
-    }
-
-    private String checkNewPassword(String newPw, String newCheckPw) {
-        if (Strings.isNullOrEmpty(newPw)) {
-            return "Sie müssen ein neues Passwort angeben";
-        } else if (newPw.length() > 99) {
-            return "Das angegebene Passwort ist zu lang";
-        } else if (!newPw.equals(newCheckPw)) {
-            return "Die angegebenen Passwörter stimmen nicht überein";
-        } else if (newPw.length() <= 7) {
-            return "Das angegebene Passwort ist zu kurz";
-        }
-        return "";
-    }
-
     private void performRegistration(String userName, String email, String newPw) {
 
         User newUser = new User();
@@ -172,7 +141,7 @@ public class RegisterView extends VerticalLayout implements View {
         newUser.setEmail(email);
         newUser.setPassword(newPw);
 
-        RestResponse userResponse = userBean.getRestClient().saveUser(newUser);
+        RestResponse userResponse = userBean.getRestClient().registerUser(newUser);
         if (!userResponse.hasError()) {
             ((SmartCinemaUi) getUI()).update();
             Notification.show("Registrierung erfolgreich abgeschlossen!", Notification.Type.HUMANIZED_MESSAGE);

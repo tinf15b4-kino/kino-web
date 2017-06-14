@@ -45,7 +45,8 @@ public class RestClient implements Serializable {
     private static final String GET_FAVORITE = "/getFavorite?token=%s&cinemaId=%s";
     private static final String SAVE_FAVORITE = "/saveFavorite?token=%s";
     private static final String DELETE_FAVORITE = "/deleteFavorite?token=%s";
-    private static final String SAVE_USER = "/saveUser?token=%s";
+    private static final String UPDATE_USER = "/saveUser?token=%s";
+    private static final String REGISTER_USER = "/registerUser";
     private static final String GET_RATED_CINEMAS = "/getRatedCinemas?cinemaId=%s";
     private static final String GET_PLAYLIST_CINEMA = "/getPlaylistForCinema?cinemaId=%s&from=%s&to=%s";
     private static final String GET_FAVORITES = "/getFavorites?token=%s";
@@ -81,8 +82,8 @@ public class RestClient implements Serializable {
     public RestResponse authorize() {
         try {
             URLEncoder.encode(userNameOrEmail, ENCODING);
-            String requestUrl = baseUrl + String.format(AUTHORIZE, URLEncoder.encode(userNameOrEmail, ENCODING),
-                    URLEncoder.encode(password, ENCODING));
+            String requestUrl = baseUrl
+                    + String.format(AUTHORIZE, URLEncoder.encode(userNameOrEmail, ENCODING), URLEncoder.encode(password, ENCODING));
             authorized = true;
             RestResponse response = doGetRequest(requestUrl, String.class, false);
             if (response.hasError()) {
@@ -136,9 +137,14 @@ public class RestClient implements Serializable {
         return doDeleteRequest(requestUrl, favorite, true);
     }
 
-    public RestResponse saveUser(User user) {
-        String requestUrl = baseUrl + String.format(SAVE_USER, token);
+    public RestResponse updateUser(User user) {
+        String requestUrl = baseUrl + String.format(UPDATE_USER, token);
         return doPostRequest(requestUrl, User.class, user, true);
+    }
+
+    public RestResponse registerUser(User user) {
+        String requestUrl = baseUrl + REGISTER_USER;
+        return doPostRequest(requestUrl, User.class, user, false);
     }
 
     public RestResponse getRatedCinemas(long cinemaId) {
@@ -147,8 +153,8 @@ public class RestClient implements Serializable {
     }
 
     public RestResponse getPlaylistForCinemas(long cinemaId, Date from, Date to) {
-        String requestUrl = baseUrl + String.format(GET_PLAYLIST_CINEMA, cinemaId, (from != null) ? from.getTime() : "",
-                (to != null) ? to.getTime() : "");
+        String requestUrl = baseUrl
+                + String.format(GET_PLAYLIST_CINEMA, cinemaId, (from != null) ? from.getTime() : "", (to != null) ? to.getTime() : "");
         return doGetRequest(requestUrl, Playlist[].class, false);
     }
 
@@ -182,8 +188,8 @@ public class RestClient implements Serializable {
     }
 
     public RestResponse getPlaylistForMovie(long movieId, Date from, Date to) {
-        String requestUrl = baseUrl + String.format(GET_PLAYLIST_MOVIE, movieId, (from != null) ? from.getTime() : "",
-                (to != null) ? to.getTime() : "");
+        String requestUrl = baseUrl
+                + String.format(GET_PLAYLIST_MOVIE, movieId, (from != null) ? from.getTime() : "", (to != null) ? to.getTime() : "");
         return doGetRequest(requestUrl, Playlist[].class, false);
     }
 
@@ -206,19 +212,15 @@ public class RestClient implements Serializable {
         return doRestCall(parseUrl(urlString), expectedResult, RequestMethod.GET, toJson(""), needAuthorization);
     }
 
-    private RestResponse doPostRequest(String urlString, Class<?> expectedResult, Object postObject,
-            boolean needAuthorization) {
-        return doRestCall(parseUrl(urlString), expectedResult, RequestMethod.POST, toJson(postObject),
-                needAuthorization);
+    private RestResponse doPostRequest(String urlString, Class<?> expectedResult, Object postObject, boolean needAuthorization) {
+        return doRestCall(parseUrl(urlString), expectedResult, RequestMethod.POST, toJson(postObject), needAuthorization);
     }
 
     private RestResponse doDeleteRequest(String urlString, Object deleteObject, boolean needAuthorization) {
-        return doRestCall(parseUrl(urlString), String.class, RequestMethod.DELETE, toJson(deleteObject),
-                needAuthorization);
+        return doRestCall(parseUrl(urlString), String.class, RequestMethod.DELETE, toJson(deleteObject), needAuthorization);
     }
 
-    private RestResponse doRestCall(URL url, Class<?> expectedResult, RequestMethod method, byte[] body,
-            boolean needAuthorization) {
+    private RestResponse doRestCall(URL url, Class<?> expectedResult, RequestMethod method, byte[] body, boolean needAuthorization) {
         if (needAuthorization && !authorized) {
             return new RestResponse(MISSING_AUTHORIZATION, HttpStatus.UNAUTHORIZED, null);
         }

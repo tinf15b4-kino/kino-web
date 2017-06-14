@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import com.vaadin.ui.Link;
-import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Lists;
@@ -22,6 +20,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Link;
 import com.vaadin.ui.VerticalLayout;
 
 import de.tinf15b4.kino.data.cinemas.Cinema;
@@ -191,8 +190,7 @@ public class MovieView extends VerticalLayout implements View {
         HorizontalLayout cinemaRow = new HorizontalLayout();
         cinemaRow.setPrimaryStyleName("cinemaPlaylistRow");
 
-        Component cinemaImage = new Image(null,
-                new ExternalResource(userBean.getRestClient().getCinemaPictureUrl(cinema)));
+        Component cinemaImage = new Image(null, new ExternalResource(userBean.getRestClient().getCinemaPictureUrl(cinema)));
         cinemaImage.setWidth("200px");
         cinemaImage.setPrimaryStyleName("cinemaPlaylistImage");
         cinemaRow.addComponent(cinemaImage);
