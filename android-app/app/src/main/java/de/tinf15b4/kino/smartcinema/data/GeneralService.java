@@ -1,5 +1,6 @@
 package de.tinf15b4.kino.smartcinema.data;
 
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -15,4 +16,8 @@ public interface GeneralService {
 
     @GET("getSearchResult")
     Call<SearchResult> getSearchResult(@Query("term") String term);
+
+    @GET("getPlaylistForMovie")
+    Call<List<PlaylistEntry>> getPlaylistForMovie(@Query("movieId") long movieId,
+                                                  @Query("from") long fromMillis, @Query("to") long toMillis);
 }
