@@ -7,14 +7,15 @@ public class RestControllerConstants {
         // Sonarqube seems to like that
     }
 
-    public static final String NOT_NULL = "Parameters or request body must not be null";
-    public static final String WRONG_PASSWORD = "Wrong username or password";
-    public static final String USER_LOGGED_IN = "This user is already logged in";
-    public static final String TOKEN_INVALID = "Token invalid or expired";
-    public static final String LOGOUT_SUCCESS = "Logout successful";
-    public static final String INVALID_ID = "Id does not exist";
-    public static final String DELETE_SUCCESSFUL = "Deleted successfully";
-    public static final String INTERNAL_SERVER_ERROR = "Internal Server Error";
-    public static final String INVALID_USERDATA = "Invalid value(s) of User-data ";
+    public static final String NOT_NULL = "Parameter bzw. Request Body darf nicht null sein";
+    public static final String WRONG_PASSWORD = "Benutzername oder Passwort falsch";
+    public static final String USER_LOGGED_IN = "Benutzer ist bereits angemeldet";
+    public static final String TOKEN_INVALID = "Ungültiges oder abgelaufenes Token";
+    public static final String LOGOUT_SUCCESS = "Anmelden erfolgreich";
+    public static final String INVALID_ID = "Id existiert nicht";
+    public static final String DELETE_SUCCESSFUL = "Löschen erfolgreich";
+    public static final String INTERNAL_SERVER_ERROR = "Interner Serverfehler";
+    public static final String INVALID_USERDATA = "Ungültige Werte in Benutzerdaten";
+    public static final String USER_EXISTS = "Benutzername bereits vergeben";
 
 }

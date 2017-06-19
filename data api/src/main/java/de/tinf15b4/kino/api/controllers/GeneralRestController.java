@@ -2,6 +2,7 @@ package de.tinf15b4.kino.api.controllers;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.jsondoc.core.annotation.Api;
 import org.jsondoc.core.annotation.ApiAuthNone;
@@ -14,6 +15,7 @@ import org.jsondoc.core.annotation.ApiVersion;
 import org.jsondoc.core.pojo.ApiStage;
 import org.jsondoc.core.pojo.ApiVisibility;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +38,8 @@ import de.tinf15b4.kino.data.ratedmovies.RatedMovie;
 import de.tinf15b4.kino.data.ratedmovies.RatedMovieService;
 import de.tinf15b4.kino.data.search.SearchResult;
 import de.tinf15b4.kino.data.search.SearchService;
+import de.tinf15b4.kino.data.users.User;
+import de.tinf15b4.kino.data.users.UserService;
 
 @Api(name = "General services", description = "Offers all methods needed to hook into the database without any authentication", visibility = ApiVisibility.PUBLIC, stage = ApiStage.BETA)
 @ApiVersion(since = "0.0.1")
@@ -60,6 +64,9 @@ public class GeneralRestController {
 
     @Autowired
     private SearchService searchService;
+
+    @Autowired
+    private UserService userService;
 
     @ApiMethod(description = "Returns all cinemas")
     @RequestMapping(value = "rest/getCinemas", method = RequestMethod.GET)
@@ -103,8 +110,7 @@ public class GeneralRestController {
 
     @ApiMethod(description = "Returns all movies filtered by the given MovieFilterData")
     @RequestMapping(value = "rest/getFilteredMovies", method = RequestMethod.POST)
-    public ResponseEntity<?> getFilteredMovies(
-            @ApiBodyObject(clazz = MovieFilterData.class) @RequestBody MovieFilterData filterData) {
+    public ResponseEntity<?> getFilteredMovies(@ApiBodyObject(clazz = MovieFilterData.class) @RequestBody MovieFilterData filterData) {
         List<Movie> movies = movieService.allmightyFilter(filterData);
         filterImages(movies);
         return ResponseEntity.ok(movies.toArray(new Movie[0]));
@@ -192,6 +198,17 @@ public class GeneralRestController {
         SearchResult result = searchService.search(term);
         result.doFilter();
         return ResponseEntity.ok(result);
+    }
+
+    @ApiMethod(description = "Registers the given User")
+    @RequestMapping(value = "rest/registerUser", method = RequestMethod.POST)
+    public ResponseEntity<?> registerUser(@ApiBodyObject(clazz = User.class) @RequestBody User user) {
+        if (userService.findByName(user.getName()) != null)
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(RestControllerConstants.USER_EXISTS);
+        Optional<User> saved = userService.save(user);
+        if (saved.isPresent())
+            return ResponseEntity.ok(saved.get());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(RestControllerConstants.INTERNAL_SERVER_ERROR);
     }
 
     private void filterImages(List<?> containers) {

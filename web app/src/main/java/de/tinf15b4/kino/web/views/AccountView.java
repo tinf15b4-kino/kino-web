@@ -24,10 +24,13 @@ import de.tinf15b4.kino.data.users.User;
 import de.tinf15b4.kino.web.rest.RestResponse;
 import de.tinf15b4.kino.web.ui.SmartCinemaUi;
 import de.tinf15b4.kino.web.user.UserBean;
+import de.tinf15b4.kino.web.util.AccountInformationChecker;
 
 @SpringView(name = AccountView.VIEW_NAME)
 
 public class AccountView extends VerticalLayout implements View {
+
+    private static final long serialVersionUID = -5445455208818252072L;
 
     public static final String VIEW_NAME = "account";
 
@@ -95,6 +98,8 @@ public class AccountView extends VerticalLayout implements View {
             saveButton.addStyleName(ValoTheme.BUTTON_PRIMARY);
 
             saveButton.addShortcutListener(new ShortcutListener(null, ShortcutAction.KeyCode.ENTER, null) {
+                private static final long serialVersionUID = -5604254966514700302L;
+
                 @Override
                 public void handleAction(Object sender, Object target) {
                     saveButton.click();
@@ -128,7 +133,7 @@ public class AccountView extends VerticalLayout implements View {
 
             // change userName
             if (!userName.equals(currentUser.getName())) {
-                String errorMsg = checkUsername(userName);
+                String errorMsg = AccountInformationChecker.checkUsername(userName);
                 if (Strings.isNullOrEmpty(errorMsg)) {
                     changeUsername = true;
                 } else {
@@ -139,7 +144,7 @@ public class AccountView extends VerticalLayout implements View {
 
             // change email
             if (!email.equals(currentUser.getEmail())) {
-                String errorMsg = checkEmail(email);
+                String errorMsg = AccountInformationChecker.checkEmail(email);
                 if (Strings.isNullOrEmpty(errorMsg)) {
                     changeEmail = true;
                 } else {
@@ -150,9 +155,9 @@ public class AccountView extends VerticalLayout implements View {
 
             // change PW
             if (!Strings.isNullOrEmpty(oldPw) || !Strings.isNullOrEmpty(newPw)) {
-                String oldPwErrorMsg = checkOldPassword(oldPw, currentUser);
+                String oldPwErrorMsg = AccountInformationChecker.checkOldPassword(oldPw, currentUser);
                 if (Strings.isNullOrEmpty(oldPwErrorMsg)) {
-                    String newPwErrorMsg = checkNewPassword(newPw, newCheckPw);
+                    String newPwErrorMsg = AccountInformationChecker.checkNewPassword(newPw, newCheckPw);
                     if (Strings.isNullOrEmpty(newPwErrorMsg)) {
                         changePw = true;
                     } else {
@@ -175,8 +180,8 @@ public class AccountView extends VerticalLayout implements View {
         }
     }
 
-    private void performChange(User currentUser, String userName, String email, String newPw, boolean changeUsername,
-            boolean changeEmail, boolean changePw) {
+    private void performChange(User currentUser, String userName, String email, String newPw, boolean changeUsername, boolean changeEmail,
+            boolean changePw) {
         if (changeUsername) {
             currentUser.setName(userName);
         }
@@ -188,56 +193,12 @@ public class AccountView extends VerticalLayout implements View {
 
         }
 
-        RestResponse userResponse = userBean.getRestClient().saveUser(currentUser);
+        RestResponse userResponse = userBean.getRestClient().updateUser(currentUser);
         if (!userResponse.hasError()) {
             ((SmartCinemaUi) getUI()).update();
             Notification.show("Die Änderungen wurden erfolgreich übernommen", Notification.Type.HUMANIZED_MESSAGE);
         } else {
             Notification.show(userResponse.getErrorMsg(), Notification.Type.ERROR_MESSAGE);
         }
-    }
-
-    private String checkUsername(String userName) {
-        if (userName.length() > 99) {
-            return "Der angegebene Benutzername ist zu lang";
-        } else {
-            if (userName.length() <= 2) {
-                return "Bitte überprüfen Sie die Eingabe";
-            }
-        }
-        return "";
-    }
-
-    private String checkEmail(String email) {
-        if (email.length() > 99) {
-            return "Die angegebene E-Mailadresse" + " ist zu lang";
-        } else {
-            if (!email.contains("@") && !email.contains(".") && email.length() <= 6) {
-                return "Bitte überprüfen Sie die Eingabe";
-            }
-        }
-        return "";
-    }
-
-    private String checkOldPassword(String oldPw, User currentUser) {
-        if (Strings.isNullOrEmpty(oldPw)) {
-            return "Wenn Sie das Passwort ändern möchten, müssen Sie das alte Passwort angeben";
-        } else if (!oldPw.equals(currentUser.getPassword())) {
-            return "Das angegbene Passwort ist falsch";
-        }
-        return "";
-    }
-
-    private String checkNewPassword(String newPw, String newCheckPw) {
-        if (Strings.isNullOrEmpty(newPw)) {
-            return "Wenn Sie das Passwort ändern möchten, müssen Sie ein neues Passwort angeben";
-        } else if (newPw.length() > 99) {
-            return "Das angegebene Passwort ist zu lang";
-        } else if (!newPw.equals(newCheckPw)) {
-            return "Die angegebenen Passwörter stimmen nicht überein";
-        } else if (newPw.length() <= 7) {
-            return "Das angegebene Passwort ist zu kurz";
-        }
-        return "";
     }
 }
