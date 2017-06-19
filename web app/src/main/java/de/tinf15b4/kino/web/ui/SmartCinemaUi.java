@@ -5,7 +5,6 @@ import java.net.URLEncoder;
 
 import javax.annotation.PostConstruct;
 
-import de.tinf15b4.kino.web.views.RegisterView;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.annotations.Theme;
@@ -43,6 +42,8 @@ import de.tinf15b4.kino.web.views.CinemaListView;
 import de.tinf15b4.kino.web.views.FavoriteListView;
 import de.tinf15b4.kino.web.views.LoginView;
 import de.tinf15b4.kino.web.views.MovieListView;
+import de.tinf15b4.kino.web.views.NotImplementedView;
+import de.tinf15b4.kino.web.views.RegisterView;
 import de.tinf15b4.kino.web.views.SearchResultsView;
 
 @SuppressWarnings("serial")
@@ -225,12 +226,12 @@ public class SmartCinemaUi extends UI {
         movieBtn.addStyleName(BaseTheme.BUTTON_LINK);
         navigator.addComponent(movieBtn);
 
-        Button newMovieBtn = (Button) (createViewButton("Neu im Kino", "new", FontAwesome.EXCLAMATION_CIRCLE));
+        Button newMovieBtn = (Button) (createViewButton("Neu im Kino", NotImplementedView.VIEW_NAME, FontAwesome.EXCLAMATION_CIRCLE));
         newMovieBtn.setId("navigatorBtn_New");
         newMovieBtn.addStyleName(BaseTheme.BUTTON_LINK);
         navigator.addComponent(newMovieBtn);
 
-        Button soonBtn = (Button) (createViewButton("Demnächst", "coming_soon", FontAwesome.HISTORY));
+        Button soonBtn = (Button) (createViewButton("Demnächst", NotImplementedView.VIEW_NAME, FontAwesome.HISTORY));
         soonBtn.setId("navigatorBtn_Soon");
         soonBtn.addStyleName(BaseTheme.BUTTON_LINK);
         navigator.addComponent(soonBtn);
@@ -249,7 +250,7 @@ public class SmartCinemaUi extends UI {
         favoriteBtn.addStyleName(BaseTheme.BUTTON_LINK);
         navigator.addComponent(favoriteBtn);
 
-        Button aboutBtn = (Button) (createViewButton("über smartCinema", "aboutView", FontAwesome.INFO));
+        Button aboutBtn = (Button) (createViewButton("über smartCinema", NotImplementedView.VIEW_NAME, FontAwesome.INFO));
         aboutBtn.setId("navigatorBtn_About");
         aboutBtn.addStyleName(BaseTheme.BUTTON_LINK);
         navigator.addComponent(aboutBtn);
@@ -268,7 +269,7 @@ public class SmartCinemaUi extends UI {
         navigatorBarLeft.setHeight("60px");
         navigatorBarLeft.setId("toolBarLeft");
 
-        Button homeBtn = new Button("", e -> navigateTo("home"));
+        Button homeBtn = new Button("", e -> navigateTo(""));
         homeBtn.setIcon(FontAwesome.HOME);
         homeBtn.setId("homeBtn");
         homeBtn.addStyleName(BaseTheme.BUTTON_LINK);
