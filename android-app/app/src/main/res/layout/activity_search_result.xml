@@ -7,43 +7,9 @@
     android:id="@+id/activity_search_result_layout"
     tools:context="de.tinf15b4.kino.smartcinema.SearchResultActivity">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="0dp"
-        android:paddingRight="0dp"
-        android:orientation="vertical" >
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/activity_search_result_txt"
-            android:text="TODO SEARCH RESULT" />
-
-        <TextView
-            android:id="@+id/searchresult_movie_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Filme"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:visibility="visible" />
-
-        <de.tinf15b4.kino.smartcinema.util.ExpandableHeightListView
-            android:id="@+id/searchresult_movie_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/searchresult_cinema_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Kinos"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
-
-        <de.tinf15b4.kino.smartcinema.util.ExpandableHeightListView
-            android:id="@+id/searchresult_cinema_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
+        android:layout_height="wrap_content"
+        android:id="@+id/search_result_list"></ListView>
 
 </android.support.v4.widget.SwipeRefreshLayout>
