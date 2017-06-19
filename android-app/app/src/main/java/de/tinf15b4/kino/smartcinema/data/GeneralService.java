@@ -20,4 +20,8 @@ public interface GeneralService {
     @GET("getPlaylistForMovie")
     Call<List<PlaylistEntry>> getPlaylistForMovie(@Query("movieId") long movieId,
                                                   @Query("from") long fromMillis, @Query("to") long toMillis);
+
+    @GET("getPlaylistForCinema")
+    Call<List<PlaylistEntry>> getPlaylistForCinema(@Query("cinemaId") long cinemaId,
+                                                   @Query("from") long fromMillis, @Query("to") long toMillis);
 }

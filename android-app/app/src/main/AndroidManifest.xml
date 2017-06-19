@@ -48,6 +48,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.tinf15b4.kino.smartcinema.MainActivity" />
         </activity>
+        <activity
+            android:name=".CinemaDetailsActivity"
+            android:label="@string/title_activity_cinema_details"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.tinf15b4.kino.smartcinema.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

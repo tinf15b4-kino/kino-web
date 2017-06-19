@@ -23,4 +23,8 @@ public class ApiFactory {
     public static String getPictureUrl(Movie m) {
         return BASE_URL + "/moviePicture?movieId=" + m.id;
     }
+
+    public static String getPictureUrl(Cinema c) {
+        return BASE_URL + "/cinemaPicture?cinemaId=" + c.id;
+    }
 }
