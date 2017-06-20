@@ -15,9 +15,11 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
 import de.tinf15b4.kino.data.users.User;
@@ -106,7 +108,53 @@ public class AccountView extends VerticalLayout implements View {
                 }
             });
 
+            Button delete = new Button("Löschen", e -> checkDelete());
+            delete.addStyleName(ValoTheme.BUTTON_DANGER);
+            userForm.addComponent(delete);
+
             this.addComponent(userForm);
+        }
+    }
+
+    private void checkDelete() {
+        Window dialog = new Window("Benutzer löschen");
+        dialog.setModal(true);
+        dialog.setClosable(false);
+        dialog.setSizeUndefined();
+        getUI().addWindow(dialog);
+
+        VerticalLayout layout = new VerticalLayout();
+        layout.setMargin(true);
+        layout.setSpacing(true);
+
+        layout.addComponent(
+                new Label("Achtung! Diese Aktion kann nicht rückgängig gemacht werden. Benutzer wirklich löschen?"));
+
+        HorizontalLayout buttons = new HorizontalLayout();
+        buttons.setSpacing(true);
+        Button cancel = new Button("Abbrechen");
+        cancel.addClickListener(e -> dialog.close());
+        buttons.addComponent(cancel);
+
+        Button finish = new Button("Löschen");
+        finish.addStyleName(ValoTheme.BUTTON_DANGER);
+        finish.addClickListener(e -> {
+            dialog.close();
+            tryDelete();
+        });
+        buttons.addComponent(finish);
+
+        layout.addComponent(buttons);
+        dialog.setContent(layout);
+    }
+
+    private void tryDelete() {
+        RestResponse response = userBean.getRestClient().deleteUser();
+        if (response.hasError()) {
+            Notification.show(response.getErrorMsg(), Type.ERROR_MESSAGE);
+        } else {
+            Notification.show("Account wurde erfolgreich gelöscht", Type.HUMANIZED_MESSAGE);
+            this.getUI().getNavigator().navigateTo(StartView.VIEW_NAME);
         }
     }
 
@@ -180,8 +228,8 @@ public class AccountView extends VerticalLayout implements View {
         }
     }
 
-    private void performChange(User currentUser, String userName, String email, String newPw, boolean changeUsername, boolean changeEmail,
-            boolean changePw) {
+    private void performChange(User currentUser, String userName, String email, String newPw, boolean changeUsername,
+            boolean changeEmail, boolean changePw) {
         if (changeUsername) {
             currentUser.setName(userName);
         }
