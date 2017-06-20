@@ -144,7 +144,7 @@ public class RegisterView extends VerticalLayout implements View {
         RestResponse userResponse = userBean.getRestClient().registerUser(newUser);
         if (!userResponse.hasError()) {
             ((SmartCinemaUi) getUI()).update();
-            Notification.show("Registrierung erfolgreich abgeschlossen!", Notification.Type.HUMANIZED_MESSAGE);
+            Notification.show("Registrierung erfolgreich abgeschlossen!", Notification.Type.TRAY_NOTIFICATION);
         } else {
             Notification.show(userResponse.getErrorMsg(), Notification.Type.ERROR_MESSAGE);
         }

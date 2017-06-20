@@ -1,6 +1,7 @@
 package de.tinf15b4.kino.data.cinemas;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,10 +10,13 @@ import javax.persistence.UniqueConstraint;
 
 import de.tinf15b4.kino.data.EntityModel;
 import de.tinf15b4.kino.data.ImageContainer;
+import de.tinf15b4.kino.data.ratedcinemas.IRateable;
+import de.tinf15b4.kino.data.ratedcinemas.RatedCinema;
+import de.tinf15b4.kino.data.users.User;
 
 @Entity
 @Table(name = "cinema", uniqueConstraints = @UniqueConstraint(columnNames = { Cinema.FieldInfos.NAME }))
-public class Cinema extends EntityModel implements ImageContainer, Serializable {
+public class Cinema extends EntityModel implements ImageContainer, Serializable, IRateable<RatedCinema> {
 
     private static final long serialVersionUID = -7984776023686706282L;
 
@@ -129,5 +133,10 @@ public class Cinema extends EntityModel implements ImageContainer, Serializable 
     @Override
     public void doFilter() {
         setImage(null);
+    }
+
+    @Override
+    public RatedCinema createRating(User user, int rating, String description, Date date) {
+        return new RatedCinema(user, this, rating, description, date);
     }
 }

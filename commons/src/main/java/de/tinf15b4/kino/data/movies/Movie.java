@@ -1,5 +1,8 @@
 package de.tinf15b4.kino.data.movies;
 
+import java.io.Serializable;
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -9,11 +12,16 @@ import org.hibernate.annotations.Type;
 
 import de.tinf15b4.kino.data.EntityModel;
 import de.tinf15b4.kino.data.ImageContainer;
+import de.tinf15b4.kino.data.ratedcinemas.IRateable;
+import de.tinf15b4.kino.data.ratedmovies.RatedMovie;
+import de.tinf15b4.kino.data.users.User;
 
 @Entity
 @Table(name = "movie", uniqueConstraints = { @UniqueConstraint(columnNames = { Movie.FieldInfos.NAME }),
         @UniqueConstraint(columnNames = { Movie.FieldInfos.TMDB_ID }) })
-public class Movie extends EntityModel implements ImageContainer {
+public class Movie extends EntityModel implements ImageContainer, Serializable, IRateable<RatedMovie> {
+
+    private static final long serialVersionUID = -549343007165971463L;
 
     static class FieldInfos {
         private FieldInfos() {
@@ -168,5 +176,10 @@ public class Movie extends EntityModel implements ImageContainer {
     @Override
     public void doFilter() {
         setCover(null);
+    }
+
+    @Override
+    public RatedMovie createRating(User user, int rating, String description, Date date) {
+        return new RatedMovie(user, this, rating, description, date);
     }
 }

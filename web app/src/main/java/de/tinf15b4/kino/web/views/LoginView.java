@@ -5,6 +5,7 @@ import java.net.URLDecoder;
 
 import javax.annotation.PostConstruct;
 
+import de.tinf15b4.kino.web.ui.SmartCinemaUi;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.event.ShortcutAction;
@@ -72,6 +73,7 @@ public class LoginView extends Panel implements View {
     private void tryLogin(String username, String password) {
         if (userBean.login(username, password)) {
             Notification.show("Erfolgreich als " + username + " angemeldet!", Notification.Type.TRAY_NOTIFICATION);
+
             if (redirectTo != null) {
                 getUI().getPage().open(redirectTo, "");
             } else {

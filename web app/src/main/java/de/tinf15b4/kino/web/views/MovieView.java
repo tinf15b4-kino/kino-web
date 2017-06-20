@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Lists;
@@ -16,6 +17,7 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
@@ -27,6 +29,7 @@ import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.movies.Movie;
 import de.tinf15b4.kino.data.playlists.Playlist;
 import de.tinf15b4.kino.data.ratedmovies.RatedMovie;
+import de.tinf15b4.kino.web.components.RatingDialog;
 import de.tinf15b4.kino.web.rest.RestResponse;
 import de.tinf15b4.kino.web.user.UserBean;
 import de.tinf15b4.kino.web.util.ViewUtils;
@@ -108,7 +111,18 @@ public class MovieView extends VerticalLayout implements View {
                 VerticalLayout ratingsForm = createRatingsForm(ratedMovies);
                 information.addComponent(ratingsForm);
             }
+
+            Button button = new Button("Bewertung abgeben");
+            button.setId("ratingsButton");
+            button.addStyleName(ValoTheme.BUTTON_PRIMARY);
+            button.addClickListener(e -> addRating(m));
+            information.addComponent(button);
         }
+    }
+
+    private void addRating(Movie m) {
+        RatingDialog<RatedMovie> dialog = new RatingDialog<>();
+        dialog.openDialog(getUI(), userBean, m, rated -> userBean.getRestClient().saveRatedMovie(rated));
     }
 
     private VerticalLayout createRatingsForm(List<RatedMovie> ratedMovies) {
@@ -208,7 +222,8 @@ public class MovieView extends VerticalLayout implements View {
         VerticalLayout cinemaInformation = new VerticalLayout();
         cinemaInformation.setPrimaryStyleName("cinemaPlaylistInformation");
 
-        Link cinemaLink = new Link(cinema.getName(), new ExternalResource("#!" + CinemaView.VIEW_NAME + "/" + cinema.getId()));
+        Link cinemaLink = new Link(cinema.getName(),
+                new ExternalResource("#!" + CinemaView.VIEW_NAME + "/" + cinema.getId()));
         cinemaLink.setId("cinemaPlaylistLink_" + cinema.getId());
         cinemaInformation.addComponent(cinemaLink);
 
