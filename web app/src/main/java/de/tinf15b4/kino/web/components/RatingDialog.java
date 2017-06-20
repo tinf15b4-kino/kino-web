@@ -14,8 +14,8 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
-
 import com.vaadin.ui.themes.ValoTheme;
+
 import de.tinf15b4.kino.data.ratedcinemas.IRateable;
 import de.tinf15b4.kino.data.users.User;
 import de.tinf15b4.kino.web.rest.RestResponse;
@@ -36,6 +36,8 @@ public class RatingDialog<Rated> implements Serializable {
 
     private Component createContent(Window dialog, UserBean userBean, IRateable<Rated> rateable, Saver<Rated> saver) {
         VerticalLayout mainLayout = new VerticalLayout();
+        mainLayout.setMargin(true);
+        mainLayout.setSpacing(true);
 
         Label starLabel = new Label("Bewertung");
         starLabel.setId("ratingsStarLabel");
@@ -63,6 +65,7 @@ public class RatingDialog<Rated> implements Serializable {
         mainLayout.addComponent(ratingsFieldRow);
 
         HorizontalLayout buttons = new HorizontalLayout();
+        buttons.setSpacing(true);
         buttons.setId("ratingsButtonRow");
         Button cancel = new Button("Abbrechen");
         cancel.setId("cancelRatingsButton");
