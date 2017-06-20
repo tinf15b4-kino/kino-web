@@ -15,6 +15,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
+import com.vaadin.ui.themes.ValoTheme;
 import de.tinf15b4.kino.data.ratedcinemas.IRateable;
 import de.tinf15b4.kino.data.users.User;
 import de.tinf15b4.kino.web.rest.RestResponse;
@@ -29,32 +30,49 @@ public class RatingDialog<Rated> implements Serializable {
         dialog.setModal(true);
         dialog.setClosable(false);
         dialog.setContent(createContent(dialog, userBean, rateable, saver));
+        dialog.setSizeUndefined();
         ui.addWindow(dialog);
     }
 
     private Component createContent(Window dialog, UserBean userBean, IRateable<Rated> rateable, Saver<Rated> saver) {
         VerticalLayout mainLayout = new VerticalLayout();
 
-        Label ratingLabel = new Label("Bewertungstext");
-        TextField rating = new TextField();
-        HorizontalLayout row = new HorizontalLayout();
-        row.addComponent(ratingLabel);
-        row.addComponent(rating);
-        mainLayout.addComponent(row);
-
         Label starLabel = new Label("Bewertung");
+        starLabel.setId("ratingsStarLabel");
         Slider slider = new Slider(0, 10);
-        row = new HorizontalLayout();
-        row.addComponent(starLabel);
-        row.addComponent(slider);
-        mainLayout.addComponent(row);
+        HorizontalLayout givenRatingRow = new HorizontalLayout();
+        givenRatingRow.addComponent(starLabel);
+        givenRatingRow.addComponent(slider);
+        mainLayout.addComponent(givenRatingRow);
+        mainLayout.setId("giveRatingsPanel");
+
+        Label ratingLabel = new Label("Bewertungstext");
+        ratingLabel.setId("giveRatingsHeading");
+        HorizontalLayout ratingsTextRow = new HorizontalLayout();
+        ratingsTextRow.addComponent(ratingLabel);
+        ratingsTextRow.setSpacing(true);
+        mainLayout.addComponent(ratingsTextRow);
+
+        TextField rating = new TextField();
+        rating.setId("ratingsField");
+        rating.setWidth("400px");
+        rating.setHeight("100px");
+        HorizontalLayout ratingsFieldRow = new HorizontalLayout();
+        ratingsFieldRow.setSpacing(true);
+        ratingsFieldRow.addComponent(rating);
+        mainLayout.addComponent(ratingsFieldRow);
 
         HorizontalLayout buttons = new HorizontalLayout();
+        buttons.setId("ratingsButtonRow");
         Button cancel = new Button("Abbrechen");
+        cancel.setId("cancelRatingsButton");
+        cancel.addStyleName(ValoTheme.BUTTON_DANGER);
         cancel.addClickListener(e -> dialog.close());
         buttons.addComponent(cancel);
 
         Button finish = new Button("Senden");
+        finish.setId("finishRatingsButton");
+        finish.addStyleName(ValoTheme.BUTTON_PRIMARY);
         finish.addClickListener(e -> trySave(rating.getValue(), (int) slider.getValue().doubleValue(), saver, userBean,
                 rateable, dialog));
         buttons.addComponent(finish);
@@ -74,7 +92,7 @@ public class RatingDialog<Rated> implements Serializable {
 
         RestResponse response = saver.save(rated);
         if (!response.hasError()) {
-            Notification.show("Bewertung wurde gespeichert!", Type.HUMANIZED_MESSAGE);
+            Notification.show("Bewertung wurde erfolgreich abgegebn!", Type.TRAY_NOTIFICATION);
             dialog.close();
         } else {
             Notification.show(response.getErrorMsg(), Type.ERROR_MESSAGE);

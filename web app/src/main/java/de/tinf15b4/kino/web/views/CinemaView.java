@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Lists;
@@ -120,6 +121,7 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
             }
 
             Button button = new Button("Bewertung abgeben");
+            button.addStyleName(ValoTheme.BUTTON_PRIMARY);
             button.addClickListener(e -> addRating());
             informationForm.addComponent(button);
 

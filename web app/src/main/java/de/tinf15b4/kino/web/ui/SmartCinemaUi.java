@@ -351,6 +351,8 @@ public class SmartCinemaUi extends UI {
     public void update() {
         grid.removeComponent(header);
         grid.addComponent(createHeader(), 0, 0, 1, 0);
+        grid.removeComponent(1, 1);
+        grid.addComponent(createToolBarRight(), 1, 1);
     }
 
     public void setLoginButtonEnabled(boolean enabled) {

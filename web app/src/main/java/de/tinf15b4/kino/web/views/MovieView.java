@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Lists;
@@ -112,6 +113,8 @@ public class MovieView extends VerticalLayout implements View {
             }
 
             Button button = new Button("Bewertung abgeben");
+            button.setId("ratingsButton");
+            button.addStyleName(ValoTheme.BUTTON_PRIMARY);
             button.addClickListener(e -> addRating(m));
             information.addComponent(button);
         }
