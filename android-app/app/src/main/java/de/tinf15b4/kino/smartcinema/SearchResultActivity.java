@@ -13,7 +13,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.HeaderViewListAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,16 +27,14 @@ import de.tinf15b4.kino.smartcinema.data.ApiFactory;
 import de.tinf15b4.kino.smartcinema.data.Cinema;
 import de.tinf15b4.kino.smartcinema.data.Movie;
 import de.tinf15b4.kino.smartcinema.data.SearchResult;
+import de.tinf15b4.kino.smartcinema.util.SeparatedListAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SearchResultActivity extends AppCompatActivity {
     private SwipeRefreshLayout swipeRefreshLayout;
-    private ListView movieList;
-    private ListView cinemaList;
-    private TextView movieHeader;
-    private TextView cinemaHeader;
+    private ListView resultsList;
     private String lastSearch;
 
     @Override
@@ -44,10 +44,7 @@ public class SearchResultActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activity_search_result_layout);
-        movieList = (ListView) findViewById(R.id.searchresult_movie_list);
-        movieHeader = (TextView) findViewById(R.id.searchresult_movie_header);
-        cinemaList = (ListView) findViewById(R.id.searchresult_cinema_list);
-        cinemaHeader = (TextView) findViewById(R.id.searchresult_cinema_header);
+        resultsList = (ListView) findViewById(R.id.search_result_list);
 
         clearSearch();
 
@@ -59,6 +56,25 @@ public class SearchResultActivity extends AppCompatActivity {
         }
 
         swipeRefreshLayout.setOnRefreshListener(() -> performSearch(lastSearch));
+
+        // Setup click handler
+        resultsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Object item = resultsList.getItemAtPosition(position);
+
+                if (item instanceof Movie) {
+                    Intent intent = new Intent(SearchResultActivity.this, MovieDetailsActivity.class);
+                    intent.putExtra("movie", (Movie) item);
+                    startActivity(intent);
+                }
+                if (item instanceof Cinema) {
+                    Intent intent = new Intent(SearchResultActivity.this, CinemaDetailsActivity.class);
+                    intent.putExtra("cinema", (Cinema) item);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     @Override
@@ -71,13 +87,7 @@ public class SearchResultActivity extends AppCompatActivity {
 
     private void clearSearch() {
         lastSearch = null;
-        TextView notice = (TextView) findViewById(R.id.activity_search_result_txt);
-        notice.setVisibility(View.VISIBLE);
-        notice.setText("Kein Suchbegriff eingegeben");
-        movieList.setAdapter(null);
-        movieHeader.setVisibility(View.GONE);
-        cinemaList.setAdapter(null);
-        cinemaHeader.setVisibility(View.GONE);
+        resultsList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, new String[] { "Kein Suchbegriff eingegeben!" }));
     }
 
     private void performSearch(String query) {
@@ -88,8 +98,6 @@ public class SearchResultActivity extends AppCompatActivity {
 
         lastSearch = query;
 
-        TextView notice = (TextView) findViewById(R.id.activity_search_result_txt);
-
         swipeRefreshLayout.setRefreshing(true);
         ApiFactory.getGeneralService().getSearchResult(query).enqueue(new Callback<SearchResult>() {
             @Override
@@ -97,44 +105,31 @@ public class SearchResultActivity extends AppCompatActivity {
                 swipeRefreshLayout.setRefreshing(false);
 
                 if (response.isSuccessful()) {
-                    notice.setVisibility(View.GONE);
+                    SeparatedListAdapter adapter = new SeparatedListAdapter(SearchResultActivity.this);
 
                     SearchResult result = response.body();
                     if (result.movies.size() > 0) {
-                        final ArrayList<String> list = new ArrayList<String>();
+                        final ArrayAdapter<Movie> movieAdapter = new ArrayAdapter<Movie>(SearchResultActivity.this, android.R.layout.simple_list_item_1);
                         for (Movie m : result.movies) {
-                            list.add(m.name);
+                            movieAdapter.add(m);
                         }
 
-                        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(SearchResultActivity.this,
-                                R.layout.movie_list_entry, list);
-
-                        movieList.setAdapter(adapter);
-                        movieHeader.setVisibility(View.VISIBLE);
-                    } else {
-                        movieList.setAdapter(null);
-                        movieHeader.setVisibility(View.GONE);
+                        adapter.addSection("Filme", movieAdapter);
                     }
 
                     if (result.cinemas.size() > 0) {
-                        final ArrayList<String> list = new ArrayList<String>();
+                        final ArrayAdapter<Cinema> cinemaAdapter = new ArrayAdapter<Cinema>(SearchResultActivity.this, android.R.layout.simple_list_item_1);
                         for (Cinema c : result.cinemas) {
-                            list.add(c.name);
+                            cinemaAdapter.add(c);
                         }
 
-                        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(SearchResultActivity.this,
-                                R.layout.cinema_list_entry, list);
-
-                        cinemaList.setAdapter(adapter);
-                        cinemaHeader.setVisibility(View.VISIBLE);
-                    } else {
-                        cinemaList.setAdapter(null);
-                        cinemaHeader.setVisibility(View.GONE);
+                        adapter.addSection("Kinos", cinemaAdapter);
                     }
 
-                    if (result.cinemas.size() == 0 && result.movies.size() == 0) {
-                        notice.setVisibility(View.VISIBLE);
-                        notice.setText("Leider keine Ergebnisse :(");
+                    if (adapter.isEmpty()) {
+                        resultsList.setAdapter(new ArrayAdapter<String>(SearchResultActivity.this, android.R.layout.simple_list_item_1, new String[] { "Leider kein Ergebnis!" }));
+                    } else {
+                        resultsList.setAdapter(adapter);
                     }
                 } else {
                     Toast.makeText(SearchResultActivity.this, response.message(), Toast.LENGTH_LONG).show();

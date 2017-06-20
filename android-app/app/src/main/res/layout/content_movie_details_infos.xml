@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content">
+    <TableRow>
+        <TextView android:text="Länge" android:padding="16dp"/>
+        <TextView  android:padding="16dp" android:id="@+id/movie_length" android:layout_width="wrap_content"/>
+    </TableRow>
+    <TableRow>
+        <TextView android:text="Genre" android:padding="16dp"/>
+        <TextView android:id="@+id/movie_genre" android:padding="16dp" android:layout_width="wrap_content"/>
+    </TableRow>
+    <TableRow>
+        <TextView android:text="Regie" android:padding="16dp"/>
+        <TextView android:id="@+id/movie_director" android:padding="16dp" android:layout_width="wrap_content"/>
+    </TableRow>
+    <TableRow>
+        <TextView android:text="Autor" android:padding="16dp"/>
+        <TextView android:id="@+id/movie_author" android:padding="16dp" android:layout_width="wrap_content"/>
+    </TableRow>
+    <TableRow>
+        <TextView android:text="Studio" android:padding="16dp"/>
+        <TextView android:id="@+id/movie_studio" android:padding="16dp" android:layout_width="wrap_content"/>
+    </TableRow>
+</TableLayout>
