@@ -272,6 +272,27 @@ public class SecureRestController {
                 .body(RestControllerConstants.INTERNAL_SERVER_ERROR);
     }
 
+    @ApiMethod(description = "Deletes the user for the given token")
+    @ApiErrors(apierrors = { @ApiError(code = "401", description = "Token was invalid") })
+    @RequestMapping(value = "rest/deleteUser", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteUser(
+            @ApiQueryParam(name = "token", description = "Authentication token for the current user") @RequestParam(name = "token") String token) {
+        ResponseEntity<?> response = checkToken(token);
+        if (response.getStatusCode() != HttpStatus.OK)
+            return response;
+
+        String username = tokens.get(new Token(token));
+        User user = userService.findByName(username);
+        userService.delete(user);
+
+        synchronized (tokens) {
+            tokens.remove(new Token(token));
+            users.remove(username);
+        }
+
+        return ResponseEntity.ok(RestControllerConstants.DELETE_SUCCESSFUL);
+    }
+
     private ResponseEntity<?> checkToken(String tokenKey) {
         if (!Strings.isNullOrEmpty(tokenKey)) {
             Token token = new Token(tokenKey);
