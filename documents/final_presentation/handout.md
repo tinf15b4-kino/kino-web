@@ -3,10 +3,6 @@
 # Handout
 ## Midterm Presentation, 21.06.2017
 
-### Contact
-
-Mail for callbacks: simon.knab@gmx.com
-
 ### Team Members
 
 All team members hold the roles Implementer, Test Designer, Business Designer and Requirements Specifier
