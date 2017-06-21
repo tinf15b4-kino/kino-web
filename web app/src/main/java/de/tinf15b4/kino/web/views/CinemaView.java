@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
-import com.vaadin.ui.themes.ValoTheme;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Lists;
@@ -25,6 +25,7 @@ import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.movies.Movie;
@@ -158,6 +159,7 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
     }
 
     private HorizontalLayout createMovieRow(Movie movie, List<Playlist> playlists) {
+        playlists = playlists.stream().filter(p -> p.getMovie().equals(movie)).collect(Collectors.toList());
         HorizontalLayout movieRow = new HorizontalLayout();
         movieRow.setPrimaryStyleName("moviePlaylistRow");
 
