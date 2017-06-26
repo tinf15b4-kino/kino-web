@@ -12,10 +12,10 @@ This Test Plan for the SmartCinema supports the following objectives:
 - Android App
 
 ### 1.2 Scope
-Testing is done with user interface, function and **tbd** tests.
+Testing is done with user interface, function and load tests.
 
 ### 1.3 Intended Audience
-This document is intended for the use of Team SmartCinema as well as the projects stakeholders.
+This document is intended for the use of Team SmartCinema as well as the project's stakeholders.
 
 ### 1.4 Document Terminology and Acronyms
 n/a
@@ -49,7 +49,7 @@ Using continued testing techniques helps us to provide a stable and correct work
 
 
 ## 3. Target Test Items
-The listing below identifies those test items?software, hardware, and supporting product elements ?that have been identified as targets for testing. This list represents what items will be tested. 
+The listing below identifies those test items - software, hardware, and supporting product elements - that have been identified as targets for testing. This list represents what items will be tested. 
 - Controllers
 - Models
 - Views
@@ -61,7 +61,7 @@ The listing below identifies those test items?software, hardware, and supporting
 ### 4.1 Outline of Test Inclusions
 - User interface testing
 - Function Testing
-- **tbd**
+- Load testing
 
 ### 4.2 Outline of other candidates for potential inclusion
 n/a
@@ -83,9 +83,9 @@ n/a
 | | |
 |-|-|
 | **Technique Objective:** | Exercise target-of-test functionality, including navigation, data entry, processing, and retrieval to observe and log target behavior. |
-| **Technique:** | Execute each use-case scenarios individual use-case flows or functions and features, using valid and invalid data, to verify that:  <br>- the expected results occur when valid data is used <br> - the appropriate error or warning messages are displayed when 	invalid data is used <br> - each business rule is properly applied |
+| **Technique:** | Execute each use-case scenario's individual use-case flows or functions and features, using valid and invalid data, to verify that:  <br>- the expected results occur when valid data is used <br> - the appropriate error or warning messages are displayed when 	invalid data is used <br> - each business rule is properly applied |
 | **Oracles:** | We assume  all tests to pass. |
-| **Required Tools:** | - Selenium Driver <br> - Cucumber extension for Eclipse/IntelliJ |
+| **Required Tools:** | - Selenium Driver (currently selenium 3.4 with geckodriver 0.16 and Firefox 54. We follow the Firefox releases closely to avoid unexpected regressions caused by browser updates.) <br> - Cucumber extension for Eclipse/IntelliJ |
 | **Success Criteria:** | A cucumber file for each Use-Case that test every possible path. |
 | **Special Considerations:** | n/a |
 
@@ -105,7 +105,7 @@ n/a
 | **Technique Objective:** | Verify appropriate behavior and response time under high load. |
 | **Technique:** | Swamp endpoints with concurrent requests. Observe CPU load on server and measure response times. Commands are entered manually on the console or can alternatively be automated with a shell script. |
 | **Oracles:** | We assume that the endpoints we test actually do the advertised work. |
-| **Required Tools:** | - Apache Bench tool `ab` |
+| **Required Tools:** | - Apache Bench tool `ab` (as shipped with Apache 2.4) |
 | **Success Criteria:** | `ab` reports success responses only with mean response time < 100ms |
 | **Special Considerations:** | n/a |
 
@@ -118,7 +118,7 @@ n/a
 #### 5.2.9 Security and Access Control Testing
 n/a
 
-#### 5.2.10 Failover and Recovery Testing
+#### 5.2.10 Failover and Recovery**tbd/WHATEVER** Testing
 n/a
 
 #### 5.2.11 Configuration Testing
@@ -134,7 +134,7 @@ n/a
 | Technique Objective:    | Testing the functionality of the code               |
 | Technique:              | Test using unit tests.                              |
 | Oracles:                | The tests are successful if all assertions are true |
-| Required Tools:         | JUnit                                               |
+| Required Tools:         | JUnit 4                                             | 
 | Success Criteria:       | All tests pass                                      |
 | Special Considerations: |                                                     |
 
@@ -211,25 +211,25 @@ Also we integrated Sonarqube into our testing workflow. Every push onto the deve
 ### 9.1 Base System Hardware
 | Resource | Quantity | Name and Type |
 |----------|----------|---------------|
-| Webserver | 1 | **tbd/Type** |
-| - Server Name | | **tbd/Name** |
-| - Database | | **tbd/Name** |
-| Buildserver | 1 | **tbd** |
-| - Server Name | | **tbd/Name** |
+| Web Server | 1 | small VPS rented from https://www.netcup.de/ |
+| - Server Name | | alicia.genosse-einhorn.de |
+| Data API Server | 1 | N/A (shares VPS with web server)
+| Build Server | 1 | N/A (shares VPS with web server) |
 
 ### 9.2 Base Software Elements in the Test Environment
 | Software Element Name | Version | Type and Other Notes |
 |-----------------------|---------|----------------------|
-| Linux-Version | ??? | Operating System |
-| Firefox | ??? | Internet Browser |
-| etc. | |
+| CentOS (like RHEL) | 7.3 | Operating System / Linux Distribution |
+| Firefox | 54 | Internet Browser |
+| Selenium | 3.4, with geckodriver 0.16 | Browser automation tool |
 
 ### 9.3 Productivity and Support Tools
 | Tool Category or Type | Tool Brand Name | Vendor or In-house | Version |
 |-----------------------|-----------------|--------------------|---------|
-| Project Management | JIRA | Atlassasin | |
-| DBMS tools | **???phpmyadmin???** | | |
-| etc | | |
+| Project Management | JIRA | Atlassian | N/A (hosted by DHBW) |
+| Source Code Hosting | GitHub | GitHub, Inc. | N/A (public web app) |
+| Instant Messager | Slack | Slack Technologies | N/A (public web app) |
+
 
 ### 9.4 Test Environment Configurations
 n/a
@@ -250,7 +250,7 @@ n/a
 | > 20% Test Coverage | 25.04.2017 | 25.04.2017 | 21.06.2017 | **tbd** |
 | Have Functional Tests | 25.04.2017 | 25.04.2017 | 21.06.2017 | **tbd** |
 | Have Unit Tests | 25.04.2017 | 25.04.2017 | 21.06.2017 | **tbd** |
-| Have **tbd/WHATEVER** Tests | 25.04.2017 | 25.04.2017 | 21.06.2017 | **tbd** |
+| Have Load Tests | 25.04.2017 | 25.04.2017 | 21.06.2017 | **tbd** |
 | Tests integrated in CI | 25.04.2017 | 25.04.2017 | 21.06.2017 | **tbd** |
 | Iteration ends | | | 21.06.2017 | |
 
