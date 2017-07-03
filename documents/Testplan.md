@@ -247,11 +247,11 @@ n/a
 | Milestone | Planned Start Date | Actual Start Date | Planned End Date | Actual End Date |
 |-----------|--------------------|-------------------|------------------|-----------------|
 | Iteration starts | 25.04.2017 | | | |
-| > 20% Test Coverage | 25.04.2017 | 25.04.2017 | 21.06.2017 | **tbd** |
-| Have Functional Tests | 25.04.2017 | 25.04.2017 | 21.06.2017 | **tbd** |
-| Have Unit Tests | 25.04.2017 | 25.04.2017 | 21.06.2017 | **tbd** |
-| Have Load Tests | 25.04.2017 | 25.04.2017 | 21.06.2017 | **tbd** |
-| Tests integrated in CI | 25.04.2017 | 25.04.2017 | 21.06.2017 | **tbd** |
+| > 20% Test Coverage | 25.04.2017 | 25.04.2017 | 21.06.2017 | 21.06.2017 |
+| Have Functional Tests | 25.04.2017 | 25.04.2017 | 21.06.2017 | 21.06.2017 |
+| Have Unit Tests | 25.04.2017 | 25.04.2017 | 21.06.2017 | 21.06.2017 |
+| Have Load Tests | 25.04.2017 | 25.04.2017 | 21.06.2017 | 21.06.2017 |
+| Tests integrated in CI | 25.04.2017 | 25.04.2017 | 21.06.2017 | 21.06.2017 |
 | Iteration ends | | | 21.06.2017 | |
 
 
