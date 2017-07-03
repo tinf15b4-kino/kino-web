@@ -71,4 +71,4 @@ n/a
 [mvc]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/software_architecture/mvc.png
 [spring]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/software_architecture/spring.png
 [erm]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/database/erm_modell.png
-[uml]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/UML/uml_MVC.jpg
+[uml]: https://github.com/tinf15b4-kino/kino-web/blob/develop/documents/UML/complete_uml.png
