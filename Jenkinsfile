@@ -15,7 +15,7 @@ node {
         // Show yellow circle on GitHub
         setGithubBuildStatus("Started Build", "PENDING")
 
-        stage 'Build'
+        stage 'Build Server Apps'
 
         //branch name from Jenkins environment variables
         echo "My branch is: ${env.BRANCH_NAME}"
@@ -24,6 +24,12 @@ node {
 
         stage 'Archive Jar'
         archiveArtifacts artifacts: '*/build/libs/*.jar', fingerprint: true
+
+        stage 'Build Android App'
+        sh "cd android-app && ./gradlew assemble"
+
+        stage 'Archive APK'
+        archiveArtifacts artifacts: 'android-app/**/*.apk', fingerprint: true
 
         if ("${env.BRANCH_NAME}" == "develop" || "${env.BRANCH_NAME}" == "TESB416-270") {
             stage 'Run Tests (with SonarQube)'

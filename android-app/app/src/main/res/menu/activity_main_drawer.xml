@@ -11,26 +11,32 @@
             android:title="Kinos" />
         <item
             android:id="@+id/nav_favorites"
-            android:title="Favoriten" />
+            android:title="Favoriten"
+            android:enabled="false"/>
         <item
             android:id="@+id/nav_new"
-            android:title="Neu im Kino" />
+            android:title="Neu im Kino"
+            android:enabled="false"/>
         <item
             android:id="@+id/nav_soon"
-            android:title="Demnächst" />
+            android:title="Demnächst"
+            android:enabled="false"/>
     </group>
 
     <item android:title="SmartCinema">
         <menu>
             <item
                 android:id="@+id/nav_account"
-                android:title="Mein Konto" />
+                android:title="Mein Konto"
+                android:enabled="false"/>
             <item
                 android:id="@+id/nav_contact"
-                android:title="Kontakt" />
+                android:title="Kontakt"
+                android:enabled="false"/>
             <item
                 android:id="@+id/nav_about"
-                android:title="Über" />
+                android:title="Über"
+                android:enabled="false"/>
         </menu>
     </item>
 

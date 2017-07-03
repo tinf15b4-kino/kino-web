@@ -45,7 +45,8 @@ public class RestClient implements Serializable {
     private static final String GET_FAVORITE = "/getFavorite?token=%s&cinemaId=%s";
     private static final String SAVE_FAVORITE = "/saveFavorite?token=%s";
     private static final String DELETE_FAVORITE = "/deleteFavorite?token=%s";
-    private static final String SAVE_USER = "/saveUser?token=%s";
+    private static final String UPDATE_USER = "/saveUser?token=%s";
+    private static final String REGISTER_USER = "/registerUser";
     private static final String GET_RATED_CINEMAS = "/getRatedCinemas?cinemaId=%s";
     private static final String GET_PLAYLIST_CINEMA = "/getPlaylistForCinema?cinemaId=%s&from=%s&to=%s";
     private static final String GET_FAVORITES = "/getFavorites?token=%s";
@@ -57,6 +58,9 @@ public class RestClient implements Serializable {
     private static final String GET_RATED_MOVIES = "/getRatedMovies?movieId=%s";
     private static final String GET_PLAYLIST_MOVIE = "/getPlaylistForMovie?movieId=%s&from=%s&to=%s";
     private static final String GET_SEARCH_RESULT = "/getSearchResult?term=%s";
+    private static final String SAVE_RATED_CINEMA = "/saveRatedCinema?token=%s";
+    private static final String SAVE_RATED_MOVIE = "/saveRatedMovie?token=%s";
+    private static final String DELETE_USER = "/deleteUser?token=%s";
 
     private static final String MISSING_AUTHORIZATION = "Token invalid or expired";
     private static final String INTERNAL_SERVER_ERROR = "Internal Server Error";
@@ -136,14 +140,29 @@ public class RestClient implements Serializable {
         return doDeleteRequest(requestUrl, favorite, true);
     }
 
-    public RestResponse saveUser(User user) {
-        String requestUrl = baseUrl + String.format(SAVE_USER, token);
+    public RestResponse updateUser(User user) {
+        String requestUrl = baseUrl + String.format(UPDATE_USER, token);
         return doPostRequest(requestUrl, User.class, user, true);
+    }
+
+    public RestResponse registerUser(User user) {
+        String requestUrl = baseUrl + REGISTER_USER;
+        return doPostRequest(requestUrl, User.class, user, false);
     }
 
     public RestResponse getRatedCinemas(long cinemaId) {
         String requestUrl = baseUrl + String.format(GET_RATED_CINEMAS, cinemaId);
         return doGetRequest(requestUrl, RatedCinema[].class, false);
+    }
+
+    public RestResponse saveRatedCinema(RatedCinema ratedCinema) {
+        String requestUrl = baseUrl + String.format(SAVE_RATED_CINEMA, token);
+        return doPostRequest(requestUrl, RatedCinema.class, ratedCinema, true);
+    }
+
+    public RestResponse saveRatedMovie(RatedMovie ratedMovie) {
+        String requestUrl = baseUrl + String.format(SAVE_RATED_MOVIE, token);
+        return doPostRequest(requestUrl, RatedMovie.class, ratedMovie, true);
     }
 
     public RestResponse getPlaylistForCinemas(long cinemaId, Date from, Date to) {
@@ -200,6 +219,16 @@ public class RestClient implements Serializable {
     public RestResponse search(String searchTerm) {
         String requestUrl = baseUrl + String.format(GET_SEARCH_RESULT, searchTerm);
         return doGetRequest(requestUrl, SearchResult.class, false);
+    }
+
+    public RestResponse deleteUser() {
+        String requestUrl = baseUrl + String.format(DELETE_USER, token);
+        RestResponse response = doDeleteRequest(requestUrl, null, true);
+        if (!response.hasError()) {
+            authorized = false;
+            token = null;
+        }
+        return response;
     }
 
     private RestResponse doGetRequest(String urlString, Class<?> expectedResult, boolean needAuthorization) {
@@ -310,4 +339,5 @@ public class RestClient implements Serializable {
     public String getMoviePictureUrl(Movie m) {
         return "/rest/moviePicture?movieId=" + m.getId();
     }
+
 }

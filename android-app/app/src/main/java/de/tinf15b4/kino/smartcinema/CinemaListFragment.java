@@ -1,6 +1,7 @@
 package de.tinf15b4.kino.smartcinema;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -8,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -17,6 +19,7 @@ import java.util.List;
 
 import de.tinf15b4.kino.smartcinema.data.ApiFactory;
 import de.tinf15b4.kino.smartcinema.data.Cinema;
+import de.tinf15b4.kino.smartcinema.data.Movie;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,6 +43,15 @@ public class CinemaListFragment extends Fragment {
         swipeLayout = (SwipeRefreshLayout)v.findViewById(R.id.cinemaListSwipeRefreshLayout);
         swipeLayout.setOnRefreshListener(() -> refresh());
 
+        cinemaList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), CinemaDetailsActivity.class);
+                intent.putExtra("cinema", (Cinema)cinemaList.getItemAtPosition(position));
+                startActivity(intent);
+            }
+        });
+
         refresh();
 
         return v;
@@ -49,7 +61,7 @@ public class CinemaListFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Kinos");
+        getActivity().setTitle("Kinos");
     }
 
     private void refresh() {
@@ -59,13 +71,12 @@ public class CinemaListFragment extends Fragment {
             public void onResponse(Call<List<Cinema>> call, Response<List<Cinema>> response) {
                 swipeLayout.setRefreshing(false);
                 if (response.isSuccessful()) {
-                    final ArrayList<String> list = new ArrayList<String>();
-                    for (Cinema c : response.body()) {
-                        list.add(c.name);
-                    }
+                    ArrayAdapter<Cinema> adapter = new ArrayAdapter<Cinema>(getContext(),
+                            android.R.layout.simple_list_item_1);
 
-                    final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
-                            R.layout.cinema_list_entry, list);
+                    for (Cinema c : response.body()) {
+                        adapter.add(c);
+                    }
 
                     cinemaList.setAdapter(adapter);
                 } else {

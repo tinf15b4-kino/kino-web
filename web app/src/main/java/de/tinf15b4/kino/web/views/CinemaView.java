@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
-import com.vaadin.ui.Link;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Lists;
@@ -18,16 +18,20 @@ import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Link;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
 import de.tinf15b4.kino.data.cinemas.Cinema;
 import de.tinf15b4.kino.data.movies.Movie;
 import de.tinf15b4.kino.data.playlists.Playlist;
 import de.tinf15b4.kino.data.ratedcinemas.RatedCinema;
+import de.tinf15b4.kino.web.components.RatingDialog;
 import de.tinf15b4.kino.web.rest.RestResponse;
 import de.tinf15b4.kino.web.user.UserBean;
 import de.tinf15b4.kino.web.util.CinemaFavoriteUtils;
@@ -96,8 +100,8 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
     }
 
     private void createPlaylistSection(VerticalLayout informationForm) {
-        RestResponse playlistResponse = userBean.getRestClient().getPlaylistForCinemas(c.getId(),
-                new Date(), new Date(new Date().getTime() + 1000L * 3600 * 24 * 7));
+        RestResponse playlistResponse = userBean.getRestClient().getPlaylistForCinemas(c.getId(), new Date(),
+                new Date(new Date().getTime() + 1000L * 3600 * 24 * 7));
         if (!playlistResponse.hasError()) {
             List<Playlist> playlistEntries = Lists.newArrayList((Playlist[]) playlistResponse.getValue());
 
@@ -110,14 +114,24 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
     private void createRatingSection(VerticalLayout informationForm) {
         RestResponse ratedCinemaResponse = userBean.getRestClient().getRatedCinemas(c.getId());
         if (!ratedCinemaResponse.hasError()) {
-            List<RatedCinema> ratedCinemas = Lists
-                    .newArrayList((RatedCinema[]) ratedCinemaResponse.getValue());
+            List<RatedCinema> ratedCinemas = Lists.newArrayList((RatedCinema[]) ratedCinemaResponse.getValue());
 
             if (!ratedCinemas.isEmpty()) {
                 VerticalLayout ratingsForm = createRatingsForm(ratedCinemas);
                 informationForm.addComponent(ratingsForm);
             }
+
+            Button button = new Button("Bewertung abgeben");
+            button.addStyleName(ValoTheme.BUTTON_PRIMARY);
+            button.addClickListener(e -> addRating());
+            informationForm.addComponent(button);
+
         }
+    }
+
+    private void addRating() {
+        RatingDialog<RatedCinema> dialog = new RatingDialog<>();
+        dialog.openDialog(getUI(), userBean, c, rated -> userBean.getRestClient().saveRatedCinema(rated));
     }
 
     private VerticalLayout createPlaylistForm(List<Playlist> playlistEntries) {
@@ -145,6 +159,7 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
     }
 
     private HorizontalLayout createMovieRow(Movie movie, List<Playlist> playlists) {
+        playlists = playlists.stream().filter(p -> p.getMovie().equals(movie)).collect(Collectors.toList());
         HorizontalLayout movieRow = new HorizontalLayout();
         movieRow.setPrimaryStyleName("moviePlaylistRow");
 
@@ -167,7 +182,8 @@ public class CinemaView extends VerticalLayout implements View, ToggleFavoriteLi
         VerticalLayout movieInformation = new VerticalLayout();
         movieInformation.setPrimaryStyleName("moviePlaylistInformation");
 
-        Link movieLink = new Link(movie.getName(), new ExternalResource("#!" + MovieView.VIEW_NAME + "/" + movie.getId()));
+        Link movieLink = new Link(movie.getName(),
+                new ExternalResource("#!" + MovieView.VIEW_NAME + "/" + movie.getId()));
         movieLink.setPrimaryStyleName("moviePlaylistLink_" + movie.getId());
         movieInformation.addComponent(movieLink);
 
